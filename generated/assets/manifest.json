@@ -32,10 +32,148 @@
       "hash": "sha256:5717a7175c0117ab13b361adb85bc62d1408b81e32f1ed1b191ae93e46c81602"
     },
     {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260720172550.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260720172550.png",
+      "size": 209153,
+      "hash": "sha256:b029b075fc14f421cfc3747282e4a2ebcaad0ff70a067fea415b456cdf94479f"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260722155556.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260722155556.png",
+      "size": 622035,
+      "hash": "sha256:6479f64e450575747323e8ab6d91783bde40a970fcc672911385157cf6b4897d"
+    },
+    {
       "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260722162150.png",
       "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260722162150.png",
       "size": 615080,
       "hash": "sha256:e17395d2fc50ce55f16a17bc01fbf7c52d109f2f9250807ea7f928a97b4821ea"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260722210604.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260722210604.png",
+      "size": 160196,
+      "hash": "sha256:6985117dbbb1318e740af1a382defe73b1e71bc4a07d3fe17d174250bfe84388"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260722214601.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260722214601.png",
+      "size": 157791,
+      "hash": "sha256:5d03c58eef944a0c13ee6622fbcc3c148e1c1b1ae826b0aa6252fd9d9275676a"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260723194804.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260723194804.png",
+      "size": 243032,
+      "hash": "sha256:b4598c29c34269e72507890c740448875e3b09ea0be0d02f89f6be1f0e7bc53c"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260723211422.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260723211422.png",
+      "size": 302282,
+      "hash": "sha256:112c1d00f28b57c9065eba862d6387f7478c52959fb7df9392182614706f531e"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260724203413.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260724203413.png",
+      "size": 204774,
+      "hash": "sha256:e8c54222cec4ec5ad33e02f935247a3f2f63bea482cfc3efaae7652eeafe7701"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260724212703.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260724212703.png",
+      "size": 30304,
+      "hash": "sha256:13cdc06d37aca9f536abfa7be7d3bbe295a9e59e1c1d1d4c9a09d7695a5bc7e7"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260724213112.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260724213112.png",
+      "size": 12593,
+      "hash": "sha256:d33aefe4098fea894c6e66d997b3e6a81f0c129338757dbc25f3df5a708dba7a"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260724213806.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260724213806.png",
+      "size": 47357,
+      "hash": "sha256:5d66e9ba14edc792659114225b003c578802193bed460a4d02ccc76bd678b11a"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260724220551.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260724220551.png",
+      "size": 37941,
+      "hash": "sha256:ac0b8387e9c3becadc23551580235138560753439f10430689aaebb4b4de897c"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260724221824.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260724221824.png",
+      "size": 11285,
+      "hash": "sha256:0fa65d5b5cdb918253aeb22f81eb07d908a49d2f30b92243c79564079de8499b"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260725151542.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260725151542.png",
+      "size": 195892,
+      "hash": "sha256:eb68e2b68681e8db0eacbf31ec7953cbf6862859d4a056f8c924d811f18e409c"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260725155925.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260725155925.png",
+      "size": 129994,
+      "hash": "sha256:e02344f00d31b0be67f925eb7c5ea0cc05206298c8b6e50f0d4897a074efb56d"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260725162127.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260725162127.png",
+      "size": 278735,
+      "hash": "sha256:63d97b7e06a9edb397674f4c8ff2ddbe5c69e1a4721b0cd2d126b05de882bf50"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260725163300.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260725163300.png",
+      "size": 112234,
+      "hash": "sha256:2e172b817c8c4cccbe255493dbb04949f56c717102c32f4481b2d46f88b3a986"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260725165418.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260725165418.png",
+      "size": 113152,
+      "hash": "sha256:fcc6690fdf39a74a326e7177ef10700377d7daba085eb4ed093670674b6f2d2c"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260726152035.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260726152035.png",
+      "size": 19034,
+      "hash": "sha256:6053f279e12139c0342e0d8d17ca02cfa628fe0159e9705b55f945c432bd039f"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260726161018.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260726161018.png",
+      "size": 69147,
+      "hash": "sha256:5f0013f02d71ddd7a42c95942a7d3fa1771d94597e65f77e890e4f8dff2e9ad7"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260726161212.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260726161212.png",
+      "size": 29992,
+      "hash": "sha256:a77a0ab081b827167d6c1b91be9f98bdd358482fc7a3ef73c93c0046412e730e"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260726172514.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260726172514.png",
+      "size": 158082,
+      "hash": "sha256:6b81d8997331d47feb682ae0ec77bb84a2be6d17bfea957c36f68347be16c787"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260726203051.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260726203051.png",
+      "size": 21130,
+      "hash": "sha256:e57845c636c321f5654e8a8fc2cee8548c4c721ee2cb5e7b6d6240c2dd6eaf0e"
+    },
+    {
+      "sourcePath": "DevOps/Docker/Docker Basic/img/Pasted image 20260726230404.png",
+      "publicPath": "/assets/vault/DevOps/Docker/Docker Basic/img/Pasted image 20260726230404.png",
+      "size": 56370,
+      "hash": "sha256:6a80aee873d1c2e1135cf83ac17baf59451c2fe417e8b8a1d39575abd9a001e6"
     },
     {
       "sourcePath": "Jaringan/Fundamental jaringan/img/Classless Addressing.png",
