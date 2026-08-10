@@ -2,12 +2,6 @@
   "schemaVersion": 1,
   "assets": [
     {
-      "sourcePath": "CyberSecurity/Cryptography/Modular Aritmathic/images/Residue.png",
-      "publicPath": "/assets/vault/CyberSecurity/Cryptography/Modular Aritmathic/images/Residue.png",
-      "size": 63122,
-      "hash": "sha256:dc2195d099d9c8d1a332a2530debf6f1a78781e81d7ff64773124808ebff8fe7"
-    },
-    {
       "sourcePath": "DevOps/Cloud/Dasar/Image/1.png",
       "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/1.png",
       "size": 30077,
