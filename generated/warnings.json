@@ -5,7 +5,10 @@
     "brokenWikiLinks": [
       "CyberSecurity/Cryptography/Cryptography Modern/Cryptography Modern.md -> []( 00_Symmetric%20key.md )",
       "CyberSecurity/Cryptography/Cryptography Modern/Cryptography Modern.md -> []( 00_Asymmetric%20key.md )",
-      "CyberSecurity/Cryptography/Pengenalan/01_Pengenalan.md -> []( 02_Modular%20Aritmathic.md )",
+      "CyberSecurity/Cryptography/Cryptography.md -> []( Pengenalan.md )",
+      "CyberSecurity/Cryptography/Cryptography.md -> []( Modular%20Aritmathic.md )",
+      "CyberSecurity/Cryptography/Pengenalan/Pengenalan.md -> []( tes.md )",
+      "CyberSecurity/Cryptography/Pengenalan/Pengenalan.md -> []( Modular%20Aritmathic.md )",
       "CyberSecurity/Cryptography/Pengenalan/Python dalam Crytography.md -> []( Python.md )",
       "DevOps/DevOps.md -> []( Docker.md )",
       "DevOps/DevOps.md -> []( GitHub.md )",
