@@ -2,32 +2,32 @@
   "schemaVersion": 1,
   "assets": [
     {
-      "sourcePath": "DevOps/Cloud/Dasar/Image/1.png",
-      "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/1.png",
+      "sourcePath": "DevOps/Cloud/Cloud Dasar/Image/1.png",
+      "publicPath": "/assets/vault/DevOps/Cloud/Cloud Dasar/Image/1.png",
       "size": 30077,
       "hash": "sha256:1bc167f7cd021038c26c0552327abf604b3ac5d2c700f1a47c380ce3af9472a8"
     },
     {
-      "sourcePath": "DevOps/Cloud/Dasar/Image/2.png",
-      "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/2.png",
+      "sourcePath": "DevOps/Cloud/Cloud Dasar/Image/2.png",
+      "publicPath": "/assets/vault/DevOps/Cloud/Cloud Dasar/Image/2.png",
       "size": 612287,
       "hash": "sha256:75beba4063bfd0f82020e42228086be3790c841088722daf379d5c99fe77f137"
     },
     {
-      "sourcePath": "DevOps/Cloud/Dasar/Image/4.png",
-      "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/4.png",
+      "sourcePath": "DevOps/Cloud/Cloud Dasar/Image/4.png",
+      "publicPath": "/assets/vault/DevOps/Cloud/Cloud Dasar/Image/4.png",
       "size": 911624,
       "hash": "sha256:edd047e35f5c20a700c537359123c36aaad1afc7174dc4156169051f7375776d"
     },
     {
-      "sourcePath": "DevOps/Cloud/Dasar/Image/6.png",
-      "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/6.png",
+      "sourcePath": "DevOps/Cloud/Cloud Dasar/Image/6.png",
+      "publicPath": "/assets/vault/DevOps/Cloud/Cloud Dasar/Image/6.png",
       "size": 56646,
       "hash": "sha256:d50e9053bcfd306b15a7d5e1f1e08694fa9b7a2acd65ab673d50afc7f771b527"
     },
     {
-      "sourcePath": "DevOps/Cloud/Dasar/Image/7.png",
-      "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/7.png",
+      "sourcePath": "DevOps/Cloud/Cloud Dasar/Image/7.png",
+      "publicPath": "/assets/vault/DevOps/Cloud/Cloud Dasar/Image/7.png",
       "size": 49954,
       "hash": "sha256:5717a7175c0117ab13b361adb85bc62d1408b81e32f1ed1b191ae93e46c81602"
     },
