@@ -1,0 +1,58 @@
+name: Sync docs from Obsidian vault
+
+on:
+  repository_dispatch:
+    types: [vault-sync]
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      VAULT_COMMIT: ${{ github.event.client_payload.vault_commit || github.sha }}
+      VAULT_BRANCH: ${{ github.event.client_payload.vault_branch || 'main' }}
+      VAULT_REPO_URL: ${{ github.event.client_payload.repo_clone_url || 'https://github.com/aryandaa/Obsidian-Vault.git' }}
+    steps:
+      - name: Checkout website repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Clone vault
+        run: |
+          rm -rf /tmp/vault-clone
+          git clone --depth 1 --branch "${{ env.VAULT_BRANCH }}" "${{ env.VAULT_REPO_URL }}" /tmp/vault-clone
+          cd /tmp/vault-clone
+          git fetch --depth 1 origin "${{ env.VAULT_COMMIT }}" || true
+          git checkout --detach "${{ env.VAULT_COMMIT }}"
+
+      - name: Parse vault into generated site data
+        run: npm run parse -- --vault /tmp/vault-clone
+
+      - name: Validate generated output
+        run: |
+          test -f generated/docs/index.json
+          test -d public/assets/vault
+
+      - name: Commit generated artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add generated public
+          if ! git diff --cached --quiet; then
+            git commit -m "sync: update generated docs from vault ${GITHUB_SHA}"
+            git push
+          else
+            echo "No generated changes to commit."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

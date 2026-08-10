@@ -1,0 +1,23 @@
+name: Dispatch website sync
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send repository dispatch to website
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.WEBSITE_DISPATCH_TOKEN }}
+          repository: ${{ secrets.WEBSITE_REPOSITORY }}
+          event-type: vault-sync
+          client-payload: |
+            {
+              "vault_commit": "${{ github.sha }}",
+              "vault_branch": "main",
+              "repo_clone_url": "https://github.com/aryandaa/Obsidian-Vault.git"
+            }

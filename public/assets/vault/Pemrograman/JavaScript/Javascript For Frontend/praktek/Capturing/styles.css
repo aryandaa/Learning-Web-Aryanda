@@ -1,0 +1,7 @@
+body div {
+  width: 60%;
+
+  margin: 8px;
+  padding: 5px;
+  border: 2px solid black;
+}

@@ -1,0 +1,1541 @@
+Saya ingin kamu membangun sebuah project baru dari NOL atau membuat seluruh fondasi project ini dari awal.
+
+Namun, saya ingin hasil akhirnya mengikuti spesifikasi dan arsitektur yang saya jelaskan di bawah.
+
+============================================================
+1. TUJUAN PROJECT
+============================================================
+
+Saya ingin membuat sebuah personal learning platform berbasis web.
+
+Seluruh materi belajar saya ditulis menggunakan Obsidian.
+
+Repository Obsidian saya: https://github.com/aryandaa/Obsidian-Vault
+
+Repository tersebut adalah SOURCE OF TRUTH.
+
+Saya ingin website secara otomatis membaca repository tersebut, mengubah seluruh materi Markdown menjadi data yang dapat digunakan oleh website, lalu menampilkannya sebagai website pembelajaran.
+
+Workflow yang saya inginkan:
+
+Obsidian Vault
+↓
+git push
+↓
+GitHub Actions
+↓
+repository_dispatch
+↓
+Website repository
+↓
+clone temporary vault
+↓
+parser
+↓
+generated artifacts
+↓
+publish
+↓
+React website
+↓
+deploy
+
+
+============================================================
+2. ATURAN PALING PENTING
+============================================================
+
+Repository:
+
+https://github.com/aryandaa/Obsidian-Vault
+
+adalah repository yang sangat penting.
+
+Jangan pernah mengubah isi materi di repository tersebut.
+
+DILARANG:
+
+- mengubah isi Markdown
+- mengedit materi
+- mengubah nama file Markdown
+- memindahkan file Markdown
+- menghapus file Markdown
+- mengubah nama folder materi
+- memindahkan folder materi
+- melakukan formatting otomatis terhadap Markdown
+- menambahkan metadata ke dalam file materi
+- melakukan rewrite terhadap file Obsidian
+- melakukan sinkronisasi dua arah
+
+Website hanya boleh MEMBACA vault.
+
+Automation boleh menambahkan file konfigurasi GitHub Actions ke repository Obsidian jika memang diperlukan.
+
+Contoh file yang diperbolehkan:
+
+.github/workflows/dispatch-website-sync.yml
+
+Selain konfigurasi automation tersebut, jangan menyentuh materi.
+
+Vault harus tetap menjadi sumber data asli.
+
+
+============================================================
+3. KONSEP UTAMA
+============================================================
+
+Saya ingin:
+
+Obsidian = sumber materi
+
+Website repository = aplikasi
+
+Generated JSON/assets = hasil transformasi
+
+Dengan kata lain:
+
+Obsidian
+↓
+Parser
+↓
+Generated data
+↓
+React
+
+
+Jangan menyimpan salinan Markdown dari Obsidian di website repository.
+
+Jangan membuat:
+
+content/
+
+sebagai mirror vault.
+
+Website repository tidak boleh menjadi tempat penyimpanan source Markdown.
+
+
+============================================================
+4. TEKNOLOGI
+============================================================
+
+Gunakan:
+
+Frontend:
+- React
+- TypeScript
+- Vite
+- React Router
+- Tailwind CSS
+- shadcn/ui
+- Lucide
+
+Parser:
+- Node.js
+- TypeScript
+- remark
+- rehype
+- gray-matter
+- remark-gfm
+- KaTeX
+- syntax highlighting
+
+Search:
+- Fuse.js
+
+Automation:
+- GitHub Actions
+- repository_dispatch
+
+Backend:
+
+Tidak perlu backend/database.
+
+Jangan menggunakan Laravel.
+
+Jangan menggunakan database.
+
+Jangan membuat API write.
+
+Jangan menambahkan Express.
+
+Website ini pada akhirnya harus bisa menjadi static website.
+
+============================================================
+5. STATIC WEBSITE
+============================================================
+
+Target akhirnya adalah website yang bisa di-host menggunakan static hosting seperti:
+
+- GitHub Pages
+- Cloudflare Pages
+- Netlify
+- Vercel
+
+Tidak boleh ada ketergantungan pada database.
+
+Tidak perlu server persistent.
+
+Generated JSON dan assets akan menjadi data website.
+
+
+============================================================
+6. ARSITEKTUR
+============================================================
+
+Gunakan arsitektur berikut:
+
+Obsidian Vault
+│
+│ push ke main
+▼
+Vault GitHub Action
+│
+│ repository_dispatch
+│ event: vault-sync
+│ commit SHA
+│ branch
+│ clone URL
+▼
+Website GitHub Action
+│
+│ shallow clone
+│ --depth 1
+▼
+Temporary Vault Clone
+│
+▼
+Parser Pipeline
+│
+├── Scanner
+├── Validator
+├── Indexer
+├── Link Resolver
+├── Renderer
+├── Asset Copier
+├── JSON Writer
+└── Publisher
+│
+▼
+generated/
+│
+├── docs/
+├── assets/
+└── warnings.json
+│
+▼
+publish
+│
+▼
+public/
+│
+├── docs/
+└── assets/vault/
+│
+▼
+React application
+
+
+============================================================
+7. REPOSITORY WEBSITE
+============================================================
+
+Buat project website baru.
+
+Contoh nama repository: learning-web-Aryanda
+
+Namun nama repository tidak terlalu penting selama struktur dan fungsinya sesuai.
+
+Struktur awal yang saya inginkan kurang lebih:
+
+learning-web-Aryanda/
+├── .github/
+│   └── workflows/
+│
+├── scripts/
+│   ├── parse-docs.ts
+│   └── parser/
+│
+├── generated/
+│
+├── public/
+│   ├── docs/
+│   └── assets/
+│
+├── src/
+│   ├── components/
+│   │   ├── explorer/
+│   │   ├── document/
+│   │   └── ui/
+│   │
+│   ├── pages/
+│   │   ├── HomePage.tsx
+│   │   ├── DocsPage.tsx
+│   │   ├── DocumentPage.tsx
+│   │   └── SearchPage.tsx
+│   │
+│   ├── services/
+│   ├── domain/
+│   └── app/
+│
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+
+
+Struktur tersebut boleh disesuaikan jika ada alasan teknis yang jelas.
+
+Jangan membuat struktur yang terlalu kompleks hanya demi terlihat enterprise.
+
+
+============================================================
+8. GITHUB ACTIONS DI OBSIDIAN
+============================================================
+
+Tambahkan workflow minimal ke repository:
+
+https://github.com/aryandaa/Obsidian-Vault
+
+Contoh:
+
+.github/workflows/dispatch-website-sync.yml
+
+Workflow berjalan ketika:
+
+push:
+branches:
+- main
+
+Kemudian mengirim:
+
+repository_dispatch
+
+ke website repository.
+
+Event type:
+
+vault-sync
+
+Payload minimal:
+
+{
+	"vault_commit": "...",
+	"vault_branch": "main",
+	"repo_clone_url": "https://github.com/aryandaa/Obsidian-Vault.git"
+}
+
+Workflow ini TIDAK boleh melakukan parsing.
+
+Workflow ini hanya memberi tahu website:
+
+"Vault baru saja berubah. Gunakan commit ini untuk melakukan sync."
+
+
+============================================================
+9. SECRETS
+============================================================
+
+Gunakan GitHub Actions secrets.
+
+Di Obsidian Vault:
+
+WEBSITE_DISPATCH_TOKEN
+
+WEBSITE_REPOSITORY
+
+Contoh:
+
+WEBSITE_REPOSITORY=aryandaa/learning-web
+
+Token harus memiliki izin seminimal mungkin yang diperlukan untuk mengirim repository_dispatch.
+
+Jangan hardcode token.
+
+Jangan menulis token ke source code.
+
+
+============================================================
+10. WEBSITE SYNC WORKFLOW
+============================================================
+
+Website repository harus memiliki:
+
+.github/workflows/sync-docs.yml
+
+Workflow menerima:
+
+repository_dispatch
+
+event:
+
+vault-sync
+
+Juga sediakan:
+
+workflow_dispatch
+
+sebagai manual recovery.
+
+Tidak perlu scheduled polling.
+
+Jangan membuat cron setiap beberapa menit.
+
+Workflow:
+
+1. menerima payload
+2. mendapatkan commit SHA
+3. mendapatkan branch
+4. clone vault ke temporary directory
+5. parser membaca temporary clone
+6. parser menghasilkan generated/
+7. validasi hasil
+8. publish generated ke public/
+9. menghapus stale generated files
+10. commit hanya generated public artifacts
+11. cleanup temporary vault clone
+
+
+============================================================
+11. TEMPORARY CLONE
+============================================================
+
+Vault harus di-clone ke temporary directory.
+
+Gunakan:
+
+git clone --depth 1
+
+Jika memungkinkan, checkout commit SHA yang dikirim oleh dispatch.
+
+Contoh konsep:
+
+/tmp/obsidian-vault-XXXX
+
+Parser membaca dari:
+
+/tmp/obsidian-vault-XXXX
+
+Jangan menyalin Markdown ke:
+
+content/
+
+Jangan commit Markdown ke website.
+
+Setelah selesai:
+
+temporary directory harus dihapus.
+
+
+============================================================
+12. GENERATED DIRECTORY
+============================================================
+
+Parser tidak boleh langsung menulis ke public/.
+
+Parser menghasilkan:
+
+generated/
+
+Struktur:
+
+generated/
+├── docs/
+│   ├── tree.json
+│   ├── search-index.json
+│   ├── metadata.json
+│   └── <struktur folder vault>/*.json
+│
+├── assets/
+│   ├── manifest.json
+│   └── <struktur asset>
+│
+└── warnings.json
+
+
+Setelah parser selesai:
+
+generated/
+↓
+public/
+
+
+============================================================
+13. PUBLIC DIRECTORY
+============================================================
+
+Hasil akhirnya:
+
+public/
+├── docs/
+│   ├── tree.json
+│   ├── search-index.json
+│   ├── metadata.json
+│   ├── warnings.json
+│   └── <struktur folder vault>/*.json
+│
+└── assets/
+└── vault/
+├── manifest.json
+└── <struktur asset>
+
+
+Jangan menghapus file lain di public/.
+
+Misalnya:
+
+public/favicon.svg
+
+harus tetap aman.
+
+Jika menggunakan:
+
+rsync --delete
+
+batasi hanya ke:
+
+public/docs/
+
+dan:
+
+public/assets/vault/
+
+
+============================================================
+14. DIRECTORY HIERARCHY
+============================================================
+
+Ini sangat penting.
+
+Website harus mempertahankan struktur folder Obsidian.
+
+Contoh vault:
+
+Pemrograman/
+├── PHP/
+│   ├── Framework/
+│   │   └── Laravel/
+│   │       ├── Routing.md
+│   │       └── Middleware.md
+│   │
+│   └── Fundamental.md
+│
+└── JavaScript/
+└── Async.md
+
+Maka generated:
+
+generated/docs/
+├── Pemrograman/
+│   ├── PHP/
+│   │   ├── Framework/
+│   │   │   └── Laravel/
+│   │   │       ├── Routing.json
+│   │   │       └── Middleware.json
+│   │   │
+│   │   └── Fundamental.json
+│   │
+│   └── JavaScript/
+│       └── Async.json
+
+
+Jangan flatten semua file menjadi:
+
+docs/
+├── routing.json
+├── middleware.json
+├── fundamental.json
+
+Struktur folder harus dipertahankan.
+
+
+============================================================
+15. ROOT DIRECTORY SEBAGAI PARENT
+============================================================
+
+Folder paling atas di Obsidian harus menjadi parent/root node pada website.
+
+Misalnya:
+
+Pemrograman/
+CyberSecurity/
+Hardware/
+
+Maka tree website:
+
+Pemrograman
+CyberSecurity
+Hardware
+
+Masing-masing menjadi parent node.
+
+Sidebar harus dibuat secara recursive.
+
+Jangan hardcode folder.
+
+
+============================================================
+16. STABLE DOCUMENT ID
+============================================================
+
+Primary ID harus berasal dari normalized vault-relative path.
+
+Contoh:
+
+Pemrograman/PHP/Framework/Laravel/Routing.md
+
+menjadi:
+
+pemrograman/php/framework/laravel/routing
+
+Contoh:
+
+{
+	"id": "pemrograman/php/framework/laravel/routing",
+	"relativePath": "Pemrograman/PHP/Framework/Laravel/Routing.md",
+	"slug": "routing"
+}
+
+id adalah identity.
+
+relativePath mempertahankan casing asli.
+
+slug hanya identifier human-friendly.
+
+Jangan menggunakan slug sebagai identity utama karena slug dapat bentrok.
+
+
+============================================================
+17. CONTENT HASH
+============================================================
+
+Boleh memiliki:
+
+contentHash
+
+contoh:
+
+"sha256:abc123..."
+
+Digunakan untuk:
+
+- cache invalidation
+- integrity
+- mengetahui apakah konten berubah
+
+Namun:
+
+contentHash bukan identity.
+
+
+============================================================
+18. DOCUMENT JSON
+============================================================
+
+Setiap Markdown menjadi JSON.
+
+Contoh:
+
+{
+	"schemaVersion": 1,
+	"id": "pemrograman/php/framework/laravel/routing",
+	"title": "Routing",
+	"slug": "routing",
+	"relativePath": "Pemrograman/PHP/Framework/Laravel/Routing.md",
+	"html": "...",
+	"content": "...",
+	"tags": [],
+	"aliases": [],
+	"headings": [],
+	"breadcrumb": [],
+	"readingTime": 5,
+	"updated": "...",
+	"previous": "...",
+	"next": "...",
+	"contentHash": "sha256:..."
+}
+
+
+Boleh menambahkan field lain jika memang berguna.
+
+
+============================================================
+19. TREE.JSON
+============================================================
+
+Gunakan unified recursive tree.
+
+Contoh:
+
+{
+	"schemaVersion": 1,
+	"type": "folder",
+	"name": "Pemrograman",
+	"relativePath": "Pemrograman",
+	"children": [
+		{
+			"type": "folder",
+			"name": "PHP",
+			"relativePath": "Pemrograman/PHP",
+			"children": [
+				{
+					"type": "file",
+					"title": "Routing",
+					"slug": "routing",
+					"id": "pemrograman/php/routing",
+					"relativePath": "Pemrograman/PHP/Routing.md"
+				}
+			]
+		}
+	]
+}
+
+
+Folder dan file harus dapat memiliki nested hierarchy tanpa batas praktis.
+
+
+============================================================
+20. SEARCH INDEX
+============================================================
+
+Gunakan:
+
+Fuse.js
+
+Search index:
+
+search-index.json
+
+Minimal:
+
+{
+	"id": "...",
+	"title": "...",
+	"slug": "...",
+	"relativePath": "...",
+	"folder": "...",
+	"tags": [],
+	"aliases": [],
+	"headings": [],
+	"content": "...",
+	"excerpt": "..."
+}
+
+
+Search index harus dibuat otomatis oleh parser.
+
+Tidak perlu database.
+
+
+============================================================
+21. METADATA.JSON
+============================================================
+
+metadata.json adalah metadata seluruh vault.
+
+Contoh:
+
+{
+	"schemaVersion": 1,
+	"parserVersion": "1.0.0",
+	"generatorVersion": "1.0.0",
+	"generatedAt": "...",
+	"vaultCommit": "...",
+	"vaultBranch": "main",
+	"totalNotes": 0,
+	"totalFolders": 0,
+	"warningsCount": 0,
+	"brokenLinksCount": 0
+}
+
+
+============================================================
+22. WARNINGS.JSON
+============================================================
+
+Buat:
+
+warnings.json
+
+Contoh:
+
+{
+	"schemaVersion": 1,
+	"warnings": {
+		"duplicatePaths": [],
+		"brokenWikiLinks": [],
+		"missingImages": [],
+		"malformedFrontmatter": [],
+		"unsupportedEmbeds": []
+	}
+}
+
+
+Warning tidak selalu harus menghentikan generation.
+
+Tetapi duplicate output path atau collision yang dapat menyebabkan data tertimpa harus menjadi fatal error.
+
+
+============================================================
+23. MODULAR PARSER
+============================================================
+
+Jangan membuat satu file parser raksasa.
+
+Gunakan:
+
+scripts/
+├── parse-docs.ts
+└── parser/
+├── parser.config.ts
+├── context.ts
+├── scanner.ts
+├── validator.ts
+├── indexer.ts
+├── link-resolver.ts
+├── renderer.ts
+├── asset-copier.ts
+├── json-writer.ts
+├── publisher.ts
+├── plugins.ts
+└── types.ts
+
+
+============================================================
+24. SCANNER
+============================================================
+
+Scanner:
+
+- recursive scan
+- menemukan Markdown
+- menemukan folder
+- menemukan asset
+- membuat canonical snapshot
+
+Konsep:
+
+VaultSnapshot:
+
+{
+	files: [],
+	folders: [],
+	assets: []
+}
+
+Tahap pipeline berikutnya harus menggunakan snapshot tersebut.
+
+Hindari scan filesystem berulang kali.
+
+
+============================================================
+25. VALIDATOR
+============================================================
+
+Validator harus memeriksa:
+
+- malformed frontmatter
+- duplicate document ID
+- duplicate output path
+- invalid source path
+- source consistency
+
+Duplicate ID/path:
+
+FATAL.
+
+
+============================================================
+26. INDEXER
+============================================================
+
+Indexer menghasilkan canonical note records.
+
+Informasi minimal:
+
+- id
+- relativePath
+- title
+- slug
+- tags
+- aliases
+- headings
+- metadata
+
+
+============================================================
+27. LINK RESOLVER
+============================================================
+
+Support:
+
+[[Routing]]
+
+[[Folder/Routing]]
+
+[[Folder/Routing|Routing]]
+
+Resolusi dapat berdasarkan:
+
+- ID
+- relativePath
+- title
+- alias
+
+Jika tidak ditemukan:
+
+masukkan ke:
+
+warnings.json
+
+sebagai brokenWikiLinks.
+
+
+============================================================
+28. BACKLINK
+============================================================
+
+Jika:
+
+Routing
+
+mereferensikan:
+
+Middleware
+
+maka parser harus mengetahui:
+
+Routing
+↓
+Middleware
+
+dan:
+
+Middleware
+↓
+backlink: Routing
+
+Data backlink harus tersedia untuk fitur masa depan seperti:
+
+- backlink panel
+- graph view
+- related notes
+
+
+============================================================
+29. MARKDOWN RENDERING
+============================================================
+
+Gunakan remark/rehype ecosystem.
+
+Support:
+
+- Markdown
+- GFM
+- tables
+- task lists
+- code blocks
+- syntax highlighting
+- headings
+- footnotes
+- KaTeX
+- callouts
+- internal links
+- wiki links
+- embeds
+
+Rendering harus aman.
+
+Jangan menggunakan dangerouslySetInnerHTML tanpa sanitization yang sesuai.
+
+
+============================================================
+30. OBSIDIAN IMAGE EMBEDS
+============================================================
+
+Support:
+
+![[image.png]]
+
+dan Markdown image:
+
+![alt](image.png)
+
+Asset harus dicopy ke:
+
+generated/assets/
+
+kemudian publish:
+
+public/assets/vault/
+
+
+Contoh:
+
+Vault:
+
+Images/example.png
+
+↓
+
+generated/assets/Images/example.png
+
+↓
+
+public/assets/vault/Images/example.png
+
+Document HTML harus menggunakan:
+
+/assets/vault/Images/example.png
+
+
+============================================================
+31. ASSET MANIFEST
+============================================================
+
+Buat:
+
+generated/assets/manifest.json
+
+Contoh:
+
+{
+	"schemaVersion": 1,
+	"assets": [
+		{
+			"sourcePath": "Images/example.png",
+			"publicPath": "/assets/vault/Images/example.png",
+			"size": 12345,
+			"hash": "sha256:..."
+		}
+	]
+}
+
+
+============================================================
+32. PLUGIN SYSTEM
+============================================================
+
+Buat lightweight plugin interface.
+
+Belum perlu implementasi plugin graph/quiz/AI.
+
+Tetapi architecture harus memungkinkan extension.
+
+Lifecycle yang disarankan:
+
+beforeScan
+afterScan
+
+beforeValidate
+afterValidate
+
+beforeIndex
+afterIndex
+
+beforeResolve
+afterResolve
+
+beforeRender
+afterRender
+
+beforeWrite
+afterWrite
+
+beforePublish
+afterPublish
+
+
+Future plugin:
+
+- Graph
+- Flashcard
+- Quiz
+- Statistics
+- AI Summary
+
+
+============================================================
+33. FRONTEND
+============================================================
+
+Buat React SPA.
+
+Halaman minimal:
+
+Home
+Docs
+Document
+Search
+
+Komponen:
+
+Layout
+Sidebar
+Document Viewer
+Breadcrumb
+TOC
+Previous/Next
+Search
+
+
+============================================================
+34. SIDEBAR
+============================================================
+
+Sidebar membaca:
+
+tree.json
+
+dan membangun:
+
+folder
+↓
+subfolder
+↓
+file
+
+secara recursive.
+
+Tidak boleh hardcode:
+
+Pemrograman
+CyberSecurity
+Laravel
+dan sebagainya.
+
+Semua berasal dari Obsidian.
+
+
+============================================================
+35. DOCUMENT ROUTING
+============================================================
+
+URL document harus stabil.
+
+Jangan hanya menggunakan slug.
+
+Gunakan ID/path yang berasal dari relativePath.
+
+Contoh:
+
+/docs/pemrograman/php/framework/laravel/routing
+
+atau pendekatan equivalent yang tetap mempertahankan hierarchy.
+
+
+============================================================
+36. BREADCRUMB
+============================================================
+
+Breadcrumb dibuat dari:
+
+relativePath
+
+Contoh:
+
+Home
+>
+Pemrograman
+>
+PHP
+>
+Framework
+>
+Laravel
+>
+Routing
+
+
+============================================================
+37. PREVIOUS/NEXT
+============================================================
+
+Document viewer boleh memiliki:
+
+Previous
+Next
+
+Reference harus menggunakan stable ID.
+
+Jangan mengandalkan slug saja.
+
+
+============================================================
+38. SEARCH PERFORMANCE
+============================================================
+
+Target:
+
+10.000+ notes.
+
+Initial page jangan memuat seluruh document JSON.
+
+Initial load:
+
+tree.json
+metadata.json
+
+Search index:
+
+lazy-load saat search digunakan.
+
+Document:
+
+load on demand.
+
+
+============================================================
+39. UI
+============================================================
+
+Buat UI learning platform yang:
+
+- clean
+- modern
+- dark-first
+- responsive
+- fokus pada readability
+- sidebar documentation-style
+- nyaman membaca materi panjang
+
+Namun jangan membuat UI terlalu berat.
+
+Prioritas utama:
+
+READABILITY
+
+bukan animasi berlebihan.
+
+
+============================================================
+40. DEPLOYMENT
+============================================================
+
+Website harus dapat:
+
+npm run build
+
+kemudian hasil build dapat di-host secara static.
+
+Tidak membutuhkan database.
+
+Tidak membutuhkan persistent backend.
+
+
+============================================================
+41. GIT WORKFLOW
+============================================================
+
+Website repository menyimpan:
+
+- source React
+- parser
+- GitHub Actions
+- generated public artifacts
+
+Website repository TIDAK menyimpan:
+
+- Markdown source dari Obsidian
+- temporary clone
+- copy permanen vault
+
+
+============================================================
+42. SAFETY CHECK
+============================================================
+
+Setiap sync harus memastikan:
+
+- tidak ada Markdown vault yang masuk ke repository website
+- hanya public/docs dan public/assets/vault yang diubah
+- stale generated documents dihapus
+- stale assets dihapus
+- temporary clone dihapus
+- parser error menghentikan publish
+- collision menghentikan publish
+
+
+============================================================
+43. DEVELOPMENT PRINCIPLES
+============================================================
+
+Bangun dari NOL.
+
+Namun jangan membuat architecture yang overengineered.
+
+Prioritas:
+
+1. Correctness
+2. Safety
+3. Deterministic generation
+4. Maintainability
+5. Performance
+6. UI
+
+
+============================================================
+44. CARA KERJA YANG SAYA INGINKAN
+============================================================
+
+Saya ingin kamu mengerjakan project ini secara bertahap.
+
+Tetapi berbeda dari project biasa:
+
+Kamu boleh membangun seluruh project dari NOL.
+
+Jangan berhenti setelah membuat satu file kecil lalu meminta approval.
+
+Implementasikan fondasi project sampai menjadi prototype yang benar-benar dapat dijalankan.
+
+Urutan implementasi:
+
+STEP 1
+Project foundation
+
+- React + Vite + TypeScript
+- routing
+- basic UI
+- folder structure
+- package configuration
+
+STEP 2
+Parser foundation
+
+- parser configuration
+- ParserContext
+- Scanner
+- Validator
+- Indexer
+- Renderer
+- JSON Writer
+
+STEP 3
+Obsidian features
+
+- wiki links
+- aliases
+- backlinks
+- frontmatter
+- callouts
+- images
+- assets
+- KaTeX
+- code highlighting
+
+STEP 4
+Generated artifacts
+
+- document JSON
+- tree.json
+- search-index.json
+- metadata.json
+- warnings.json
+- assets/manifest.json
+
+STEP 5
+Frontend integration
+
+- Sidebar
+- document viewer
+- breadcrumb
+- search
+- previous/next
+- lazy loading
+
+STEP 6
+GitHub Actions
+
+- vault dispatch workflow
+- website sync workflow
+- temporary clone
+- parser execution
+- generated → public
+- cleanup
+- commit generated artifacts
+
+STEP 7
+Validation
+
+- build
+- TypeScript
+- parser test
+- generated artifact inspection
+- link validation
+- asset validation
+- safety validation
+
+
+============================================================
+45. IMPORTANT: JANGAN MEMBUAT MOCK YANG MENIPU
+============================================================
+
+Jangan membuat:
+
+fake JSON
+dummy content
+hardcoded folder
+fake API
+fake documents
+
+untuk berpura-pura bahwa integration sudah bekerja.
+
+Jika membutuhkan sample data untuk UI development, buat fixture yang jelas terpisah dari production generated data.
+
+Production architecture harus benar-benar menggunakan generated artifacts.
+
+
+============================================================
+46. README
+============================================================
+
+Buat README yang menjelaskan:
+
+- architecture
+- local development
+- parser usage
+- build
+- GitHub Actions
+- required secrets
+- sync flow
+- generated directory
+- public directory
+- safety guarantees
+
+Jangan membuat dokumentasi terlalu teoritis.
+
+Dokumentasi harus praktis.
+
+
+============================================================
+47. HASIL AKHIR YANG DIHARAPKAN
+============================================================
+
+Pada akhirnya saya ingin bisa melakukan:
+
+Di Obsidian:
+
+edit materi
+↓
+git push
+
+
+Kemudian:
+
+GitHub Actions
+↓
+website sync
+↓
+clone vault
+↓
+parse
+↓
+generate JSON
+↓
+copy assets
+↓
+publish
+↓
+deploy
+
+
+Dan website otomatis menampilkan materi terbaru.
+
+Saya tidak ingin menyentuh repository website secara manual setiap kali menambahkan materi.
+
+
+============================================================
+48. KONDISI AWAL
+============================================================
+
+Anggap semuanya masih kosong.
+
+Jangan menganggap:
+
+- parser sudah ada
+- GitHub Actions sudah ada
+- React sudah ada
+- JSON sudah ada
+- generated sudah ada
+- workflow sudah ada
+
+Bangun semuanya dari awal.
+
+
+============================================================
+49. TAPI JANGAN MENGHANCURKAN OBSIDIAN
+============================================================
+
+Sekali lagi:
+
+https://github.com/aryandaa/Obsidian-Vault
+
+adalah sumber materi.
+
+Automation hanya boleh menambahkan konfigurasi workflow yang diperlukan.
+
+Materi tidak boleh disentuh.
+
+Jangan menjalankan command yang dapat:
+
+- git reset
+- git clean
+- git checkout .
+- git restore .
+- mass rename
+- mass move
+- mass formatting
+
+terhadap working tree Obsidian.
+
+
+============================================================
+50. OUTPUT PERTAMA YANG SAYA INGINKAN
+============================================================
+
+Sebelum coding:
+
+1. Inspect repository website jika repository tersebut sudah ada.
+2. Jika belum ada, buat struktur project dari NOL.
+3. Jelaskan architecture singkat.
+4. Tampilkan folder structure.
+5. Tampilkan implementation plan.
+6. Identifikasi dependency yang diperlukan.
+7. Setelah itu langsung implementasikan project.
+
+Jangan hanya memberikan teori.
+
+Saya ingin project benar-benar dibuat.
+
+
+============================================================
+51. FINAL REQUIREMENT
+============================================================
+
+Jangan mengubah tujuan utama project:
+
+OBSIDIAN VAULT
+=
+SOURCE OF TRUTH
+
+WEBSITE
+=
+GENERATED PRESENTATION
+
+Tidak boleh menjadi:
+
+WEBSITE
+=
+SOURCE OF TRUTH
+
+Jangan pernah membuat website menulis balik ke Obsidian.
+
+Semua data mengalir satu arah:
+
+Obsidian
+↓
+Website
+
+Tidak pernah:
+
+Website
+↓
+Obsidian
