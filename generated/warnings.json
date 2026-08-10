@@ -3,13 +3,13 @@
   "warnings": {
     "duplicatePaths": [],
     "brokenWikiLinks": [
-      "CyberSecurity/Cryptography/1. Pengenalan/Pengenalan.md -> []( tes.md )",
-      "CyberSecurity/Cryptography/1. Pengenalan/Pengenalan.md -> []( Modular%20Aritmathic.md )",
-      "CyberSecurity/Cryptography/1. Pengenalan/Python dalam Crytography.md -> []( Python.md )",
-      "CyberSecurity/Cryptography/Cryptography Modern/Cryptography Modern.md -> []( 00_Symmetric%20key.md )",
-      "CyberSecurity/Cryptography/Cryptography Modern/Cryptography Modern.md -> []( 00_Asymmetric%20key.md )",
-      "CyberSecurity/Cryptography/Cryptography.md -> []( Pengenalan.md )",
-      "CyberSecurity/Cryptography/Cryptography.md -> []( Modular%20Aritmathic.md )",
+      "CyberSecurity/Cryptography/Cryptography Modern/Cryptography Modern.md -> []( 4.%20Symmetric%20key.md )",
+      "CyberSecurity/Cryptography/Cryptography Modern/Cryptography Modern.md -> []( 5.%20Asymmetric%20key.md )",
+      "CyberSecurity/Cryptography/Cryptography.md -> []( 1.%20Pengenalan.md )",
+      "CyberSecurity/Cryptography/Cryptography.md -> []( 2.%20Modular%20Aritmathic.md )",
+      "CyberSecurity/Cryptography/Pengenalan/1. Pengenalan.md -> []( tes.md )",
+      "CyberSecurity/Cryptography/Pengenalan/1. Pengenalan.md -> []( 2.%20Modular%20Aritmathic.md )",
+      "CyberSecurity/Cryptography/Pengenalan/Python dalam Crytography.md -> []( Python.md )",
       "DevOps/DevOps.md -> []( Docker.md )",
       "DevOps/DevOps.md -> []( GitHub.md )",
       "DevOps/DevOps.md -> []( Cloud.md )",
@@ -38,7 +38,7 @@
       "Pemrograman/Python/Python Dasar/01_Python Dasar.md -> []( Python%20Advanced/02_Python%20Advanced.md )"
     ],
     "missingImages": [
-      "CyberSecurity/Cryptography/2. Modular Aritmathic/Quadratic Residues.md -> ![Residue.png]",
+      "CyberSecurity/Cryptography/Modular Aritmathic/Quadratic Residues.md -> ![Residue.png]",
       "Pemrograman/JavaScript/Framework/React/React Lanjutan/Component Lifecycle.md -> ![12.jpg]",
       "Pemrograman/JavaScript/Javascript Advanced/Encapsulation.md -> ![Encapsulation.png]",
       "Pemrograman/JavaScript/Javascript Advanced/Inheritance.md -> ![inheritance.png]",
