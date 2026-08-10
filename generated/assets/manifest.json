@@ -176,20 +176,20 @@
       "hash": "sha256:6a80aee873d1c2e1135cf83ac17baf59451c2fe417e8b8a1d39575abd9a001e6"
     },
     {
-      "sourcePath": "Jaringan/Fundamental jaringan/img/Classless Addressing.png",
-      "publicPath": "/assets/vault/Jaringan/Fundamental jaringan/img/Classless Addressing.png",
+      "sourcePath": "Jaringan/jaringan/Jaringan Basic/img/Classless Addressing.png",
+      "publicPath": "/assets/vault/Jaringan/jaringan/Jaringan Basic/img/Classless Addressing.png",
       "size": 507246,
       "hash": "sha256:e1ce8e0e3812b3be333fa30cc4a13a7e76251a997eee8410d293f4eb8b60d05f"
     },
     {
-      "sourcePath": "Jaringan/Fundamental jaringan/img/Network Address.png",
-      "publicPath": "/assets/vault/Jaringan/Fundamental jaringan/img/Network Address.png",
+      "sourcePath": "Jaringan/jaringan/Jaringan Basic/img/Network Address.png",
+      "publicPath": "/assets/vault/Jaringan/jaringan/Jaringan Basic/img/Network Address.png",
       "size": 125518,
       "hash": "sha256:29d3c7c1684f74c1ef11752d159f3e35d78af4a4ae9d355ce454f16be61cd20a"
     },
     {
-      "sourcePath": "Jaringan/Fundamental jaringan/img/Subnet Mask.png",
-      "publicPath": "/assets/vault/Jaringan/Fundamental jaringan/img/Subnet Mask.png",
+      "sourcePath": "Jaringan/jaringan/Jaringan Basic/img/Subnet Mask.png",
+      "publicPath": "/assets/vault/Jaringan/jaringan/Jaringan Basic/img/Subnet Mask.png",
       "size": 212002,
       "hash": "sha256:9748bf0ddabc714f016e43272e78ea64eab4be657c67a5ea9eedb7317a6e52dd"
     },

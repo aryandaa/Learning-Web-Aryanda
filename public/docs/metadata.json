@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "parserVersion": "1.0.0",
   "generatorVersion": "1.0.0",
-  "generatedAt": "2026-08-10T13:02:23.658Z",
-  "vaultCommit": "1758df6480d1f1e13aee6eed82cba93f3cddc104",
+  "generatedAt": "2026-08-10T13:08:14.529Z",
+  "vaultCommit": "2d6cbf728ce2570ceb2136c3ed983b69ace79221",
   "vaultBranch": "main",
-  "totalNotes": 415,
-  "totalFolders": 53,
-  "warningsCount": 52,
-  "brokenLinksCount": 34
+  "totalNotes": 416,
+  "totalFolders": 54,
+  "warningsCount": 54,
+  "brokenLinksCount": 36
 }
