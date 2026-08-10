@@ -1,11 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Personal learning platform — materi dari Obsidian Vault Aryanda" />
+    <meta name="theme-color" content="#020617" />
     <title>Learning Web Aryanda</title>
-    <link rel="stylesheet" href="/src/index.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-..." crossorigin="anonymous">
+    <script>
+      // Deteksi root aplikasi sebelum asset dimuat, agar situs aman di root
+      // maupun subpath (GitHub Pages). Route: /, /docs, /docs/*, /search, /graph, /roadmap.
+      (function () {
+        var parts = window.location.pathname.split('/').filter(Boolean);
+        var root = '/';
+        if (parts.length === 0) {
+          root = '/';
+        } else if (parts[0] === 'docs' || parts[0] === 'search' || parts[0] === 'graph' || parts[0] === 'roadmap') {
+          root = '/';
+        } else {
+          var i = parts.findIndex(function (p) { return p === 'docs' || p === 'search' || p === 'graph' || p === 'roadmap'; });
+          root = i === -1
+            ? window.location.pathname.replace(/\/?$/, '/')
+            : '/' + parts.slice(0, i).join('/') + '/';
+        }
+        document.write('<base href="' + root + '">');
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

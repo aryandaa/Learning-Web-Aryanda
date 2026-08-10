@@ -2,6 +2,214 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply bg-slate-950 text-slate-200 antialiased;
+}
+
+::selection {
+  @apply bg-indigo-500/40 text-white;
+}
+
+/* ---------- scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-slate-800;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-700;
+}
+
+/* ============================================================
+   Dokumen (konten yang disanitasi saat parsing)
+   ============================================================ */
+.doc-content {
+  @apply text-[15.5px] leading-7;
+}
+
+.doc-content p {
+  @apply my-4;
+}
+
+.doc-content h1,
+.doc-content h2,
+.doc-content h3,
+.doc-content h4,
+.doc-content h5,
+.doc-content h6 {
+  @apply scroll-mt-20 font-semibold tracking-tight text-slate-100;
+}
+
+.doc-content h2 {
+  @apply mb-3 mt-9 border-b border-slate-800 pb-2 text-2xl;
+}
+.doc-content h3 {
+  @apply mb-2 mt-7 text-xl;
+}
+.doc-content h4 {
+  @apply mb-2 mt-6 text-lg;
+}
+
+.doc-content a {
+  @apply text-indigo-400 underline decoration-indigo-500/40 underline-offset-2 transition-colors hover:text-indigo-300;
+}
+
+/* wiki links dari Obsidian */
+.doc-content a.wiki-link {
+  @apply rounded-sm text-indigo-300 no-underline decoration-indigo-500/50 transition-colors hover:bg-indigo-500/10 hover:text-indigo-200;
+  box-decoration-break: clone;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}
+.doc-content a.wiki-link.broken {
+  @apply text-slate-500;
+  text-decoration-style: dashed;
+}
+
+/* embed note */
+.doc-content a.embed-note {
+  @apply my-3 flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-3 text-sm text-slate-300 no-underline transition-colors hover:border-indigo-500/50 hover:text-indigo-200;
+}
+
+/* list */
+.doc-content ul,
+.doc-content ol {
+  @apply my-4 space-y-1.5 pl-6;
+}
+.doc-content ul {
+  @apply list-disc marker:text-slate-600;
+}
+.doc-content ol {
+  @apply list-decimal marker:text-slate-500;
+}
+.doc-content li {
+  @apply leading-7;
+}
+.doc-content li::marker {
+  @apply font-medium;
+}
+
+/* task list */
+.doc-content li:has(> input[type='checkbox']) {
+  @apply list-none -ml-5 flex items-start gap-2;
+}
+.doc-content input[type='checkbox'] {
+  @apply mt-1.5 h-4 w-4 shrink-0 accent-indigo-500;
+}
+
+/* code */
+.doc-content code {
+  @apply rounded bg-slate-800/90 px-1.5 py-0.5 font-mono text-[13px] text-amber-200;
+}
+.doc-content pre {
+  @apply my-5 overflow-x-auto rounded-xl border border-slate-800 bg-slate-900 p-4;
+}
+.doc-content pre code {
+  @apply block bg-transparent p-0 text-[13.5px] leading-6 text-slate-200;
+}
+
+/* blockquote biasa */
+.doc-content blockquote:not(.callout) {
+  @apply my-5 rounded-r-lg border-l-4 border-slate-700 bg-slate-900/50 px-4 py-2 text-slate-400;
+}
+
+/* ---------- callouts ---------- */
+.doc-content .callout {
+  @apply my-5 rounded-r-lg border-l-4 px-4 py-3;
+}
+.doc-content .callout-title {
+  @apply mb-1.5 flex items-center gap-2 font-semibold;
+}
+.doc-content .callout-title::before {
+  content: '';
+  @apply inline-block h-2 w-2 rounded-full bg-current;
+}
+.doc-content .callout-note {
+  @apply border-blue-500 bg-blue-500/10 text-blue-100;
+}
+.doc-content .callout-info {
+  @apply border-cyan-500 bg-cyan-500/10 text-cyan-100;
+}
+.doc-content .callout-tip,
+.doc-content .callout-success,
+.doc-content .callout-check {
+  @apply border-emerald-500 bg-emerald-500/10 text-emerald-100;
+}
+.doc-content .callout-warning {
+  @apply border-amber-500 bg-amber-500/10 text-amber-100;
+}
+.doc-content .callout-danger,
+.doc-content .callout-error {
+  @apply border-red-500 bg-red-500/10 text-red-100;
+}
+.doc-content .callout-question,
+.doc-content .callout-help {
+  @apply border-purple-500 bg-purple-500/10 text-purple-100;
+}
+.doc-content .callout-example {
+  @apply border-pink-500 bg-pink-500/10 text-pink-100;
+}
+.doc-content .callout-abstract,
+.doc-content .callout-summary {
+  @apply border-teal-500 bg-teal-500/10 text-teal-100;
+}
+.doc-content .callout-quote {
+  @apply border-slate-500 bg-slate-500/10 text-slate-200;
+}
+
+/* ---------- tabel ---------- */
+.doc-content table {
+  @apply my-5 block w-full overflow-x-auto border-collapse text-sm;
+}
+.doc-content thead {
+  @apply bg-slate-900;
+}
+.doc-content th {
+  @apply border border-slate-800 px-3 py-2 text-left font-semibold text-slate-200;
+}
+.doc-content td {
+  @apply border border-slate-800 px-3 py-2 text-slate-300;
+}
+.doc-content tr:nth-child(even) td {
+  @apply bg-slate-900/40;
+}
+
+/* ---------- gambar ---------- */
+.doc-content img {
+  @apply my-5 h-auto max-w-full rounded-xl border border-slate-800;
+}
+
+/* ---------- KaTeX ---------- */
+.doc-content .katex-display {
+  @apply my-5 overflow-x-auto overflow-y-hidden py-2;
+}
+.doc-content .katex {
+  font-size: 1.05em;
+}
+
+/* ---------- footnote ---------- */
+.doc-content section[data-footnotes] {
+  @apply mt-8 border-t border-slate-800 pt-4 text-sm text-slate-500;
+}
+.doc-content sup a {
+  @apply no-underline;
+}
+
+/* ---------- highlight.js penyesuaian ---------- */
+.doc-content .hljs {
+  @apply bg-transparent;
 }

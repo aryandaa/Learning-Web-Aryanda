@@ -1,0 +1,1367 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "sourcePath": "CyberSecurity/Cryptography/Modular Aritmathic/images/Residue.png",
+      "publicPath": "/assets/vault/CyberSecurity/Cryptography/Modular Aritmathic/images/Residue.png",
+      "size": 63122,
+      "hash": "sha256:dc2195d099d9c8d1a332a2530debf6f1a78781e81d7ff64773124808ebff8fe7"
+    },
+    {
+      "sourcePath": "DevOps/Cloud/Dasar/Image/1.png",
+      "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/1.png",
+      "size": 30077,
+      "hash": "sha256:1bc167f7cd021038c26c0552327abf604b3ac5d2c700f1a47c380ce3af9472a8"
+    },
+    {
+      "sourcePath": "DevOps/Cloud/Dasar/Image/2.png",
+      "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/2.png",
+      "size": 612287,
+      "hash": "sha256:75beba4063bfd0f82020e42228086be3790c841088722daf379d5c99fe77f137"
+    },
+    {
+      "sourcePath": "DevOps/Cloud/Dasar/Image/4.png",
+      "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/4.png",
+      "size": 911624,
+      "hash": "sha256:edd047e35f5c20a700c537359123c36aaad1afc7174dc4156169051f7375776d"
+    },
+    {
+      "sourcePath": "DevOps/Cloud/Dasar/Image/6.png",
+      "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/6.png",
+      "size": 56646,
+      "hash": "sha256:d50e9053bcfd306b15a7d5e1f1e08694fa9b7a2acd65ab673d50afc7f771b527"
+    },
+    {
+      "sourcePath": "DevOps/Cloud/Dasar/Image/7.png",
+      "publicPath": "/assets/vault/DevOps/Cloud/Dasar/Image/7.png",
+      "size": 49954,
+      "hash": "sha256:5717a7175c0117ab13b361adb85bc62d1408b81e32f1ed1b191ae93e46c81602"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260720172550.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260720172550.png",
+      "size": 209153,
+      "hash": "sha256:b029b075fc14f421cfc3747282e4a2ebcaad0ff70a067fea415b456cdf94479f"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260720173247.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260720173247.png",
+      "size": 229334,
+      "hash": "sha256:2b891a8668843dc5b41cd2e7b0fde95777fa2d30f43427c5e8ee9d273fdfcc17"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260722155556.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260722155556.png",
+      "size": 622035,
+      "hash": "sha256:6479f64e450575747323e8ab6d91783bde40a970fcc672911385157cf6b4897d"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260722162150.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260722162150.png",
+      "size": 615080,
+      "hash": "sha256:e17395d2fc50ce55f16a17bc01fbf7c52d109f2f9250807ea7f928a97b4821ea"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260722210604.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260722210604.png",
+      "size": 160196,
+      "hash": "sha256:6985117dbbb1318e740af1a382defe73b1e71bc4a07d3fe17d174250bfe84388"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260722214601.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260722214601.png",
+      "size": 157791,
+      "hash": "sha256:5d03c58eef944a0c13ee6622fbcc3c148e1c1b1ae826b0aa6252fd9d9275676a"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260723194804.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260723194804.png",
+      "size": 243032,
+      "hash": "sha256:b4598c29c34269e72507890c740448875e3b09ea0be0d02f89f6be1f0e7bc53c"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260723211422.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260723211422.png",
+      "size": 302282,
+      "hash": "sha256:112c1d00f28b57c9065eba862d6387f7478c52959fb7df9392182614706f531e"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260723211831.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260723211831.png",
+      "size": 26927,
+      "hash": "sha256:778ddc49a18182452161b0efc24d5b60149141fdbba504ee9185a1354957b97c"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260724203413.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260724203413.png",
+      "size": 204774,
+      "hash": "sha256:e8c54222cec4ec5ad33e02f935247a3f2f63bea482cfc3efaae7652eeafe7701"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260724212703.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260724212703.png",
+      "size": 30304,
+      "hash": "sha256:13cdc06d37aca9f536abfa7be7d3bbe295a9e59e1c1d1d4c9a09d7695a5bc7e7"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260724213112.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260724213112.png",
+      "size": 12593,
+      "hash": "sha256:d33aefe4098fea894c6e66d997b3e6a81f0c129338757dbc25f3df5a708dba7a"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260724213806.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260724213806.png",
+      "size": 47357,
+      "hash": "sha256:5d66e9ba14edc792659114225b003c578802193bed460a4d02ccc76bd678b11a"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260724220551.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260724220551.png",
+      "size": 37941,
+      "hash": "sha256:ac0b8387e9c3becadc23551580235138560753439f10430689aaebb4b4de897c"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260724221824.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260724221824.png",
+      "size": 11285,
+      "hash": "sha256:0fa65d5b5cdb918253aeb22f81eb07d908a49d2f30b92243c79564079de8499b"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260725151542.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260725151542.png",
+      "size": 195892,
+      "hash": "sha256:eb68e2b68681e8db0eacbf31ec7953cbf6862859d4a056f8c924d811f18e409c"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260725151849.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260725151849.png",
+      "size": 82440,
+      "hash": "sha256:ede218961b67b489ae31e3d1515e84ce406805fba898f7d0c53489d786adf3c1"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260725155925.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260725155925.png",
+      "size": 129994,
+      "hash": "sha256:e02344f00d31b0be67f925eb7c5ea0cc05206298c8b6e50f0d4897a074efb56d"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260725162127.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260725162127.png",
+      "size": 278735,
+      "hash": "sha256:63d97b7e06a9edb397674f4c8ff2ddbe5c69e1a4721b0cd2d126b05de882bf50"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260725163300.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260725163300.png",
+      "size": 112234,
+      "hash": "sha256:2e172b817c8c4cccbe255493dbb04949f56c717102c32f4481b2d46f88b3a986"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260725165418.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260725165418.png",
+      "size": 113152,
+      "hash": "sha256:fcc6690fdf39a74a326e7177ef10700377d7daba085eb4ed093670674b6f2d2c"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260726152035.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260726152035.png",
+      "size": 19034,
+      "hash": "sha256:6053f279e12139c0342e0d8d17ca02cfa628fe0159e9705b55f945c432bd039f"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260726160109.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260726160109.png",
+      "size": 17650,
+      "hash": "sha256:d84f1cf1ab1b65f0fdba99287aca52e97ba7a9978b36e642e7608ab369cad0e6"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260726161018.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260726161018.png",
+      "size": 69147,
+      "hash": "sha256:5f0013f02d71ddd7a42c95942a7d3fa1771d94597e65f77e890e4f8dff2e9ad7"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260726161212.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260726161212.png",
+      "size": 29992,
+      "hash": "sha256:a77a0ab081b827167d6c1b91be9f98bdd358482fc7a3ef73c93c0046412e730e"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260726172514.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260726172514.png",
+      "size": 158082,
+      "hash": "sha256:6b81d8997331d47feb682ae0ec77bb84a2be6d17bfea957c36f68347be16c787"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260726203051.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260726203051.png",
+      "size": 21130,
+      "hash": "sha256:e57845c636c321f5654e8a8fc2cee8548c4c721ee2cb5e7b6d6240c2dd6eaf0e"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260726224635.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260726224635.png",
+      "size": 22874,
+      "hash": "sha256:23771dd37622c106ddb839c92f6f372272fe2a4e48407eaef95a7c40a817ac56"
+    },
+    {
+      "sourcePath": "DevOps/Docker/img/Pasted image 20260726230404.png",
+      "publicPath": "/assets/vault/DevOps/Docker/img/Pasted image 20260726230404.png",
+      "size": 56370,
+      "hash": "sha256:6a80aee873d1c2e1135cf83ac17baf59451c2fe417e8b8a1d39575abd9a001e6"
+    },
+    {
+      "sourcePath": "Jaringan/Fundamental jaringan/img/Classless Addressing.png",
+      "publicPath": "/assets/vault/Jaringan/Fundamental jaringan/img/Classless Addressing.png",
+      "size": 507246,
+      "hash": "sha256:e1ce8e0e3812b3be333fa30cc4a13a7e76251a997eee8410d293f4eb8b60d05f"
+    },
+    {
+      "sourcePath": "Jaringan/Fundamental jaringan/img/Network Address.png",
+      "publicPath": "/assets/vault/Jaringan/Fundamental jaringan/img/Network Address.png",
+      "size": 125518,
+      "hash": "sha256:29d3c7c1684f74c1ef11752d159f3e35d78af4a4ae9d355ce454f16be61cd20a"
+    },
+    {
+      "sourcePath": "Jaringan/Fundamental jaringan/img/Subnet Mask.png",
+      "publicPath": "/assets/vault/Jaringan/Fundamental jaringan/img/Subnet Mask.png",
+      "size": 212002,
+      "hash": "sha256:9748bf0ddabc714f016e43272e78ea64eab4be657c67a5ea9eedb7317a6e52dd"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/aftermargin.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/aftermargin.png",
+      "size": 317812,
+      "hash": "sha256:b8e831e5c6693346e648df976a279c3fecbc080dda0bc50205fe439f332167c7"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/ATTRIBUTEselector.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/ATTRIBUTEselector.png",
+      "size": 10628,
+      "hash": "sha256:1337a5d4bda459dcdc764ab945405f28ec3a9d169819954af8dbd485ac832960"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/background.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/background.png",
+      "size": 34848,
+      "hash": "sha256:ef52615da57c1da61c6fb15be86f119aa12cde90352ee90e5bbb8be1b73ac157"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/beforemargin.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/beforemargin.png",
+      "size": 433342,
+      "hash": "sha256:f39bb3beedb3a431091f9434dc4242cce84685eb72e29f5d77ebccc1525c7efd"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Box-Sizing.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Box-Sizing.png",
+      "size": 30781,
+      "hash": "sha256:798bdbcf635b92232f02ad8925a0d93e47f10ad51bc20faf957b0a69712a20df"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/boxmodel.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/boxmodel.png",
+      "size": 489943,
+      "hash": "sha256:d242900b909a28ba3c517a1be410053f0bf7a08ec6ccadc5b5851a09e686b08b"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Boxmodel2.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Boxmodel2.png",
+      "size": 225556,
+      "hash": "sha256:ddc649d81ab863a74a17c43bca78cb05bca4941638a101d2127fabc7f484cee6"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/BoxShadow.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/BoxShadow.png",
+      "size": 2621,
+      "hash": "sha256:3d29cabae245c6fb51f125a2e13d23843383ef747179a793c059e216fd8ecbee"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Centering.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Centering.png",
+      "size": 44427,
+      "hash": "sha256:6bc0f8a9f0caffaf997851503ead045c4124103b3bf0279c903c17c5b7c9743d"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/color.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/color.png",
+      "size": 101466,
+      "hash": "sha256:7f03f947d8e73304859c61fd469d1c2bc49166286cb72b1236364f776e44e41d"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/ColorOpacity.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/ColorOpacity.png",
+      "size": 4516,
+      "hash": "sha256:d174bfd7b58eaef8c25b72c27b28978c3e4c0065946985564f7b88d46cc79df1"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/dashed.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/dashed.png",
+      "size": 17326,
+      "hash": "sha256:53bd9f55f15a2c1b9a73806a85d014d0a116abf16cc78abb8a518cfe25b65117"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/decoration.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/decoration.png",
+      "size": 10006,
+      "hash": "sha256:b517a5b2a27d74529999f2273745b203ed6dee25e207bcf9ce2535c75dffa7f2"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Dimension.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Dimension.png",
+      "size": 21937,
+      "hash": "sha256:efbd5fbc90ec1a207f8ca236b2825bf0fc637f3d77c01ad04ad0b458049fcf29"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/displayrole.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/displayrole.png",
+      "size": 4398,
+      "hash": "sha256:fcb8c637871e9792802ddc7308fd8474ef27e3805440939cfa460aa4b474e04c"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/dotted.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/dotted.png",
+      "size": 16898,
+      "hash": "sha256:92c64293592ece441cb059243a2a76d64d5e08a96712ac45df503b0d30fd415c"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/double.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/double.png",
+      "size": 2716,
+      "hash": "sha256:f179fa30ca587eb837e7dfcf4c2ffe35f075eddcb0fb1e6a6feb0fccfd8f341f"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Floating 2.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Floating 2.png",
+      "size": 504221,
+      "hash": "sha256:ab82e287e1d89dc26d3e47071a8bbeb96bc2f9d39265c2dbd398cdb0f9d53c06"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Floating.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Floating.png",
+      "size": 91821,
+      "hash": "sha256:929b1132ecd1783593377703782866ce686d51ac8066553d18fce9183b1df53d"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/font.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/font.png",
+      "size": 314052,
+      "hash": "sha256:aa95e6d8fdf18d90e149bfccf2daf591d0631fb0dd020595fd27e9d97a7e1233"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/groove.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/groove.png",
+      "size": 2463,
+      "hash": "sha256:9ab108cce029aaab43cb2ac68531cabe640b2e9eac86a204f1dfeeb2a06e4c2c"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/IDselector.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/IDselector.png",
+      "size": 13181,
+      "hash": "sha256:f8fa93c157ad46bc21d29b5e6ec150aad8b8be3821f6fca7183d0c4a79851da9"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/indentasi.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/indentasi.png",
+      "size": 250381,
+      "hash": "sha256:51a61cdaf454013c9fad54d1d4c0e5dad5533de12b3782e6558e132e18080de0"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Inharitance.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Inharitance.png",
+      "size": 107721,
+      "hash": "sha256:53a9550a9547932444e9162fa96db74fed965c7561de471addb2524aa9a505c7"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Inspect.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Inspect.png",
+      "size": 804337,
+      "hash": "sha256:63ae132f01898a732e523daeceeed82e77c0b91341b23b6b2a8dfbc4e4b9f9d4"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/LimitingDimension.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/LimitingDimension.png",
+      "size": 43493,
+      "hash": "sha256:6218d4c7aa3b2a8bb8a71d18f3a00986cf4b7f1a7455de54da2efdafcdf31b5c"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/LineHeight.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/LineHeight.png",
+      "size": 153114,
+      "hash": "sha256:08006d30b3e29697e90abddfd87c536a8cfc9d62a7bfa4330d8a3675b01763b7"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/opacity.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/opacity.png",
+      "size": 25839,
+      "hash": "sha256:c5120c809b91a919807997622d16549a77f9de913845cc3495a8f2e8b822458a"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Overflow content.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Overflow content.png",
+      "size": 47920,
+      "hash": "sha256:2af101e6bf818436bb9c4e654dcdf5e11f4200c5ade9eeb157baac3081981dc6"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Overflow2.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Overflow2.png",
+      "size": 508576,
+      "hash": "sha256:5809039341dddc28295bf837b0016a2b0fbf013273f1cec5e67649e85ee3f57d"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/padding.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/padding.png",
+      "size": 37259,
+      "hash": "sha256:0cdf4341149c4cce43d72be9e33b43b0c258cdfd3842adc1af4a6f17ee81906f"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/padding2.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/padding2.png",
+      "size": 205399,
+      "hash": "sha256:f265585054baa4a32ca05105d0e527f89866ff68de368abf10bba329f47f533c"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Pseudo.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Pseudo.png",
+      "size": 22113,
+      "hash": "sha256:2133968100304357c781e399ceabf97cad46e2fe3544eafc6ebd67aac3928be4"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Responsive.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Responsive.png",
+      "size": 388996,
+      "hash": "sha256:8d0eb5d065ea2e719940b96813aeaaa2f19d706ab851367ab253e67dfdaaa535"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/responsive2.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/responsive2.png",
+      "size": 322758,
+      "hash": "sha256:3b244cf58657b949cd09b0317df3ac629bd557f98bfa9559f402c813199d6152"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Rounded.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Rounded.png",
+      "size": 51512,
+      "hash": "sha256:491c5b7cc5d4689cd2f6c68a14f702210be798380c6945fa3625e7a4b016deff"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/selector.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/selector.png",
+      "size": 24470,
+      "hash": "sha256:d8c15ef5bcdd71fcecb1c7727e419493940fd41cc5126262e5764e55ec10a2ec"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Shadow.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Shadow.png",
+      "size": 114595,
+      "hash": "sha256:a1e356b283c290954ded946bf8d6fd7790bc079df83fa422dc5137fa44982d4f"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Solid.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Solid.png",
+      "size": 2751,
+      "hash": "sha256:7c26524803950e9aeb959baf61df16ae7ab37a56e511e4227bcf651753f4b161"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/spacing.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/spacing.png",
+      "size": 15795,
+      "hash": "sha256:259e009101156033a549df62b0e80a23daa4dfafc3cc5226fd3d684889d3df8a"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Styling.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Styling.png",
+      "size": 97950,
+      "hash": "sha256:824d9812bfa2c3276766b5cb440cca340453e76f3a6f489527fc50d6a896ce7e"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Terminologi.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Terminologi.png",
+      "size": 251347,
+      "hash": "sha256:3956cea2ed13ce7d64cbc643c5d5114fc4d28400eecfbdfe17265170ddce930e"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/text-color.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/text-color.png",
+      "size": 8201,
+      "hash": "sha256:9f2cee784f03ffd29d99d18f27a02d6d16b688fb364c7294d09d888380b7336e"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/transform.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/transform.png",
+      "size": 30896,
+      "hash": "sha256:99c03df243919cdc07e8da434590e7781c74cf80725d544e4eb7394e3c690c70"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/Universalselector.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/Universalselector.png",
+      "size": 66376,
+      "hash": "sha256:7268f3a32072820eb3465d148a068802485bef0f45c2185b01af6bf983ed03d3"
+    },
+    {
+      "sourcePath": "Pemrograman/CSS/Native/image/web1993.png",
+      "publicPath": "/assets/vault/Pemrograman/CSS/Native/image/web1993.png",
+      "size": 328900,
+      "hash": "sha256:1fe769cf3dad0b068d619048dcb4b44914ae3181ac0a7ca60895753140db557a"
+    },
+    {
+      "sourcePath": "Pemrograman/Fundamental/image/perulangan.png",
+      "publicPath": "/assets/vault/Pemrograman/Fundamental/image/perulangan.png",
+      "size": 27224,
+      "hash": "sha256:ebe9a5c57ebcae98674d218d4007a5d3d8d8de0f0f1e0e96c4c26f5492b73b11"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Citation.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Citation.png",
+      "size": 9843,
+      "hash": "sha256:4ff3f2e395b7376c648ff2d9f7175da03819a888ffd51765b98d78cf30a9ccce"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/DIV.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/DIV.png",
+      "size": 47147,
+      "hash": "sha256:4a6f695bd1e2fbc53a67ff35c5d28867ba2f88d2e7653867f9b702f65c6c7e55"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Emphasized.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Emphasized.png",
+      "size": 9224,
+      "hash": "sha256:d2a91fa3f42c68bcc844ff0c73bfb563c6b73c7337d7f9279889ac6535f4ff22"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Figure.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Figure.png",
+      "size": 100083,
+      "hash": "sha256:64dd9b62bb52dbc6cc148c9088c466c245a9852ea1182238447a6c684f661b6d"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Heading.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Heading.png",
+      "size": 89780,
+      "hash": "sha256:9327fbb08d8b3d3c62ab1a0d3e43ea462994600505023cc4f5d4272ecc2502ad"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Highlighted.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Highlighted.png",
+      "size": 47932,
+      "hash": "sha256:677e00b2ca6d8c7cc30d3219b7c6cec30b6293a29413f2c6f39c9afcb3e8b869"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Hirarki.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Hirarki.png",
+      "size": 30915,
+      "hash": "sha256:27de7e3b76210fb9e75d7e64408627f83c2ec1db055c15cfc51d2ccc93a5b2dd"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Hirarkiweb.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Hirarkiweb.png",
+      "size": 57048,
+      "hash": "sha256:93b7cf98988202b704f55e0e6317740613da07fcb27d05b17d7c5b2c3c1b7faf"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/preformatted.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/preformatted.png",
+      "size": 60494,
+      "hash": "sha256:588bd8322785dadba01a274d89c6bf9787e9279bc1f80414a9cc862f4f980fa8"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/semantic.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/semantic.png",
+      "size": 165339,
+      "hash": "sha256:b351e8b0037f2a0d76752e92983d6dc388148c8e8a3908780d17efa838593c76"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Span.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Span.png",
+      "size": 9310,
+      "hash": "sha256:6cf58f78c1733ebceec12b0cf913fa79e7cbee74f0c7fecf404430696f08d845"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Span2.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Span2.png",
+      "size": 179786,
+      "hash": "sha256:706da3d4416cc87ec48591e571b467981162b47464b55d3fca744c32152cd6bd"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/SubSup.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/SubSup.png",
+      "size": 27675,
+      "hash": "sha256:c2e01e96d16417bd1d5e27e5cd5e0daf75c6610261468046e0ab64cd9d365576"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Tabel.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Tabel.png",
+      "size": 686899,
+      "hash": "sha256:27857e8a4ff58af31b4463e9b7d983091e49cd38aa2b639e05678168f0fec3f7"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Tabel2.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Tabel2.png",
+      "size": 510596,
+      "hash": "sha256:cc620bdece621b3195a557ef0fd05c40bd68b2f0b32e819e399a8e72cef69b37"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Tabel4.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Tabel4.png",
+      "size": 27162,
+      "hash": "sha256:e2d97586a5d57a611baeaf4e79c19c4bb9a93d51efaab186c4f9437d3c72e275"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Tabel5.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Tabel5.png",
+      "size": 20260,
+      "hash": "sha256:d30a38e04333c5e5c5b15515c4d53b5c07f6c5c21a99a2e6b4c66f5b5ff405cd"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Tabel6.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Tabel6.png",
+      "size": 10555,
+      "hash": "sha256:71187b9530ce388ed34034f8f4a50b70d1b82954c4c10671ecf9124109b47aca"
+    },
+    {
+      "sourcePath": "Pemrograman/Html/Image/Table3.png",
+      "publicPath": "/assets/vault/Pemrograman/Html/Image/Table3.png",
+      "size": 402124,
+      "hash": "sha256:f2399bfffc32345c3927e8a0c24caf16520b64b46b5aace7ca28f7fe64574976"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/Composition.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/Composition.png",
+      "size": 39182,
+      "hash": "sha256:30060dd8d342f29578f009e0b4c036d2f95e612aefebafe3b2f78d4788171559"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/composition2.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/composition2.png",
+      "size": 294867,
+      "hash": "sha256:4c8bb6c2fd550af2c6fc6ee9f1710597a4aef13792c8f70909c829d09bc34d45"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/dos_09eb00462ebbd5eb2c55898f6502036120220419134145.gif",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/dos_09eb00462ebbd5eb2c55898f6502036120220419134145.gif",
+      "size": 481201,
+      "hash": "sha256:9d25ce9dfdc6ca4bd39608911dd6256d2aa3924a0c8a56d597e8777ea3bb102d"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/dos_10c96a7e86b1404614a0e40238717a0120220419134018.gif",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/dos_10c96a7e86b1404614a0e40238717a0120220419134018.gif",
+      "size": 674890,
+      "hash": "sha256:0e8b4746c16226a19d910d6465837cda067b5aaafbe57e15fed51a1b5c6a9b3d"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/dos_8a475253ae3a4abb63f5f00fd8a9f0fe20220419134050.gif",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/dos_8a475253ae3a4abb63f5f00fd8a9f0fe20220419134050.gif",
+      "size": 359386,
+      "hash": "sha256:2611a739b31979d136f6d0b69d5503dab56f55e031fd4e5c19a77a2c21e4c107"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/dos_8c8544c5941b22837b03f0f93872194f20220419170526.gif",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/dos_8c8544c5941b22837b03f0f93872194f20220419170526.gif",
+      "size": 29523,
+      "hash": "sha256:3b3c82ef613ed05ad7c5f6813e9661b86b2f428be2d134dd88883e6a7118a459"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/dos_fdd871aa0439101c7f2bb3c69369612420220419164012.gif",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/dos_fdd871aa0439101c7f2bb3c69369612420220419164012.gif",
+      "size": 50263,
+      "hash": "sha256:2348abcdf5c22d052b344b791fb6de7fe9dc47d63c4ed2fe91f72a5cd8d1bf98"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/installreact.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/installreact.png",
+      "size": 33419,
+      "hash": "sha256:8d490b14436ac803e4346bd0a52cd19170e0a0f1ccae5d5002cf0400a1f1dba6"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/installreact2.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/installreact2.png",
+      "size": 13985,
+      "hash": "sha256:a2f4b6a16c8a1471a33a41aceffd4e843720a6e25bbb3d3e2cf0d2b32030ab43"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/installreact3.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/installreact3.png",
+      "size": 16804,
+      "hash": "sha256:a815993bd6439a40ca84b234b61c36d518f3892bf3691e0f3b56f82479964c34"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/Pasted image 20260322180709.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/Pasted image 20260322180709.png",
+      "size": 194866,
+      "hash": "sha256:ad8a0044222d803363695f8225e7d7124cac05c9f764fd074541ed3e50c3e7f5"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/Pasted image 20260322181736.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/Pasted image 20260322181736.png",
+      "size": 326775,
+      "hash": "sha256:26c8b63a4006c93751e41d7d9cae21d5f345246e0c27a462d8ec8612ec6f28e1"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/Pasted image 20260322193641.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/Pasted image 20260322193641.png",
+      "size": 285481,
+      "hash": "sha256:664607b39aa470bf8de4d13fb72a17bae2b7d8989a506d4157a0c24fa3bd2ba7"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/Pasted image 20260322195011.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/Pasted image 20260322195011.png",
+      "size": 41591,
+      "hash": "sha256:792ed705503d91657fedb899c1b718d3a12867d3a8437834d9c53fb519408f0e"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/Pasted image 20260323171303.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/Pasted image 20260323171303.png",
+      "size": 308477,
+      "hash": "sha256:458a75a14e9b7f367f6154697072ea3b8ea73953478c9b2a1f943a766fd7ecd8"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/Pasted image 20260323182823.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/Pasted image 20260323182823.png",
+      "size": 80547,
+      "hash": "sha256:6466ffa68a3438b530e974ecfe6808d2d1ebce8dea5c95150800a12094e7926d"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/Pasted image 20260325192113.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/Pasted image 20260325192113.jpg",
+      "size": 7888,
+      "hash": "sha256:bbdfba99bfc1df566a38e458a226793b09988c055fdfdc83ba2af301fcbbd7dd"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/Pasted image 20260325214149.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/Pasted image 20260325214149.jpg",
+      "size": 45213,
+      "hash": "sha256:cdb1bfc58fe138ad8a103c078c66f22a6e70d8f69b31cece0760bde4c3f301e8"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/reactelement.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/reactelement.png",
+      "size": 640153,
+      "hash": "sha256:fd3cfab4b68c51d4b1eb8d70c086f5ea2bf0713b70c784aac6212335b9436be3"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/ReactLogo.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/ReactLogo.png",
+      "size": 147343,
+      "hash": "sha256:928d81e95d12b6b05b55bb8cdd234485565896c155314201589afc58d2a4c384"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/src.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/src.png",
+      "size": 31450,
+      "hash": "sha256:35dc1aa29e3f8ff1a58c3701be855e3110b6e30dbe213bacb4610c6eb5974fcf"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/startedapp.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/startedapp.png",
+      "size": 81692,
+      "hash": "sha256:f76f3a1d4c23f20530ac662e63c5256065f92a05d35356a6c4f85da907cd38ab"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/img/Surveyreact.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/img/Surveyreact.png",
+      "size": 169966,
+      "hash": "sha256:66ec0fa683febc87bcaa83b358ca06f5a9a195e5ce3632608052ed4a6767f4ad"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/1.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/1.png",
+      "size": 76452,
+      "hash": "sha256:2dc58b683e28ee9437e664e7af2b5af0f9f49268449c9d01663d9384ef3184b0"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/10.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/10.jpg",
+      "size": 22105,
+      "hash": "sha256:8bd0dcc98f4742a0ae6735fdbada6ab5ebb8228e7e41706e6739b64925ce0a69"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/11.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/11.jpg",
+      "size": 45846,
+      "hash": "sha256:d3ff039fb1c77951623a9718ac5d4c943c029856326bd5e15e2eed38f5e1a746"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/13.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/13.jpg",
+      "size": 124830,
+      "hash": "sha256:543848a99a6b218f80b9bed2c5cb9e6b3cc62f6e3abb5390ca97d557507848a2"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/14.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/14.jpg",
+      "size": 42408,
+      "hash": "sha256:1d1894e524047e4cde8a7674face77a2adb0a00313e7f773825e468dc6dcfd86"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/15.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/15.jpg",
+      "size": 59495,
+      "hash": "sha256:925996bcb8a5abaf2b5e2d393fafcaf7e7fd9435fd09e2beff79b5bfde874b06"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/16.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/16.jpg",
+      "size": 26903,
+      "hash": "sha256:d75695466f65eb3850ff58e74c25e681fcb4ac047321fe200fc956f218e61bfb"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/17.gif",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/17.gif",
+      "size": 62480,
+      "hash": "sha256:f0e50fed510a1d3ce34dd724a39d330fb6edbd852593f682aa0c6584e1cdad1a"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/18.gif",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/18.gif",
+      "size": 343309,
+      "hash": "sha256:31f4f7d088a9007ca317394bb790b4d2c83798d6efa474c72e05eae4b50d7c0d"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/19.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/19.jpg",
+      "size": 86426,
+      "hash": "sha256:f61a669379f731331b7068445c9eb006b04f2ee9b9eabeaaf3b5535dce53cc9f"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/2.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/2.jpg",
+      "size": 28490,
+      "hash": "sha256:39ff420416555d6cc7c78346ac37135897b53ac7065d443ea3609f542b38d6d2"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/4.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/4.png",
+      "size": 71037,
+      "hash": "sha256:304bcef119a3e8eac6e4cb2928d0f86d1e1de255906f04bcceafac82eaae7abf"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/6.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/6.png",
+      "size": 73687,
+      "hash": "sha256:a07f5a8973838bd5c13a725d90a3158282789dcf421390b6acbc6c81e66d966d"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/7.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/7.jpg",
+      "size": 727733,
+      "hash": "sha256:02823ff6521f4fbb5c5898be531ce9303bb697716464f5ff793346b0f9496be5"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/8.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/8.jpg",
+      "size": 46507,
+      "hash": "sha256:83489b1d507e434d1316bda5c67eb540e70b88273e702858f346c3e7bf1e8b4c"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/9.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/9.jpg",
+      "size": 199623,
+      "hash": "sha256:3b3aa0452d3d11edbdf7d0a63502202fcdce27fad71ee9f1d945bbd447350a17"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/ESLint 1.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/ESLint 1.png",
+      "size": 162555,
+      "hash": "sha256:eb7233780b42e8bf6f5f702bfb768f6ced223865874fe96a04e1f5c72dc46df3"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/ESLint.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/ESLint.png",
+      "size": 15509,
+      "hash": "sha256:1f3dcac01dd6242011bbe5d08db9dc7712da3966a14f3e82433d63d5ff9d7b9a"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/flow.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/flow.png",
+      "size": 14154,
+      "hash": "sha256:9bb8d358b11950e3fa8cd7f8950f356af7fd2384ee583c93765be553245114b3"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/Flowtypechecker.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/Flowtypechecker.png",
+      "size": 371270,
+      "hash": "sha256:2754abb477233af2cb8967ba9046972ebb141f3746dcfc50dc2f48903f09ecc0"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/rulesStyle.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/rulesStyle.png",
+      "size": 76377,
+      "hash": "sha256:773158856e3ad6d6406bae67c5ca328dc9a2ea26d634567ac43726b9ce388ae4"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/TestingBun.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/TestingBun.png",
+      "size": 280222,
+      "hash": "sha256:48b21ea0cf86676a4efc0c50c97c333e48b444a14b094efd8117554b98045fa3"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/TestingNode.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/TestingNode.png",
+      "size": 91950,
+      "hash": "sha256:2713acc44f40938ab7dd17a8f7f2cc0f065b37b3f96045db89402b47d689b8cd"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/TypeScript.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/TypeScript.png",
+      "size": 46271,
+      "hash": "sha256:bfcceaa03d9a6cb71a753845187e9567202a87b8a7de3f5425d548ebe5b16405"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/alias.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/alias.png",
+      "size": 209944,
+      "hash": "sha256:4c4123b423ff4e3722684236e2fcd07d66c625f8445f788f0ba792383eaaffc2"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/ArrowFunction.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/ArrowFunction.png",
+      "size": 214559,
+      "hash": "sha256:3e3f049e337d91cdd66a0f8b1350e5162dbbbea4e32337d29b37cc73f3814b71"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/compiler.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/compiler.png",
+      "size": 229015,
+      "hash": "sha256:a20add16c5044e6898ebde04023e04d0fbb93ada5a7890639b6251968fb312f7"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/DataObject.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/DataObject.png",
+      "size": 162945,
+      "hash": "sha256:43ee608cce0a92d274c611baf4867f7a3675085db0552fa91df99659a4b72bec"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/Fexspression.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/Fexspression.png",
+      "size": 227587,
+      "hash": "sha256:5fd22c68bc728ede80a53feb433b760e24b5bcdda2fb38a2565d2b29dc388f1b"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/Modularisasi.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/Modularisasi.png",
+      "size": 133809,
+      "hash": "sha256:7ccc454b1825eed2e39b1f7660829484a5a3e5b9fcf5bbbfdfadc9b79c763b5e"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/package.json.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/package.json.png",
+      "size": 196901,
+      "hash": "sha256:693c1a0aeef07ff6ca2b75e4650260f93a3ad1dd017d6933576a0f1c81ea4df5"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/returnvalue.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/returnvalue.png",
+      "size": 173848,
+      "hash": "sha256:720b48b364fd44e4569b4f75dd841a239e8ab214724723d95fe8f677939900ac"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/Simulasi.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/Simulasi.png",
+      "size": 497210,
+      "hash": "sha256:787be243f95e3de4fe227af928a0f1586dcdf68eea9c4f284df42b58d14e91af"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/try catch.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/try catch.png",
+      "size": 80697,
+      "hash": "sha256:ae70026e000b0c7c57c786efdb0267f665ce61e1bb36fdbd8809e6eddb9be4e5"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Img/1.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Img/1.png",
+      "size": 227659,
+      "hash": "sha256:e21b9073037f7dd98081f8edbcdb8216bdcac4923e2da5dc6f6f521bec263e48"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Img/2.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Img/2.png",
+      "size": 577110,
+      "hash": "sha256:1cdd5a41ad4557b9f44cd1e9e894437b176cae6ee5d9edbb5be973b5e91f6779"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Img/3.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Img/3.png",
+      "size": 60440,
+      "hash": "sha256:44040722c6262571c7983ac9589b0ea97266db69935b9dffaf4f32d88463249f"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/1.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/1.png",
+      "size": 29231,
+      "hash": "sha256:42e43d693d407c8d0b816e95dd6aae3418dc5f876cea1f99fabeac9cd908576c"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/2.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/2.jpg",
+      "size": 83775,
+      "hash": "sha256:0b3bfefba8464d84fbc28cc460a33d2374ea5e6265e0bdfab806db8e74c5a0bb"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/3.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/3.jpg",
+      "size": 20999,
+      "hash": "sha256:3c763370845b18ce8df802e669cc9d206759fa23c511251a636861747b91e15f"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/4.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/4.jpg",
+      "size": 63088,
+      "hash": "sha256:2e3cc31b9f711ac1221977061e2659fb74289f1ada5076ee7ac5f1ad893bf146"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/5.jpg",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/5.jpg",
+      "size": 29200,
+      "hash": "sha256:7b5ef2dd107123a7be1846eb781d8258b7293b3415bc7c77c00730e6748a4417"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/7.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/7.png",
+      "size": 57303,
+      "hash": "sha256:6c5f159d020cd3f298e712ee8cf3084af64c6f88cca0411f2781cc772aca292d"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/8.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Framework/Express/img/8.png",
+      "size": 33509,
+      "hash": "sha256:c7ae786205b40c11e19a8398875d853049453ae809d6cc28940af230e8076ae0"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/img/1.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/img/1.png",
+      "size": 24782,
+      "hash": "sha256:a5ba9306132d093dcb51a0bf832a7f714dc0be6c136fc1eaa049b11890665385"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/img/2.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/img/2.png",
+      "size": 14511,
+      "hash": "sha256:896645d2ecee417c2157132a9365e477a8c2a53c6c669d7af23a0a70d3ec8036"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/img/3.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/img/3.png",
+      "size": 20438,
+      "hash": "sha256:87ca15770d0d50c25100c5b82a01e809447571b8f23057fbd970c9f28957ef58"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/img/4.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/img/4.png",
+      "size": 21752,
+      "hash": "sha256:5bd34b0a357ffc3b05af2ee0d2fc05d355aba5383312b86ac88c35fa66bda7d3"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/img/5.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/img/5.png",
+      "size": 37940,
+      "hash": "sha256:13878b66c27cec7f91274d579084277610903939c02200677f8b25e692bad550"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/1.gif",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/1.gif",
+      "size": 34733,
+      "hash": "sha256:e2afba9a7384c836139803719a5ec1ee3036c94a8ad56f12ab2c1375e937f219"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/2.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/2.png",
+      "size": 42713,
+      "hash": "sha256:fd1010ef4de9787c3a8a5b58ef0ef4057869634ba9130291cd08a78c2e919836"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/3.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/3.png",
+      "size": 86967,
+      "hash": "sha256:158090a8e01230c7584f06168aecd0f56ab5cb579b4f0abc3696b29682cd4d26"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/4.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/4.png",
+      "size": 87869,
+      "hash": "sha256:80e492e339fc5c8379e067111e89b1875bfbc05529df43700d187822dad9bcbd"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/5.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/5.png",
+      "size": 40739,
+      "hash": "sha256:414c03096d5477391b28348d833c31674b751ea92457bae8a3eeccad6d223a1b"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/6.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Backend/Node.js/Web Service Dengan Node.js/img/6.png",
+      "size": 36951,
+      "hash": "sha256:a6275bf999125ba636a17d39cdb82b6820ec40e7a6244f99d31eb244bb8cbbd4"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/alert 1.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/alert 1.png",
+      "size": 18498,
+      "hash": "sha256:b88d9d397f172f3697846bd2c451d7bc963d27d460de85ce333becce44eebe37"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/Alert.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/Alert.png",
+      "size": 14386,
+      "hash": "sha256:ab8acde2d3cac1fe0c4ba7a9438b29e5174ebe7c6ac5bb97585bb1b0eb0955fa"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/appendchildoutput.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/appendchildoutput.png",
+      "size": 11068,
+      "hash": "sha256:9af46c7822aefc3c3600889db3b2f4870b49bf515ebf92ec485e5a257178e3bd"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/browenv.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/browenv.png",
+      "size": 91023,
+      "hash": "sha256:36587a7ed5c7cc62152a0b6355cfe270583c3f8f66942e01d0bf7ddf12f251eb"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/Bubbling.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/Bubbling.png",
+      "size": 7647,
+      "hash": "sha256:b3da4367227072605a12da384b478c80b122fdc0c49fccf69faf8de9ee6d18d7"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/buttonmanipulationcode.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/buttonmanipulationcode.png",
+      "size": 26798,
+      "hash": "sha256:c9bbe1b803673f89cbb1770b52528e18cd2da5a783208693e0054085d60199c1"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/buttonmanipulationoutput.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/buttonmanipulationoutput.png",
+      "size": 30549,
+      "hash": "sha256:edcec7cce6aedf5e6c00a9bb97f357759ff684d312a686f288dcf4be710199eb"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/ClipboardEvent.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/ClipboardEvent.png",
+      "size": 27198,
+      "hash": "sha256:d8b81da1d6ded319175044778d09118cf2389d9acd3b8bef1a927a275eca7ceb"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/Console.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/Console.png",
+      "size": 52243,
+      "hash": "sha256:c37ffd664bad8e0e858d5d8aea2e73581b486a5904e2706ddf65de9e5ff44af5"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/console2.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/console2.png",
+      "size": 10292,
+      "hash": "sha256:38827cdbb03c86a1da7a6262dea64cac3908a4cccaae503c5636bf4b1331434b"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/DOM-Tree.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/DOM-Tree.png",
+      "size": 119395,
+      "hash": "sha256:d37bf5eb3ec413dce7796df09f3575d8950a22b862701472dd5ceec49badac29"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/DOM-Tree2.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/DOM-Tree2.png",
+      "size": 75629,
+      "hash": "sha256:58bbad1c0c4e9538fb67cbbfd012cac1c09771cdc54766313e672c20e1b5b387"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/Dom.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/Dom.png",
+      "size": 4512,
+      "hash": "sha256:3ebb15f99775a8e140acd42dfdf8a713271a5f4d9575df842810042aa12ee5fe"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/FindDOM1.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/FindDOM1.png",
+      "size": 45016,
+      "hash": "sha256:89b2da832972b6733ac634cda80e6c0e3ea9dde51a89f3d92a57afc7ca422e4f"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/FindDOM2.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/FindDOM2.png",
+      "size": 47374,
+      "hash": "sha256:de1ec48f8b40538a0c5c38aaa33b00d243704058347127adb7c4a353231aaf6f"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/FindDOM3.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/FindDOM3.png",
+      "size": 41145,
+      "hash": "sha256:e3e7ff5cc8f365473c7e69adcb575ccf1878b894d60db85824478aedbc0696f3"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/Form.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/Form.png",
+      "size": 129559,
+      "hash": "sha256:2e0879b95ae4ed7e2b4894dd6863562e55b356a72c1abadfa6cd1c9aaba7669d"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/FormEvent.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/FormEvent.png",
+      "size": 24636,
+      "hash": "sha256:9ddd1c083a97bd7d17c9917ed5f772ba5b690cd114af46f1c6ab7ebced37ca72"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/indexingbutton.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/indexingbutton.png",
+      "size": 70090,
+      "hash": "sha256:c7d9bc2deeba1b6dfc92e4ab22e60bf65602f4fdf5ab369da80d75bcc252815b"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/innerHTML.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/innerHTML.png",
+      "size": 87946,
+      "hash": "sha256:1aa1df894559e0e072d0c4bc36f54de6b4a61d0629882f47830a3021032f4658"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/InnerHTMLOutput.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/InnerHTMLOutput.png",
+      "size": 13277,
+      "hash": "sha256:cb9b64e013ff8f152cbe2d6409983e2ad25fd568f02d516e3b489d5f1446306a"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/innertext.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/innertext.png",
+      "size": 40333,
+      "hash": "sha256:6c5aca55c00231c704a1306b05a6f6834a47326b351258692ad5ea9de075f67b"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/InnertextOutput.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/InnertextOutput.png",
+      "size": 12184,
+      "hash": "sha256:3e264eafdbfb5c31d4ffe05d03b35b50a15dc13c04b94dde0c37e1ef52279daa"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/insertBeforeOutput.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/insertBeforeOutput.png",
+      "size": 14508,
+      "hash": "sha256:c4ba23741e36fa3be26e8b78b078b4aeed00de3107392454a19bd6743c6330b1"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/keyboardEvents.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/keyboardEvents.png",
+      "size": 52067,
+      "hash": "sha256:0dabf892b5dd116633ae4a5419275640c96a7de6cf52738d23c705e02ca0477a"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/MouseEvent.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/MouseEvent.png",
+      "size": 35241,
+      "hash": "sha256:15b369e2f2ac0e16ec987a9268661bfbb2051d6eead2e2b1e4f4bafc420fe787"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/Output alert.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/Output alert.png",
+      "size": 48089,
+      "hash": "sha256:b975b0d82168079876b88014fe3cb941356f3b6ca1fd77e42c7a0e17ed135fde"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/OutputPrompt.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/OutputPrompt.png",
+      "size": 3758,
+      "hash": "sha256:196626e9929dc5177b54a99919a6d52cef3dcfec3beac2d9721f7c9be1d450e4"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/praktek2.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/praktek2.png",
+      "size": 9424,
+      "hash": "sha256:5b7ebff6633c40607f0ee1866911d073b34f7ea631569f6446dba1388c288aa5"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/prompt.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/prompt.png",
+      "size": 23273,
+      "hash": "sha256:405cbd045db237e5449cd64eee2503c94e246501e314daea5a03ee1370fed62c"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/style.property.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/style.property.png",
+      "size": 10335,
+      "hash": "sha256:0f5485586b1c25e0670aa43670e75e282778730020e60d62368b8bdf7f507ce1"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/Web.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/Web.png",
+      "size": 39931,
+      "hash": "sha256:9987db67b96a66334a8723fa78ad31146ddcc65a3460cf779ebf0af07d990062"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/Webstorage.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/Webstorage.png",
+      "size": 88127,
+      "hash": "sha256:7c8ddace22d2a64e6694f1536df9db3f093dd6e5c82bcdf59f1c1449d6dc314a"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/window.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/window.png",
+      "size": 20670,
+      "hash": "sha256:ce5a7e9c77d2dd060d3eaa9a4d03dd5c23400a3121b1baad6a68a9efb187aa39"
+    },
+    {
+      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/img/WindowEvents.png",
+      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/WindowEvents.png",
+      "size": 50665,
+      "hash": "sha256:eca30ffe789f540e719e7d7d46c2b0d0b1b12cadc7d60c7a68a8117b7602e36c"
+    },
+    {
+      "sourcePath": "Pemrograman/Python/Python Dasar/image/Slicing.png",
+      "publicPath": "/assets/vault/Pemrograman/Python/Python Dasar/image/Slicing.png",
+      "size": 236262,
+      "hash": "sha256:ee2e54bc71689125831bf398c54e132abcfbb82a8b43ce941d017de283ce7c06"
+    },
+    {
+      "sourcePath": "Pemrograman/Rancangan Software/image/1.png",
+      "publicPath": "/assets/vault/Pemrograman/Rancangan Software/image/1.png",
+      "size": 34926,
+      "hash": "sha256:077de393d2aeb31a9ce2cab4ee2bab3912ceae59921b31bfb2abec374d362a27"
+    },
+    {
+      "sourcePath": "Pemrograman/Rancangan Software/image/2.png",
+      "publicPath": "/assets/vault/Pemrograman/Rancangan Software/image/2.png",
+      "size": 185282,
+      "hash": "sha256:ed9e3da17feaa39e104c7e7f2623a8dd5fae0a552cf9a6bd079fcfcc5309273f"
+    },
+    {
+      "sourcePath": "Pemrograman/Rancangan Software/image/3.png",
+      "publicPath": "/assets/vault/Pemrograman/Rancangan Software/image/3.png",
+      "size": 132664,
+      "hash": "sha256:b9cd072bd5dbe627b58fe53b70dd63b5deab2df64aa78c0c4304be1bc0d54049"
+    },
+    {
+      "sourcePath": "Pemrograman/Rancangan Software/image/4.png",
+      "publicPath": "/assets/vault/Pemrograman/Rancangan Software/image/4.png",
+      "size": 123932,
+      "hash": "sha256:bba5edcc0699ebec048b232ffa4487b943f985983b15a5e5058bdb1754d9f480"
+    },
+    {
+      "sourcePath": "Pemrograman/Rancangan Software/image/5.png",
+      "publicPath": "/assets/vault/Pemrograman/Rancangan Software/image/5.png",
+      "size": 34436,
+      "hash": "sha256:204a86d798fdde121828961509c4263fdad0f916b699cc393ccbe26d9f25da67"
+    },
+    {
+      "sourcePath": "Pemrograman/Rancangan Software/image/7.png",
+      "publicPath": "/assets/vault/Pemrograman/Rancangan Software/image/7.png",
+      "size": 14629,
+      "hash": "sha256:701385825f435edccde093e645b4ac21d4476dc36678b7829b82ed57f890e74f"
+    },
+    {
+      "sourcePath": "Pemrograman/Rancangan Software/image/8.png",
+      "publicPath": "/assets/vault/Pemrograman/Rancangan Software/image/8.png",
+      "size": 68126,
+      "hash": "sha256:93229bef538a4b6474383f9a795a8c69a9df57f98989bc2dabd188b1cfd33e02"
+    },
+    {
+      "sourcePath": "Pemrograman/Rancangan Software/image/9.png",
+      "publicPath": "/assets/vault/Pemrograman/Rancangan Software/image/9.png",
+      "size": 68913,
+      "hash": "sha256:528f06fe9a3e39548a09df9413558f11fe7921db385c1bba9e6cd688c02c5ab7"
+    },
+    {
+      "sourcePath": "Pemrograman/Rancangan Software/image/SDLC.png",
+      "publicPath": "/assets/vault/Pemrograman/Rancangan Software/image/SDLC.png",
+      "size": 259706,
+      "hash": "sha256:7334ea831abd7fc7806ec389722cfb7a38bd27a4dfabf8e8c5522b10a7935765"
+    }
+  ]
+}

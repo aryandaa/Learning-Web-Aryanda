@@ -1,20 +1,54 @@
-import { Link } from 'react-router-dom';
-import docsIndex from '../../generated/docs/index.json';
+import { useSiteData } from '../app/SiteProvider';
+import { TreeExplorer } from '../components/explorer/TreeExplorer';
+import { Spinner } from '../components/ui/spinner';
+import { countFiles } from '../services/docs';
+import { Map } from 'lucide-react';
 
+/**
+ * Halaman index dokumen: seluruh struktur vault divisualisasikan
+ * sebagai pohon eksplorasi (recursive, tanpa hardcode folder).
+ */
 export default function DocsPage() {
-  return (
-    <main className="mx-auto max-w-5xl px-4 py-10">
-      <h1 className="text-3xl font-bold">Documentation</h1>
-      <p className="mt-2 text-slate-600">Generated from your Obsidian vault.</p>
+  const { tree, metadata, loading, error } = useSiteData();
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
-        {docsIndex.map((doc: { slug: string; title: string; excerpt: string }) => (
-          <Link key={doc.slug} to={`/docs/${encodeURIComponent(doc.slug)}`} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-slate-300">
-            <h2 className="text-xl font-semibold">{doc.title}</h2>
-            <p className="mt-2 text-slate-500">{doc.excerpt}</p>
-          </Link>
-        ))}
+  if (loading) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Spinner />
       </div>
-    </main>
+    );
+  }
+
+  if (error || !tree) {
+    return (
+      <div className="mx-auto max-w-2xl py-16 text-center text-sm text-slate-400">
+        {error ?? 'tree.json belum tersedia — jalankan parser terlebih dahulu.'}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-3xl">
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-50">Semua Dokumen</h1>
+        <p className="mt-1 text-sm text-slate-500">
+          {metadata?.totalNotes ?? 0} catatan dalam {metadata?.totalFolders ?? 0} folder ·
+          klik folder untuk memperluas
+        </p>
+      </header>
+
+      <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4">
+        <TreeExplorer nodes={tree} variant="page" />
+      </div>
+
+      <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-slate-600">
+        <Map className="h-3.5 w-3.5 text-indigo-400" />
+        = file roadmap — mulai dari sini untuk mengikuti urutan belajar folder
+      </p>
+
+      <p className="mt-6 text-center text-xs text-slate-600">
+        Total: {countFiles(tree)} dokumen
+      </p>
+    </div>
   );
 }

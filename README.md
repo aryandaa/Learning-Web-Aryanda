@@ -1,117 +1,196 @@
 # Learning Web Aryanda
 
-Proyek ini adalah website statis yang membaca materi dari Obsidian Vault dan mengubahnya menjadi dokumen yang dapat ditampilkan oleh React.
+Personal learning platform berbasis web. Materi ditulis di **Obsidian**, dan website ini secara otomatis membaca vault, mengubah seluruh Markdown menjadi data statis, lalu menampilkannya sebagai website pembelajaran.
 
-## Struktur utama
+```
+Obsidian Vault (SOURCE OF TRUTH)
+      │  git push
+      ▼
+Vault GitHub Action ── repository_dispatch: vault-sync ──► Website GitHub Action
+      │                                                        │
+      │                                                        ▼
+      │                                          clone vault (--depth 1) ke /tmp
+      │                                                        │
+      │                                                        ▼
+      │                                          Parser Pipeline (scanner → validator
+      │                                          → indexer → link resolver → renderer
+      │                                          → asset copier → json writer → publisher)
+      │                                                        │
+      │                                                        ▼
+      │                                          generated/ ──► public/
+      │                                                        │
+      │                                                        ▼
+      │                                          React website (static) → deploy
+```
 
-- `.github/workflows/`
-  - `sync-docs.yml`: workflow website yang menerima `repository_dispatch` dan membangun data dari vault.
-  - `dispatch-website-sync.yml`: workflow di vault repo untuk memberi tahu website bahwa vault sudah berubah.
-- `scripts/parse-docs.ts`: entrypoint parser untuk mengubah vault Markdown menjadi `generated/` dan `public/assets/vault/`.
-- `scripts/parser/parser.ts`: logika parsing markdown, transformasi HTML, dan penulisan `index.json`.
-- `generated/docs/index.json`: daftar dokumen yang dibaca oleh website.
-- `public/`: aset publik, termasuk `public/assets/vault` untuk file non-markdown dari vault.
-- `src/`: aplikasi React.
+## Arsitektur singkat
 
-## Instalasi awal
+| Lapisan | Peran |
+|---|---|
+| `aryandaa/Obsidian-Vault` | Sumber materi. **Tidak pernah diubah oleh project ini** — hanya dibaca. |
+| `scripts/parser/` | Pipeline modular yang mengubah vault menjadi data JSON + aset. |
+| `generated/` | Hasil transformasi (per-doc JSON, tree, search index, metadata, warnings, manifest). Di-commit. |
+| `public/` | Hasil publish: `public/docs/` dan `public/assets/vault/` (dibaca website). |
+| `src/` | React SPA: dark-first, sidebar recursive, pencarian fuzzy, dokumen load-on-demand. |
 
-1. Pastikan berada di folder proyek:
-   ```bash
-   cd /home/r3x/Documents/learning-web-Aryanda
-   ```
-2. Install dependensi:
-   ```bash
-   npm install
-   ```
+Tidak ada backend, tidak ada database, tidak ada API write. Hasil akhir adalah **static website**.
+
+## Instalasi
+
+```bash
+npm install
+```
 
 ## Menjalankan parser secara lokal
 
-1. Pastikan Anda memiliki salinan lokal Obsidian Vault.
-2. Jalankan parser dengan path ke vault:
-   ```bash
-   npm run parse -- --vault /path/to/Obsidian-Vault
-   ```
-3. Jika berhasil, file `generated/docs/index.json` akan terisi.
-4. Untuk memeriksa apakah dokumen berhasil diparse, buka `generated/docs/index.json`.
+```bash
+npm run parse -- --vault=/path/ke/Obsidian-Vault
+```
+
+Opsi tambahan:
+
+```bash
+npm run parse -- --vault=/path/ke/vault \
+  --commit=<sha> --branch=main \
+  --exclude="Folder A" --exclude="Folder B" \
+  --no-publish --no-assets
+```
+
+`--exclude` mengecualikan seluruh folder (beserta isinya) dari website — berguna untuk catatan pribadi. Folder `Note Personal` sudah dikecualikan secara default di `scripts/parser/parser.config.ts`.
+
+Variabel lingkungan fallback: `VAULT_PATH`, `VAULT_COMMIT`, `VAULT_BRANCH`, `GENERATED_DIR`.
+
+Parser melakukan:
+
+1. **Scan** — snapshot vault (markdown, folder, aset) sekali saja.
+2. **Validasi** — duplicate document id / output path = **fatal**.
+3. **Index** — frontmatter, judul, tag, alias, heading, reading time, excerpt.
+4. **Resolve** — lookup wiki link + urutan prev/next (DFS).
+5. **Render** — Markdown → HTML (GFM, task list, KaTeX, syntax highlighting, callouts, wiki links, embeds) yang **disanitasi** dengan rehype-sanitize.
+6. **Copy assets** — hanya menyalin aset yang **benar-benar direferensikan** dokumen (`![[img.png]]`, `![alt](img.png)`, `[[file.pdf]]`) ke `generated/assets/`. Aset yang tidak dipakai tidak pernah ditampilkan, jadi tidak di-publish (hemat ukuran).
+7. **Write** — `generated/docs/<struktur vault>/*.json`, `tree.json`, `search-index.json`, `metadata.json`, `assets/manifest.json`, `warnings.json`.
+8. **Publish** — salin ke `public/docs/` dan `public/assets/vault/` (hanya dua direktori itu yang disentuh).
 
 ## Menjalankan website lokal
 
-1. Setelah parser selesai, jalankan:
-   ```bash
-   npm run dev
-   ```
-2. Buka browser di:
-   ```text
-   http://localhost:4173
-   ```
-3. Halaman yang tersedia:
-   - `/`: halaman utama
-   - `/docs`: daftar dokumen
-   - `/docs/:slug`: halaman dokumen
-   - `/search`: pencarian dokumen
+```bash
+npm run dev        # http://localhost:4173
+npm run build      # produksi ke dist/
+npm run check      # typecheck TypeScript
+```
 
-## Setup GitHub Actions
+Halaman:
 
-### Di repository Obsidian Vault
+- `/` — beranda + statistik
+- `/docs` — eksplorasi seluruh struktur vault
+- `/docs/<id>` — dokumen (id = path normalized, mis. `/docs/pemrograman/php/routing`)
+- `/search` — pencarian fuzzy (index dimuat lazy)
+- `/graph` — **graph view** (gaya Obsidian): sambungan antar-catatan, hover untuk sorot tetangga, klik node untuk membuka catatan, drag/scroll untuk geser/zoom
+- `/roadmap` — **halaman roadmap** (gaya roadmap.sh): file bertag `#roadmap` + urutan materi yang terhubung, ditampilkan sebagai tahapan belajar
 
-1. Buat file `.github/workflows/dispatch-website-sync.yml` di repo vault.
-2. Tambahkan secret repository:
-   - `WEBSITE_DISPATCH_TOKEN`
-   - `WEBSITE_REPOSITORY`
+## Generated artifacts
 
-3. `WEBSITE_REPOSITORY` harus berupa `owner/repo`, misal:
-   ```text
-   aryandaa/learning-web-Aryanda
-   ```
+```
+generated/
+├── docs/
+│   ├── tree.json               # struktur folder recursive (dari vault)
+│   ├── search-index.json       # index Fuse.js
+│   ├── graph.json              # nodes + edges untuk graph view
+│   ├── roadmaps.json           # file #roadmap + langkah belajarnya
+│   ├── metadata.json           # total notes, folders, commit, dll.
+│   └── <struktur folder vault>/*.json   # satu JSON per dokumen
+├── assets/
+│   ├── manifest.json           # sourcePath → publicPath, size, hash
+│   └── <struktur aset vault>
+└── warnings.json               # broken links, missing images, dll.
+```
 
-4. Pastikan `WEBSITE_DISPATCH_TOKEN` memiliki izin minimal untuk memicu `repository_dispatch`.
+Dokumen JSON contoh:
+
+```json
+{
+  "id": "pemrograman/php/routing",
+  "title": "Routing",
+  "slug": "routing",
+  "relativePath": "Pemrograman/PHP/Routing.md",
+  "html": "...",
+  "headings": [],
+  "tags": [],
+  "aliases": [],
+  "breadcrumb": ["Pemrograman", "PHP"],
+  "readingTime": 5,
+  "links": [],
+  "backlinks": [],
+  "previous": null,
+  "next": "...",
+  "contentHash": "sha256:..."
+}
+```
+
+## GitHub Actions
+
+### Di repository Obsidian (sekali setup)
+
+File `.github/workflows/dispatch-website-sync.yml` (sudah tersedia di folder ini sebagai referensi — salin ke vault).
+
+Secrets yang dibutuhkan di vault:
+
+- `WEBSITE_DISPATCH_TOKEN` — token dengan izin `repo` untuk mengirim `repository_dispatch`.
+- `WEBSITE_REPOSITORY` — misal `aryandaa/learning-web-aryanda`.
+
+Workflow hanya mengirim sinyal `vault-sync` — **tidak melakukan parsing**.
 
 ### Di repository website
 
-1. Pastikan file `.github/workflows/sync-docs.yml` ada.
-2. Workflow ini akan berjalan ketika menerima event `repository_dispatch` dengan tipe `vault-sync`.
-3. Workflow akan melakukan:
-   - clone vault dengan `git clone --depth 1`
-   - jalankan parser `npm run parse -- --vault /tmp/vault-clone`
-   - validasi output
-   - commit perubahan yang dihasilkan (`generated/` dan `public/assets/vault/`)
+`.github/workflows/sync-docs.yml`:
 
-## Mengapa materi belum muncul
+1. Menerima `repository_dispatch` (atau `workflow_dispatch` untuk manual).
+2. Clone vault shallow ke `/tmp/vault-clone` (pinned ke commit dispatch).
+3. Jalankan parser → `generated/` → publish ke `public/`.
+4. Validasi artifact (tree, search-index, metadata, manifest).
+5. Safety check: tidak boleh ada `.md` di `public/docs` / `public/assets/vault`.
+6. Commit `generated/` + `public/` jika ada perubahan.
+7. Hapus clone sementara.
 
-Materi akan muncul hanya jika:
+## Deploy
 
-1. Vault berisi file Markdown (`.md`).
-2. Path vault valid saat menjalankan parser.
-3. Parser berhasil menulis `generated/docs/index.json`.
-4. Website menggunakan `generated/docs/index.json` sebagai sumber data.
+Hasil `npm run build` (folder `dist/`) bisa di-hosting di hosting statis mana pun:
+
+- **Cloudflare Pages / Netlify / Vercel** — build command `npm run build`, output `dist`. Rewrite SPA otomatis ditangani.
+- **GitHub Pages** — workflow `.github/workflows/deploy.yml` sudah disediakan:
+  1. Settings → Pages → Source: **GitHub Actions**.
+  2. Push ke `main` → situs otomatis deploy.
+
+Frontend **mendeteksi root path secara otomatis** (`src/lib/base.ts`), jadi situs aman
+baik di root domain maupun subpath seperti `https://user.github.io/Learning-Web-Aryanda/` —
+tidak perlu mengubah `base` di `vite.config.ts`.
+
+`public/404.html` + restore route di `main.tsx` memastikan deep link
+(contoh `/docs/pemrograman/php/routing`) tetap berfungsi di GitHub Pages.
+
+## Safety guarantees
+
+- Vault hanya **dibaca**; tidak ada penulisan balik ke Obsidian.
+- Markdown vault tidak pernah masuk ke repository website.
+- Publisher hanya menyentuh `public/docs/` dan `public/assets/vault/` — file lain (favicon, 404.html) aman.
+- Duplicate id/path menghentikan generation (fatal).
+- HTML disanitasi saat parsing (rehype-sanitize) sebelum dirender.
 
 ## Troubleshooting
 
-- Jika `npm run parse` error:
-  - Pastikan path ke vault benar.
-  - Pastikan vault punya file `.md`.
-  - Buka log error untuk detail.
-
-- Jika `DocsPage` kosong:
-  - Buka `generated/docs/index.json`.
-  - Kalau array kosong, parser tidak menemukan Markdown.
-
-- Jika workflow GitHub tidak berjalan:
-  - Periksa secret `WEBSITE_DISPATCH_TOKEN`.
-  - Pastikan `WEBSITE_REPOSITORY` benar.
-  - Pastikan event `vault-sync` terkirim dari repo vault.
+| Gejala | Solusi |
+|---|---|
+| `npm run parse` error | Cek path `--vault` benar dan berisi `.md`. |
+| DocsPage kosong | Cek `generated/docs/tree.json` — kalau tidak ada, jalankan parser. |
+| Search kosong | Cek `generated/docs/search-index.json` ada. |
+| Workflow tidak jalan | Cek secret `WEBSITE_DISPATCH_TOKEN` / `WEBSITE_REPOSITORY`, dan event `vault-sync` terkirim. |
+| Gambar rusak | Cek `generated/warnings.json` → `missingImages` (gambar memang tidak ada di vault). |
 
 ## Perintah berguna
 
 ```bash
-npm run parse -- --vault /path/to/Obsidian-Vault
-npm run dev
-npm run build
-npm run check
+npm run parse -- --vault=/path/ke/vault   # generate artifacts
+npm run dev                               # develop
+npm run build                             # produksi
+npm run check                             # typecheck
 ```
-
-## Catatan penting
-
-- Vault adalah sumber materinya. Jangan ubah file Markdown, nama file, atau struktur folder materi.
-- Website hanya membaca vault dan menghasilkan JSON/artifak statis.
-- Jangan menyimpan salinan Markdown vault di dalam repository website.

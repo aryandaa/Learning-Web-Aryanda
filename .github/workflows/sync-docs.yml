@@ -12,6 +12,7 @@ jobs:
       VAULT_COMMIT: ${{ github.event.client_payload.vault_commit || github.sha }}
       VAULT_BRANCH: ${{ github.event.client_payload.vault_branch || 'main' }}
       VAULT_REPO_URL: ${{ github.event.client_payload.repo_clone_url || 'https://github.com/aryandaa/Obsidian-Vault.git' }}
+
     steps:
       - name: Checkout website repository
         uses: actions/checkout@v4
@@ -27,21 +28,36 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Clone vault
+      - name: Clone vault (shallow, pinned to dispatch commit)
         run: |
           rm -rf /tmp/vault-clone
           git clone --depth 1 --branch "${{ env.VAULT_BRANCH }}" "${{ env.VAULT_REPO_URL }}" /tmp/vault-clone
           cd /tmp/vault-clone
           git fetch --depth 1 origin "${{ env.VAULT_COMMIT }}" || true
-          git checkout --detach "${{ env.VAULT_COMMIT }}"
+          git checkout --detach "${{ env.VAULT_COMMIT }}" 2>/dev/null || true
 
       - name: Parse vault into generated site data
-        run: npm run parse -- --vault /tmp/vault-clone
+        run: npm run parse -- --vault /tmp/vault-clone --commit="${{ env.VAULT_COMMIT }}" --branch="${{ env.VAULT_BRANCH }}"
 
       - name: Validate generated output
         run: |
-          test -f generated/docs/index.json
-          test -d public/assets/vault
+          test -f generated/docs/tree.json
+          test -f generated/docs/search-index.json
+          test -f generated/docs/metadata.json
+          test -f generated/warnings.json
+          test -d generated/assets
+          test -f public/docs/tree.json
+          test -f public/docs/warnings.json
+          test -f public/assets/vault/manifest.json
+          node -e "const m=require('./public/docs/metadata.json'); if(!m.totalNotes) { console.error('metadata.totalNotes kosong'); process.exit(1); } console.log('notes:', m.totalNotes)"
+
+      - name: Safety check — no markdown may reach the public output
+        run: |
+          MD_IN_DOCS=$(find public/docs -name '*.md' | wc -l)
+          MD_IN_ASSETS=$(find public/assets/vault -name '*.md' | wc -l)
+          echo "markdown di public/docs: $MD_IN_DOCS"
+          echo "markdown di public/assets/vault: $MD_IN_ASSETS"
+          [ "$MD_IN_DOCS" -eq 0 ] && [ "$MD_IN_ASSETS" -eq 0 ] || { echo "SAFETY FAIL: markdown bocor ke public output"; exit 1; }
 
       - name: Commit generated artifacts
         run: |
@@ -56,3 +72,7 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cleanup temporary vault clone
+        if: always()
+        run: rm -rf /tmp/vault-clone
