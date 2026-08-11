@@ -161,6 +161,26 @@ Hasil `npm run build` (folder `dist/`) bisa di-hosting di hosting statis mana pu
   1. Settings → Pages → Source: **GitHub Actions**.
   2. Push ke `main` → situs otomatis deploy.
 
+### Deploy ke Vercel
+
+File `vercel.json` sudah disiapkan (framework vite, output `dist`, rewrite SPA).
+
+**Via dashboard** (paling mudah):
+1. Import repo di https://vercel.com/new
+2. Vercel otomatis mendeteksi Vite → build + deploy.
+3. Setiap push ke `main` otomatis redeploy.
+
+**Via CLI**:
+
+```bash
+npm i -g vercel
+vercel       # preview
+vercel --prod  # production
+```
+
+Situs Vercel berada di root domain, jadi `base` relatif (`./`) di `vite.config.ts`
+dan deteksi root di `src/lib/base.ts` bekerja apa adanya.
+
 Frontend **mendeteksi root path secara otomatis** (`src/lib/base.ts`), jadi situs aman
 baik di root domain maupun subpath seperti `https://user.github.io/Learning-Web-Aryanda/` —
 tidak perlu mengubah `base` di `vite.config.ts`.
