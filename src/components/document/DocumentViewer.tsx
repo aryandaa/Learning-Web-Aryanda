@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, Hash } from 'lucide-react';
 import type { DocumentData } from '../../domain/types';
-import { Badge } from '../ui/badge';
+import { TagBadge } from './TagBadge';
 import { Breadcrumb } from './Breadcrumb';
 import { PrevNext } from './PrevNext';
 import { Backlinks } from './Backlinks';
@@ -66,9 +66,7 @@ export function DocumentViewer({ doc }: { doc: DocumentData }) {
             </span>
           )}
           {doc.tags.map((tag) => (
-            <Badge key={tag} variant="default">
-              #{tag}
-            </Badge>
+            <TagBadge key={tag} tag={tag} />
           ))}
         </div>
       </header>

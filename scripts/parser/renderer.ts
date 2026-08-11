@@ -16,6 +16,7 @@ import { remarkWikiLink, type WikiLinkPluginOptions } from './plugins/remark-wik
 import { remarkCallout } from './plugins/remark-callout';
 import { rehypeFixLinks, type FixLinksOptions } from './plugins/rehype-fix-links';
 import { rehypeHeadingIds } from './plugins/rehype-heading-ids';
+import { remarkInlineTags, type InlineTagsOptions } from './plugins/remark-inline-tags';
 
 /**
  * Sanitization schema: default rehype-sanitize rules plus the class/id/style
@@ -87,11 +88,15 @@ export async function renderNotes(
 async function renderOne(context: ParserContext, record: NoteRecord, lookup: LinkLookup): Promise<string> {
   const links: NoteRecord['links'] = [];
   const broken: string[] = [];
+  const inlineTags: string[] = [];
 
   const file = await remark()
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkMath)
+    .use(remarkInlineTags as unknown as Plugin<[InlineTagsOptions], Root, Root>, {
+      onTag: (tag) => inlineTags.push(tag),
+    })
     // Custom unified plugins are cast: unified v11's plugin generics are too
     // strict for ad-hoc factories; the runtime contract is well-defined.
     .use(remarkWikiLink as unknown as Plugin<[WikiLinkPluginOptions], Root, Root>, {
@@ -133,6 +138,8 @@ async function renderOne(context: ParserContext, record: NoteRecord, lookup: Lin
 
   record.links = dedupeLinks(links);
   record.brokenLinks = [...new Set(broken)];
+  // Frontmatter tags dulu, lalu inline tags (unix), tanpa duplikat.
+  record.tags = [...new Set([...record.tags, ...inlineTags])];
   return String(file);
 }
 
