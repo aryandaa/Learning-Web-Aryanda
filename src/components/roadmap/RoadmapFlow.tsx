@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, FolderOpen, GitBranch, Play, Star } from 'lucide-react';
+import { ArrowRight, GitBranch } from 'lucide-react';
 import type { GraphData, RoadmapInfo } from '../../domain/types';
 
 const FOLDER_COLORS: Record<string, string> = {
@@ -22,7 +22,6 @@ const STAGE_SIZE = 6;
 interface RoadmapFlowProps {
   roadmap: RoadmapInfo;
   scopedGraph: GraphData;
-  subskill: { id: string; title: string } | null;
 }
 
 interface Step {
@@ -37,7 +36,7 @@ interface Step {
  * tiap kotak menampilkan file lain yang di-link-nya ("file yang ngelink
  * ke file lain"), plus seksi file terhubung dari luar daftar langkah.
  */
-export function RoadmapFlow({ roadmap, scopedGraph, subskill }: RoadmapFlowProps) {
+export function RoadmapFlow({ roadmap, scopedGraph }: RoadmapFlowProps) {
   const navigate = useNavigate();
 
   const nodeInfo = useMemo(() => new Map(scopedGraph.nodes.map((n) => [n.id, n])), [scopedGraph]);
@@ -49,10 +48,9 @@ export function RoadmapFlow({ roadmap, scopedGraph, subskill }: RoadmapFlowProps
       .map((n) => ({ id: n.id, title: n.title, folder: n.folder }));
   }, [roadmap.stepIds, nodeInfo]);
 
-  // file yang di-link oleh tiap langkah (di luar roadmap & subskill)
+  // file yang di-link oleh tiap langkah (di luar roadmap itu sendiri)
   const linksFrom = useMemo(() => {
     const exclude = new Set<string>([roadmap.id]);
-    if (subskill) exclude.add(subskill.id);
     const map = new Map<string, string[]>();
     for (const link of scopedGraph.links) {
       for (const [from, to] of [
@@ -69,15 +67,15 @@ export function RoadmapFlow({ roadmap, scopedGraph, subskill }: RoadmapFlowProps
       value.sort((a, b) => (nodeInfo.get(a)?.title ?? a).localeCompare(nodeInfo.get(b)?.title ?? b));
     }
     return map;
-  }, [scopedGraph.links, roadmap.id, subskill, nodeInfo]);
+  }, [scopedGraph.links, roadmap.id, nodeInfo]);
 
   // file terhubung dari luar daftar langkah
   const outsideFiles = useMemo<Step[]>(() => {
     const stepIds = new Set(roadmap.stepIds);
     return scopedGraph.nodes
-      .filter((n) => !stepIds.has(n.id) && n.id !== roadmap.id && n.id !== subskill?.id)
+      .filter((n) => !stepIds.has(n.id) && n.id !== roadmap.id)
       .map((n) => ({ id: n.id, title: n.title, folder: n.folder }));
-  }, [scopedGraph.nodes, roadmap.stepIds, roadmap.id, subskill?.id]);
+  }, [scopedGraph.nodes, roadmap.stepIds, roadmap.id]);
 
   const stages: Step[][] = [];
   for (let i = 0; i < steps.length; i += STAGE_SIZE) {
@@ -89,62 +87,6 @@ export function RoadmapFlow({ roadmap, scopedGraph, subskill }: RoadmapFlowProps
   return (
     <div className="overflow-x-auto pb-4">
       <div className="flex min-w-max items-start gap-3">
-        {/* konteks: subskill -> folder -> roadmap */}
-        {subskill && (
-          <>
-            <Link
-              to={`/docs/${subskill.id}`}
-              className="flex w-44 flex-col items-center gap-1.5 rounded-2xl border-2 border-emerald-500/60 bg-emerald-500/10 p-4 text-center transition-colors hover:bg-emerald-500/20"
-            >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500">
-                <Star className="h-4 w-4 text-white" />
-              </span>
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-emerald-300">
-                Subskill
-              </span>
-              <span className="text-sm font-semibold leading-snug text-emerald-100">
-                {subskill.title}
-              </span>
-            </Link>
-            <div className="flex flex-col items-center self-center">
-              <ArrowRight className="h-5 w-5 text-slate-600" />
-            </div>
-          </>
-        )}
-
-        <div className="flex w-44 flex-col items-center gap-1.5 rounded-2xl border-2 border-amber-500/50 bg-amber-500/10 p-4 text-center">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500">
-            <FolderOpen className="h-4 w-4 text-white" />
-          </span>
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-amber-300">
-            Folder
-          </span>
-          <span className="text-sm font-semibold leading-snug text-amber-100">
-            {roadmap.parentDir}
-          </span>
-        </div>
-
-        <div className="flex flex-col items-center self-center">
-          <ArrowRight className="h-5 w-5 text-slate-600" />
-        </div>
-
-        <Link
-          to={`/docs/${roadmap.id}`}
-          className="flex w-44 flex-col items-center gap-1.5 rounded-2xl border-2 p-4 text-center transition-colors hover:bg-indigo-500/20"
-          style={{ borderColor: roadmapColor }}
-        >
-          <span
-            className="flex h-8 w-8 items-center justify-center rounded-full"
-            style={{ backgroundColor: roadmapColor }}
-          >
-            <Play className="h-4 w-4 text-white" />
-          </span>
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-indigo-300">
-            Roadmap
-          </span>
-          <span className="text-sm font-semibold leading-snug text-slate-100">{roadmap.title}</span>
-        </Link>
-
         {/* kotak-kotak langkah */}
         {steps.length === 0 && (
           <p className="mt-8 max-w-xs text-sm text-slate-500">

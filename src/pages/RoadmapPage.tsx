@@ -26,7 +26,6 @@ function folderColor(folder: string): string {
  * (#Subskill / folder induk) dan jaringan file yang terhubung.
  */
 export default function RoadmapPage() {
-  const { fileMap } = useSiteData();
   const [roadmaps, setRoadmaps] = useState<RoadmapsData | null>(null);
   const [graph, setGraph] = useState<GraphData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -79,12 +78,6 @@ export default function RoadmapPage() {
     const links = graph.links.filter((l) => nodeIds.has(l.source) && nodeIds.has(l.target));
     return { schemaVersion: 1, nodes, links };
   }, [selected, graph]);
-
-  const subskill = useMemo(() => {
-    if (!selected?.subskillId) return null;
-    const entry = fileMap.get(selected.subskillId);
-    return entry ? { id: selected.subskillId, title: entry.title } : null;
-  }, [selected, fileMap]);
 
   if (error) {
     return (
@@ -162,7 +155,7 @@ export default function RoadmapPage() {
               </div>
             </div>
 
-            <RoadmapFlow roadmap={selected} scopedGraph={scopedGraph} subskill={subskill} />
+            <RoadmapFlow roadmap={selected} scopedGraph={scopedGraph} />
           </div>
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-slate-500">
