@@ -1,40 +1,10 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, FileText, FolderTree, Pencil, Search, UserRound } from 'lucide-react';
+import { ArrowRight, BookOpen, FileText, FolderTree, Search, UserRound } from 'lucide-react';
 import { useSiteData } from '../app/SiteProvider';
 import { countFiles } from '../services/docs';
 import { Spinner } from '../components/ui/spinner';
-import { getDeviceName } from '../lib/device';
-
-const VISITOR_NAME_KEY = 'learning-web-visitor-name';
-
-/** Nama pengunjung: dari localStorage perangkat ini, fallback ke jenis perangkat. */
-function loadVisitorName(): string {
-  try {
-    const saved = localStorage.getItem(VISITOR_NAME_KEY);
-    if (saved && saved.trim()) return saved.trim();
-  } catch {
-    /* localStorage tidak tersedia (private mode) — pakai fallback */
-  }
-  return getDeviceName();
-}
 
 export default function HomePage() {
-  const [visitorName, setVisitorName] = useState<string>(loadVisitorName);
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState(visitorName);
-
-  const saveName = () => {
-    const name = draft.trim() || getDeviceName();
-    try {
-      localStorage.setItem(VISITOR_NAME_KEY, name);
-    } catch {
-      /* simpan gagal — nama tetap berlaku untuk sesi ini */
-    }
-    setVisitorName(name);
-    setEditing(false);
-  };
-
   const { tree, metadata, loading, error } = useSiteData();
 
   if (loading) {
@@ -64,52 +34,9 @@ export default function HomePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
       <header className="text-center">
-        <p className="text-sm font-medium uppercase tracking-widest text-indigo-400">
-          Personal learning platform
-        </p>
-        <h1 className="mt-3 text-4xl font-bold tracking-tight text-slate-50 sm:text-5xl">
-          Halo, {visitorName}! 👋
-        </h1>
-        {editing ? (
-          <div className="mt-3 flex items-center justify-center gap-2">
-            <input
-              autoFocus
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') saveName();
-                if (e.key === 'Escape') {
-                  setDraft(visitorName);
-                  setEditing(false);
-                }
-              }}
-              placeholder="Nama kamu"
-              maxLength={40}
-              className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-sm text-slate-100 outline-none focus:border-indigo-500"
-            />
-            <button
-              onClick={saveName}
-              className="rounded-lg bg-indigo-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-indigo-400"
-            >
-              Simpan
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={() => {
-              setDraft(visitorName);
-              setEditing(true);
-            }}
-            title="Ganti nama — disimpan hanya di perangkat ini"
-            className="mt-2 inline-flex items-center gap-1 text-xs text-slate-500 transition-colors hover:text-indigo-300"
-          >
-            <Pencil className="h-3 w-3" />
-            Ganti nama
-          </button>
-        )}
-        <p className="mt-2 text-lg font-medium text-indigo-300">
+        <h1 className="text-4xl font-bold tracking-tight text-slate-50 sm:text-5xl">
           Learning Web Aryanda
-        </p>
+        </h1>
         <p className="mx-auto mt-4 max-w-2xl text-slate-400">
           Materi belajar dari Obsidian Vault, disajikan sebagai dokumentasi statis —
           dengan navigasi, pencarian, dan tautan antar-catatan yang ter-resolve otomatis.
