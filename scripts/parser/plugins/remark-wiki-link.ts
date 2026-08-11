@@ -1,5 +1,5 @@
 import type { Root, Text, Link, Image } from 'mdast';
-import type { LinkLookup } from '../link-resolver';
+import type { LinkLookup, ResolvedAssetTarget } from '../link-resolver';
 import type { NoteRecord, OutgoingLink } from '../types';
 
 export interface WikiLinkPluginOptions {
@@ -7,6 +7,8 @@ export interface WikiLinkPluginOptions {
   from: NoteRecord;
   /** Called for every resolved internal note link (used for backlinks). */
   onLink?: (link: OutgoingLink) => void;
+  /** Called when a wiki link/embed resolves to an asset (tracks usage). */
+  onAsset?: (target: ResolvedAssetTarget) => void;
   /** Called with the raw target when a wiki link/embed cannot be resolved. */
   onBroken?: (raw: string) => void;
   /** Called for embeds that are neither images nor notes. */
@@ -84,12 +86,23 @@ function buildNode(inner: string, isEmbed: boolean, options: WikiLinkPluginOptio
     const target = options.lookup.resolveEmbed(rawTarget.trim(), options.from);
 
     if (target.kind === 'asset' && target.isImage) {
+      options.onAsset?.(target);
       const image: Image = {
         type: 'image',
         url: target.publicUrl!,
         alt: display,
       };
       return image;
+    }
+
+    if (target.kind === 'asset') {
+      options.onAsset?.(target);
+      const fallback: Link = {
+        type: 'link',
+        url: target.publicUrl!,
+        children: [{ type: 'text', value: `Embed: ${display}` }],
+      };
+      return fallback;
     }
 
     if (target.kind === 'note') {
@@ -132,6 +145,19 @@ function buildNode(inner: string, isEmbed: boolean, options: WikiLinkPluginOptio
     if (options.onLink) {
       options.onLink({ id: target.id, title: target.title, href });
     }
+    return link;
+  }
+
+  if (target.kind === 'asset') {
+    options.onAsset?.(target);
+    const link: Link = {
+      type: 'link',
+      url: target.publicUrl!,
+      children: [{ type: 'text', value: display }],
+    };
+    (link as { data?: Record<string, unknown> }).data = {
+      hProperties: { className: 'wiki-link' },
+    };
     return link;
   }
 

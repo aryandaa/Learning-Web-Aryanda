@@ -782,12 +782,6 @@
       "hash": "sha256:d3ff039fb1c77951623a9718ac5d4c943c029856326bd5e15e2eed38f5e1a746"
     },
     {
-      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/12.jpg",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/12.jpg",
-      "size": 82603,
-      "hash": "sha256:4ea608227b11402ac0cf19f1909891f78598eac19f2e073d8353f858ece9f4d4"
-    },
-    {
       "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/13.jpg",
       "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/13.jpg",
       "size": 124830,
@@ -836,22 +830,10 @@
       "hash": "sha256:39ff420416555d6cc7c78346ac37135897b53ac7065d443ea3609f542b38d6d2"
     },
     {
-      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/3.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/3.png",
-      "size": 18454,
-      "hash": "sha256:a521f5483a0f5ec339f2070ec5f683f3deada191bb51c983aa99b77250cdcb14"
-    },
-    {
       "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/4.png",
       "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/4.png",
       "size": 71037,
       "hash": "sha256:304bcef119a3e8eac6e4cb2928d0f86d1e1de255906f04bcceafac82eaae7abf"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/5.gif",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Framework/React/React Lanjutan/img/5.gif",
-      "size": 35310,
-      "hash": "sha256:94088c732012ac2a71286b33033bd2f41dc0270539c1574b3ba671902bce4810"
     },
     {
       "sourcePath": "Pemrograman/JavaScript/Framework/React/React Lanjutan/img/6.png",
@@ -878,18 +860,6 @@
       "hash": "sha256:3b3aa0452d3d11edbdf7d0a63502202fcdce27fad71ee9f1d945bbd447350a17"
     },
     {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/asinkron.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/asinkron.png",
-      "size": 231553,
-      "hash": "sha256:5010b892a5e08e52fc23e9e861096bf7303d208ee39c4c71aa1bf801b0ebf0a5"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/Encapsulation.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/Encapsulation.png",
-      "size": 69553,
-      "hash": "sha256:b82d74adb0286710653750988bbd2ed6dd199a7fabebd8a123872cffc6d54ca4"
-    },
-    {
       "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/ESLint 1.png",
       "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/ESLint 1.png",
       "size": 162555,
@@ -914,42 +884,6 @@
       "hash": "sha256:2754abb477233af2cb8967ba9046972ebb141f3746dcfc50dc2f48903f09ecc0"
     },
     {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/inheritance.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/inheritance.png",
-      "size": 253015,
-      "hash": "sha256:1691261318a4d8535d55af568c55684c29233f52bf231bbb437f81fac5af8704"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/inheritance2.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/inheritance2.png",
-      "size": 270743,
-      "hash": "sha256:d1fd9aa36b31e152b5b0409d58c83db1e0d6e506d4e916b9fbb96c7dc4dfaa9d"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/ObjectComposition.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/ObjectComposition.png",
-      "size": 1117740,
-      "hash": "sha256:812040f39738c391a1e39e5d8157e734f1b55e0bbeb6e33fcad83ec2e985afc6"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/ParadigmObject.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/ParadigmObject.png",
-      "size": 322984,
-      "hash": "sha256:248ce9fe221dac35432b1cac3ed71dd3e86b047544ac939610eba81d18535dd1"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/Promise.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/Promise.png",
-      "size": 483532,
-      "hash": "sha256:cca35427400aefd47ce054b0226a0ec643b186353a0df476558381603173761d"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/Promise2.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/Promise2.png",
-      "size": 464227,
-      "hash": "sha256:aa278c22a28f7b0aa90167f2f55d7d65c2621d7f6c61b63100ca641511c9344d"
-    },
-    {
       "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/rulesStyle.png",
       "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/rulesStyle.png",
       "size": 76377,
@@ -968,196 +902,10 @@
       "hash": "sha256:2713acc44f40938ab7dd17a8f7f2cc0f065b37b3f96045db89402b47d689b8cd"
     },
     {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/TonggakUtamaDariOop.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/TonggakUtamaDariOop.png",
-      "size": 241240,
-      "hash": "sha256:3273caa9455710fc54f14a17f506053c5b28722440efc9ee606bafd71c5b72dc"
-    },
-    {
       "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/TypeScript.png",
       "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/TypeScript.png",
       "size": 46271,
       "hash": "sha256:bfcceaa03d9a6cb71a753845187e9567202a87b8a7de3f5425d548ebe5b16405"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/img/Worrior.png",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/img/Worrior.png",
-      "size": 102698,
-      "hash": "sha256:c3cde194e52fdffacd701e315f100d7f0b229ea7a84010162b468a640b13e95b"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/Assynchronous.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/Assynchronous.js",
-      "size": 324,
-      "hash": "sha256:3c60fd1b5ce18e60221d3b0ae061c6f76b825f1b8ce7532c2558ecbe07e58f4d"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/Asynchronous/Asynchronous Process.mjs",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/Asynchronous/Asynchronous Process.mjs",
-      "size": 846,
-      "hash": "sha256:d9d245055beeadf37a3d139e47515371d1ce2805308be4349ad89c90ef452b3a"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/Asynchronous/support.mjs",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/Asynchronous/support.mjs",
-      "size": 630,
-      "hash": "sha256:3d550167b0caa6517a9171d7f5faacfcd39ccefc84e2f2834b3c3eaec79d01ee"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment.zip",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment.zip",
-      "size": 12004,
-      "hash": "sha256:ed9d54930fb48fc2749aec63da96872c2a0644bd5e3d04106f58f21a820ece95"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/01-writing-comments/index.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/01-writing-comments/index.js",
-      "size": 111,
-      "hash": "sha256:35142d9fcfd19a793c7d9425f0ef786f0a9a2b03f43fb74849bdbd682ceb1560"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/02-code-style/index.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/02-code-style/index.js",
-      "size": 386,
-      "hash": "sha256:e0a4d91282a7679ac5fb63babe1aeafc9aeee583f68ce861d08418a10f195c86"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/03-writing-test/index.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/03-writing-test/index.js",
-      "size": 56,
-      "hash": "sha256:fca26737200b30f51f5800d02a93d0f9de33142cc17c9a2c4ee3087bd77921d0"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/03-writing-test/index.test.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/03-writing-test/index.test.js",
-      "size": 184,
-      "hash": "sha256:8524ad548e1b86a884ed17321d6395ea93f704bb32dcc2dfc2fd3f09519e0cbc"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/03-writing-test/package.json",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/03-writing-test/package.json",
-      "size": 23,
-      "hash": "sha256:3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-04-oop/Inventory.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-04-oop/Inventory.js",
-      "size": 833,
-      "hash": "sha256:ac6910dd28699b8a0523ebd5b27a94341de9b223343bf439074a1d7df42d1cf5"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-04-oop/Item.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-04-oop/Item.js",
-      "size": 959,
-      "hash": "sha256:696a6e6f74999bc82ac1523a98b45f0f69f14990ac89394e9d2c41126a373d74"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-04-oop/main.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-04-oop/main.js",
-      "size": 971,
-      "hash": "sha256:22647777f15152ad6aa334d5d3628847bc4c351f52a0dc0ad8f53d438411d2c2"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-04-oop/package.json",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-04-oop/package.json",
-      "size": 23,
-      "hash": "sha256:3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-05-recursive/factorial.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-05-recursive/factorial.js",
-      "size": 174,
-      "hash": "sha256:3fe220b9c1df868a32a06252c324b1453289cb0dfe20c18099932f591dacf2c7"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-05-recursive/fibonacci.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-05-recursive/fibonacci.js",
-      "size": 233,
-      "hash": "sha256:5d35ceefa512762f6d88c1066840eac79c9e2381448b5e2f8963f445f2a48bee"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-05-recursive/main.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-05-recursive/main.js",
-      "size": 811,
-      "hash": "sha256:c2d70515bebbfcb14d47a2ee87c628eb24d103ca9f4b6b4f0a58f61ddf312d21"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-05-recursive/package.json",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-05-recursive/package.json",
-      "size": 23,
-      "hash": "sha256:3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-06-full-coverage-testing/index.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-06-full-coverage-testing/index.js",
-      "size": 214,
-      "hash": "sha256:29e176b3e081a0072dcd164c6c9ad60af49842922ce754c37f64394aa77fa343"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-06-full-coverage-testing/index.test.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-06-full-coverage-testing/index.test.js",
-      "size": 834,
-      "hash": "sha256:47477d73b23863cc13a470d2455e29511d9782f9dfe3fe6640f142b0166b78bf"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-06-full-coverage-testing/package.json",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-06-full-coverage-testing/package.json",
-      "size": 23,
-      "hash": "sha256:3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-07-real-world-scenario/main.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-07-real-world-scenario/main.js",
-      "size": 1977,
-      "hash": "sha256:4956b64b20268c8a680a1ff6b439a62bfc70d903d0bc7ee28f271b04da8772b3"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-07-real-world-scenario/orders.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-07-real-world-scenario/orders.js",
-      "size": 1090,
-      "hash": "sha256:97df88ff3b1c40895a550618237378901b8f3ed7fa6e364533f7731fc8197de2"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-07-real-world-scenario/package.json",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/final-assessment/optional-07-real-world-scenario/package.json",
-      "size": 23,
-      "hash": "sha256:3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/FunctionalProggraming.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/FunctionalProggraming.js",
-      "size": 1782,
-      "hash": "sha256:b86023d240b76cdf7b13accea904033621692f8bca8d94c67016f4691c681120"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/Game Character (Object Composition).js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/Game Character (Object Composition).js",
-      "size": 2472,
-      "hash": "sha256:a789fa481238f4fb9f175c5d63c9d19b7fc45108e4ce9cc7ee4d2ff2d1269b0b"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/OOP.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/OOP.js",
-      "size": 1103,
-      "hash": "sha256:e8f1d21f3dc2a718cb7c82436692085979e8e0f7f48afe98e0c41f391ef27729"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/OOP2.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/OOP2.js",
-      "size": 1749,
-      "hash": "sha256:f67fac825b49bb593d2beafed3b44dbe5714b3e35becd3ac21c50040c48bea85"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/Polymorphism Method Override.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/Polymorphism Method Override.js",
-      "size": 1950,
-      "hash": "sha256:2eda42d9a5914fecb507a3cf7d584e87848bd2608d91aeb4e7cfb27b186ead5d"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Advanced/latihan/testingcode.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Advanced/latihan/testingcode.js",
-      "size": 529,
-      "hash": "sha256:13600141641676d20b0c6c4cf22795e9f3e5927ce70b911e27be3f9ef3c3d2ee"
     },
     {
       "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/img/alias.png",
@@ -1218,48 +966,6 @@
       "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/img/try catch.png",
       "size": 80697,
       "hash": "sha256:ae70026e000b0c7c57c786efdb0267f665ce61e1bb36fdbd8809e6eddb9be4e5"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/Latihan/ArrayProcessing.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/Latihan/ArrayProcessing.js",
-      "size": 572,
-      "hash": "sha256:f88e1107d2ab7067b9975d3f1e332849dcd4d7224287e637dbebbed48b966f9d"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/Latihan/BasicLogic.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/Latihan/BasicLogic.js",
-      "size": 627,
-      "hash": "sha256:30e6d18896b86cf8df64e37b0fd1f3637c7e1c6723b2cfcb6b6e0d8b9e597291"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/Latihan/LatihanFunction.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/Latihan/LatihanFunction.js",
-      "size": 1504,
-      "hash": "sha256:be906eae992874a69357543b88e37c732657cc7c20e5c8eb8dfb4aa6710407df"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/Latihan/Loop.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/Latihan/Loop.js",
-      "size": 632,
-      "hash": "sha256:ef1c74b5f9b2ad5bd26b71b68beaf01569c83e1e0329f054a357da7826fce31c"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/Latihan/Module/main.mjs",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/Latihan/Module/main.mjs",
-      "size": 384,
-      "hash": "sha256:f4f413e1440ab24c23872d211a266c0ed3ebc64893ab4890c9a3883b4dcc936f"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/Latihan/Module/utils.mjs",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/Latihan/Module/utils.mjs",
-      "size": 329,
-      "hash": "sha256:14c6cddefc2efc09a8b7a592f86f6bc5642abca1b03253b76bcfc5f051b0dba4"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript Dasar/Latihan/ObjectManipulation.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript Dasar/Latihan/ObjectManipulation.js",
-      "size": 610,
-      "hash": "sha256:546e7f4659b354b5be6e57c4e7abe84d42d1d2ee12d1149c30353bfce9eb3bd5"
     },
     {
       "sourcePath": "Pemrograman/JavaScript/Javascript For Backend/Img/1.png",
@@ -1596,24 +1302,6 @@
       "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/img/WindowEvents.png",
       "size": 50665,
       "hash": "sha256:eca30ffe789f540e719e7d7d46c2b0d0b1b12cadc7d60c7a68a8117b7602e36c"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/latihan/bookshelf-app-starter-project.zip",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/latihan/bookshelf-app-starter-project.zip",
-      "size": 3461,
-      "hash": "sha256:2a8ab12c046b7f21ca95dcbda667cfb1a80310330a2cc77dc7a61a2d5a387786"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/latihan/bookshelf-app-starter-project/index.html",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/latihan/bookshelf-app-starter-project/index.html",
-      "size": 3798,
-      "hash": "sha256:996eae361211b877895b3cc1a767aca39b2b52e24e0f637c0f76198cfbfbf3d2"
-    },
-    {
-      "sourcePath": "Pemrograman/JavaScript/Javascript For Frontend/latihan/bookshelf-app-starter-project/main.js",
-      "publicPath": "/assets/vault/Pemrograman/JavaScript/Javascript For Frontend/latihan/bookshelf-app-starter-project/main.js",
-      "size": 3961,
-      "hash": "sha256:65c65a62a7630dde3fc9d9383236088bfb74499845eb2bbb3d6b73c671d92fbc"
     },
     {
       "sourcePath": "Pemrograman/Python/Python Dasar/image/Slicing.png",

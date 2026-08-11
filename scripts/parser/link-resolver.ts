@@ -16,6 +16,8 @@ export interface ResolvedNoteTarget {
 export interface ResolvedAssetTarget {
   kind: 'asset';
   publicUrl: string;
+  /** Vault-relative source path, used to track referenced assets. */
+  sourcePath: string;
   isImage: boolean;
 }
 
@@ -83,6 +85,7 @@ export class LinkLookup {
     return {
       kind: 'asset',
       publicUrl: `${this.options.assetPublicPrefix}/${rel}`,
+      sourcePath: rel,
       isImage,
     };
   }
@@ -129,6 +132,15 @@ export class LinkLookup {
     }
 
     if (record) return this.noteTarget(record, anchor);
+
+    // `[[file.pdf]]` (non-embed) still links to the asset in Obsidian.
+    const assetByPath = this.assetsByPath.get(norm);
+    if (assetByPath) return this.assetTarget(assetByPath.relativePath, assetByPath.isImage);
+    const byNameAsset = this.assetsByName.get(target.toLowerCase());
+    if (byNameAsset && byNameAsset.length > 0) {
+      return this.assetTarget(byNameAsset[0].relativePath, byNameAsset[0].isImage);
+    }
+
     return { kind: 'broken', raw };
   }
 

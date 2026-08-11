@@ -11,6 +11,12 @@ export class ParserContext {
   snapshot: VaultSnapshot | null = null;
   /** Navigation tree, built during the resolve stage. */
   tree: TreeFolderNode[] | null = null;
+  /**
+   * Vault-relative paths of assets actually referenced by rendered notes.
+   * Asset copying only keeps these (spec-free optimization: nothing else
+   * is ever displayed, so nothing else is published).
+   */
+  referencedAssets = new Set<string>();
   warnings: Warnings = {
     duplicatePaths: [],
     brokenWikiLinks: [],

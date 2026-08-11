@@ -4,8 +4,9 @@ import type { ParserContext } from './context';
 import type { AssetManifestEntry } from './types';
 
 /**
- * Copies every vault asset into generated/assets/<relative path>
- * (spec §30-31) and returns the manifest entries.
+ * Copies vault assets that are actually referenced by rendered notes into
+ * generated/assets/<relative path> (spec §30-31, optimized): unreferenced
+ * assets are never displayed anywhere, so they are not published.
  */
 export async function copyAssets(context: ParserContext): Promise<AssetManifestEntry[]> {
   const generatedRoot = path.join(process.cwd(), 'generated');
@@ -14,8 +15,15 @@ export async function copyAssets(context: ParserContext): Promise<AssetManifestE
   await fs.mkdir(assetsDir, { recursive: true });
 
   const manifest: AssetManifestEntry[] = [];
+  const { referencedAssets } = context;
+  let skipped = 0;
 
   for (const asset of context.snapshot!.assets) {
+    if (!referencedAssets.has(asset.relativePath)) {
+      skipped += 1;
+      continue;
+    }
+
     const destAbs = path.join(assetsDir, asset.relativePath);
     await fs.mkdir(path.dirname(destAbs), { recursive: true });
     await fs.copyFile(asset.absolutePath, destAbs);
@@ -25,6 +33,10 @@ export async function copyAssets(context: ParserContext): Promise<AssetManifestE
       size: asset.size,
       hash: asset.hash,
     });
+  }
+
+  if (skipped > 0) {
+    console.log(`Assets: ${manifest.length} referenced copied, ${skipped} unreferenced skipped`);
   }
 
   return manifest;

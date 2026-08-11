@@ -1,16 +1,26 @@
 import type { Root, Element } from 'hast';
-import type { LinkLookup } from '../link-resolver';
+import type { LinkLookup, ResolvedAssetTarget } from '../link-resolver';
 import type { NoteRecord, OutgoingLink } from '../types';
 
 export interface FixLinksOptions {
   lookup: LinkLookup;
   from: NoteRecord;
   onLink?: (link: OutgoingLink) => void;
+  /** Called when a link/image resolves to an asset (tracks usage). */
+  onAsset?: (target: ResolvedAssetTarget) => void;
   onBrokenLink?: (href: string) => void;
   onMissingImage?: (src: string) => void;
 }
 
-const MD_LINK_RE = /\.md(?:#|$)/i;
+/** Relative hrefs worth resolving: vault paths, not protocols/anchors/absolute. */
+function isRelativeTarget(href: string): boolean {
+  return (
+    !/^[a-z][a-z0-9+.-]*:/i.test(href) && // protocol (http:, mailto:, ...)
+    !href.startsWith('#') &&
+    !href.startsWith('/') &&
+    href.trim().length > 0
+  );
+}
 
 function visitElements(node: unknown, callback: (element: Element) => void): void {
   if (!node || typeof node !== 'object') return;
@@ -49,7 +59,7 @@ export function rehypeFixLinks(options: FixLinksOptions) {
 
         if (element.tagName === 'a') {
           const href = props.href;
-          if (typeof href === 'string' && MD_LINK_RE.test(href)) {
+          if (typeof href === 'string' && isRelativeTarget(href)) {
             const target = options.lookup.resolveMarkdownPath(href, options.from);
             if (target.kind === 'note') {
               const url = `/docs/${target.id}${target.anchor ? `#${target.anchor}` : ''}`;
@@ -57,6 +67,10 @@ export function rehypeFixLinks(options: FixLinksOptions) {
               if (options.onLink) {
                 options.onLink({ id: target.id, title: target.title, href: url });
               }
+            } else if (target.kind === 'asset') {
+              props.href = target.publicUrl;
+              setClass(element, 'wiki-link');
+              options.onAsset?.(target);
             } else {
               props.href = '#';
               setClass(element, 'wiki-link');
@@ -68,11 +82,12 @@ export function rehypeFixLinks(options: FixLinksOptions) {
 
         if (element.tagName === 'img') {
           const src = props.src;
-          if (typeof src === 'string' && !/^(https?:)?\/\//.test(src) && !src.startsWith('/')) {
+          if (typeof src === 'string' && isRelativeTarget(src)) {
             const target = options.lookup.resolveMarkdownPath(src, options.from);
             if (target.kind === 'asset') {
               props.src = target.publicUrl;
               props.loading = 'lazy';
+              options.onAsset?.(target);
             } else {
               options.onMissingImage?.(src);
             }

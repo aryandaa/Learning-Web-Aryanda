@@ -98,6 +98,7 @@ async function renderOne(context: ParserContext, record: NoteRecord, lookup: Lin
       lookup,
       from: record,
       onLink: (link) => links.push(link),
+      onAsset: (target) => context.referencedAssets.add(target.sourcePath),
       onBroken: (raw) => {
         broken.push(raw);
         context.warn('brokenWikiLinks', `${record.relativePath} -> [[${raw}]]`);
@@ -116,6 +117,7 @@ async function renderOne(context: ParserContext, record: NoteRecord, lookup: Lin
       lookup,
       from: record,
       onLink: (link) => links.push(link),
+      onAsset: (target) => context.referencedAssets.add(target.sourcePath),
       onBrokenLink: (href) => {
         broken.push(href);
         context.warn('brokenWikiLinks', `${record.relativePath} -> []( ${href} )`);
