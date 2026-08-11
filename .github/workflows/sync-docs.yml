@@ -15,6 +15,8 @@ jobs:
       VAULT_REPO_URL: ${{ github.event.client_payload.repo_clone_url || github.event.client_payload.repoCloneUrl || 'https://github.com/aryandaa/Obsidian-Vault.git' }}
       VAULT_COMMIT: ${{ github.event.client_payload.vaultCommit || github.event.client_payload.vault_commit || '' }}
       VAULT_BRANCH: ${{ github.event.client_payload.vaultBranch || github.event.client_payload.vault_branch || 'main' }}
+      # Direktori hasil clone vault (dipakai step parse).
+      VAULT_DIR: /tmp/vault-clone
       # Token Fine-grained PAT, Contents: Read-only ke aryandaa/Obsidian-Vault.
       # Hanya dipakai di dalam run script — tidak pernah di-echo ke log.
       OBSIDIAN_VAULT_TOKEN: ${{ secrets.OBSIDIAN_VAULT_TOKEN }}
@@ -71,7 +73,12 @@ jobs:
           fi
 
       - name: Parse vault into generated site data
-        run: npm run parse -- --vault /tmp/vault-clone --commit="${{ env.VAULT_COMMIT }}" --branch="${{ env.VAULT_BRANCH }}"
+        # Parser hanya menerima format --key=value, jadi semua opsi pakai '='.
+        run: |
+          npm run parse -- \
+            --vault="$VAULT_DIR" \
+            --commit="$VAULT_COMMIT" \
+            --branch="$VAULT_BRANCH"
 
       - name: Validate generated output
         run: |
