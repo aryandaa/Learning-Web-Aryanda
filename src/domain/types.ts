@@ -1,0 +1,87 @@
+/**
+ * Frontend mirror of the generated artifacts (scripts/parser/types.ts).
+ */
+
+export interface TreeFileNode {
+  type: 'file';
+  title: string;
+  slug: string;
+  id: string;
+  relativePath: string;
+  outputPath: string;
+}
+
+export interface TreeFolderNode {
+  type: 'folder';
+  name: string;
+  relativePath: string;
+  children: TreeNode[];
+}
+
+export type TreeNode = TreeFolderNode | TreeFileNode;
+
+export interface MetadataFile {
+  schemaVersion: number;
+  parserVersion: string;
+  generatedAt: string;
+  vaultCommit: string | null;
+  vaultBranch: string | null;
+  totalNotes: number;
+  totalFolders: number;
+  warningsCount: number;
+  brokenLinksCount: number;
+}
+
+export interface SearchIndexEntry {
+  id: string;
+  title: string;
+  slug: string;
+  relativePath: string;
+  folder: string;
+  tags: string[];
+  aliases: string[];
+  headings: string[];
+  content: string;
+  excerpt: string;
+}
+
+export interface Heading {
+  depth: number;
+  text: string;
+  id: string;
+}
+
+export interface DocLink {
+  id: string;
+  title: string;
+  href: string;
+}
+
+export interface Backlink {
+  id: string;
+  title: string;
+}
+
+export interface DocumentData {
+  schemaVersion?: number;
+  id: string;
+  title: string;
+  slug: string;
+  relativePath: string;
+  folder: string;
+  html: string;
+  content: string;
+  tags: string[];
+  aliases: string[];
+  headings: Heading[];
+  breadcrumb: string[];
+  readingTime: number;
+  updated: string | null;
+  contentHash: string;
+  outputPath: string;
+  links: DocLink[];
+  backlinks: Backlink[];
+  brokenLinks: string[];
+  previous: string | null;
+  next: string | null;
+}

@@ -1,0 +1,92 @@
+import fs from 'fs/promises';
+import path from 'path';
+import type { ParserContext } from './context';
+import type { ParseResult } from './types';
+
+/**
+ * Publishes generated/ into public/ (spec §13).
+ *
+ * SAFETY GUARANTEES (spec §42):
+ * - only public/docs and public/assets/vault are touched
+ * - both target dirs are fully replaced (stale files removed)
+ * - other public/ files (favicon, 404.html, ...) are never touched
+ * - fails loudly if any markdown file would end up in the output
+ */
+export async function publishToPublic(context: ParserContext, result: ParseResult): Promise<void> {
+  const cwd = process.cwd();
+  const generatedRoot = path.join(cwd, 'generated');
+  const publicDocs = path.join(cwd, 'public', 'docs');
+  const publicAssets = path.join(cwd, 'public', 'assets', 'vault');
+
+  // Replace public/docs entirely.
+  await fs.rm(publicDocs, { recursive: true, force: true });
+  await fs.mkdir(publicDocs, { recursive: true });
+  await copyDir(path.join(generatedRoot, 'docs'), publicDocs);
+
+  // Replace public/assets/vault entirely.
+  await fs.rm(publicAssets, { recursive: true, force: true });
+  await fs.mkdir(publicAssets, { recursive: true });
+  const generatedAssets = path.join(generatedRoot, 'assets');
+  if (await exists(generatedAssets)) {
+    await copyDir(generatedAssets, publicAssets);
+  }
+
+  // warnings.json lives in public/docs for the frontend.
+  const warningsSrc = path.join(generatedRoot, 'warnings.json');
+  if (await exists(warningsSrc)) {
+    await fs.copyFile(warningsSrc, path.join(publicDocs, 'warnings.json'));
+  }
+
+  // Safety: no markdown may ever reach the public output.
+  const leaked = await findMarkdown(publicDocs);
+  const leakedAssets = await findMarkdown(publicAssets);
+  const allLeaked = [...leaked, ...leakedAssets];
+  if (allLeaked.length > 0) {
+    throw new Error(
+      `SAFETY: markdown files would be published: ${allLeaked.join(', ')}`
+    );
+  }
+
+}
+
+async function copyDir(src: string, dest: string): Promise<void> {
+  const entries = await fs.readdir(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const s = path.join(src, entry.name);
+    const d = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      await fs.mkdir(d, { recursive: true });
+      await copyDir(s, d);
+    } else if (entry.isFile()) {
+      await fs.copyFile(s, d);
+    }
+  }
+}
+
+async function exists(p: string): Promise<boolean> {
+  try {
+    await fs.access(p);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function findMarkdown(root: string): Promise<string[]> {
+  const found: string[] = [];
+  async function walk(dir: string): Promise<void> {
+    let entries;
+    try {
+      entries = await fs.readdir(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      const abs = path.join(dir, entry.name);
+      if (entry.isDirectory()) await walk(abs);
+      else if (/\.md$/i.test(entry.name)) found.push(abs);
+    }
+  }
+  await walk(root);
+  return found;
+}

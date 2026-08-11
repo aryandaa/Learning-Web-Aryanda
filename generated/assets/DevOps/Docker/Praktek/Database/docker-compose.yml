@@ -1,0 +1,32 @@
+services:
+  mongo:
+    container_name: mongo
+    image: mongo:7
+    ports:  
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    networks: 
+      - python_network
+
+  app-python:
+    container_name: app-python
+    image: aryanda/app-python:compose
+    ports: 
+    - 8080:5000
+    depends_on: 
+    - mongo
+    environment:
+      NAMA: Aryanda
+      DB_HOST: mongo
+      DB_PORT: 27017
+      DB_USER: root
+      DB_PASS: 123456
+    networks: 
+      - python_network
+
+
+networks:
+  python_network: 
+    name: python_network

@@ -4,3 +4,6 @@ dist/
 .DS_Store
 .env
 .vscode/
+
+# Aset vault boleh berisi file bernama .env (sample Docker, dll.)
+!public/assets/vault/**/.env

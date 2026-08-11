@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Belajar React</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Coba Prakteknya di sini -->
+    <script type="text/markdown" id="source">
+      function SayHello(props) {
+          const nama = props.nama;
+          const asal = props.asal;
+          return (
+            <div>Hello nama ku {nama}, asal ku dari {asal}</div>
+          );
+      }
+
+      // Cara menampilkannya ke layar
+      function App() {
+        return (
+          <div>
+            <SayHello nama="yanda" asal="bjm"/>
+            <SayHello nama="adit" asal="kandangan"/>
+            <SayHello nama="andika" asal="alalak"/>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+
+    <script>
+      // Boilerplate untuk menjalankan Babel di browser
+      const script = document.getElementById('source');
+      const compiled = Babel.transform(script.innerHTML, { presets: ['react'] }).code;
+      eval(compiled);
+    </script>
+  </body>
+</html>
