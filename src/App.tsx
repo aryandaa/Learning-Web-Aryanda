@@ -18,7 +18,7 @@ function App() {
           <Route path="/docs/*" element={<DocumentPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/graph" element={<GraphPage />} />
-          <Route path="/roadmap" element={<RoadmapPage />} />
+          <Route path="/roadmap/:id?" element={<RoadmapPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>

@@ -62,6 +62,21 @@ body {
   @apply bg-slate-700;
 }
 
+/* scrollbar tipis untuk strip horizontal (badge subskill) */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-slate-800;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-700;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 /* ============================================================
    Dokumen (konten yang disanitasi saat parsing)
    ============================================================ */

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ChevronRight, ExternalLink, FolderTree, RefreshCw, Star } from 'lucide-react';
 import { useSiteData } from '../app/SiteProvider';
 import { BranchTree } from '../components/roadmap/BranchTree';
@@ -89,7 +89,10 @@ export default function RoadmapPage() {
   const [roadmaps, setRoadmaps] = useState<RoadmapsData | null>(null);
   const [graph, setGraph] = useState<GraphData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  // Seleksi datang dari URL (/roadmap/:id), jadi badge di halaman lain
+  // (mis. /docs) bisa langsung mengarahkan ke subskill tertentu.
+  const { id: urlId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let cancelled = false;
@@ -98,8 +101,6 @@ export default function RoadmapPage() {
         if (cancelled) return;
         setRoadmaps(roadmapsData);
         setGraph(graphData);
-        const groups = buildSidebarGroups(roadmapsData);
-        setSelectedId(groups[0]?.items[0]?.id ?? null);
       })
       .catch((err) => {
         if (!cancelled) setError((err as Error).message);
@@ -112,7 +113,15 @@ export default function RoadmapPage() {
   const groups = useMemo(() => (roadmaps ? buildSidebarGroups(roadmaps) : []), [roadmaps]);
   const allItems = useMemo(() => groups.flatMap((g) => g.items), [groups]);
 
-  const selected = allItems.find((item) => item.id === selectedId) ?? allItems[0] ?? null;
+  // Item aktif: dari URL kalau valid, fallback ke item pertama.
+  const selected = useMemo(() => {
+    if (allItems.length === 0) return null;
+    if (urlId) {
+      const found = allItems.find((item) => item.id === urlId);
+      if (found) return found;
+    }
+    return allItems[0];
+  }, [allItems, urlId]);
   const selectedGroup = groups.find((g) => g.items.some((item) => item.id === selected?.id)) ?? null;
 
   const selectedRoadmaps = useMemo<RoadmapInfo[]>(() => {
@@ -130,7 +139,7 @@ export default function RoadmapPage() {
   if (error) {
     return (
       <div className="mx-auto max-w-2xl py-16 text-center text-sm text-slate-400">
-        {error} — jalankan parser untuk membuat roadmaps.json & graph.json.
+        {error}. Jalankan parser untuk membuat roadmaps.json & graph.json.
       </div>
     );
   }
@@ -177,7 +186,7 @@ export default function RoadmapPage() {
               {group.items.map((item) => (
                 <li key={item.id}>
                   <button
-                    onClick={() => setSelectedId(item.id)}
+                    onClick={() => navigate(`/roadmap/${item.id}`)}
                     className={cn(
                       'flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-sm transition-colors',
                       selected?.id === item.id
@@ -268,7 +277,7 @@ export default function RoadmapPage() {
       <div className="fixed bottom-4 left-1/2 z-30 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 md:hidden">
         <select
           value={selected?.id ?? ''}
-          onChange={(e) => setSelectedId(e.target.value)}
+          onChange={(e) => navigate(`/roadmap/${e.target.value}`)}
           className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-200 shadow-2xl focus:border-emerald-500 focus:outline-none"
         >
           {groups.map((group) => (
