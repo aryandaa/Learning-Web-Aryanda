@@ -3,6 +3,11 @@ import type { PluginLifecycle } from './plugins';
 export interface ParserConfig {
   /** Files/dirs that are never scanned. */
   ignored: string[];
+  /**
+   * Folders (by name, any depth) excluded entirely from the website —
+   * notes, subfolders, and assets inside them are skipped.
+   */
+  excludeFolders: string[];
   /** Extensions treated as documents. */
   markdownExtensions: string[];
   /** Extensions treated as copyable assets. */
@@ -20,6 +25,8 @@ export interface ParserConfig {
 
 export const defaultConfig: ParserConfig = {
   ignored: ['.git', '.obsidian', '.github', '.trash', 'node_modules', 'vendor', '.DS_Store', '.gitignore'],
+  // Catatan pribadi tidak ditampilkan di website.
+  excludeFolders: ['Note Personal'],
   markdownExtensions: ['.md', '.markdown'],
   assetExtensions: [
     '.png',

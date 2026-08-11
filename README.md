@@ -52,8 +52,11 @@ Opsi tambahan:
 ```bash
 npm run parse -- --vault=/path/ke/vault \
   --commit=<sha> --branch=main \
+  --exclude="Folder A" --exclude="Folder B" \
   --no-publish --no-assets
 ```
+
+`--exclude` mengecualikan seluruh folder (beserta isinya) dari website — berguna untuk catatan pribadi. Folder `Note Personal` sudah dikecualikan secara default di `scripts/parser/parser.config.ts`.
 
 Variabel lingkungan fallback: `VAULT_PATH`, `VAULT_COMMIT`, `VAULT_BRANCH`, `GENERATED_DIR`.
 

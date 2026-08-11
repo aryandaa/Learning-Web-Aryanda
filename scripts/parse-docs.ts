@@ -19,6 +19,7 @@ interface CliArgs {
   out: string | null;
   noPublish: boolean;
   noAssets: boolean;
+  excludes: string[];
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -29,6 +30,7 @@ function parseArgs(argv: string[]): CliArgs {
     out: null,
     noPublish: false,
     noAssets: false,
+    excludes: [],
   };
 
   for (const arg of argv) {
@@ -36,6 +38,7 @@ function parseArgs(argv: string[]): CliArgs {
     else if (arg.startsWith('--commit=')) args.commit = arg.slice('--commit='.length);
     else if (arg.startsWith('--branch=')) args.branch = arg.slice('--branch='.length);
     else if (arg.startsWith('--out=')) args.out = arg.slice('--out='.length);
+    else if (arg.startsWith('--exclude=')) args.excludes.push(arg.slice('--exclude='.length));
     else if (arg === '--no-publish') args.noPublish = true;
     else if (arg === '--no-assets') args.noAssets = true;
   }
@@ -68,6 +71,7 @@ async function main(): Promise<void> {
     generatedDir: out ?? undefined,
     skipPublish: args.noPublish,
     skipAssets: args.noAssets,
+    excludeFolders: args.excludes,
   });
 
   const summary: ParseSummary = {

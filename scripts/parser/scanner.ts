@@ -31,6 +31,7 @@ export async function scanVault(context: ParserContext): Promise<VaultSnapshot> 
 
     for (const entry of entries) {
       if (isIgnored(context, entry.name)) continue;
+      if (entry.isDirectory() && context.config.excludeFolders.includes(entry.name)) continue;
 
       const abs = path.join(dirAbs, entry.name);
       const relPath = rel ? `${rel}/${entry.name}` : entry.name;

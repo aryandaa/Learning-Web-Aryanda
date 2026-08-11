@@ -20,6 +20,8 @@ export interface RunParserOptions {
   generatedDir?: string;
   skipPublish?: boolean;
   skipAssets?: boolean;
+  /** Additional folder names to exclude from the output. */
+  excludeFolders?: string[];
   plugins?: PluginLifecycle[];
 }
 
@@ -32,6 +34,11 @@ export async function runParser(options: RunParserOptions): Promise<ParseResult>
   const config: ParserConfig = {
     ...defaultConfig,
     ...options.config,
+    excludeFolders: [
+      ...defaultConfig.excludeFolders,
+      ...(options.config?.excludeFolders ?? []),
+      ...(options.excludeFolders ?? []),
+    ],
     plugins: [...defaultConfig.plugins, ...(options.plugins ?? [])],
   };
 
