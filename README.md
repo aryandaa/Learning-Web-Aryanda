@@ -182,14 +182,15 @@ Frontend **mendeteksi root path secara otomatis** (`src/lib/base.ts`), jadi situ
 baik di root domain maupun subpath seperti `https://user.github.io/Learning-Web-Aryanda/` —
 tidak perlu mengubah `base` di `vite.config.ts`.
 
-`public/404.html` + restore route di `main.tsx` memastikan deep link
-(contoh `/docs/pemrograman/php/routing`) tetap berfungsi di hosting statis apa pun.
+Di Vercel, deep link (contoh `/docs/pemrograman/php/routing`) ditangani oleh
+`rewrites` di `vercel.json` yang mengarahkan semua request ke `index.html` —
+tidak perlu file 404 khusus.
 
 ## Safety guarantees
 
 - Vault hanya **dibaca**; tidak ada penulisan balik ke Obsidian.
 - Markdown vault tidak pernah masuk ke repository website.
-- Publisher hanya menyentuh `public/docs/` dan `public/assets/vault/` — file lain (favicon, 404.html) aman.
+- Publisher hanya menyentuh `public/docs/` dan `public/assets/vault/` — file lain (favicon) aman.
 - Duplicate id/path menghentikan generation (fatal).
 - HTML disanitasi saat parsing (rehype-sanitize) sebelum dirender.
 
