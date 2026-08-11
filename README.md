@@ -131,7 +131,7 @@ Dokumen JSON contoh:
 
 ### Di repository Obsidian (sekali setup)
 
-File `.github/workflows/dispatch-website-sync.yml` (sudah tersedia di folder ini sebagai referensi — salin ke vault).
+File `.github/workflows/dispatch-website-sync.yml` (template ada di riwayat commit repository website — sengaja dihapus dari repo website agar tidak ikut berjalan saat push; salin ke vault).
 
 Secrets yang dibutuhkan di vault:
 
