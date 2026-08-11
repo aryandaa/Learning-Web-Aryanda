@@ -67,7 +67,7 @@ Parser melakukan:
 3. **Index** — frontmatter, judul, tag, alias, heading, reading time, excerpt.
 4. **Resolve** — lookup wiki link + urutan prev/next (DFS).
 5. **Render** — Markdown → HTML (GFM, task list, KaTeX, syntax highlighting, callouts, wiki links, embeds) yang **disanitasi** dengan rehype-sanitize.
-6. **Copy assets** — semua file non-Markdown → `generated/assets/`.
+6. **Copy assets** — hanya menyalin aset yang **benar-benar direferensikan** dokumen (`![[img.png]]`, `![alt](img.png)`, `[[file.pdf]]`) ke `generated/assets/`. Aset yang tidak dipakai tidak pernah ditampilkan, jadi tidak di-publish (hemat ukuran).
 7. **Write** — `generated/docs/<struktur vault>/*.json`, `tree.json`, `search-index.json`, `metadata.json`, `assets/manifest.json`, `warnings.json`.
 8. **Publish** — salin ke `public/docs/` dan `public/assets/vault/` (hanya dua direktori itu yang disentuh).
 
