@@ -69,14 +69,6 @@ export function RoadmapFlow({ roadmap, scopedGraph }: RoadmapFlowProps) {
     return map;
   }, [scopedGraph.links, roadmap.id, nodeInfo]);
 
-  // file terhubung dari luar daftar langkah
-  const outsideFiles = useMemo<Step[]>(() => {
-    const stepIds = new Set(roadmap.stepIds);
-    return scopedGraph.nodes
-      .filter((n) => !stepIds.has(n.id) && n.id !== roadmap.id)
-      .map((n) => ({ id: n.id, title: n.title, folder: n.folder }));
-  }, [scopedGraph.nodes, roadmap.stepIds, roadmap.id]);
-
   const stages: Step[][] = [];
   for (let i = 0; i < steps.length; i += STAGE_SIZE) {
     stages.push(steps.slice(i, i + STAGE_SIZE));
@@ -148,33 +140,7 @@ export function RoadmapFlow({ roadmap, scopedGraph }: RoadmapFlowProps) {
         ))}
       </div>
 
-      {/* file terhubung dari luar daftar langkah */}
-      {outsideFiles.length > 0 && (
-        <div className="mt-8">
-          <p className="mb-3 flex items-center gap-2 text-sm font-medium text-slate-300">
-            <GitBranch className="h-4 w-4 text-slate-500" />
-            Juga terhubung
-            <span className="rounded-md bg-slate-800 px-1.5 py-0.5 text-xs tabular-nums text-slate-400">
-              {outsideFiles.length}
-            </span>
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {outsideFiles.map((file) => (
-              <Link
-                key={file.id}
-                to={`/docs/${file.id}`}
-                className="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/70 px-3 py-2 transition-colors hover:border-slate-600 hover:bg-slate-800/80"
-              >
-                <span
-                  className="h-2.5 w-2.5 rounded-full"
-                  style={{ backgroundColor: folderColor(file.folder) }}
-                />
-                <span className="text-sm text-slate-200">{file.title}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* file terhubung dari luar daftar langkah (dihapus sesuai permintaan) */}
     </div>
   );
 }
