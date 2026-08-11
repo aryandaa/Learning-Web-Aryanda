@@ -9,9 +9,15 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     env:
-      VAULT_COMMIT: ${{ github.event.client_payload.vault_commit || github.sha }}
-      VAULT_BRANCH: ${{ github.event.client_payload.vault_branch || 'main' }}
-      VAULT_REPO_URL: ${{ github.event.client_payload.repo_clone_url || 'https://github.com/aryandaa/Obsidian-Vault.git' }}
+      # Repository/branch/commit dari payload repository_dispatch yang dikirim
+      # Obsidian-Vault (vaultCommit/vaultBranch). Fallback snake_case untuk
+      # kompatibilitas, dan default hanya untuk workflow_dispatch manual.
+      VAULT_REPO_URL: ${{ github.event.client_payload.repo_clone_url || github.event.client_payload.repoCloneUrl || 'https://github.com/aryandaa/Obsidian-Vault.git' }}
+      VAULT_COMMIT: ${{ github.event.client_payload.vaultCommit || github.event.client_payload.vault_commit || '' }}
+      VAULT_BRANCH: ${{ github.event.client_payload.vaultBranch || github.event.client_payload.vault_branch || 'main' }}
+      # Token Fine-grained PAT, Contents: Read-only ke aryandaa/Obsidian-Vault.
+      # Hanya dipakai di dalam run script — tidak pernah di-echo ke log.
+      OBSIDIAN_VAULT_TOKEN: ${{ secrets.OBSIDIAN_VAULT_TOKEN }}
 
     steps:
       - name: Checkout website repository
@@ -28,13 +34,41 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Clone vault (shallow, pinned to dispatch commit)
+      - name: Clone vault (pinned to dispatch commit, authenticated)
         run: |
+          set -euo pipefail
           rm -rf /tmp/vault-clone
-          git clone --depth 1 --branch "${{ env.VAULT_BRANCH }}" "${{ env.VAULT_REPO_URL }}" /tmp/vault-clone
+
+          # Bangun URL ber-autentikasi hanya untuk github.com. URL yang berisi
+          # token tidak pernah dicetak; GitHub Actions juga otomatis mem-mask
+          # nilai secret di log sebagai lapisan pengaman kedua.
+          case "$VAULT_REPO_URL" in
+            https://github.com/*)
+              AUTH_URL="https://x-access-token:${OBSIDIAN_VAULT_TOKEN}@github.com/${VAULT_REPO_URL#https://github.com/}"
+              ;;
+            *)
+              AUTH_URL="$VAULT_REPO_URL"
+              ;;
+          esac
+
+          git init -q /tmp/vault-clone
           cd /tmp/vault-clone
-          git fetch --depth 1 origin "${{ env.VAULT_COMMIT }}" || true
-          git checkout --detach "${{ env.VAULT_COMMIT }}" 2>/dev/null || true
+          git remote add origin "$AUTH_URL"
+
+          if [ -n "$VAULT_COMMIT" ]; then
+            # Proses persis commit dari payload (vaultCommit) — bukan HEAD main.
+            # Gagal keras kalau commit tidak bisa di-fetch, sehingga parser
+            # tidak pernah memproses versi vault yang salah.
+            git fetch --depth 1 --no-tags origin "$VAULT_COMMIT"
+            git checkout --detach FETCH_HEAD
+            echo "Vault pinned to commit: ${VAULT_COMMIT}"
+          else
+            # Fallback workflow_dispatch manual: pin HEAD branch ke SHA-nya.
+            git fetch --depth 1 --no-tags origin "$VAULT_BRANCH"
+            git checkout --detach FETCH_HEAD
+            echo "VAULT_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+            echo "Vault pinned to branch HEAD: $(git rev-parse HEAD)"
+          fi
 
       - name: Parse vault into generated site data
         run: npm run parse -- --vault /tmp/vault-clone --commit="${{ env.VAULT_COMMIT }}" --branch="${{ env.VAULT_BRANCH }}"
