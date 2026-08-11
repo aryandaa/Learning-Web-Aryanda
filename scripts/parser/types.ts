@@ -147,6 +147,19 @@ export interface GraphData {
   links: GraphEdge[];
 }
 
+export interface RoadmapInfo {
+  id: string;
+  title: string;
+  folder: string;
+  /** Langkah belajar = tautan keluar file roadmap, sesuai urutan di materi. */
+  stepIds: string[];
+}
+
+export interface RoadmapsData {
+  schemaVersion: number;
+  roadmaps: RoadmapInfo[];
+}
+
 export interface Warnings {
   duplicatePaths: string[];
   brokenWikiLinks: string[];
@@ -179,6 +192,7 @@ export interface ParseResult {
   tree: TreeFolderNode[];
   searchIndex: SearchIndexEntry[];
   graph: GraphData;
+  roadmaps: RoadmapsData;
   metadata: MetadataFile;
   warnings: Warnings;
   assets: AssetManifestEntry[];

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { BookOpen, Menu, Network, Search, X } from 'lucide-react';
+import { BookOpen, Map, Menu, Network, Search, X } from 'lucide-react';
 import { useSiteData } from './SiteProvider';
 import { TreeExplorer } from '../components/explorer/TreeExplorer';
 import { cn } from '../lib/utils';
@@ -67,6 +67,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <nav className="ml-6 flex items-center gap-1">
             <NavLink to="/docs" className={navLinkClass}>
               Docs
+            </NavLink>
+            <NavLink to="/roadmap" className={navLinkClass}>
+              <span className="flex items-center gap-1">
+                <Map className="h-3.5 w-3.5" />
+                Roadmap
+              </span>
             </NavLink>
             <NavLink to="/graph" className={navLinkClass}>
               <span className="flex items-center gap-1">

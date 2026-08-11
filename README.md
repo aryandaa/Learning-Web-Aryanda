@@ -86,6 +86,7 @@ Halaman:
 - `/docs/<id>` — dokumen (id = path normalized, mis. `/docs/pemrograman/php/routing`)
 - `/search` — pencarian fuzzy (index dimuat lazy)
 - `/graph` — **graph view** (gaya Obsidian): sambungan antar-catatan, hover untuk sorot tetangga, klik node untuk membuka catatan, drag/scroll untuk geser/zoom
+- `/roadmap` — **halaman roadmap** (gaya roadmap.sh): file bertag `#roadmap` + urutan materi yang terhubung, ditampilkan sebagai tahapan belajar
 
 ## Generated artifacts
 
@@ -95,6 +96,7 @@ generated/
 │   ├── tree.json               # struktur folder recursive (dari vault)
 │   ├── search-index.json       # index Fuse.js
 │   ├── graph.json              # nodes + edges untuk graph view
+│   ├── roadmaps.json           # file #roadmap + langkah belajarnya
 │   ├── metadata.json           # total notes, folders, commit, dll.
 │   └── <struktur folder vault>/*.json   # satu JSON per dokumen
 ├── assets/

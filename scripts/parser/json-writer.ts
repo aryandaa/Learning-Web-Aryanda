@@ -8,6 +8,7 @@ import type {
   MetadataFile,
   NoteRecord,
   ParseResult,
+  RoadmapsData,
   SearchIndexEntry,
   TreeFolderNode,
   WarningsFile,
@@ -64,6 +65,8 @@ export async function writeGenerated(
 
   // Graph: nodes = semua catatan, edges = tautan antar-catatan (dedup).
   const graph = buildGraph(options.records);
+  // Roadmaps: file bertag #roadmap + langkah-langkahnya (tautan keluar).
+  const roadmaps = buildRoadmaps(options.records);
   const metadata: MetadataFile = {
     schemaVersion: 1,
     parserVersion: context.config.parserVersion,
@@ -85,6 +88,7 @@ export async function writeGenerated(
   await fs.writeFile(path.join(docsDir, 'tree.json'), JSON.stringify(tree), 'utf-8');
   await fs.writeFile(path.join(docsDir, 'search-index.json'), JSON.stringify(searchIndex), 'utf-8');
   await fs.writeFile(path.join(docsDir, 'graph.json'), JSON.stringify(graph), 'utf-8');
+  await fs.writeFile(path.join(docsDir, 'roadmaps.json'), JSON.stringify(roadmaps), 'utf-8');
   await fs.writeFile(path.join(docsDir, 'metadata.json'), JSON.stringify(metadata, null, 2), 'utf-8');
   await fs.writeFile(path.join(generatedRoot, 'warnings.json'), JSON.stringify(warningsFile, null, 2), 'utf-8');
 
@@ -106,6 +110,7 @@ export async function writeGenerated(
     tree,
     searchIndex,
     graph,
+    roadmaps,
     metadata,
     warnings: context.warnings,
     assets: options.assets,
@@ -133,4 +138,22 @@ function buildGraph(records: NoteRecord[]): GraphData {
   }
   links.sort((a, b) => a.source.localeCompare(b.source) || a.target.localeCompare(b.target));
   return { schemaVersion: 1, nodes, links };
+}
+
+/** Builds roadmaps.json: #roadmap files + their learning steps (ordered links). */
+function buildRoadmaps(records: NoteRecord[]): RoadmapsData {
+  const roadmaps: RoadmapsData['roadmaps'] = records
+    .filter((record) => record.tags.some((tag) => tag.toLowerCase() === 'roadmap'))
+    .map((record) => ({
+      id: record.id,
+      title: record.title,
+      folder: record.folder,
+      stepIds: record.links.map((link) => link.id),
+    }))
+    .sort(
+      (a, b) =>
+        a.folder.localeCompare(b.folder, undefined, { sensitivity: 'base' }) ||
+        a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+    );
+  return { schemaVersion: 1, roadmaps };
 }

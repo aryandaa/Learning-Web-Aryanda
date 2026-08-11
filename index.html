@@ -8,16 +8,16 @@
     <title>Learning Web Aryanda</title>
     <script>
       // Deteksi root aplikasi sebelum asset dimuat, agar situs aman di root
-      // maupun subpath (GitHub Pages). Route: /, /docs, /docs/*, /search, /graph.
+      // maupun subpath (GitHub Pages). Route: /, /docs, /docs/*, /search, /graph, /roadmap.
       (function () {
         var parts = window.location.pathname.split('/').filter(Boolean);
         var root = '/';
         if (parts.length === 0) {
           root = '/';
-        } else if (parts[0] === 'docs' || parts[0] === 'search' || parts[0] === 'graph') {
+        } else if (parts[0] === 'docs' || parts[0] === 'search' || parts[0] === 'graph' || parts[0] === 'roadmap') {
           root = '/';
         } else {
-          var i = parts.findIndex(function (p) { return p === 'docs' || p === 'search' || p === 'graph'; });
+          var i = parts.findIndex(function (p) { return p === 'docs' || p === 'search' || p === 'graph' || p === 'roadmap'; });
           root = i === -1
             ? window.location.pathname.replace(/\/?$/, '/')
             : '/' + parts.slice(0, i).join('/') + '/';

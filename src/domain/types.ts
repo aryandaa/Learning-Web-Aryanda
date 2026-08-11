@@ -104,3 +104,16 @@ export interface GraphData {
   nodes: GraphNode[];
   links: GraphEdge[];
 }
+
+export interface RoadmapInfo {
+  id: string;
+  title: string;
+  folder: string;
+  /** Langkah belajar = tautan keluar file roadmap, sesuai urutan di materi. */
+  stepIds: string[];
+}
+
+export interface RoadmapsData {
+  schemaVersion: number;
+  roadmaps: RoadmapInfo[];
+}
