@@ -64,11 +64,17 @@ export default function RoadmapPage() {
 
   const selected = roadmaps?.roadmaps.find((r) => r.id === selectedId) ?? null;
 
-  // scope graph: roadmap + file yang terhubung (+ subskill induk)
+  // scope graph: roadmap + langkah + file yang langsung di-link langkah
   const scopedGraph = useMemo<GraphData | null>(() => {
     if (!selected || !graph) return null;
-    const nodeIds = new Set<string>([selected.id, ...selected.stepIds]);
-    if (selected.subskillId) nodeIds.add(selected.subskillId);
+    // himpunan dasar (tetap) — hanya 1 tingkat koneksi, bukan transisitif
+    const base = new Set<string>([selected.id, ...selected.stepIds]);
+    if (selected.subskillId) base.add(selected.subskillId);
+    const nodeIds = new Set<string>(base);
+    for (const link of graph.links) {
+      if (base.has(link.source) && !base.has(link.target)) nodeIds.add(link.target);
+      if (base.has(link.target) && !base.has(link.source)) nodeIds.add(link.source);
+    }
     const nodes = graph.nodes.filter((n) => nodeIds.has(n.id));
     const links = graph.links.filter((l) => nodeIds.has(l.source) && nodeIds.has(l.target));
     return { schemaVersion: 1, nodes, links };
