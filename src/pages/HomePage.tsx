@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, FileText, FolderTree, Search } from 'lucide-react';
+import { ArrowRight, BookOpen, FileText, FolderTree, Search, UserRound } from 'lucide-react';
 import { useSiteData } from '../app/SiteProvider';
 import { countFiles } from '../services/docs';
 import { Spinner } from '../components/ui/spinner';
@@ -60,6 +60,15 @@ export default function HomePage() {
             <Search className="h-4 w-4" />
             Cari Materi
           </Link>
+          <a
+            href="https://portofolioaryanda.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-indigo-500/40 bg-indigo-500/10 px-5 py-2.5 text-sm font-medium text-indigo-300 transition-colors hover:bg-indigo-500/20 hover:text-indigo-200"
+          >
+            <UserRound className="h-4 w-4" />
+            Profile Pembuat
+          </a>
         </div>
       </header>
 
