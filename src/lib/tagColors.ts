@@ -6,13 +6,9 @@ const CURATED: Record<string, string> = {
   programming: 'indigo',
   cybersecurity: 'rose',
   devops: 'violet',
-  roadmap: 'amber',
   jaringan: 'sky',
   webdev: 'teal',
-  subskill: 'cyan',
   output: 'emerald',
-  latihan: 'orange',
-  myskill: 'fuchsia',
   python: 'emerald',
   javascript: 'amber',
   php: 'violet',
@@ -70,3 +66,40 @@ export const TAG_COLOR_CLASSES: Record<TagColorName, string> = {
   lime: 'bg-lime-500/15 text-lime-300 border-lime-500/30',
   slate: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
 };
+
+/* ============================================================
+   Tag khusus (meta): roadmap, subskill, myskill, latihan.
+   Tampil sebagai badge tersendiri — berbeda dari tag topik biasa.
+   ============================================================ */
+export const SPECIAL_TAGS = ['roadmap', 'subskill', 'myskill', 'latihan'] as const;
+
+export type SpecialTag = (typeof SPECIAL_TAGS)[number];
+
+export const SPECIAL_TAG_CLASSES: Record<SpecialTag, string> = {
+  roadmap: 'bg-amber-500/20 text-amber-300 border-amber-500/50',
+  subskill: 'bg-violet-500/20 text-violet-300 border-violet-500/50',
+  myskill: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50',
+  latihan: 'bg-orange-500/20 text-orange-300 border-orange-500/50',
+};
+
+export function isSpecialTag(tag: string): boolean {
+  return SPECIAL_TAGS.includes(tag.toLowerCase() as SpecialTag);
+}
+
+/** Tag khusus tampil paling depan, sisanya tetap urutan aslinya. */
+export function sortTags(tags: string[]): string[] {
+  const order: Record<string, number> = {
+    roadmap: 0,
+    subskill: 1,
+    myskill: 2,
+    latihan: 3,
+  };
+  return [...tags].sort((a, b) => {
+    const isA = isSpecialTag(a);
+    const isB = isSpecialTag(b);
+    if (isA && isB) return (order[a.toLowerCase()] ?? 0) - (order[b.toLowerCase()] ?? 0);
+    if (isA) return -1;
+    if (isB) return 1;
+    return 0;
+  });
+}

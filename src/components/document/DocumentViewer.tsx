@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, Hash } from 'lucide-react';
 import type { DocumentData } from '../../domain/types';
 import { TagBadge } from './TagBadge';
+import { sortTags } from '../../lib/tagColors';
 import { Breadcrumb } from './Breadcrumb';
 import { PrevNext } from './PrevNext';
 import { Backlinks } from './Backlinks';
@@ -65,7 +66,7 @@ export function DocumentViewer({ doc }: { doc: DocumentData }) {
               {doc.updated}
             </span>
           )}
-          {doc.tags.map((tag) => (
+          {sortTags(doc.tags).map((tag) => (
             <TagBadge key={tag} tag={tag} />
           ))}
         </div>
