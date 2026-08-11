@@ -86,7 +86,7 @@ Halaman:
 - `/docs/<id>` — dokumen (id = path normalized, mis. `/docs/pemrograman/php/routing`)
 - `/search` — pencarian fuzzy (index dimuat lazy)
 - `/graph` — **graph view** (gaya Obsidian): sambungan antar-catatan, hover untuk sorot tetangga, klik node untuk membuka catatan, drag/scroll untuk geser/zoom
-- `/roadmap` — **halaman roadmap** (gaya roadmap.sh): file bertag `#roadmap` + urutan materi yang terhubung, ditampilkan sebagai tahapan belajar
+- `/roadmap` — **halaman roadmap bercabang**: sidebar kategori (skill → subskill), memilih subskill menampilkan detail roadmap-nya sebagai **pohon bercabang** — langkah berurutan atas→bawah, dan file yang dirujuk langkah tampil sebagai cabang (bisa bertingkat). Sepenuhnya data-driven dari `roadmaps.json` + `graph.json` (vault).
 
 ## Generated artifacts
 
