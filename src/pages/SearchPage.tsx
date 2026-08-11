@@ -63,7 +63,7 @@ export default function SearchPage() {
       <div className="mt-6">
         {indexError && (
           <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-300">
-            {indexError} — jalankan parser untuk membuat search-index.json.
+            {indexError}. Jalankan parser untuk membuat search-index.json.
           </p>
         )}
 
@@ -75,7 +75,7 @@ export default function SearchPage() {
 
         {index && !query.trim() && (
           <p className="py-10 text-center text-sm text-slate-600">
-            Ketik untuk mulai mencari — index berisi {index.length} catatan.
+            Ketik untuk mulai mencari. Index berisi {index.length} catatan.
           </p>
         )}
 

@@ -42,7 +42,7 @@ export default function GraphPage() {
   if (error) {
     return (
       <div className="mx-auto max-w-2xl py-16 text-center text-sm text-slate-400">
-        {error} — jalankan parser untuk membuat graph.json.
+        {error}. Jalankan parser untuk membuat graph.json.
       </div>
     );
   }
