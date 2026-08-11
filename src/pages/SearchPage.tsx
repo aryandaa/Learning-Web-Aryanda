@@ -33,8 +33,9 @@ export default function SearchPage() {
   return (
     <div className="mx-auto max-w-3xl">
       <header className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-50">Pencarian</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="eyebrow">Pencarian</p>
+        <h1 className="mt-1.5 text-3xl font-bold tracking-tight text-slate-50">Cari Materi</h1>
+        <p className="mt-2 text-sm text-slate-500">
           Cari judul, heading, isi, dan tag dari seluruh catatan.
         </p>
       </header>
@@ -89,10 +90,10 @@ export default function SearchPage() {
               <Link
                 key={result.id}
                 to={`/docs/${result.id}`}
-                className="block rounded-xl border border-slate-800 bg-slate-900/50 p-5 transition-colors hover:border-slate-700 hover:bg-slate-900"
+                className="card card-hover group block p-5"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <h2 className="font-semibold text-slate-100 group-hover:text-indigo-300">
+                  <h2 className="font-semibold text-slate-100 transition-colors group-hover:text-indigo-300">
                     {result.title}
                   </h2>
                 </div>

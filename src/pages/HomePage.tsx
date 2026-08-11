@@ -1,5 +1,15 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, FileText, FolderTree, Search, UserRound } from 'lucide-react';
+import {
+  ArrowRight,
+  BookOpen,
+  Clock,
+  FileText,
+  Folder,
+  FolderTree,
+  Search,
+  Sparkles,
+  UserRound,
+} from 'lucide-react';
 import { useSiteData } from '../app/SiteProvider';
 import { countFiles } from '../services/docs';
 import { Spinner } from '../components/ui/spinner';
@@ -31,28 +41,59 @@ export default function HomePage() {
 
   const topFolders = tree.slice(0, 8);
 
+  const stats = [
+    {
+      icon: FileText,
+      value: metadata?.totalNotes ?? 0,
+      label: 'Catatan',
+      tile: 'from-indigo-500 to-violet-600',
+      shadow: 'shadow-indigo-500/30',
+    },
+    {
+      icon: FolderTree,
+      value: metadata?.totalFolders ?? 0,
+      label: 'Folder',
+      tile: 'from-amber-500 to-orange-600',
+      shadow: 'shadow-amber-500/30',
+    },
+    {
+      icon: Clock,
+      value: `${Math.round((metadata?.totalNotes ?? 0) / 200)} jam`,
+      label: 'Estimasi baca',
+      tile: 'from-teal-500 to-emerald-600',
+      shadow: 'shadow-teal-500/30',
+    },
+  ];
+
   return (
-    <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
+      {/* Hero */}
       <header className="text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-slate-50 sm:text-5xl">
-          Learning Web Aryanda
+        <span className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-medium text-indigo-300">
+          <Sparkles className="h-3.5 w-3.5" />
+          Personal learning platform — materi dari Obsidian Vault
+        </span>
+
+        <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-extrabold tracking-tight text-slate-50 sm:text-6xl">
+          Belajar IT, <span className="text-gradient">langkah demi langkah.</span>
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-          Materi belajar dari Obsidian Vault, disajikan sebagai dokumentasi statis —
-          dengan navigasi, pencarian, dan tautan antar-catatan yang ter-resolve otomatis.
+
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
+          Dokumentasi statis dengan navigasi, pencarian, graph antar-catatan, dan roadmap
+          belajar yang ter-resolve otomatis — semua dari catatan Obsidian Anda.
         </p>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
           <Link
             to="/docs"
-            className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-400"
+            className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:bg-indigo-400 hover:shadow-indigo-500/50"
           >
             <BookOpen className="h-4 w-4" />
             Jelajahi Docs
           </Link>
           <Link
             to="/search"
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/60 px-6 py-3 text-sm font-medium text-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-800"
           >
             <Search className="h-4 w-4" />
             Cari Materi
@@ -61,7 +102,7 @@ export default function HomePage() {
             href="https://portofolioaryanda.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-indigo-500/40 bg-indigo-500/10 px-5 py-2.5 text-sm font-medium text-indigo-300 transition-colors hover:bg-indigo-500/20 hover:text-indigo-200"
+            className="inline-flex items-center gap-2 rounded-lg border border-indigo-500/40 bg-indigo-500/10 px-6 py-3 text-sm font-medium text-indigo-300 transition-colors hover:bg-indigo-500/20 hover:text-indigo-200"
           >
             <UserRound className="h-4 w-4" />
             Profile Pembuat
@@ -69,56 +110,60 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="mt-12 grid gap-3 sm:grid-cols-3">
-        <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-          <FileText className="h-5 w-5 text-indigo-400" />
-          <div>
-            <p className="text-xl font-bold tabular-nums text-slate-100">{metadata?.totalNotes ?? 0}</p>
-            <p className="text-xs text-slate-500">Catatan</p>
+      {/* Statistik */}
+      <section className="mt-16 grid gap-4 sm:grid-cols-3">
+        {stats.map((stat) => (
+          <div
+            key={stat.label}
+            className="card card-hover flex items-center gap-4 p-5"
+          >
+            <span
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${stat.tile} shadow-lg ${stat.shadow}`}
+            >
+              <stat.icon className="h-5 w-5 text-white" />
+            </span>
+            <div>
+              <p className="text-2xl font-bold tabular-nums text-slate-50">{stat.value}</p>
+              <p className="mt-0.5 text-xs text-slate-500">{stat.label}</p>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-          <FolderTree className="h-5 w-5 text-amber-400" />
-          <div>
-            <p className="text-xl font-bold tabular-nums text-slate-100">{metadata?.totalFolders ?? 0}</p>
-            <p className="text-xs text-slate-500">Folder</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-          <BookOpen className="h-5 w-5 text-teal-400" />
-          <div>
-            <p className="text-xl font-bold tabular-nums text-slate-100">
-              {Math.round((metadata?.totalNotes ?? 0) / 200)} jam
-            </p>
-            <p className="text-xs text-slate-500">Estimasi baca</p>
-          </div>
-        </div>
+        ))}
       </section>
 
-      <section className="mt-12">
+      {/* Topik Utama */}
+      <section className="mt-16">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-100">Topik Utama</h2>
+          <h2 className="flex items-center gap-2.5 text-lg font-semibold text-slate-100">
+            <span className="h-5 w-1 rounded-full bg-gradient-to-b from-indigo-400 to-violet-500" />
+            Topik Utama
+          </h2>
           <Link
             to="/docs"
-            className="inline-flex items-center gap-1 text-sm text-indigo-400 hover:text-indigo-300"
+            className="inline-flex items-center gap-1 text-sm text-indigo-400 transition-colors hover:text-indigo-300"
           >
             Semua docs <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
           {topFolders.map((folder) => (
             <Link
               key={folder.relativePath}
               to="/docs"
-              className="group flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/50 p-5 transition-colors hover:border-slate-700 hover:bg-slate-900"
+              className="group card card-hover flex items-center justify-between p-5"
             >
-              <div>
-                <h3 className="font-semibold text-slate-200 group-hover:text-indigo-300">
-                  {folder.name}
-                </h3>
-                <p className="mt-1 text-xs text-slate-500">
-                  {countFiles(folder.children)} catatan
-                </p>
+              <div className="flex items-center gap-3.5">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800/80 text-indigo-400 transition-colors group-hover:bg-indigo-500/15 group-hover:text-indigo-300">
+                  <Folder className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="font-semibold text-slate-200 transition-colors group-hover:text-white">
+                    {folder.name}
+                  </h3>
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    {countFiles(folder.children)} catatan
+                  </p>
+                </div>
               </div>
               <ArrowRight className="h-4 w-4 text-slate-600 transition-transform group-hover:translate-x-1 group-hover:text-indigo-400" />
             </Link>

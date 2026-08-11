@@ -30,14 +30,15 @@ export default function DocsPage() {
   return (
     <div className="mx-auto max-w-3xl">
       <header className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-50">Semua Dokumen</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="eyebrow">Dokumentasi</p>
+        <h1 className="mt-1.5 text-3xl font-bold tracking-tight text-slate-50">Semua Dokumen</h1>
+        <p className="mt-2 text-sm text-slate-500">
           {metadata?.totalNotes ?? 0} catatan dalam {metadata?.totalFolders ?? 0} folder ·
           klik folder untuk memperluas
         </p>
       </header>
 
-      <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4">
+      <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 shadow-lg shadow-black/10">
         <TreeExplorer nodes={tree} variant="page" />
       </div>
 

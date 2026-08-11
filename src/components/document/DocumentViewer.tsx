@@ -52,17 +52,17 @@ export function DocumentViewer({ doc }: { doc: DocumentData }) {
     <article className="mx-auto max-w-3xl">
       <Breadcrumb folder={doc.folder} current={doc.title} />
 
-      <header className="mt-4 border-b border-slate-800 pb-6">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-50">{doc.title}</h1>
+      <header className="mt-4 border-b border-slate-800 pb-7">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">{doc.title}</h1>
 
         <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-slate-500">
-          <span className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5" />
+          <span className="flex items-center gap-1.5 rounded-full border border-slate-800 bg-slate-900/60 px-2.5 py-1">
+            <Clock className="h-3.5 w-3.5 text-indigo-400" />
             {doc.readingTime} menit baca
           </span>
           {doc.updated && (
-            <span className="flex items-center gap-1.5">
-              <Calendar className="h-3.5 w-3.5" />
+            <span className="flex items-center gap-1.5 rounded-full border border-slate-800 bg-slate-900/60 px-2.5 py-1">
+              <Calendar className="h-3.5 w-3.5 text-indigo-400" />
               {doc.updated}
             </span>
           )}

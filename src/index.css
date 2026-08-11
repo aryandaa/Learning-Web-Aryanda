@@ -11,11 +11,40 @@ html {
 }
 
 body {
-  @apply bg-slate-950 text-slate-200 antialiased;
+  @apply bg-slate-950 text-slate-300 antialiased;
+  background-image:
+    radial-gradient(60rem 42rem at 85% -10%, rgba(99, 102, 241, 0.09), transparent 60%),
+    radial-gradient(55rem 38rem at -10% 0%, rgba(34, 211, 238, 0.06), transparent 55%),
+    radial-gradient(40rem 30rem at 50% 110%, rgba(139, 92, 246, 0.05), transparent 60%);
+  background-attachment: fixed;
 }
 
 ::selection {
   @apply bg-indigo-500/40 text-white;
+}
+
+/* ---------- utilities desain ---------- */
+@layer utilities {
+  /* pola titik halus ala roadmap.sh / dev docs */
+  .bg-dots {
+    background-image: radial-gradient(rgba(148, 163, 184, 0.09) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  /* teks gradient indigo → cyan */
+  .text-gradient {
+    @apply bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-300 bg-clip-text text-transparent;
+  }
+  /* kartu dengan glow saat hover */
+  .card {
+    @apply rounded-xl border border-slate-800 bg-slate-900/50 transition-colors;
+  }
+  .card-hover {
+    @apply transition-all hover:border-indigo-500/40 hover:bg-slate-900 hover:shadow-lg hover:shadow-indigo-500/10;
+  }
+  /* aksen judul section */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-widest text-indigo-400;
+  }
 }
 
 /* ---------- scrollbar ---------- */
@@ -116,7 +145,7 @@ body {
   @apply rounded bg-slate-800/90 px-1.5 py-0.5 font-mono text-[13px] text-amber-200;
 }
 .doc-content pre {
-  @apply my-5 overflow-x-auto rounded-xl border border-slate-800 bg-slate-900 p-4;
+  @apply my-5 overflow-x-auto rounded-xl border border-slate-800/90 bg-slate-900 p-4 shadow-lg shadow-black/20;
 }
 .doc-content pre code {
   @apply block bg-transparent p-0 text-[13.5px] leading-6 text-slate-200;

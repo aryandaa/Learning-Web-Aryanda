@@ -9,6 +9,7 @@ const badgeVariants = cva(
         default: 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30',
         neutral: 'bg-slate-800 text-slate-400 border border-slate-700',
         subtle: 'bg-slate-800/60 text-slate-400',
+        success: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30',
       },
     },
     defaultVariants: { variant: 'default' },

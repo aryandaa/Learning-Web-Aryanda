@@ -8,7 +8,9 @@ import { cn } from '../lib/utils';
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   cn(
     'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
-    isActive ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'
+    isActive
+      ? 'bg-indigo-500/10 text-white ring-1 ring-inset ring-indigo-500/30'
+      : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
   );
 
 /**
@@ -42,8 +44,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200">
-      <header className="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur">
+    <div className="min-h-screen bg-slate-950 text-slate-300">
+      <header className="sticky top-0 z-40 border-b border-slate-800/60 bg-slate-950/85 backdrop-blur supports-[backdrop-filter]:bg-slate-950/70">
         <div className="mx-auto flex h-14 max-w-[1500px] items-center gap-3 px-4">
           {isDocsRoute && (
             <button
@@ -55,8 +57,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </button>
           )}
 
-          <Link to="/" className="flex items-center gap-2 text-slate-100">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500">
+          <Link to="/" className="flex items-center gap-2.5 text-slate-100">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30">
               <BookOpen className="h-[18px] w-[18px] text-white" />
             </span>
             <span className="hidden text-sm font-semibold tracking-tight sm:block">
@@ -88,16 +90,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div className="ml-auto flex items-center gap-2">
             <Link
               to="/search"
-              className="hidden items-center gap-2 rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-sm text-slate-500 transition-colors hover:border-slate-700 hover:text-slate-300 sm:flex"
+              className="hidden items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/70 px-3 py-1.5 text-sm text-slate-500 transition-colors hover:border-slate-600 hover:bg-slate-900 hover:text-slate-300 sm:flex"
             >
               <Search className="h-4 w-4" />
               Cari materi…
-              <kbd className="ml-4 rounded border border-slate-700 px-1.5 text-[10px] text-slate-500">
+              <kbd className="rounded border border-slate-700 bg-slate-800 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">
                 /
               </kbd>
             </Link>
             {fileMap.size > 0 && (
-              <span className="hidden text-xs tabular-nums text-slate-600 md:block">
+              <span className="hidden rounded-full border border-slate-800 bg-slate-900/60 px-2.5 py-1 text-xs tabular-nums text-slate-500 md:block">
                 {fileMap.size} notes
               </span>
             )}
@@ -137,8 +139,33 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </main>
       </div>
 
-      <footer className="border-t border-slate-800/60 py-6 text-center text-xs text-slate-600">
-        Dibangun otomatis dari Obsidian Vault · Learning Web Aryanda
+      <footer className="border-t border-slate-800/60 bg-slate-950/60">
+        <div className="mx-auto max-w-[1500px] px-4 py-8">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <div className="flex items-center gap-2.5 text-sm">
+              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-indigo-500 to-violet-600">
+                <BookOpen className="h-3.5 w-3.5 text-white" />
+              </span>
+              <span className="font-medium text-slate-300">Learning Web Aryanda</span>
+              <span className="text-slate-700">·</span>
+              <span className="text-xs text-slate-600">Dibangun otomatis dari Obsidian Vault</span>
+            </div>
+            <nav className="flex items-center gap-5 text-xs text-slate-500">
+              <Link to="/docs" className="transition-colors hover:text-slate-300">
+                Docs
+              </Link>
+              <Link to="/roadmap" className="transition-colors hover:text-slate-300">
+                Roadmap
+              </Link>
+              <Link to="/graph" className="transition-colors hover:text-slate-300">
+                Graph
+              </Link>
+              <Link to="/search" className="transition-colors hover:text-slate-300">
+                Search
+              </Link>
+            </nav>
+          </div>
+        </div>
       </footer>
     </div>
   );
