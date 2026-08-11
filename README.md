@@ -156,10 +156,7 @@ Workflow hanya mengirim sinyal `vault-sync` — **tidak melakukan parsing**.
 
 Hasil `npm run build` (folder `dist/`) bisa di-hosting di hosting statis mana pun:
 
-- **Cloudflare Pages / Netlify / Vercel** — build command `npm run build`, output `dist`. Rewrite SPA otomatis ditangani.
-- **GitHub Pages** — workflow `.github/workflows/deploy.yml` sudah disediakan:
-  1. Settings → Pages → Source: **GitHub Actions**.
-  2. Push ke `main` → situs otomatis deploy.
+- **Vercel** — platform deployment utama (lihat di bawah).
 
 ### Deploy ke Vercel
 
@@ -186,7 +183,7 @@ baik di root domain maupun subpath seperti `https://user.github.io/Learning-Web-
 tidak perlu mengubah `base` di `vite.config.ts`.
 
 `public/404.html` + restore route di `main.tsx` memastikan deep link
-(contoh `/docs/pemrograman/php/routing`) tetap berfungsi di GitHub Pages.
+(contoh `/docs/pemrograman/php/routing`) tetap berfungsi di hosting statis apa pun.
 
 ## Safety guarantees
 
