@@ -70,7 +70,7 @@ export default function DocsPage() {
               .map((sub) => (
                 <Link
                   key={sub.id}
-                  to={`/roadmap/sub:${sub.id}`}
+                  to={`/roadmap?sub=${encodeURIComponent(`sub:${sub.id}`)}`}
                   title={`${sub.folder.split('/')[0]} · ${sub.title}`}
                   className="group flex shrink-0 items-center gap-2 rounded-full border border-slate-700 bg-slate-900/60 py-1.5 pl-3 pr-4 text-sm text-slate-300 transition-colors hover:border-indigo-500/50 hover:bg-indigo-500/10 hover:text-indigo-200"
                 >

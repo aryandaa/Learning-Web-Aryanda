@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ChevronRight, ExternalLink, FolderTree, RefreshCw, Star } from 'lucide-react';
 import { useSiteData } from '../app/SiteProvider';
 import { BranchTree } from '../components/roadmap/BranchTree';
@@ -89,9 +89,12 @@ export default function RoadmapPage() {
   const [roadmaps, setRoadmaps] = useState<RoadmapsData | null>(null);
   const [graph, setGraph] = useState<GraphData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  // Seleksi datang dari URL (/roadmap/:id), jadi badge di halaman lain
-  // (mis. /docs) bisa langsung mengarahkan ke subskill tertentu.
-  const { id: urlId } = useParams();
+  // Seleksi datang dari query string (/roadmap?sub=...), jadi badge di halaman
+  // lain (mis. /docs) bisa langsung mengarahkan ke subskill tertentu.
+  // Id subskill mengandung slash, jadi dipakai query param (bukan path param)
+  // agar URL tidak pecah menjadi beberapa segmen.
+  const [searchParams] = useSearchParams();
+  const urlId = searchParams.get('sub');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -186,7 +189,7 @@ export default function RoadmapPage() {
               {group.items.map((item) => (
                 <li key={item.id}>
                   <button
-                    onClick={() => navigate(`/roadmap/${item.id}`)}
+                    onClick={() => navigate(`/roadmap?sub=${encodeURIComponent(item.id)}`)}
                     className={cn(
                       'flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-sm transition-colors',
                       selected?.id === item.id
@@ -277,7 +280,7 @@ export default function RoadmapPage() {
       <div className="fixed bottom-4 left-1/2 z-30 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 md:hidden">
         <select
           value={selected?.id ?? ''}
-          onChange={(e) => navigate(`/roadmap/${e.target.value}`)}
+          onChange={(e) => navigate(`/roadmap?sub=${encodeURIComponent(e.target.value)}`)}
           className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-200 shadow-2xl focus:border-emerald-500 focus:outline-none"
         >
           {groups.map((group) => (
