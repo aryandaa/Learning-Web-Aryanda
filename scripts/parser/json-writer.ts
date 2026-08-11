@@ -4,6 +4,7 @@ import type { ParserContext } from './context';
 import { buildTree } from './tree';
 import type {
   AssetManifestEntry,
+  GraphData,
   MetadataFile,
   NoteRecord,
   ParseResult,
@@ -60,6 +61,9 @@ export async function writeGenerated(
   }));
 
   const folderSet = new Set(options.records.map((r) => r.folder).filter(Boolean));
+
+  // Graph: nodes = semua catatan, edges = tautan antar-catatan (dedup).
+  const graph = buildGraph(options.records);
   const metadata: MetadataFile = {
     schemaVersion: 1,
     parserVersion: context.config.parserVersion,
@@ -80,6 +84,7 @@ export async function writeGenerated(
 
   await fs.writeFile(path.join(docsDir, 'tree.json'), JSON.stringify(tree), 'utf-8');
   await fs.writeFile(path.join(docsDir, 'search-index.json'), JSON.stringify(searchIndex), 'utf-8');
+  await fs.writeFile(path.join(docsDir, 'graph.json'), JSON.stringify(graph), 'utf-8');
   await fs.writeFile(path.join(docsDir, 'metadata.json'), JSON.stringify(metadata, null, 2), 'utf-8');
   await fs.writeFile(path.join(generatedRoot, 'warnings.json'), JSON.stringify(warningsFile, null, 2), 'utf-8');
 
@@ -100,8 +105,32 @@ export async function writeGenerated(
     records: options.records,
     tree,
     searchIndex,
+    graph,
     metadata,
     warnings: context.warnings,
     assets: options.assets,
   };
+}
+
+/** Builds graph.json: nodes (all notes) + undirected edges (deduplicated). */
+function buildGraph(records: NoteRecord[]): GraphData {
+  const nodes: GraphData['nodes'] = records.map((record) => ({
+    id: record.id,
+    title: record.title,
+    folder: record.folder,
+  }));
+
+  const seen = new Set<string>();
+  const links: GraphData['links'] = [];
+  for (const record of records) {
+    for (const link of record.links) {
+      if (link.id === record.id) continue;
+      const key = record.id < link.id ? `${record.id}|${link.id}` : `${link.id}|${record.id}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      links.push({ source: record.id, target: link.id });
+    }
+  }
+  links.sort((a, b) => a.source.localeCompare(b.source) || a.target.localeCompare(b.target));
+  return { schemaVersion: 1, nodes, links };
 }

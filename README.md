@@ -85,6 +85,7 @@ Halaman:
 - `/docs` — eksplorasi seluruh struktur vault
 - `/docs/<id>` — dokumen (id = path normalized, mis. `/docs/pemrograman/php/routing`)
 - `/search` — pencarian fuzzy (index dimuat lazy)
+- `/graph` — **graph view** (gaya Obsidian): sambungan antar-catatan, hover untuk sorot tetangga, klik node untuk membuka catatan, drag/scroll untuk geser/zoom
 
 ## Generated artifacts
 
@@ -93,6 +94,7 @@ generated/
 ├── docs/
 │   ├── tree.json               # struktur folder recursive (dari vault)
 │   ├── search-index.json       # index Fuse.js
+│   ├── graph.json              # nodes + edges untuk graph view
 │   ├── metadata.json           # total notes, folders, commit, dll.
 │   └── <struktur folder vault>/*.json   # satu JSON per dokumen
 ├── assets/

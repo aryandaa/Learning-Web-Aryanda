@@ -6,11 +6,11 @@
  *   https://user.github.io/Learning-Web-Aryanda/docs/tree.json  ← 404
  *
  * Solusi: deteksi root dari URL halaman. Route aplikasi hanya:
- *   /, /docs, /docs/*, /search
- * jadi root = segmen URL sebelum 'docs' / 'search' (atau seluruh path
+ *   /, /docs, /docs/*, /search, /graph
+ * jadi root = segmen URL sebelum route tersebut (atau seluruh path
  * jika sedang di halaman beranda subpath).
  */
-const ROUTE_SEGMENTS = ['docs', 'search'];
+const ROUTE_SEGMENTS = ['docs', 'search', 'graph'];
 
 function detectBasePath(pathname: string): string {
   const parts = pathname.split('/').filter(Boolean);

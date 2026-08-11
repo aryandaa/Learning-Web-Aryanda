@@ -87,3 +87,20 @@ export interface DocumentData {
   previous: string | null;
   next: string | null;
 }
+
+export interface GraphNode {
+  id: string;
+  title: string;
+  folder: string;
+}
+
+export interface GraphEdge {
+  source: string;
+  target: string;
+}
+
+export interface GraphData {
+  schemaVersion: number;
+  nodes: GraphNode[];
+  links: GraphEdge[];
+}

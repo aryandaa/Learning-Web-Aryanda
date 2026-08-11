@@ -130,6 +130,23 @@ export interface AssetManifestEntry {
   hash: string;
 }
 
+export interface GraphNode {
+  id: string;
+  title: string;
+  folder: string;
+}
+
+export interface GraphEdge {
+  source: string;
+  target: string;
+}
+
+export interface GraphData {
+  schemaVersion: number;
+  nodes: GraphNode[];
+  links: GraphEdge[];
+}
+
 export interface Warnings {
   duplicatePaths: string[];
   brokenWikiLinks: string[];
@@ -161,6 +178,7 @@ export interface ParseResult {
   records: NoteRecord[];
   tree: TreeFolderNode[];
   searchIndex: SearchIndexEntry[];
+  graph: GraphData;
   metadata: MetadataFile;
   warnings: Warnings;
   assets: AssetManifestEntry[];

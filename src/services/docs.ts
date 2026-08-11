@@ -1,4 +1,4 @@
-import type { DocumentData, MetadataFile, SearchIndexEntry, TreeFolderNode, TreeNode } from '../domain/types';
+import type { DocumentData, GraphData, MetadataFile, SearchIndexEntry, TreeFolderNode, TreeNode } from '../domain/types';
 import { joinWithRoot } from '../lib/base';
 
 async function getJson<T>(path: string): Promise<T> {
@@ -23,6 +23,11 @@ export function fetchMetadata(): Promise<MetadataFile> {
 /** search-index.json — lazy load hanya saat halaman pencarian dibuka. */
 export function fetchSearchIndex(): Promise<SearchIndexEntry[]> {
   return getJson<SearchIndexEntry[]>('docs/search-index.json');
+}
+
+/** graph.json — lazy load hanya saat halaman graph dibuka. */
+export function fetchGraph(): Promise<GraphData> {
+  return getJson<GraphData>('docs/graph.json');
 }
 
 /** Dokumen individual — dimuat on-demand berdasarkan outputPath dari tree. */
