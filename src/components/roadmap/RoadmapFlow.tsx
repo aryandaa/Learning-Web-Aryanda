@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, GitBranch } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import type { GraphData, RoadmapInfo } from '../../domain/types';
 
 const FOLDER_COLORS: Record<string, string> = {
@@ -16,8 +15,8 @@ function folderColor(folder: string): string {
   return FOLDER_COLORS[top] ?? FALLBACK_COLOR;
 }
 
-/** Jumlah kotak langkah per tahap (kolom). */
-const STAGE_SIZE = 6;
+/** Jumlah node per baris (roadmap.sh: baris-baris dengan node). */
+const ROW_SIZE = 6;
 
 interface RoadmapFlowProps {
   roadmap: RoadmapInfo;
@@ -30,15 +29,28 @@ interface Step {
   folder: string;
 }
 
+/** Panah penghubung antar baris (gaya roadmap.sh). */
+function DownArrow() {
+  return (
+    <svg width="20" height="18" viewBox="0 0 20 18" className="text-slate-600">
+      <line x1="10" y1="0" x2="10" y2="12" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M4 12 L10 18 L16 12"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 /**
- * Tampilan roadmap kotak-kotak (gaya roadmap.sh):
- * [Subskill] -> [Folder induk] -> [Roadmap] -> kotak-kotak langkah,
- * tiap kotak menampilkan file lain yang di-link-nya ("file yang ngelink
- * ke file lain"), plus seksi file terhubung dari luar daftar langkah.
+ * Tampilan roadmap gaya roadmap.sh:
+ * node kotak dengan border + titik berwarna (bukan nomor), disusun
+ * zig-zag terpusat, dihubungkan panah, latar grid pattern.
  */
 export function RoadmapFlow({ roadmap, scopedGraph }: RoadmapFlowProps) {
-  const navigate = useNavigate();
-
   const nodeInfo = useMemo(() => new Map(scopedGraph.nodes.map((n) => [n.id, n])), [scopedGraph]);
 
   const steps = useMemo<Step[]>(() => {
@@ -69,78 +81,77 @@ export function RoadmapFlow({ roadmap, scopedGraph }: RoadmapFlowProps) {
     return map;
   }, [scopedGraph.links, roadmap.id, nodeInfo]);
 
-  const stages: Step[][] = [];
-  for (let i = 0; i < steps.length; i += STAGE_SIZE) {
-    stages.push(steps.slice(i, i + STAGE_SIZE));
+  const rows: Step[][] = [];
+  for (let i = 0; i < steps.length; i += ROW_SIZE) {
+    rows.push(steps.slice(i, i + ROW_SIZE));
   }
 
-  const roadmapColor = folderColor(roadmap.folder);
-
   return (
-    <div className="overflow-x-auto pb-4">
-      <div className="flex min-w-max items-start gap-3">
-        {/* kotak-kotak langkah */}
-        {steps.length === 0 && (
-          <p className="mt-8 max-w-xs text-sm text-slate-500">
-            Roadmap ini belum memiliki tautan ke materi lain.
-          </p>
-        )}
-
-        {stages.map((stage, stageIndex) => (
-          <div key={stageIndex} className="flex items-start gap-3">
-            <div className="flex flex-col items-center self-center pt-16">
-              <ArrowRight className="h-5 w-5 text-slate-600" />
-              {stageIndex < stages.length - 1 && (
-                <ArrowRight className="mt-1 h-5 w-5 text-slate-800" />
+    <div className="roadmap-grid overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-8 sm:px-8">
+      {steps.length === 0 ? (
+        <p className="text-center text-sm text-slate-500">Roadmap ini belum memiliki tautan ke materi lain.</p>
+      ) : (
+        <div className="mx-auto max-w-4xl">
+          {rows.map((row, rowIndex) => (
+            <div key={rowIndex}>
+              {rowIndex > 0 && (
+                <div className="flex justify-center py-1.5">
+                  <DownArrow />
+                </div>
               )}
-            </div>
-            <div className="flex flex-col gap-2">
-              {stage.map((step, innerIndex) => {
-                const index = stageIndex * STAGE_SIZE + innerIndex + 1;
-                const color = folderColor(step.folder);
-                const connected = (linksFrom.get(step.id) ?? [])
-                  .map((id) => nodeInfo.get(id)?.title)
-                  .filter((t): t is string => Boolean(t));
-                return (
-                  <Link
-                    key={step.id}
-                    to={`/docs/${step.id}`}
-                    className="group w-56 rounded-xl border border-slate-800 bg-slate-900/70 p-3 transition-colors hover:border-slate-600 hover:bg-slate-800/80"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-xs font-bold tabular-nums text-slate-950"
-                        style={{ backgroundColor: color }}
-                      >
-                        {index}
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block truncate text-sm font-medium text-slate-200 group-hover:text-white">
+              <div
+                className={
+                  'flex flex-wrap items-center justify-center gap-x-3 gap-y-2.5 ' +
+                  (rowIndex % 2 === 1 ? 'sm:translate-x-8' : '')
+                }
+              >
+                {row.map((step) => {
+                  const color = folderColor(step.folder);
+                  const connected = (linksFrom.get(step.id) ?? [])
+                    .map((id) => nodeInfo.get(id)?.title)
+                    .filter((t): t is string => Boolean(t));
+                  return (
+                    <Link
+                      key={step.id}
+                      to={`/docs/${step.id}`}
+                      className="group w-44 rounded-lg border-2 bg-slate-900/80 px-3 py-2 transition-all hover:-translate-y-0.5 hover:bg-slate-800/80"
+                      style={{
+                        borderColor: color,
+                        boxShadow: '0 0 0 0 transparent',
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLElement).style.boxShadow = `0 0 14px ${color}55`;
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 0 transparent';
+                      }}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span
+                          className="h-2 w-2 shrink-0 rounded-full"
+                          style={{ backgroundColor: color }}
+                        />
+                        <span className="truncate text-xs font-medium text-slate-200 group-hover:text-white">
                           {step.title}
                         </span>
-                        <span className="block truncate text-[10px] text-slate-500">
-                          {step.folder}
-                        </span>
                       </span>
-                    </div>
-                    {connected.length > 0 && (
-                      <div className="mt-2 flex items-start gap-1.5 border-t border-slate-800 pt-1.5">
-                        <GitBranch className="mt-0.5 h-3 w-3 shrink-0 text-slate-500" />
-                        <p className="line-clamp-1 text-[11px] leading-4 text-slate-500">
-                          {connected.slice(0, 3).join(' · ')}
-                          {connected.length > 3 ? ` · +${connected.length - 3}` : ''}
-                        </p>
-                      </div>
-                    )}
-                  </Link>
-                );
-              })}
+                      {connected.length > 0 && (
+                        <span
+                          className="mt-1 block truncate pl-4 text-[10px] text-slate-500"
+                          title={connected.join(' · ')}
+                        >
+                          ⤳ {connected.slice(0, 2).join(' · ')}
+                          {connected.length > 2 ? ` · +${connected.length - 2}` : ''}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {/* file terhubung dari luar daftar langkah (dihapus sesuai permintaan) */}
+          ))}
+        </div>
+      )}
     </div>
   );
 }

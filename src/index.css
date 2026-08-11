@@ -213,3 +213,10 @@ body {
 .doc-content .hljs {
   @apply bg-transparent;
 }
+
+/* ---------- latar grid ala roadmap.sh ---------- */
+.roadmap-grid {
+  background-image:
+    radial-gradient(rgba(148, 163, 184, 0.09) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
