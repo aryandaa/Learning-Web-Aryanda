@@ -38,8 +38,11 @@ export default function HomePage() {
           Personal learning platform
         </p>
         <h1 className="mt-3 text-4xl font-bold tracking-tight text-slate-50 sm:text-5xl">
-          Learning Web Aryanda
+          Halo, Aryanda! 👋
         </h1>
+        <p className="mt-2 text-lg font-medium text-indigo-300">
+          Learning Web Aryanda
+        </p>
         <p className="mx-auto mt-4 max-w-2xl text-slate-400">
           Materi belajar dari Obsidian Vault, disajikan sebagai dokumentasi statis —
           dengan navigasi, pencarian, dan tautan antar-catatan yang ter-resolve otomatis.
