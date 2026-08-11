@@ -30,8 +30,8 @@ const FOLDER_COLORS: Record<string, string> = {
   Pemrograman: '#34d399',
 };
 const FALLBACK_COLOR = '#94a3b8';
-const EDGE_COLOR = 'rgba(148, 163, 184, 0.16)';
-const EDGE_DIM = 'rgba(148, 163, 184, 0.03)';
+const EDGE_COLOR = 'rgba(148, 163, 184, 0.22)';
+const EDGE_DIM = 'rgba(148, 163, 184, 0.04)';
 
 function folderColor(folder: string): string {
   const top = folder.split('/')[0];
@@ -117,10 +117,10 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
         'link',
         forceLink<GNode, GLink>(graphLinks)
           .id((d) => d.id)
-          .distance(55)
-          .strength(0.35)
+          .distance(38)
+          .strength(0.5)
       )
-      .force('charge', forceManyBody<GNode>().strength(-110))
+      .force('charge', forceManyBody<GNode>().strength(-55))
       .force('center', forceCenter(size.width / 2, size.height / 2))
       .force('collide', forceCollide<GNode>().radius((d) => d.radius + 2).strength(0.9))
       .alphaDecay(0.02)
@@ -185,7 +185,7 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
       if (hovered && !neighbors.has(node.id)) continue;
       const active = hovered === node.id;
       const dimmed = hovered && !active;
-      ctx.globalAlpha = dimmed ? 0.35 : active ? 1 : 0.85;
+      ctx.globalAlpha = dimmed ? 0.4 : active ? 1 : 0.95;
       ctx.beginPath();
       ctx.arc(node.x!, node.y!, node.radius, 0, Math.PI * 2);
       ctx.fillStyle = active ? '#ffffff' : node.color;

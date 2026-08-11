@@ -53,18 +53,18 @@ export function tagColorName(tag: string): TagColorName {
 
 /** Kelas Tailwind statis (aman untuk purge) per warna. */
 export const TAG_COLOR_CLASSES: Record<TagColorName, string> = {
-  indigo: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30',
-  sky: 'bg-sky-500/15 text-sky-300 border-sky-500/30',
-  emerald: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-  amber: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-  rose: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-  violet: 'bg-violet-500/15 text-violet-300 border-violet-500/30',
-  teal: 'bg-teal-500/15 text-teal-300 border-teal-500/30',
-  orange: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-  cyan: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-  fuchsia: 'bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-500/30',
-  lime: 'bg-lime-500/15 text-lime-300 border-lime-500/30',
-  slate: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
+  indigo: 'bg-indigo-400/20 text-indigo-200 border-indigo-400/40',
+  sky: 'bg-sky-400/20 text-sky-200 border-sky-400/40',
+  emerald: 'bg-emerald-400/20 text-emerald-200 border-emerald-400/40',
+  amber: 'bg-amber-400/20 text-amber-200 border-amber-400/40',
+  rose: 'bg-rose-400/20 text-rose-200 border-rose-400/40',
+  violet: 'bg-violet-400/20 text-violet-200 border-violet-400/40',
+  teal: 'bg-teal-400/20 text-teal-200 border-teal-400/40',
+  orange: 'bg-orange-400/20 text-orange-200 border-orange-400/40',
+  cyan: 'bg-cyan-400/20 text-cyan-200 border-cyan-400/40',
+  fuchsia: 'bg-fuchsia-400/20 text-fuchsia-200 border-fuchsia-400/40',
+  lime: 'bg-lime-400/20 text-lime-200 border-lime-400/40',
+  slate: 'bg-slate-400/20 text-slate-200 border-slate-400/40',
 };
 
 /* ============================================================
@@ -76,10 +76,10 @@ export const SPECIAL_TAGS = ['roadmap', 'subskill', 'myskill', 'latihan'] as con
 export type SpecialTag = (typeof SPECIAL_TAGS)[number];
 
 export const SPECIAL_TAG_CLASSES: Record<SpecialTag, string> = {
-  roadmap: 'bg-amber-500/20 text-amber-300 border-amber-500/50',
-  subskill: 'bg-violet-500/20 text-violet-300 border-violet-500/50',
-  myskill: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50',
-  latihan: 'bg-orange-500/20 text-orange-300 border-orange-500/50',
+  roadmap: 'bg-amber-400/25 text-amber-200 border-amber-400/60',
+  subskill: 'bg-violet-400/25 text-violet-200 border-violet-400/60',
+  myskill: 'bg-emerald-400/25 text-emerald-200 border-emerald-400/60',
+  latihan: 'bg-orange-400/25 text-orange-200 border-orange-400/60',
 };
 
 export function isSpecialTag(tag: string): boolean {
