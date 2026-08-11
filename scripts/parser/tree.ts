@@ -1,9 +1,14 @@
 import type { NoteRecord, TreeFolderNode, TreeNode } from './types';
 
+function isRoadmapRecord(record: NoteRecord): boolean {
+  return record.tags.some((tag) => tag.toLowerCase() === 'roadmap');
+}
+
 /**
  * Builds the unified recursive tree from records (spec §19).
- * Top-level vault folders become root nodes. Folders are sorted
- * before files; both alphabetically (case-insensitive, deterministic).
+ * Top-level vault folders become root nodes. In every folder, the
+ * #roadmap file (rujukan urutan belajar) is sorted first; the rest
+ * alphabetically (case-insensitive, deterministic).
  */
 export function buildTree(records: NoteRecord[]): TreeFolderNode[] {
   const roots: TreeFolderNode[] = [];
@@ -37,6 +42,7 @@ export function buildTree(records: NoteRecord[]): TreeFolderNode[] {
       id: record.id,
       relativePath: record.relativePath,
       outputPath: record.outputPath,
+      isRoadmap: isRoadmapRecord(record),
     };
     const list = filesByFolder.get(folder) ?? [];
     list.push(fileNode);
@@ -62,6 +68,11 @@ export function buildTree(records: NoteRecord[]): TreeFolderNode[] {
   const sortChildren = (nodes: TreeNode[]): void => {
     nodes.sort((a, b) => {
       if (a.type !== b.type) return a.type === 'folder' ? -1 : 1;
+      if (a.type === 'file' && b.type === 'file') {
+        // Roadmap file selalu di atas (rujukan urutan belajar).
+        if (a.isRoadmap !== b.isRoadmap) return a.isRoadmap ? -1 : 1;
+        return a.title.localeCompare(b.title, undefined, { sensitivity: 'base' });
+      }
       const an = a.type === 'folder' ? a.name : a.title;
       const bn = b.type === 'folder' ? b.name : b.title;
       return an.localeCompare(bn, undefined, { sensitivity: 'base' });

@@ -2,6 +2,7 @@ import { useSiteData } from '../app/SiteProvider';
 import { TreeExplorer } from '../components/explorer/TreeExplorer';
 import { Spinner } from '../components/ui/spinner';
 import { countFiles } from '../services/docs';
+import { Map } from 'lucide-react';
 
 /**
  * Halaman index dokumen: seluruh struktur vault divisualisasikan
@@ -39,6 +40,11 @@ export default function DocsPage() {
       <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4">
         <TreeExplorer nodes={tree} variant="page" />
       </div>
+
+      <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-slate-600">
+        <Map className="h-3.5 w-3.5 text-indigo-400" />
+        = file roadmap — mulai dari sini untuk mengikuti urutan belajar folder
+      </p>
 
       <p className="mt-6 text-center text-xs text-slate-600">
         Total: {countFiles(tree)} dokumen

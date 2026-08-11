@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronRight, FileText, Folder } from 'lucide-react';
+import { ChevronDown, ChevronRight, FileText, Folder, Map } from 'lucide-react';
 import type { TreeNode } from '../../domain/types';
 import { countFiles } from '../../services/docs';
 import { cn } from '../../lib/utils';
@@ -92,12 +92,23 @@ function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant }: Row
             'flex items-center gap-2 rounded-md py-1.5 pr-2 text-sm transition-colors',
             active
               ? 'bg-indigo-500/15 text-indigo-300 font-medium'
-              : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
+              : node.isRoadmap
+                ? 'font-medium text-slate-200 hover:bg-slate-800/70 hover:text-white'
+                : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
           )}
           style={{ paddingLeft: padding }}
         >
-          <FileText className="h-3.5 w-3.5 shrink-0 opacity-60" />
+          {node.isRoadmap ? (
+            <Map className="h-3.5 w-3.5 shrink-0 text-indigo-400" />
+          ) : (
+            <FileText className="h-3.5 w-3.5 shrink-0 opacity-60" />
+          )}
           <span className="truncate">{node.title}</span>
+          {node.isRoadmap && (
+            <span className="ml-auto shrink-0 rounded bg-indigo-500/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-indigo-300">
+              roadmap
+            </span>
+          )}
         </Link>
       </li>
     );

@@ -1,6 +1,5 @@
 import fs from 'fs/promises';
 import path from 'path';
-import type { ParserContext } from './context';
 import type { ParseResult } from './types';
 
 /**
@@ -8,27 +7,27 @@ import type { ParseResult } from './types';
  *
  * SAFETY GUARANTEES (spec §42):
  * - only public/docs and public/assets/vault are touched
- * - both target dirs are fully replaced (stale files removed)
+ * - stale files are removed without ever deleting the target directories
+ *   (deleting the dir would break a running `vite dev` public middleware)
  * - other public/ files (favicon, 404.html, ...) are never touched
  * - fails loudly if any markdown file would end up in the output
  */
-export async function publishToPublic(context: ParserContext, result: ParseResult): Promise<void> {
+export async function publishToPublic(_context: unknown, result: ParseResult): Promise<void> {
   const cwd = process.cwd();
   const generatedRoot = path.join(cwd, 'generated');
   const publicDocs = path.join(cwd, 'public', 'docs');
   const publicAssets = path.join(cwd, 'public', 'assets', 'vault');
 
-  // Replace public/docs entirely.
-  await fs.rm(publicDocs, { recursive: true, force: true });
-  await fs.mkdir(publicDocs, { recursive: true });
-  await copyDir(path.join(generatedRoot, 'docs'), publicDocs);
+  // Sync public/docs <-> generated/docs (in place, no dir deletion).
+  await syncDir(path.join(generatedRoot, 'docs'), publicDocs);
 
-  // Replace public/assets/vault entirely.
-  await fs.rm(publicAssets, { recursive: true, force: true });
-  await fs.mkdir(publicAssets, { recursive: true });
+  // Sync public/assets/vault <-> generated/assets.
   const generatedAssets = path.join(generatedRoot, 'assets');
+  await fs.mkdir(publicAssets, { recursive: true });
   if (await exists(generatedAssets)) {
-    await copyDir(generatedAssets, publicAssets);
+    await syncDir(generatedAssets, publicAssets);
+  } else {
+    await clearDir(publicAssets);
   }
 
   // warnings.json lives in public/docs for the frontend.
@@ -38,28 +37,49 @@ export async function publishToPublic(context: ParserContext, result: ParseResul
   }
 
   // Safety: no markdown may ever reach the public output.
-  const leaked = await findMarkdown(publicDocs);
-  const leakedAssets = await findMarkdown(publicAssets);
-  const allLeaked = [...leaked, ...leakedAssets];
+  const allLeaked = [
+    ...(await findMarkdown(publicDocs)),
+    ...(await findMarkdown(publicAssets)),
+  ];
   if (allLeaked.length > 0) {
-    throw new Error(
-      `SAFETY: markdown files would be published: ${allLeaked.join(', ')}`
-    );
+    throw new Error(`SAFETY: markdown files would be published: ${allLeaked.join(', ')}`);
   }
-
 }
 
-async function copyDir(src: string, dest: string): Promise<void> {
-  const entries = await fs.readdir(src, { withFileTypes: true });
-  for (const entry of entries) {
+/**
+ * Mirrors `src` into `dest` in place: copies/overwrites everything from src,
+ * then removes dest entries that no longer exist in src (stale cleanup).
+ * Never deletes `dest` itself, so filesystem watchers stay intact.
+ */
+async function syncDir(src: string, dest: string): Promise<void> {
+  await fs.mkdir(dest, { recursive: true });
+
+  const srcEntries = await fs.readdir(src, { withFileTypes: true });
+  const srcNames = new Set(srcEntries.map((entry) => entry.name));
+
+  for (const entry of srcEntries) {
     const s = path.join(src, entry.name);
     const d = path.join(dest, entry.name);
     if (entry.isDirectory()) {
-      await fs.mkdir(d, { recursive: true });
-      await copyDir(s, d);
+      await syncDir(s, d);
     } else if (entry.isFile()) {
+      await fs.mkdir(path.dirname(d), { recursive: true });
       await fs.copyFile(s, d);
     }
+  }
+
+  const destEntries = await fs.readdir(dest, { withFileTypes: true });
+  for (const entry of destEntries) {
+    if (!srcNames.has(entry.name)) {
+      await fs.rm(path.join(dest, entry.name), { recursive: true, force: true });
+    }
+  }
+}
+
+async function clearDir(dir: string): Promise<void> {
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    await fs.rm(path.join(dir, entry.name), { recursive: true, force: true });
   }
 }
 
