@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSiteData } from '../app/SiteProvider';
 import { TreeExplorer } from '../components/explorer/TreeExplorer';
 import { Spinner } from '../components/ui/spinner';
 import { countFiles, fetchRoadmaps } from '../services/docs';
 import { folderColor } from '../lib/colors';
-import { Map, Star } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Map, Star } from 'lucide-react';
 import type { RoadmapsData } from '../domain/types';
 
 /**
@@ -15,6 +15,33 @@ import type { RoadmapsData } from '../domain/types';
 export default function DocsPage() {
   const { tree, metadata, loading, error } = useSiteData();
   const [roadmaps, setRoadmaps] = useState<RoadmapsData | null>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateStripArrows = () => {
+    const el = stripRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  };
+
+  const scrollStrip = (direction: 1 | -1) => {
+    stripRef.current?.scrollBy({ left: direction * 320, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    if (!roadmaps) return;
+    updateStripArrows();
+    const el = stripRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', updateStripArrows, { passive: true });
+    window.addEventListener('resize', updateStripArrows);
+    return () => {
+      el.removeEventListener('scroll', updateStripArrows);
+      window.removeEventListener('resize', updateStripArrows);
+    };
+  }, [roadmaps]);
 
   // Muat roadmaps untuk strip subskill; gagal diam saja (strip disembunyikan).
   useEffect(() => {
@@ -60,11 +87,31 @@ export default function DocsPage() {
 
       {roadmaps && roadmaps.subskills.length > 0 && (
         <section className="mb-7">
-          <p className="mb-2.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500">
-            <Star className="h-3.5 w-3.5 text-emerald-400" />
-            Subskill · semua kategori
-          </p>
-          <div className="scrollbar-thin -mx-1 flex gap-2 overflow-x-auto px-1 pb-2">
+          <div className="mb-2.5 flex items-center justify-between gap-3">
+            <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <Star className="h-3.5 w-3.5 text-emerald-400" />
+              Subskill · semua kategori
+            </p>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => scrollStrip(-1)}
+                disabled={!canScrollLeft}
+                aria-label="Geser subskill ke kiri"
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-400 transition-colors hover:border-slate-500 hover:text-white disabled:pointer-events-none disabled:opacity-30"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => scrollStrip(1)}
+                disabled={!canScrollRight}
+                aria-label="Geser subskill ke kanan"
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-400 transition-colors hover:border-slate-500 hover:text-white disabled:pointer-events-none disabled:opacity-30"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+          <div ref={stripRef} className="scrollbar-thin -mx-1 flex gap-2 overflow-x-auto px-1 pb-2">
             {roadmaps.subskills.map((sub) => (
               <Link
                 key={sub.id}
