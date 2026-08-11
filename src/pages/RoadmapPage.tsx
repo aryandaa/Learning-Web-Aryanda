@@ -49,7 +49,8 @@ function buildSidebarGroups(roadmaps: RoadmapsData): SidebarGroup[] {
   };
 
   for (const sub of roadmaps.subskills) {
-    if (sub.roadmapIds.length === 0) continue; // skill belum punya roadmap
+    // Semua subskill (#Subskill) ditampilkan, termasuk yang belum punya
+    // roadmap — halaman roadmap menampilkan state kosong untuk itu.
     const skill = sub.folder.split('/')[0] || 'Lainnya';
     push(skill, {
       id: `sub:${sub.id}`,
@@ -243,9 +244,16 @@ export default function RoadmapPage() {
               </p>
             </header>
 
-            <div className="space-y-8">
-              {selectedRoadmaps.map((rm, index) => (
-                <section key={rm.id}>
+            {selectedRoadmaps.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-slate-700 bg-slate-900/30 p-8 text-center text-sm text-slate-500">
+                Belum ada roadmap untuk subskill ini — tambahkan file bertag{' '}
+                <code className="rounded bg-slate-800 px-1.5 py-0.5 text-xs text-emerald-300">#roadmap</code>{' '}
+                di folder ini.
+              </div>
+            ) : (
+              <div className="space-y-8">
+                {selectedRoadmaps.map((rm, index) => (
+                  <section key={rm.id}>
                   <div className="mb-3 flex items-center gap-2">
                     <span
                       className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white"
@@ -267,7 +275,8 @@ export default function RoadmapPage() {
                   <BranchTree roadmap={rm} graph={graph} />
                 </section>
               ))}
-            </div>
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-slate-500">
