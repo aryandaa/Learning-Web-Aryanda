@@ -16,6 +16,11 @@ function isIgnored(context: ParserContext, name: string): boolean {
   return context.config.ignored.some((entry) => entry === name);
 }
 
+function isExcludedFolder(context: ParserContext, name: string): boolean {
+  const lower = name.toLowerCase();
+  return context.config.excludeFolders.some((entry) => entry.toLowerCase() === lower);
+}
+
 /**
  * Recursively walks the vault once and produces the canonical snapshot.
  * All later pipeline stages read from the snapshot instead of re-scanning.
@@ -31,7 +36,7 @@ export async function scanVault(context: ParserContext): Promise<VaultSnapshot> 
 
     for (const entry of entries) {
       if (isIgnored(context, entry.name)) continue;
-      if (entry.isDirectory() && context.config.excludeFolders.includes(entry.name)) continue;
+      if (entry.isDirectory() && isExcludedFolder(context, entry.name)) continue;
 
       const abs = path.join(dirAbs, entry.name);
       const relPath = rel ? `${rel}/${entry.name}` : entry.name;

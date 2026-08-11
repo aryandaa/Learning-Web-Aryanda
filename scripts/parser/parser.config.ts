@@ -4,8 +4,9 @@ export interface ParserConfig {
   /** Files/dirs that are never scanned. */
   ignored: string[];
   /**
-   * Folders (by name, any depth) excluded entirely from the website —
-   * notes, subfolders, and assets inside them are skipped.
+   * Folders (by name, any depth, case-insensitive) excluded entirely from the
+   * website — notes, subfolders, and assets inside them are skipped.
+   * Example: "Note Personal" (catatan pribadi), "Praktek" (folder latihan).
    */
   excludeFolders: string[];
   /** Extensions treated as documents. */
@@ -25,8 +26,8 @@ export interface ParserConfig {
 
 export const defaultConfig: ParserConfig = {
   ignored: ['.git', '.obsidian', '.github', '.trash', 'node_modules', 'vendor', '.DS_Store', '.gitignore'],
-  // Catatan pribadi tidak ditampilkan di website.
-  excludeFolders: ['Note Personal'],
+  // Catatan pribadi dan folder latihan (praktek) tidak ditampilkan di website.
+  excludeFolders: ['Note Personal', 'Praktek'],
   markdownExtensions: ['.md', '.markdown'],
   assetExtensions: [
     '.png',
