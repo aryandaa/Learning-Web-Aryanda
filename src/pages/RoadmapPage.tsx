@@ -4,9 +4,9 @@ import { ExternalLink, Map as MapIcon } from 'lucide-react';
 import { fetchRoadmaps } from '../services/docs';
 import { useSiteData } from '../app/SiteProvider';
 import { RoadmapFlow } from '../components/roadmap/RoadmapFlow';
+import { RoadmapTree } from '../components/roadmap/RoadmapTree';
 import { Spinner } from '../components/ui/spinner';
-import { cn } from '../lib/utils';
-import type { RoadmapInfo, RoadmapsData } from '../domain/types';
+import type { RoadmapsData } from '../domain/types';
 
 const FOLDER_COLORS: Record<string, string> = {
   CyberSecurity: '#fb7185',
@@ -47,19 +47,6 @@ export default function RoadmapPage() {
     };
   }, []);
 
-  // group by top-level folder
-  const groups = useMemo(() => {
-    if (!data) return [];
-    const map = new Map<string, RoadmapInfo[]>();
-    for (const roadmap of data.roadmaps) {
-      const top = roadmap.folder.split('/')[0] || 'Lainnya';
-      const list = map.get(top) ?? [];
-      list.push(roadmap);
-      map.set(top, list);
-    }
-    return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  }, [data]);
-
   const selected = data?.roadmaps.find((r) => r.id === selectedId) ?? null;
   const steps = useMemo(() => {
     if (!selected) return [];
@@ -91,37 +78,25 @@ export default function RoadmapPage() {
 
   return (
     <div className="flex h-[calc(100vh-3.5rem)]">
-      {/* daftar roadmap */}
+      {/* daftar roadmap (pohon folder, bukan daftar rata) */}
       <aside className="hidden w-72 shrink-0 overflow-y-auto border-r border-slate-800/80 p-4 md:block">
         <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
           <MapIcon className="h-4 w-4 text-amber-400" />
           Roadmaps · {data.roadmaps.length}
         </p>
-        {groups.map(([folder, roadmaps]) => (
-          <div key={folder} className="mb-4">
-            <p className="mb-1.5 flex items-center gap-2 px-2 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
-              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: folderColor(folder) }} />
-              {folder}
-            </p>
-            <ul className="space-y-0.5">
-              {roadmaps.map((roadmap) => (
-                <li key={roadmap.id}>
-                  <button
-                    onClick={() => setSelectedId(roadmap.id)}
-                    className={cn(
-                      'w-full rounded-md px-3 py-1.5 text-left text-sm transition-colors',
-                      selectedId === roadmap.id
-                        ? 'bg-indigo-500/15 font-medium text-indigo-300'
-                        : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
-                    )}
-                  >
-                    {roadmap.title}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <RoadmapTree
+          roadmaps={data.roadmaps}
+          selectedId={selectedId}
+          onSelect={setSelectedId}
+        />
+        <div className="mt-4 border-t border-slate-800 pt-3">
+          {[...new Set(data.roadmaps.map((r) => r.folder.split('/')[0]).filter(Boolean))].map((top) => (
+            <span key={top} className="mb-1 flex items-center gap-2 text-[11px] text-slate-600">
+              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: folderColor(top) }} />
+              {top}
+            </span>
+          ))}
+        </div>
       </aside>
 
       {/* konten */}
