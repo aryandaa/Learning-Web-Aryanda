@@ -142,14 +142,40 @@ function buildGraph(records: NoteRecord[]): GraphData {
 
 /** Builds roadmaps.json: #roadmap files + their learning steps (ordered links). */
 function buildRoadmaps(records: NoteRecord[]): RoadmapsData {
+  const byFolder = new Map<string, NoteRecord[]>();
+  for (const record of records) {
+    const list = byFolder.get(record.folder) ?? [];
+    list.push(record);
+    byFolder.set(record.folder, list);
+  }
+
   const roadmaps: RoadmapsData['roadmaps'] = records
     .filter((record) => record.tags.some((tag) => tag.toLowerCase() === 'roadmap'))
-    .map((record) => ({
-      id: record.id,
-      title: record.title,
-      folder: record.folder,
-      stepIds: record.links.map((link) => link.id),
-    }))
+    .map((record) => {
+      const parts = record.folder.split('/');
+
+      // File #Subskill di rantai folder induk (mis. Python.md di atas Python Dasar).
+      let subskillId: string | null = null;
+      for (let i = parts.length - 1; i >= 1; i--) {
+        const ancestorFolder = parts.slice(0, i).join('/');
+        const subskill = (byFolder.get(ancestorFolder) ?? []).find((candidate) =>
+          candidate.tags.some((tag) => tag.toLowerCase() === 'subskill')
+        );
+        if (subskill) {
+          subskillId = subskill.id;
+          break;
+        }
+      }
+
+      return {
+        id: record.id,
+        title: record.title,
+        folder: record.folder,
+        parentDir: parts[parts.length - 1] ?? '',
+        subskillId,
+        stepIds: record.links.map((link) => link.id),
+      };
+    })
     .sort(
       (a, b) =>
         a.folder.localeCompare(b.folder, undefined, { sensitivity: 'base' }) ||

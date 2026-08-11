@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
-import { ArrowDown, ArrowRight, Play } from 'lucide-react';
-import type { RoadmapInfo } from '../../domain/types';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, Folder, FolderOpen, Play, Star } from 'lucide-react';
+import type { GraphData, RoadmapInfo } from '../../domain/types';
+import { ForceGraph } from '../graph/ForceGraph';
 
 const FOLDER_COLORS: Record<string, string> = {
   CyberSecurity: '#fb7185',
@@ -15,91 +16,98 @@ function folderColor(folder: string): string {
   return FOLDER_COLORS[top] ?? FALLBACK_COLOR;
 }
 
-/** Jumlah langkah per tahap (kolom), seperti roadmap.sh. */
-const STAGE_SIZE = 6;
-
 interface RoadmapFlowProps {
   roadmap: RoadmapInfo;
-  steps: { id: string; title: string; folder: string }[];
+  /** Data graph yang sudah di-scope ke roadmap ini (roadmap + file terhubung). */
+  scopedGraph: GraphData;
+  /** Konteks: file #Subskill di folder induk (jika ada). */
+  subskill: { id: string; title: string } | null;
 }
 
 /**
- * Alur belajar gaya roadmap.sh: tahapan (kolom) berisi langkah-langkah,
- * tersambung panah, dimulai dari node roadmap.
+ * Tampilan roadmap: konteks parent (Subskill / folder induk / file roadmap),
+ * lalu jaringan file-file yang terhubung ke file lain.
  */
-export function RoadmapFlow({ roadmap, steps }: RoadmapFlowProps) {
-  const stages: { id: string; title: string; folder: string }[][] = [];
-  for (let i = 0; i < steps.length; i += STAGE_SIZE) {
-    stages.push(steps.slice(i, i + STAGE_SIZE));
-  }
+export function RoadmapFlow({ roadmap, scopedGraph, subskill }: RoadmapFlowProps) {
+  const roadmapColor = folderColor(roadmap.folder);
+  const navigate = useNavigate();
 
   return (
-    <div className="overflow-x-auto pb-4">
-      <div className="flex min-w-max items-start gap-3">
-        {/* node awal: file roadmap */}
-        <div className="flex flex-col items-center">
-          <Link
-            to={`/docs/${roadmap.id}`}
-            className="group flex w-52 flex-col items-center gap-2 rounded-2xl border-2 border-indigo-400/70 bg-indigo-500/15 p-4 text-center transition-colors hover:bg-indigo-500/25"
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-500">
-              <Play className="h-4 w-4 text-white" />
-            </span>
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-indigo-300">
-              Mulai
-            </span>
-            <span className="text-sm font-semibold leading-snug text-indigo-100 group-hover:text-white">
-              {roadmap.title}
-            </span>
-          </Link>
-          <ArrowDown className="mt-2 h-5 w-5 text-slate-600" />
-        </div>
-
-        {steps.length === 0 && (
-          <p className="mt-8 max-w-xs text-sm text-slate-500">
-            Roadmap ini belum memiliki tautan ke materi lain.
-          </p>
+    <div>
+      {/* konteks: subskill -> parent dir -> roadmap */}
+      <div className="mb-6 flex flex-wrap items-center gap-2">
+        {subskill && (
+          <>
+            <Link
+              to={`/docs/${subskill.id}`}
+              className="group flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-2.5 transition-colors hover:bg-emerald-500/20"
+            >
+              <Star className="h-4 w-4 text-emerald-300" />
+              <span className="text-sm font-semibold text-emerald-100 group-hover:text-white">
+                {subskill.title}
+              </span>
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-emerald-400/70">
+                Subskill
+              </span>
+            </Link>
+            <ArrowRight className="h-4 w-4 text-slate-600" />
+          </>
         )}
 
-        {stages.map((stage, stageIndex) => (
-          <div key={stageIndex} className="flex items-start gap-3">
-            <div className="flex flex-col items-center self-center pt-16">
-              <ArrowRight className="h-5 w-5 text-slate-600" />
-              {stageIndex < stages.length - 1 && (
-                <ArrowRight className="mt-1 h-5 w-5 text-slate-800" />
-              )}
-            </div>
-            <div className="flex flex-col gap-2">
-              {stage.map((step, innerIndex) => {
-                const index = stageIndex * STAGE_SIZE + innerIndex;
-                const color = folderColor(step.folder);
-                return (
-                  <Link
-                    key={step.id}
-                    to={`/docs/${step.id}`}
-                    className="group flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/70 py-2.5 pl-3 pr-4 transition-colors hover:border-slate-600 hover:bg-slate-800/80"
-                  >
-                    <span
-                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold tabular-nums text-slate-950"
-                      style={{ backgroundColor: color }}
-                    >
-                      {index + 1}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block max-w-[220px] truncate text-sm font-medium text-slate-200 group-hover:text-white">
-                        {step.title}
-                      </span>
-                      <span className="block max-w-[220px] truncate text-[10px] text-slate-500">
-                        {step.folder}
-                      </span>
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+        <span className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/70 px-4 py-2.5">
+          <FolderOpen className="h-4 w-4 text-amber-400" />
+          <span className="text-sm font-semibold text-slate-200">{roadmap.parentDir}</span>
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+            Folder
+          </span>
+        </span>
+
+        <ArrowRight className="h-4 w-4 text-slate-600" />
+
+        <Link
+          to={`/docs/${roadmap.id}`}
+          className="group flex items-center gap-2 rounded-xl border-2 px-4 py-2.5 transition-colors hover:bg-indigo-500/20"
+          style={{ borderColor: roadmapColor }}
+        >
+          <Play className="h-4 w-4" style={{ color: roadmapColor }} />
+          <span className="text-sm font-semibold text-slate-100 group-hover:text-white">
+            {roadmap.title}
+          </span>
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-indigo-300/70">
+            Roadmap
+          </span>
+        </Link>
       </div>
+
+      {/* jaringan file terhubung */}
+      {scopedGraph.nodes.length > 0 ? (
+        <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40">
+          <div className="flex flex-wrap items-center gap-3 border-b border-slate-800 px-4 py-2.5">
+            <p className="flex items-center gap-2 text-sm font-medium text-slate-300">
+              <Folder className="h-4 w-4 text-amber-400" />
+              File yang terhubung
+              <span className="rounded-md bg-slate-800 px-1.5 py-0.5 text-xs tabular-nums text-slate-400">
+                {scopedGraph.nodes.length} node · {scopedGraph.links.length} tautan
+              </span>
+            </p>
+            <p className="ml-auto text-[11px] text-slate-600">
+              hover: sorot · klik: buka catatan
+            </p>
+          </div>
+          <div className="h-[480px]">
+            <ForceGraph
+              data={scopedGraph}
+              showIsolated={false}
+              onNodeClick={(id) => navigate(`/docs/${id}`)}
+              onHoverChange={() => undefined}
+            />
+          </div>
+        </div>
+      ) : (
+        <p className="rounded-xl border border-dashed border-slate-800 p-8 text-center text-sm text-slate-500">
+          Roadmap ini belum memiliki tautan ke materi lain.
+        </p>
+      )}
     </div>
   );
 }

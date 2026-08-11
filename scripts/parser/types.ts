@@ -151,6 +151,10 @@ export interface RoadmapInfo {
   id: string;
   title: string;
   folder: string;
+  /** Nama folder induk langsung (parent directory). */
+  parentDir: string;
+  /** Id file bertag #Subskill di rantai folder induk, jika ada. */
+  subskillId: string | null;
   /** Langkah belajar = tautan keluar file roadmap, sesuai urutan di materi. */
   stepIds: string[];
 }
