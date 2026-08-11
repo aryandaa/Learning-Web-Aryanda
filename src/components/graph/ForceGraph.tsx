@@ -117,10 +117,10 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
         'link',
         forceLink<GNode, GLink>(graphLinks)
           .id((d) => d.id)
-          .distance(38)
-          .strength(0.5)
+          .distance(26)
+          .strength(0.65)
       )
-      .force('charge', forceManyBody<GNode>().strength(-55))
+      .force('charge', forceManyBody<GNode>().strength(-35))
       .force('center', forceCenter(size.width / 2, size.height / 2))
       .force('collide', forceCollide<GNode>().radius((d) => d.radius + 2).strength(0.9))
       .alphaDecay(0.02)
