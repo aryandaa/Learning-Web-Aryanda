@@ -9,6 +9,7 @@ import type {
   NoteRecord,
   ParseResult,
   RoadmapsData,
+  RoadmapSubskill,
   SearchIndexEntry,
   TreeFolderNode,
   WarningsFile,
@@ -181,5 +182,19 @@ function buildRoadmaps(records: NoteRecord[]): RoadmapsData {
         a.folder.localeCompare(b.folder, undefined, { sensitivity: 'base' }) ||
         a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
     );
-  return { schemaVersion: 1, roadmaps };
+
+  // Subskills: file #Subskill + roadmap yang berada di bawahnya.
+  const subskills: RoadmapSubskill[] = records
+    .filter((record) => record.tags.some((tag) => tag.toLowerCase() === 'subskill'))
+    .map((record) => ({
+      id: record.id,
+      title: record.title,
+      folder: record.folder,
+      roadmapIds: roadmaps
+        .filter((roadmap) => roadmap.subskillId === record.id)
+        .map((roadmap) => roadmap.id),
+    }))
+    .sort((a, b) => a.folder.localeCompare(b.folder, undefined, { sensitivity: 'base' }));
+
+  return { schemaVersion: 1, roadmaps, subskills };
 }

@@ -1,35 +1,22 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Map as MapIcon } from 'lucide-react';
+import { ExternalLink, Star } from 'lucide-react';
 import { fetchGraph, fetchRoadmaps } from '../services/docs';
-import { useSiteData } from '../app/SiteProvider';
 import { RoadmapFlow } from '../components/roadmap/RoadmapFlow';
 import { Spinner } from '../components/ui/spinner';
 import { cn } from '../lib/utils';
 import type { GraphData, RoadmapInfo, RoadmapsData } from '../domain/types';
 
-const FOLDER_COLORS: Record<string, string> = {
-  CyberSecurity: '#fb7185',
-  DevOps: '#a78bfa',
-  Jaringan: '#38bdf8',
-  Pemrograman: '#34d399',
-};
-const FALLBACK_COLOR = '#94a3b8';
-
-function folderColor(folder: string): string {
-  const top = folder.split('/')[0];
-  return FOLDER_COLORS[top] ?? FALLBACK_COLOR;
-}
-
 /**
- * Halaman Roadmap: pilih roadmap dari file #roadmap, lihat konteks parent
- * (#Subskill / folder induk) dan jaringan file yang terhubung.
+ * Halaman Roadmap: sidebar menampilkan SKILL (file #Subskill) saja.
+ * Pilih skill -> pilih roadmap-nya -> lihat kotak-kotak file terhubung.
  */
 export default function RoadmapPage() {
   const [roadmaps, setRoadmaps] = useState<RoadmapsData | null>(null);
   const [graph, setGraph] = useState<GraphData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedSkillId, setSelectedSkillId] = useState<string | null>(null);
+  const [selectedRoadmapId, setSelectedRoadmapId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -38,7 +25,9 @@ export default function RoadmapPage() {
         if (cancelled) return;
         setRoadmaps(roadmapsData);
         setGraph(graphData);
-        setSelectedId(roadmapsData.roadmaps[0]?.id ?? null);
+        const first = roadmapsData.subskills[0];
+        setSelectedSkillId(first?.id ?? null);
+        setSelectedRoadmapId(first?.roadmapIds[0] ?? null);
       })
       .catch((err) => {
         if (!cancelled) setError((err as Error).message);
@@ -48,25 +37,25 @@ export default function RoadmapPage() {
     };
   }, []);
 
-  // daftar roadmap dikelompokkan per folder utama
-  const groups = useMemo(() => {
-    if (!roadmaps) return [];
-    const map = new Map<string, RoadmapInfo[]>();
-    for (const roadmap of roadmaps.roadmaps) {
-      const top = roadmap.folder.split('/')[0] || 'Lainnya';
-      const list = map.get(top) ?? [];
-      list.push(roadmap);
-      map.set(top, list);
-    }
-    return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  }, [roadmaps]);
+  const selectSkill = (skillId: string) => {
+    setSelectedSkillId(skillId);
+    const skill = roadmaps?.subskills.find((s) => s.id === skillId);
+    setSelectedRoadmapId(skill?.roadmapIds[0] ?? null);
+  };
 
-  const selected = roadmaps?.roadmaps.find((r) => r.id === selectedId) ?? null;
+  const selectedSkill = roadmaps?.subskills.find((s) => s.id === selectedSkillId) ?? null;
+  const skillRoadmaps: RoadmapInfo[] = useMemo(() => {
+    if (!roadmaps || !selectedSkill) return [];
+    return selectedSkill.roadmapIds
+      .map((id) => roadmaps.roadmaps.find((r) => r.id === id))
+      .filter((r): r is RoadmapInfo => Boolean(r));
+  }, [roadmaps, selectedSkill]);
+
+  const selected = roadmaps?.roadmaps.find((r) => r.id === selectedRoadmapId) ?? null;
 
   // scope graph: roadmap + langkah + file yang langsung di-link langkah
   const scopedGraph = useMemo<GraphData | null>(() => {
     if (!selected || !graph) return null;
-    // himpunan dasar (tetap) — hanya 1 tingkat koneksi, bukan transisitif
     const base = new Set<string>([selected.id, ...selected.stepIds]);
     if (selected.subskillId) base.add(selected.subskillId);
     const nodeIds = new Set<string>(base);
@@ -97,83 +86,115 @@ export default function RoadmapPage() {
 
   return (
     <div className="flex h-[calc(100vh-3.5rem)]">
-      {/* daftar roadmap per kategori */}
+      {/* sidebar: SKILL (#Subskill) saja */}
       <aside className="hidden w-72 shrink-0 overflow-y-auto border-r border-slate-800/80 p-4 md:block">
         <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-          <MapIcon className="h-4 w-4 text-amber-400" />
-          Roadmaps · {roadmaps.roadmaps.length}
+          <Star className="h-4 w-4 text-emerald-400" />
+          Skills · {roadmaps.subskills.length}
         </p>
-        {groups.map(([folder, list]) => (
-          <div key={folder} className="mb-4">
-            <p className="mb-1.5 flex items-center gap-2 px-2 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
-              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: folderColor(folder) }} />
-              {folder}
-            </p>
-            <ul className="space-y-0.5">
-              {list.map((roadmap) => (
-                <li key={roadmap.id}>
-                  <button
-                    onClick={() => setSelectedId(roadmap.id)}
-                    className={cn(
-                      'w-full rounded-md px-3 py-1.5 text-left text-sm transition-colors',
-                      selectedId === roadmap.id
-                        ? 'bg-indigo-500/15 font-medium text-indigo-300'
-                        : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
-                    )}
-                  >
-                    {roadmap.title}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <ul className="space-y-0.5">
+          {roadmaps.subskills.map((skill) => (
+            <li key={skill.id}>
+              <button
+                onClick={() => selectSkill(skill.id)}
+                className={cn(
+                  'flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-sm transition-colors',
+                  selectedSkillId === skill.id
+                    ? 'bg-emerald-500/15 font-medium text-emerald-300'
+                    : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
+                )}
+              >
+                <Star className="h-3.5 w-3.5 shrink-0 text-emerald-400/70" />
+                <span className="truncate">{skill.title}</span>
+                {skill.roadmapIds.length > 0 && (
+                  <span className="ml-auto rounded bg-slate-800 px-1.5 py-0.5 text-[10px] tabular-nums text-slate-500">
+                    {skill.roadmapIds.length}
+                  </span>
+                )}
+              </button>
+            </li>
+          ))}
+        </ul>
       </aside>
 
       {/* konten */}
       <div className="min-w-0 flex-1 overflow-y-auto">
-        {selected && scopedGraph ? (
+        {selectedSkill ? (
           <div className="p-5 sm:p-7">
-            <div className="mb-6 flex flex-wrap items-center gap-3">
-              <div>
-                <p className="text-xs uppercase tracking-wider text-slate-500">{selected.folder}</p>
-                <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-50">
-                  {selected.title}
-                </h1>
-              </div>
-              <div className="ml-auto flex items-center gap-2">
-                <span className="rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-400">
-                  {selected.stepIds.length} langkah
-                </span>
-                <Link
-                  to={`/docs/${selected.id}`}
-                  className="flex items-center gap-1.5 rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-400"
-                >
-                  Buka dokumen roadmap
-                  <ExternalLink className="h-3 w-3" />
-                </Link>
-              </div>
+            {/* header skill */}
+            <div className="mb-5">
+              <p className="text-xs uppercase tracking-wider text-slate-500">{selectedSkill.folder}</p>
+              <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-50">
+                {selectedSkill.title}
+              </h1>
             </div>
 
-            <RoadmapFlow roadmap={selected} scopedGraph={scopedGraph} />
+            {/* pilih roadmap skill ini */}
+            {skillRoadmaps.length === 0 ? (
+              <p className="rounded-xl border border-dashed border-slate-800 p-8 text-center text-sm text-slate-500">
+                Skill ini belum memiliki roadmap (#roadmap).
+              </p>
+            ) : (
+              <div className="mb-6 flex flex-wrap gap-2">
+                {skillRoadmaps.map((roadmap) => {
+                  const active = selectedRoadmapId === roadmap.id;
+                  return (
+                    <button
+                      key={roadmap.id}
+                      onClick={() => setSelectedRoadmapId(roadmap.id)}
+                      className={cn(
+                        'rounded-xl border px-4 py-2 text-left transition-colors',
+                        active
+                          ? 'border-indigo-500/60 bg-indigo-500/15'
+                          : 'border-slate-700 bg-slate-900/60 hover:border-slate-600'
+                      )}
+                    >
+                      <span className={cn('block text-sm font-medium', active ? 'text-indigo-200' : 'text-slate-200')}>
+                        {roadmap.title}
+                      </span>
+                      <span className="block text-[10px] text-slate-500">
+                        {roadmap.parentDir} · {roadmap.stepIds.length} langkah
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* flow roadmap terpilih */}
+            {selected && scopedGraph && (
+              <div>
+                <div className="mb-4 flex flex-wrap items-center gap-3">
+                  <h2 className="text-lg font-semibold text-slate-100">{selected.title}</h2>
+                  <Link
+                    to={`/docs/${selected.id}`}
+                    className="ml-auto flex items-center gap-1.5 rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-400"
+                  >
+                    Buka dokumen
+                    <ExternalLink className="h-3 w-3" />
+                  </Link>
+                </div>
+                <RoadmapFlow roadmap={selected} scopedGraph={scopedGraph} />
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-slate-500">
-            Pilih roadmap di samping.
+            Pilih skill di samping.
           </div>
         )}
       </div>
 
-      {/* selector mobile */}
+      {/* selector skill (mobile) */}
       <div className="fixed bottom-4 left-1/2 z-30 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 md:hidden">
         <select
-          value={selectedId ?? ''}
-          onChange={(e) => setSelectedId(e.target.value)}
-          className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-200 shadow-2xl focus:border-indigo-500 focus:outline-none"
+          value={selectedSkillId ?? ''}
+          onChange={(e) => selectSkill(e.target.value)}
+          className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-200 shadow-2xl focus:border-emerald-500 focus:outline-none"
         >
-          {roadmaps.roadmaps.map((roadmap) => (
-            <option key={roadmap.id} value={roadmap.id}>
-              {roadmap.folder.split('/').pop()} — {roadmap.title}
+          {roadmaps.subskills.map((skill) => (
+            <option key={skill.id} value={skill.id}>
+              {skill.title} ({skill.roadmapIds.length})
             </option>
           ))}
         </select>

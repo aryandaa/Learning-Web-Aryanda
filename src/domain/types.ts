@@ -117,7 +117,16 @@ export interface RoadmapInfo {
   stepIds: string[];
 }
 
+export interface RoadmapSubskill {
+  id: string;
+  title: string;
+  folder: string;
+  /** Id roadmap yang berada di bawah skill ini. */
+  roadmapIds: string[];
+}
+
 export interface RoadmapsData {
   schemaVersion: number;
   roadmaps: RoadmapInfo[];
+  subskills: RoadmapSubskill[];
 }
