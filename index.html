@@ -6,6 +6,25 @@
     <meta name="description" content="Personal learning platform — materi dari Obsidian Vault Aryanda" />
     <meta name="theme-color" content="#020617" />
     <title>Learning Web Aryanda</title>
+    <script>
+      // Deteksi root aplikasi sebelum asset dimuat, agar situs aman di root
+      // maupun subpath (GitHub Pages). Route: /, /docs, /docs/*, /search.
+      (function () {
+        var parts = window.location.pathname.split('/').filter(Boolean);
+        var root = '/';
+        if (parts.length === 0) {
+          root = '/';
+        } else if (parts[0] === 'docs' || parts[0] === 'search') {
+          root = '/';
+        } else {
+          var i = parts.findIndex(function (p) { return p === 'docs' || p === 'search'; });
+          root = i === -1
+            ? window.location.pathname.replace(/\/?$/, '/')
+            : '/' + parts.slice(0, i).join('/') + '/';
+        }
+        document.write('<base href="' + root + '">');
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

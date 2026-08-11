@@ -1,11 +1,11 @@
 import type { DocumentData, MetadataFile, SearchIndexEntry, TreeFolderNode, TreeNode } from '../domain/types';
-
-const base = import.meta.env.BASE_URL;
+import { joinWithRoot } from '../lib/base';
 
 async function getJson<T>(path: string): Promise<T> {
-  const response = await fetch(`${base}${path}`, { headers: { Accept: 'application/json' } });
+  const url = joinWithRoot(path);
+  const response = await fetch(url, { headers: { Accept: 'application/json' } });
   if (!response.ok) {
-    throw new Error(`Gagal memuat ${path} (HTTP ${response.status})`);
+    throw new Error(`Gagal memuat ${url} (HTTP ${response.status})`);
   }
   return (await response.json()) as T;
 }

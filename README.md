@@ -153,7 +153,16 @@ Workflow hanya mengirim sinyal `vault-sync` — **tidak melakukan parsing**.
 Hasil `npm run build` (folder `dist/`) bisa di-hosting di hosting statis mana pun:
 
 - **Cloudflare Pages / Netlify / Vercel** — build command `npm run build`, output `dist`. Rewrite SPA otomatis ditangani.
-- **GitHub Pages** — `public/404.html` + restore route di `main.tsx` sudah disiapkan. Jika di-hosting di subpath (project site), set `base` di `vite.config.ts` ke subpath tersebut.
+- **GitHub Pages** — workflow `.github/workflows/deploy.yml` sudah disediakan:
+  1. Settings → Pages → Source: **GitHub Actions**.
+  2. Push ke `main` → situs otomatis deploy.
+
+Frontend **mendeteksi root path secara otomatis** (`src/lib/base.ts`), jadi situs aman
+baik di root domain maupun subpath seperti `https://user.github.io/Learning-Web-Aryanda/` —
+tidak perlu mengubah `base` di `vite.config.ts`.
+
+`public/404.html` + restore route di `main.tsx` memastikan deep link
+(contoh `/docs/pemrograman/php/routing`) tetap berfungsi di GitHub Pages.
 
 ## Safety guarantees
 

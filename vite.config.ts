@@ -1,12 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// base: '/' works for root-level hosting (Cloudflare Pages, Netlify, Vercel,
-// GitHub Pages user/organization sites). For a GitHub Pages *project* site
-// deployed under a subpath, set base to that subpath, e.g. '/learning-web/'.
+// base relatif (./) + <base> dinamis di index.html membuat asset (JS/CSS)
+// bekerja di root maupun subpath (GitHub Pages project site). Path data
+// (docs/*.json) dihitung runtime di src/lib/base.ts.
 export default defineConfig({
   plugins: [react()],
-  base: '/',
+  base: './',
   server: {
     port: 4173,
   },
