@@ -7,3 +7,4 @@ dist/
 
 # Aset vault boleh berisi file bernama .env (sample Docker, dll.)
 !public/assets/vault/**/.env
+test-results/
