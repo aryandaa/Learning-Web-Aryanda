@@ -1,8 +1,8 @@
 # Learning Web Aryanda
 
-**Platform belajar pribadi berbasis web** — tulis materi di **Obsidian**, dan website ini otomatis mengubah seluruh Markdown vault menjadi website pembelajaran statis yang lengkap: dokumentasi, pencarian fuzzy, graph antar-catatan, roadmap bercabang, hingga **code editor interaktif yang berjalan 100% di browser**.
+**Platform belajar pribadi berbasis web**: tulis materi di **Obsidian**, dan website ini otomatis mengubah seluruh Markdown vault menjadi website pembelajaran statis yang lengkap: dokumentasi, pencarian fuzzy, graph antar-catatan, roadmap bercabang, hingga **code editor interaktif yang berjalan 100% di browser**.
 
-> 🟢 **Open source** — silakan fork, clone, dan gunakan untuk vault Anda sendiri.
+> 🟢 **Open source**: silakan fork, clone, dan gunakan untuk vault Anda sendiri.
 > Semua data berasal dari Markdown biasa, jadi Anda bebas membawa materi sendiri.
 
 ```
@@ -53,7 +53,7 @@
 | 🗺 **Roadmap Bercabang** | File `#roadmap` → pohon langkah belajar bertingkat dengan cabang materi rujukan. Landing page grid semua `#Subskill` per bidang. |
 | ⌨️ **Code Editor Interaktif** | Tulis & jalankan kode **tanpa backend**: JavaScript, TypeScript, HTML, Python (Pyodide WASM). |
 | 🌗 **Dark / Light Theme** | Theme switcher di navbar, pilihan tersimpan di `localStorage`. |
-| 📑 **Daftar Isi Hierarkis** | Otomatis dari heading `#`–`######`, indent sesuai level, scroll smooth. |
+| 📑 **Daftar Isi Hierarkis** | Otomatis dari heading `#` sampai `######`, indent sesuai level, scroll smooth. |
 | 🧱 **Code Block Pintar** | Syntax highlighting (highlight.js), label bahasa, tombol **Copy**. |
 | 🔗 **Wiki Links / Backlinks** | `[[Note]]`, `[[Folder/Note|alias]]`, `[[Note#Section]]`, embed `![[gambar.png]]`, panel "Dirujuk oleh". |
 | 📱 **Fully Responsive** | Mobile drawer navigation, sidebar desktop collapsible, tanpa horizontal overflow. |
@@ -81,7 +81,7 @@
 
 **Runtime opsional (frontend-only):**
 
-- Pyodide (WASM) — dipakai Code Editor untuk menjalankan Python di browser, dimuat lazy dari CDN.
+- Pyodide (WASM): dipakai Code Editor untuk menjalankan Python di browser, dimuat lazy dari CDN.
 
 > Tidak ada backend, tidak ada database, tidak ada API write. Hasil akhir adalah **static website**.
 
@@ -142,29 +142,29 @@ node -v   # mis. v22.23.2
 npm -v
 ```
 
-### Langkah 1 — Clone repository
+### Langkah 1: Clone repository
 
 ```bash
 git clone https://github.com/aryandaa/Learning-Web-Aryanda.git
 cd Learning-Web-Aryanda
 ```
 
-### Langkah 2 — Install dependency
+### Langkah 2: Install dependency
 
 ```bash
 npm install
 ```
 
-### Langkah 3 — Jalankan (2 pilihan)
+### Langkah 3: Jalankan (2 pilihan)
 
-**Opsi A: Langsung jalan dengan data yang sudah di-commit** (paling cepat — data `generated/` + `public/` sudah ada di repo):
+**Opsi A: Langsung jalan dengan data yang sudah di-commit** (paling cepat: data `generated/` + `public/` sudah ada di repo):
 
 ```bash
 npm run dev
 # buka http://localhost:4173
 ```
 
-**Opsi B: Generate ulang dari vault Anda sendiri** (jika ingin pakai materi sendiri — lanjut ke [tutorial Obsidian](#-tutorial-hubungkan-obsidian-ke-website-ini)):
+**Opsi B: Generate ulang dari vault Anda sendiri** (jika ingin pakai materi sendiri: lanjut ke [tutorial Obsidian](#-tutorial-hubungkan-obsidian-ke-website-ini)):
 
 ```bash
 npm run parse -- --vault=/path/ke/Obsidian-Vault
@@ -203,14 +203,14 @@ Folder `Note Personal` dan `Praktek` sudah dikecualikan secara default (`scripts
 
 ## 🔗 Tutorial: Hubungkan Obsidian ke Website Ini
 
-Materi ditulis di vault Obsidian (Markdown polos), lalu website membaca vault tersebut — **tidak ada penulisan balik** ke Obsidian. Ada dua pendekatan:
+Materi ditulis di vault Obsidian (Markdown polos), lalu website membaca vault tersebut: **tidak ada penulisan balik** ke Obsidian. Ada dua pendekatan:
 
-1. **Lokal saja** — jalankan parser manual di komputer Anda setiap selesai menulis.
-2. **Otomatis via GitHub** — tiap `git push` ke repo vault memicu sync otomatis ke website.
+1. **Lokal saja**: jalankan parser manual di komputer Anda setiap selesai menulis.
+2. **Otomatis via GitHub**: tiap `git push` ke repo vault memicu sync otomatis ke website.
 
-### Bagian 1 — Siapkan repo vault di GitHub
+### Bagian 1: Siapkan repo vault di GitHub
 
-**1.1** Buat repository baru di GitHub untuk vault Anda, misalnya `aryandaa/Obsidian-Vault`. Boleh **private** — website hanya butuh token baca.
+**1.1** Buat repository baru di GitHub untuk vault Anda, misalnya `aryandaa/Obsidian-Vault`. Boleh **private**: website hanya butuh token baca.
 
 **1.2** Di komputer, buka folder vault Obsidian Anda (folder yang berisi `.obsidian/`), lalu inisialisasi git:
 
@@ -232,7 +232,7 @@ git init
 node_modules/
 ```
 
-> Simpan `.obsidian/appearance.json`, `core-plugins.json`, dll. tetap di-commit jika ingin sinkron pengaturan — opsional.
+> Simpan `.obsidian/appearance.json`, `core-plugins.json`, dll. tetap di-commit jika ingin sinkron pengaturan: opsional.
 
 **1.4** Commit pertama dan push:
 
@@ -244,7 +244,7 @@ git remote add origin https://github.com/<username>/Obsidian-Vault.git
 git push -u origin main
 ```
 
-### Bagian 2 — Tulis materi dengan format yang didukung
+### Bagian 2: Tulis materi dengan format yang didukung
 
 Website membaca Markdown polos. Struktur folder di vault **langsung menjadi struktur website**:
 
@@ -280,7 +280,7 @@ updated: 2026-08-11
 |---|---|
 | `#Myskill` | Menandai file **bidang** (ditampilkan di statistik dashboard) |
 | `#Subskill` | Menandai file **skill** (muncul di grid roadmap + statistik dashboard) |
-| `#roadmap` | Menandai file **urutan belajar** suatu folder — isi dengan link berurutan |
+| `#roadmap` | Menandai file **urutan belajar** suatu folder: isi dengan link berurutan |
 | `#latihan` | Menandai materi latihan (badge khusus) |
 
 > Semua tag lain (mis. `#php`, `#security`) menjadi badge topik biasa. Tag ditulis di frontmatter **atau** inline di teks (`#tag`), keduanya didukung.
@@ -294,9 +294,9 @@ updated: 2026-08-11
 ![[gambar.png]]                   ← embed gambar
 ```
 
-**Heading & Daftar Isi**: `#` sampai `######`. Daftar isi otomatis dibuat dari heading dan **indent sesuai level** — makin banyak `#`, makin dalam indentnya.
+**Heading & Daftar Isi**: `#` sampai `######`. Daftar isi otomatis dibuat dari heading dan **indent sesuai level**: makin banyak `#`, makin dalam indentnya.
 
-**Code block** — syntax highlighting + label + tombol Copy otomatis:
+**Code block**: syntax highlighting + label + tombol Copy otomatis:
 
 ````markdown
 ```php
@@ -323,7 +323,7 @@ Rumus inline $E = mc^2$ dan display:
 $$ \int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2} $$
 ```
 
-**Roadmap** — buat file dengan tag `#roadmap` di dalam folder, isi dengan link ke materi secara berurutan:
+**Roadmap**: buat file dengan tag `#roadmap` di dalam folder, isi dengan link ke materi secara berurutan:
 
 ```markdown
 ---
@@ -340,7 +340,7 @@ tags: [roadmap]
 
 Website akan menampilkan roadmap ini sebagai **pohon bercabang**: langkah berurutan ke bawah, dan file yang dirujuk tiap langkah tampil sebagai cabang.
 
-### Bagian 3 — Beri izin akses (token)
+### Bagian 3: Beri izin akses (token)
 
 Website perlu **membaca** vault (saat sync) dan vault perlu **memberi tahu** website (mengirim sinyal).
 
@@ -366,7 +366,7 @@ Website perlu **membaca** vault (saat sync) dan vault perlu **memberi tahu** web
    - Name: `WEBSITE_REPOSITORY`
    - Value: `username/learning-web-aryanda` (nama repo website Anda)
 
-### Bagian 4 — Pasang workflow di repo vault
+### Bagian 4: Pasang workflow di repo vault
 
 Buat file `.github/workflows/dispatch-website-sync.yml` di **repo vault**:
 
@@ -403,9 +403,9 @@ jobs:
           WEBSITE_REPOSITORY: ${{ secrets.WEBSITE_REPOSITORY }}
 ```
 
-> Workflow ini **hanya mengirim sinyal** — parsing dilakukan oleh repo website.
+> Workflow ini **hanya mengirim sinyal**: parsing dilakukan oleh repo website.
 
-### Bagian 5 — Alur sync otomatis (selesai!)
+### Bagian 5: Alur sync otomatis (selesai!)
 
 Sekarang, setiap kali Anda push perubahan ke vault:
 
@@ -432,14 +432,14 @@ Obsidian (menulis materi)
 
 Parser memproses vault dalam 8 tahap:
 
-1. **Scan** — snapshot vault (markdown, folder, aset) sekali saja, deterministik.
-2. **Validasi** — duplicate document id / output path = **fatal** (berhenti).
-3. **Index** — frontmatter, judul, tag, alias, heading, reading time, excerpt.
-4. **Resolve** — lookup wiki link (`[[Note]]`, `[[Note#Section]]`, embed) + urutan prev/next (DFS).
-5. **Render** — Markdown → HTML (GFM, task list, KaTeX, highlight.js, callouts, wiki links, embeds) yang **disanitasi** dengan rehype-sanitize.
-6. **Copy assets** — hanya menyalin aset yang **benar-benar direferensikan** dokumen ke `generated/assets/` (hemat ukuran).
-7. **Write** — tulis `generated/docs/<struktur vault>/*.json`, `tree.json`, `search-index.json`, `graph.json`, `roadmaps.json`, `metadata.json`, `assets/manifest.json`, `warnings.json`.
-8. **Publish** — salin ke `public/docs/` dan `public/assets/vault/` (hanya dua direktori itu yang disentuh).
+1. **Scan**: snapshot vault (markdown, folder, aset) sekali saja, deterministik.
+2. **Validasi**: duplicate document id / output path = **fatal** (berhenti).
+3. **Index**: frontmatter, judul, tag, alias, heading, reading time, excerpt.
+4. **Resolve**: lookup wiki link (`[[Note]]`, `[[Note#Section]]`, embed) + urutan prev/next (DFS).
+5. **Render**: Markdown → HTML (GFM, task list, KaTeX, highlight.js, callouts, wiki links, embeds) yang **disanitasi** dengan rehype-sanitize.
+6. **Copy assets**: hanya menyalin aset yang **benar-benar direferensikan** dokumen ke `generated/assets/` (hemat ukuran).
+7. **Write**: tulis `generated/docs/<struktur vault>/*.json`, `tree.json`, `search-index.json`, `graph.json`, `roadmaps.json`, `metadata.json`, `assets/manifest.json`, `warnings.json`.
+8. **Publish**: salin ke `public/docs/` dan `public/assets/vault/` (hanya dua direktori itu yang disentuh).
 
 Identitas dokumen = **path vault-relative yang dinormalisasi** (lowercase, tanpa ekstensi, spasi → `-`):
 
@@ -455,9 +455,9 @@ Dua file dengan nama sama di folder berbeda tetap dianggap dokumen berbeda (`PHP
 
 | Route | Halaman |
 |---|---|
-| `/` | Beranda — hero, statistik (Catatan, Folder, Estimasi baca, Skill, Bidang), topik utama |
+| `/` | Beranda: hero, statistik (Catatan, Folder, Estimasi baca, Skill, Bidang), topik utama |
 | `/docs` | Explorer seluruh struktur vault + strip subskill |
-| `/docs/:id` | Dokumen — breadcrumb, tag, TOC hierarkis, konten, backlinks, prev/next |
+| `/docs/:id` | Dokumen: breadcrumb, tag, TOC hierarkis, konten, backlinks, prev/next |
 | `/search` | Pencarian fuzzy (Fuse.js, index lazy) |
 | `/graph` | Graph view antar-catatan (d3-force, canvas) |
 | `/roadmap` | Landing grid semua `#Subskill` per bidang → detail roadmap bercabang |
@@ -465,12 +465,12 @@ Dua file dengan nama sama di folder berbeda tetap dianggap dokumen berbeda (`PHP
 
 **Code Editor** mendukung:
 
-- **JavaScript** — sandbox iframe, `console.log/error/warn` ditangkap.
-- **TypeScript** — ditranspilasi di browser (paket `typescript`, chunk lazy).
-- **HTML** — preview langsung di iframe sandbox.
-- **Python** — Pyodide (WASM) dimuat sekali dari CDN, stdout/stderr ditangkap.
+- **JavaScript**: sandbox iframe, `console.log/error/warn` ditangkap.
+- **TypeScript**: ditranspilasi di browser (paket `typescript`, chunk lazy).
+- **HTML**: preview langsung di iframe sandbox.
+- **Python**: Pyodide (WASM) dimuat sekali dari CDN, stdout/stderr ditangkap.
 
-Semua eksekusi terjadi di browser pengunjung — **tidak ada backend**.
+Semua eksekusi terjadi di browser pengunjung: **tidak ada backend**.
 
 ---
 
@@ -559,7 +559,7 @@ vercel --prod   # production
 | Gejala | Solusi |
 |---|---|
 | `npm run parse` error | Cek path `--vault` benar dan berisi `.md`. |
-| DocsPage kosong | Cek `generated/docs/tree.json` — kalau tidak ada, jalankan parser. |
+| DocsPage kosong | Cek `generated/docs/tree.json`: kalau tidak ada, jalankan parser. |
 | Search kosong | Cek `generated/docs/search-index.json` ada. |
 | Workflow vault tidak jalan | Cek secret `WEBSITE_DISPATCH_TOKEN` & `WEBSITE_REPOSITORY` di repo vault. |
 | Workflow website gagal clone | Cek secret `OBSIDIAN_VAULT_TOKEN` (Contents: Read-only ke repo vault) di repo website. |
@@ -600,4 +600,4 @@ npm run build   # build produksi (pastikan lulus)
 
 ---
 
-Dibuat dengan ❤️ oleh **M. Aryanda Sanggadiennata** — penyedia materi sekaligus developer web.
+Dibuat dengan ❤️ oleh **M. Aryanda Sanggadiennata**: penyedia materi sekaligus developer web.
