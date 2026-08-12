@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { ChevronRight, ExternalLink, FolderTree, RefreshCw, Star } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronRight,
+  ExternalLink,
+  FolderTree,
+  GitFork,
+  RefreshCw,
+  Star,
+} from 'lucide-react';
 import { useSiteData } from '../app/SiteProvider';
 import { BranchTree } from '../components/roadmap/BranchTree';
 import { Spinner } from '../components/ui/spinner';
@@ -23,6 +32,8 @@ interface SidebarItem {
   id: string;
   label: string;
   skill: string;
+  /** Folder vault tempat subskill/roadmap berada, mis. "Pemrograman/PHP". */
+  path: string;
   roadmapIds: string[];
 }
 
@@ -33,10 +44,10 @@ interface SidebarGroup {
 }
 
 /**
- * Susun item sidebar dari roadmaps.json (data vault, tanpa hardcode):
- * tiap subskill yang punya roadmap jadi item; roadmap yang tidak berada
- * di subskill mana pun (mis. DevOps Docker, Fundamental) jadi item
- * sendiri. Skill tanpa roadmap tidak muncul.
+ * Susun item dari roadmaps.json (data vault, tanpa hardcode):
+ * tiap subskill (#Subskill) jadi item; roadmap yang tidak berada di
+ * subskill mana pun (mis. Fundamental, Rancangan Software) jadi item
+ * sendiri. Semua dikelompokkan per skill (folder level-1).
  */
 function buildSidebarGroups(roadmaps: RoadmapsData): SidebarGroup[] {
   const subskillOrder = new Map(roadmaps.subskills.map((s, i) => [s.id, i]));
@@ -49,20 +60,25 @@ function buildSidebarGroups(roadmaps: RoadmapsData): SidebarGroup[] {
   };
 
   for (const sub of roadmaps.subskills) {
-    // Semua subskill (#Subskill) ditampilkan, termasuk yang belum punya
-    // roadmap — halaman roadmap menampilkan state kosong untuk itu.
     const skill = sub.folder.split('/')[0] || 'Lainnya';
     push(skill, {
       id: `sub:${sub.id}`,
       label: sub.title,
       skill,
+      path: sub.folder,
       roadmapIds: sub.roadmapIds,
     });
   }
   for (const rm of roadmaps.roadmaps) {
     if (rm.subskillId) continue; // sudah masuk lewat subskill
     const skill = rm.folder.split('/')[0] || 'Lainnya';
-    push(skill, { id: `rm:${rm.id}`, label: rm.title, skill, roadmapIds: [rm.id] });
+    push(skill, {
+      id: `rm:${rm.id}`,
+      label: rm.title,
+      skill,
+      path: rm.folder,
+      roadmapIds: [rm.id],
+    });
   }
 
   return [...bySkill.entries()]
@@ -80,10 +96,14 @@ function buildSidebarGroups(roadmaps: RoadmapsData): SidebarGroup[] {
 }
 
 /**
- * Halaman Roadmap: sidebar kategori (skill → subskill) + detail roadmap
- * BERCABANG. Memilih subskill menampilkan semua roadmap-nya sebagai
- * pohon: langkah berurutan, dan file yang dirujuk langkah tampil
- * sebagai cabang. Semua data dari roadmaps.json + graph.json (vault).
+ * Halaman Roadmap — dua mode:
+ *
+ * 1. GRID (landing): tanpa ?sub= → menampilkan SEMUA subskill (#Subskill)
+ *    dari seluruh path (CyberSecurity, DevOps, Jaringan, Pemrograman),
+ *    dibungkus kartu besar dalam grid 4 kolom (responsif), dikelompokkan
+ *    per path/skill.
+ * 2. DETAIL: dengan ?sub=... → sidebar kategori + detail roadmap BERCABANG
+ *    (BranchTree) seperti sebelumnya, plus tombol kembali ke grid.
  */
 export default function RoadmapPage() {
   const { metadata, loading: siteLoading } = useSiteData();
@@ -92,8 +112,6 @@ export default function RoadmapPage() {
   const [error, setError] = useState<string | null>(null);
   // Seleksi datang dari query string (/roadmap?sub=...), jadi badge di halaman
   // lain (mis. /docs) bisa langsung mengarahkan ke subskill tertentu.
-  // Id subskill mengandung slash, jadi dipakai query param (bukan path param)
-  // agar URL tidak pecah menjadi beberapa segmen.
   const [searchParams] = useSearchParams();
   const urlId = searchParams.get('sub');
   const navigate = useNavigate();
@@ -117,16 +135,17 @@ export default function RoadmapPage() {
   const groups = useMemo(() => (roadmaps ? buildSidebarGroups(roadmaps) : []), [roadmaps]);
   const allItems = useMemo(() => groups.flatMap((g) => g.items), [groups]);
 
-  // Item aktif: dari URL kalau valid, fallback ke item pertama.
+  // Item aktif HANYA dari URL — tanpa ?sub= tampilkan grid semua subskill.
   const selected = useMemo(() => {
-    if (allItems.length === 0) return null;
-    if (urlId) {
-      const found = allItems.find((item) => item.id === urlId);
-      if (found) return found;
-    }
-    return allItems[0];
+    if (!urlId || allItems.length === 0) return null;
+    return allItems.find((item) => item.id === urlId) ?? null;
   }, [allItems, urlId]);
   const selectedGroup = groups.find((g) => g.items.some((item) => item.id === selected?.id)) ?? null;
+
+  const roadmapById = useMemo(
+    () => new Map((roadmaps?.roadmaps ?? []).map((rm) => [rm.id, rm])),
+    [roadmaps]
+  );
 
   const selectedRoadmaps = useMemo<RoadmapInfo[]>(() => {
     if (!roadmaps || !selected) return [];
@@ -156,8 +175,6 @@ export default function RoadmapPage() {
     );
   }
 
-  const totalSteps = selectedRoadmaps.reduce((sum, rm) => sum + rm.stepIds.length, 0);
-  const color = selectedGroup?.color ?? '#94a3b8';
   const syncedAt = metadata?.generatedAt
     ? new Date(metadata.generatedAt).toLocaleString('id-ID', {
         day: 'numeric',
@@ -167,6 +184,73 @@ export default function RoadmapPage() {
         minute: '2-digit',
       })
     : null;
+
+  /* ============================ GRID VIEW (semua subskill) ============================ */
+  if (!selected) {
+    return (
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <header className="mb-8">
+          <p className="eyebrow">Roadmap</p>
+          <h1 className="mt-1.5 text-3xl font-bold tracking-tight text-slate-50">
+            Pilih Jalur Belajar
+          </h1>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500">
+            Semua subskill (<span className="text-emerald-300">#Subskill</span>) dari vault.
+            Klik salah satu untuk melihat urutan langkah belajarnya secara bercabang.
+          </p>
+        </header>
+
+        {groups.length === 0 ? (
+          <div className="rounded-xl border border-dashed border-slate-700 bg-slate-900/30 p-10 text-center text-sm text-slate-500">
+            Belum ada subskill — tambahkan file bertag{' '}
+            <code className="rounded bg-slate-800 px-1.5 py-0.5 text-xs text-emerald-300">#Subskill</code>{' '}
+            dan{' '}
+            <code className="rounded bg-slate-800 px-1.5 py-0.5 text-xs text-amber-300">#roadmap</code>{' '}
+            di vault.
+          </div>
+        ) : (
+          <div className="space-y-10">
+            {groups.map((group) => (
+              <section key={group.skill} aria-label={group.skill}>
+                <div className="mb-4 flex items-center gap-3">
+                  <span
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white"
+                    style={{ backgroundColor: group.color }}
+                  >
+                    <FolderTree className="h-4 w-4" />
+                  </span>
+                  <h2 className="text-lg font-bold tracking-tight" style={{ color: group.color }}>
+                    {group.skill}
+                  </h2>
+                  <span className="rounded-full border border-slate-800 bg-slate-900/60 px-2.5 py-0.5 text-xs tabular-nums text-slate-500">
+                    {group.items.length} jalur
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {group.items.map((item) => (
+                    <SubskillCard key={item.id} item={item} roadmapById={roadmapById} />
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        )}
+
+        {syncedAt && (
+          <p className="mt-10 flex items-center gap-1.5 border-t border-slate-800/60 pt-5 text-[11px] text-slate-600">
+            <RefreshCw className="h-3 w-3 shrink-0" />
+            Sinkron dari Obsidian · {syncedAt}
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  /* ============================ DETAIL VIEW (roadmap bercabang) ============================ */
+  const totalSteps = selectedRoadmaps.reduce((sum, rm) => sum + rm.stepIds.length, 0);
+  const color = selectedGroup?.color ?? '#94a3b8';
+  const isSub = selected.id.startsWith('sub:');
 
   return (
     <div className="flex h-[calc(100vh-3.5rem)]">
@@ -214,6 +298,14 @@ export default function RoadmapPage() {
           </div>
         ))}
 
+        <Link
+          to="/roadmap"
+          className="mb-4 flex items-center gap-1.5 rounded-md border border-slate-800 bg-slate-900/40 px-3 py-2 text-xs text-slate-400 transition-colors hover:border-slate-600 hover:text-slate-200"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Semua Subskill
+        </Link>
+
         {syncedAt && (
           <p className="mt-4 flex items-center gap-1.5 border-t border-slate-800/60 px-2 pt-3 text-[11px] text-slate-600">
             <RefreshCw className="h-3 w-3 shrink-0" />
@@ -226,34 +318,39 @@ export default function RoadmapPage() {
 
       {/* Konten: detail roadmap bercabang */}
       <div className="min-w-0 flex-1 overflow-y-auto">
-        {selected ? (
-          <div className="mx-auto max-w-3xl p-5 sm:p-7">
-            <header className="mb-6">
-              <p className="text-xs uppercase tracking-wider" style={{ color }}>
-                {selected.skill} · {selectedGroup?.skill}
-              </p>
-              <h1 className="mt-1 flex items-center gap-2.5 text-2xl font-bold tracking-tight text-slate-50">
-                {selected.id.startsWith('sub:') && (
-                  <Star className="h-5 w-5 shrink-0 text-emerald-400" />
-                )}
-                {selected.label}
-              </h1>
-              <p className="mt-1 text-sm text-slate-500">
-                {selectedRoadmaps.length} roadmap · {totalSteps} langkah belajar · urut dari atas
-                ke bawah, kotak kecil = materi lain yang dirujuk langkah
-              </p>
-            </header>
+        <div className="mx-auto max-w-3xl p-5 sm:p-7">
+          <button
+            onClick={() => navigate('/roadmap')}
+            className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-slate-500 transition-colors hover:bg-slate-800/60 hover:text-slate-200"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Semua Subskill
+          </button>
 
-            {selectedRoadmaps.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-slate-700 bg-slate-900/30 p-8 text-center text-sm text-slate-500">
-                Belum ada roadmap untuk subskill ini — tambahkan file bertag{' '}
-                <code className="rounded bg-slate-800 px-1.5 py-0.5 text-xs text-emerald-300">#roadmap</code>{' '}
-                di folder ini.
-              </div>
-            ) : (
-              <div className="space-y-8">
-                {selectedRoadmaps.map((rm, index) => (
-                  <section key={rm.id}>
+          <header className="mb-6 mt-3">
+            <p className="text-xs uppercase tracking-wider" style={{ color }}>
+              {selected.skill} · {selected.path}
+            </p>
+            <h1 className="mt-1 flex items-center gap-2.5 text-2xl font-bold tracking-tight text-slate-50">
+              {isSub && <Star className="h-5 w-5 shrink-0 text-emerald-400" />}
+              {selected.label}
+            </h1>
+            <p className="mt-1 text-sm text-slate-500">
+              {selectedRoadmaps.length} roadmap · {totalSteps} langkah belajar · urut dari atas
+              ke bawah, kotak kecil = materi lain yang dirujuk langkah
+            </p>
+          </header>
+
+          {selectedRoadmaps.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-slate-700 bg-slate-900/30 p-8 text-center text-sm text-slate-500">
+              Belum ada roadmap untuk subskill ini — tambahkan file bertag{' '}
+              <code className="rounded bg-slate-800 px-1.5 py-0.5 text-xs text-emerald-300">#roadmap</code>{' '}
+              di folder ini.
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {selectedRoadmaps.map((rm, index) => (
+                <section key={rm.id}>
                   <div className="mb-3 flex items-center gap-2">
                     <span
                       className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white"
@@ -275,14 +372,9 @@ export default function RoadmapPage() {
                   <BranchTree roadmap={rm} graph={graph} />
                 </section>
               ))}
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="flex h-full items-center justify-center text-sm text-slate-500">
-            Pilih kategori di samping.
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Selector kategori (mobile) */}
@@ -292,6 +384,7 @@ export default function RoadmapPage() {
           onChange={(e) => navigate(`/roadmap?sub=${encodeURIComponent(e.target.value)}`)}
           className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-200 shadow-2xl focus:border-emerald-500 focus:outline-none"
         >
+          <option value="">← Semua Subskill</option>
           {groups.map((group) => (
             <optgroup key={group.skill} label={group.skill}>
               {group.items.map((item) => (
@@ -304,5 +397,62 @@ export default function RoadmapPage() {
         </select>
       </div>
     </div>
+  );
+}
+
+/** Kartu besar satu subskill/roadmap di grid landing. */
+function SubskillCard({
+  item,
+  roadmapById,
+}: {
+  item: SidebarItem;
+  roadmapById: Map<string, RoadmapInfo>;
+}) {
+  const color = folderColor(item.skill);
+  const isSub = item.id.startsWith('sub:');
+  const steps = item.roadmapIds.reduce((sum, id) => sum + (roadmapById.get(id)?.stepIds.length ?? 0), 0);
+  const pathParts = item.path.split('/');
+  const shortPath = pathParts.slice(1).join(' / ') || item.path;
+
+  return (
+    <Link
+      to={`/roadmap?sub=${encodeURIComponent(item.id)}`}
+      className="group flex flex-col rounded-2xl border-2 bg-slate-900/50 p-5 transition-all hover:-translate-y-1"
+      style={{ borderColor: `${color}3a`, boxShadow: '0 0 0 0 transparent' }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${color}30`;
+        (e.currentTarget as HTMLElement).style.borderColor = color;
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 0 transparent';
+        (e.currentTarget as HTMLElement).style.borderColor = `${color}3a`;
+      }}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <span
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
+          style={{ backgroundColor: `${color}22`, color }}
+        >
+          {isSub ? <Star className="h-5 w-5" /> : <GitFork className="h-5 w-5" />}
+        </span>
+        <ArrowRight className="h-4 w-4 text-slate-600 opacity-0 transition-opacity group-hover:opacity-100" />
+      </div>
+
+      <h3 className="mt-4 text-lg font-bold leading-snug text-slate-100 transition-colors group-hover:text-white">
+        {item.label}
+      </h3>
+      <p className="mt-1 truncate text-xs text-slate-500" title={item.path}>
+        {shortPath}
+      </p>
+
+      <div className="mt-4 flex flex-wrap items-center gap-1.5">
+        <span className="rounded-full border border-slate-700 bg-slate-800/60 px-2.5 py-0.5 text-[11px] tabular-nums text-slate-400">
+          {item.roadmapIds.length} roadmap
+        </span>
+        <span className="rounded-full border border-slate-700 bg-slate-800/60 px-2.5 py-0.5 text-[11px] tabular-nums text-slate-400">
+          {steps} langkah
+        </span>
+      </div>
+    </Link>
   );
 }
