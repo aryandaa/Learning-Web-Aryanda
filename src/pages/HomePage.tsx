@@ -68,14 +68,14 @@ export default function HomePage() {
     {
       icon: Layers,
       value: metadata?.subskillCount ?? 0,
-      label: 'Skill (#Subskill)',
+      label: 'Skill',
       tile: 'from-violet-500 to-purple-600',
       shadow: 'shadow-violet-500/30',
     },
     {
       icon: Star,
       value: metadata?.myskillCount ?? 0,
-      label: 'Bidang (#Myskill)',
+      label: 'Bidang',
       tile: 'from-rose-500 to-pink-600',
       shadow: 'shadow-rose-500/30',
     },
