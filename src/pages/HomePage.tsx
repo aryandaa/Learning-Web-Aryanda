@@ -81,7 +81,7 @@ export default function HomePage() {
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
           Dokumentasi dengan navigasi, pencarian, graph antar-catatan, dan roadmap belajar.
           Materi disusun oleh{' '}
-          <span className="font-medium text-slate-200">M. Aryanda Sanggadiennata</span> — penyedia
+          <span className="font-medium text-slate-200">M. Aryanda Sanggadiennata</span>, penyedia
           materi sekaligus developer web.
         </p>
 

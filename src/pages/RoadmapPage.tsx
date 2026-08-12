@@ -198,7 +198,7 @@ export default function RoadmapPage() {
 
         {groups.length === 0 ? (
           <div className="rounded-xl border border-dashed border-slate-700 bg-slate-900/30 p-10 text-center text-sm text-slate-500">
-            Belum ada subskill — tambahkan file bertag{' '}
+            Belum ada subskill. Tambahkan file bertag{' '}
             <code className="rounded bg-slate-800 px-1.5 py-0.5 text-xs text-emerald-300">#Subskill</code>{' '}
             dan{' '}
             <code className="rounded bg-slate-800 px-1.5 py-0.5 text-xs text-amber-300">#roadmap</code>{' '}
@@ -339,7 +339,7 @@ export default function RoadmapPage() {
 
           {selectedRoadmaps.length === 0 ? (
             <div className="rounded-xl border border-dashed border-slate-700 bg-slate-900/30 p-8 text-center text-sm text-slate-500">
-              Belum ada roadmap untuk subskill ini — tambahkan file bertag{' '}
+              Belum ada roadmap untuk subskill ini. Tambahkan file bertag{' '}
               <code className="rounded bg-slate-800 px-1.5 py-0.5 text-xs text-emerald-300">#roadmap</code>{' '}
               di folder ini.
             </div>
