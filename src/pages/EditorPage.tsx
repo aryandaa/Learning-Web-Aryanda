@@ -1,7 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Code2, Loader2, Play, RotateCcw, Terminal, Trash2 } from 'lucide-react';
+import { Check, Code2, Copy, Loader2, Play, Terminal, Trash2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { appRoot } from '../lib/base';
+import hljs from 'highlight.js/lib/core';
+import hljsJavascript from 'highlight.js/lib/languages/javascript';
+import hljsTypescript from 'highlight.js/lib/languages/typescript';
+import hljsXml from 'highlight.js/lib/languages/xml';
+import hljsCss from 'highlight.js/lib/languages/css';
+import hljsPhp from 'highlight.js/lib/languages/php';
+import hljsPython from 'highlight.js/lib/languages/python';
+import hljsSql from 'highlight.js/lib/languages/sql';
+
+hljs.registerLanguage('javascript', hljsJavascript);
+hljs.registerLanguage('typescript', hljsTypescript);
+hljs.registerLanguage('xml', hljsXml);
+hljs.registerLanguage('css', hljsCss);
+hljs.registerLanguage('php', hljsPhp);
+hljs.registerLanguage('python', hljsPython);
+hljs.registerLanguage('sql', hljsSql);
 
 type LangId = 'javascript' | 'typescript' | 'html' | 'css' | 'php' | 'python' | 'sql';
 
@@ -212,6 +228,36 @@ ORDER BY nilai DESC;
 `,
   },
 ];
+
+/** Pemetaan bahasa editor -> nama bahasa highlight.js. */
+const HLJS_LANG: Record<LangId, string> = {
+  javascript: 'javascript',
+  typescript: 'typescript',
+  html: 'xml',
+  css: 'css',
+  php: 'php',
+  python: 'python',
+  sql: 'sql',
+};
+
+/** Menyalin teks ke clipboard dengan fallback. */
+async function copyToClipboard(text: string): Promise<void> {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+  } finally {
+    document.body.removeChild(textarea);
+  }
+}
 
 /** Memformat argumen console.log ke teks yang dapat dibaca. */
 function formatArgs(args: unknown[]): string {
@@ -526,7 +572,9 @@ export default function EditorPage() {
   const [status, setStatus] = useState<string | null>(null);
   const [htmlPreview, setHtmlPreview] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState<number | null>(null);
+  const [copied, setCopied] = useState(false);
   const outputRef = useRef<HTMLDivElement>(null);
+  const highlightRef = useRef<HTMLPreElement>(null);
 
   const current = LANGUAGES.find((l) => l.id === lang) ?? LANGUAGES[0];
 
@@ -603,6 +651,40 @@ export default function EditorPage() {
     setStatus(null);
   };
 
+  // Syntax highlighting: render token berwarna ke <pre> di belakang textarea.
+  useEffect(() => {
+    const pre = highlightRef.current;
+    if (!pre) return;
+    const hljsLang = HLJS_LANG[lang];
+    if (!hljsLang) {
+      pre.textContent = code + '\n';
+      return;
+    }
+    try {
+      pre.innerHTML = hljs.highlight(code, { language: hljsLang, ignoreIllegals: true }).value + '\n';
+    } catch {
+      pre.textContent = code + '\n';
+    }
+  }, [code, lang]);
+
+  const clearAll = () => {
+    setCode('');
+    setOutput([]);
+    setHtmlPreview(null);
+    setStatus(null);
+    setCopied(false);
+  };
+
+  const copyCode = async () => {
+    try {
+      await copyToClipboard(code);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* clipboard tidak tersedia */
+    }
+  };
+
   const lineCount = code.split('\n').length;
   const gutterRef = useRef<HTMLDivElement>(null);
   const taRef = useRef<HTMLTextAreaElement>(null);
@@ -638,25 +720,26 @@ export default function EditorPage() {
               ))}
             </select>
             <button
-              onClick={() => setCode(current.template)}
-              className="flex h-8 items-center gap-1.5 rounded-lg border border-slate-700 px-2.5 text-xs text-slate-400 transition-colors hover:border-slate-500 hover:text-slate-200"
-              title="Reset ke contoh awal"
-              aria-label="Reset kode"
+              onClick={copyCode}
+              className={cn(
+                'flex h-8 items-center gap-1.5 rounded-lg border px-2.5 text-xs transition-colors',
+                copied
+                  ? 'border-emerald-500/60 bg-emerald-500/15 text-emerald-300'
+                  : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
+              )}
+              title="Salin kode"
+              aria-label="Salin kode"
             >
-              <RotateCcw className="h-3.5 w-3.5" />
-              Reset
+              {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+              {copied ? 'Tersalin' : 'Copy'}
             </button>
 
             <div className="ml-auto flex items-center gap-2">
               <button
-                onClick={() => {
-                  setOutput([]);
-                  setHtmlPreview(null);
-                  setStatus(null);
-                }}
-                className="flex h-8 items-center gap-1.5 rounded-lg border border-slate-700 px-2.5 text-xs text-slate-400 transition-colors hover:border-slate-500 hover:text-slate-200"
-                title="Bersihkan output"
-                aria-label="Bersihkan output"
+                onClick={clearAll}
+                className="flex h-8 items-center gap-1.5 rounded-lg border border-slate-700 px-2.5 text-xs text-slate-400 transition-colors hover:border-red-500/60 hover:text-red-400"
+                title="Hapus semua kode dan output"
+                aria-label="Hapus semua kode dan output"
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </button>
@@ -672,7 +755,7 @@ export default function EditorPage() {
             </div>
           </div>
 
-          {/* Area kode: gutter nomor baris + textarea */}
+          {/* Area kode: gutter nomor baris + overlay highlight + textarea */}
           <div className="flex min-h-0 flex-1 bg-slate-950 font-mono text-[13px] leading-6">
             <div
               ref={gutterRef}
@@ -685,32 +768,41 @@ export default function EditorPage() {
                 </div>
               ))}
             </div>
-            <textarea
-              ref={taRef}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              onScroll={() => {
-                if (gutterRef.current && taRef.current) {
-                  gutterRef.current.scrollTop = taRef.current.scrollTop;
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Tab') {
-                  e.preventDefault();
-                  const ta = e.currentTarget;
-                  const start = ta.selectionStart;
-                  const end = ta.selectionEnd;
-                  setCode(code.slice(0, start) + '  ' + code.slice(end));
-                  requestAnimationFrame(() => {
-                    ta.selectionStart = ta.selectionEnd = start + 2;
-                  });
-                }
-              }}
-              spellCheck={false}
-              className="min-w-0 flex-1 resize-none bg-transparent px-3 py-3 text-slate-100 caret-indigo-400 outline-none placeholder:text-slate-600"
-              placeholder="Tulis kode di sini…"
-              aria-label="Editor kode"
-            />
+            <div className="relative min-h-0 min-w-0 flex-1">
+              <pre
+                ref={highlightRef}
+                className="editor-highlight pointer-events-none absolute inset-0 m-0 overflow-hidden whitespace-pre-wrap break-words px-3 py-3"
+                aria-hidden
+              />
+              <textarea
+                ref={taRef}
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                onScroll={() => {
+                  if (highlightRef.current && taRef.current) {
+                    highlightRef.current.scrollTop = taRef.current.scrollTop;
+                    gutterRef.current!.scrollTop = taRef.current.scrollTop;
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Tab') {
+                    e.preventDefault();
+                    const ta = e.currentTarget;
+                    const start = ta.selectionStart;
+                    const end = ta.selectionEnd;
+                    setCode(code.slice(0, start) + '  ' + code.slice(end));
+                    requestAnimationFrame(() => {
+                      ta.selectionStart = ta.selectionEnd = start + 2;
+                    });
+                  }
+                }}
+                spellCheck={false}
+                wrap="soft"
+                className="absolute inset-0 h-full w-full resize-none overflow-auto bg-transparent px-3 py-3 text-transparent caret-indigo-400 outline-none placeholder:text-slate-600"
+                placeholder="Tulis kode di sini…"
+                aria-label="Editor kode"
+              />
+            </div>
           </div>
         </div>
 

@@ -474,7 +474,7 @@ Dua file dengan nama sama di folder berbeda tetap dianggap dokumen berbeda (`PHP
 - **Python**: Pyodide (WASM) dimuat sekali dari CDN, stdout/stderr ditangkap.
 - **SQL**: SQLite via sql.js (WASM); hasil query ditampilkan sebagai tabel ASCII di output.
 
-Semua eksekusi terjadi di browser pengunjung: **tidak ada backend**.
+Semua eksekusi terjadi di browser pengunjung: **tidak ada backend**. Editor dilengkapi **syntax highlighting** sesuai bahasa (highlight.js), tombol **Copy** untuk menyalin kode, dan tombol **hapus** untuk mengosongkan editor + output.
 
 ---
 

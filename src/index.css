@@ -509,3 +509,162 @@ html.light .doc-content .hljs-deletion {
   color: #b31d28;
   background-color: #ffeef0;
 }
+
+/* ============================================================
+   Syntax highlighting editor (overlay pre di belakang textarea)
+   Palet GitHub dark (default) + GitHub light (html.light).
+   ============================================================ */
+.editor-highlight .hljs {
+  color: #c9d1d9;
+  background: transparent;
+}
+.editor-highlight .hljs-comment,
+.editor-highlight .hljs-quote,
+.editor-highlight .hljs-code,
+.editor-highlight .hljs-formula {
+  color: #8b949e;
+}
+.editor-highlight .hljs-keyword,
+.editor-highlight .hljs-selector-tag,
+.editor-highlight .hljs-doctag,
+.editor-highlight .hljs-template-tag,
+.editor-highlight .hljs-template-variable,
+.editor-highlight .hljs-type,
+.editor-highlight .hljs-variable.language_,
+.editor-highlight .hljs-meta .hljs-keyword {
+  color: #ff7b72;
+}
+.editor-highlight .hljs-title,
+.editor-highlight .hljs-title.class_,
+.editor-highlight .hljs-title.class_.inherited__,
+.editor-highlight .hljs-title.function_ {
+  color: #d2a8ff;
+}
+.editor-highlight .hljs-attr,
+.editor-highlight .hljs-attribute,
+.editor-highlight .hljs-literal,
+.editor-highlight .hljs-meta,
+.editor-highlight .hljs-number,
+.editor-highlight .hljs-operator,
+.editor-highlight .hljs-variable,
+.editor-highlight .hljs-selector-attr,
+.editor-highlight .hljs-selector-class,
+.editor-highlight .hljs-selector-id {
+  color: #79c0ff;
+}
+.editor-highlight .hljs-regexp,
+.editor-highlight .hljs-string,
+.editor-highlight .hljs-meta .hljs-string {
+  color: #a5d6ff;
+}
+.editor-highlight .hljs-built_in,
+.editor-highlight .hljs-symbol {
+  color: #ffa657;
+}
+.editor-highlight .hljs-name,
+.editor-highlight .hljs-quote,
+.editor-highlight .hljs-selector-pseudo {
+  color: #7ee787;
+}
+.editor-highlight .hljs-section {
+  color: #1f6feb;
+  font-weight: bold;
+}
+.editor-highlight .hljs-bullet {
+  color: #f2cc60;
+}
+.editor-highlight .hljs-emphasis {
+  color: #c9d1d9;
+  font-style: italic;
+}
+.editor-highlight .hljs-strong {
+  color: #c9d1d9;
+  font-weight: bold;
+}
+.editor-highlight .hljs-addition {
+  color: #aff5b4;
+  background-color: #033a16;
+}
+.editor-highlight .hljs-deletion {
+  color: #ffdcd7;
+  background-color: #67060c;
+}
+.editor-highlight .hljs-subst {
+  color: #c9d1d9;
+}
+
+html.light .editor-highlight .hljs {
+  color: #24292e;
+}
+html.light .editor-highlight .hljs-comment,
+html.light .editor-highlight .hljs-quote,
+html.light .editor-highlight .hljs-code,
+html.light .editor-highlight .hljs-formula {
+  color: #6a737d;
+}
+html.light .editor-highlight .hljs-keyword,
+html.light .editor-highlight .hljs-selector-tag,
+html.light .editor-highlight .hljs-doctag,
+html.light .editor-highlight .hljs-template-tag,
+html.light .editor-highlight .hljs-template-variable,
+html.light .editor-highlight .hljs-type,
+html.light .editor-highlight .hljs-variable.language_ {
+  color: #d73a49;
+}
+html.light .editor-highlight .hljs-title,
+html.light .editor-highlight .hljs-title.class_,
+html.light .editor-highlight .hljs-title.class_.inherited__,
+html.light .editor-highlight .hljs-title.function_ {
+  color: #6f42c1;
+}
+html.light .editor-highlight .hljs-attr,
+html.light .editor-highlight .hljs-attribute,
+html.light .editor-highlight .hljs-literal,
+html.light .editor-highlight .hljs-meta,
+html.light .editor-highlight .hljs-number,
+html.light .editor-highlight .hljs-operator,
+html.light .editor-highlight .hljs-variable,
+html.light .editor-highlight .hljs-selector-attr,
+html.light .editor-highlight .hljs-selector-class,
+html.light .editor-highlight .hljs-selector-id {
+  color: #005cc5;
+}
+html.light .editor-highlight .hljs-regexp,
+html.light .editor-highlight .hljs-string {
+  color: #032f62;
+}
+html.light .editor-highlight .hljs-built_in,
+html.light .editor-highlight .hljs-symbol {
+  color: #e36209;
+}
+html.light .editor-highlight .hljs-name,
+html.light .editor-highlight .hljs-quote,
+html.light .editor-highlight .hljs-selector-pseudo {
+  color: #22863a;
+}
+html.light .editor-highlight .hljs-section {
+  color: #005cc5;
+  font-weight: bold;
+}
+html.light .editor-highlight .hljs-bullet {
+  color: #735c0f;
+}
+html.light .editor-highlight .hljs-emphasis {
+  color: #24292e;
+  font-style: italic;
+}
+html.light .editor-highlight .hljs-strong {
+  color: #24292e;
+  font-weight: bold;
+}
+html.light .editor-highlight .hljs-addition {
+  color: #22863a;
+  background-color: #f0fff4;
+}
+html.light .editor-highlight .hljs-deletion {
+  color: #b31d28;
+  background-color: #ffeef0;
+}
+html.light .editor-highlight .hljs-subst {
+  color: #24292e;
+}
