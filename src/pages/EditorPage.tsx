@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Code2, Loader2, Play, RotateCcw, Terminal, Trash2 } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { appRoot } from '../lib/base';
 
-type LangId = 'javascript' | 'typescript' | 'html' | 'python';
+type LangId = 'javascript' | 'typescript' | 'html' | 'css' | 'php' | 'python' | 'sql';
 
 interface LangDef {
   id: LangId;
@@ -16,8 +17,12 @@ interface OutputLine {
 }
 
 /**
- * Bahasa yang didukung eksekusi 100% di browser (tanpa backend).
- * Python memakai Pyodide (WASM) yang dimuat lazy dari CDN saat pertama Run.
+ * Bahasa yang didukung eksekusi 100% di browser (tanpa backend):
+ * - JavaScript / TypeScript : sandbox iframe (TS ditranspilasi via paket typescript)
+ * - HTML / CSS              : preview halaman web langsung di iframe
+ * - PHP                     : php-wasm (WebAssembly, di-bundle dari origin sendiri)
+ * - Python                  : Pyodide (WASM) dari CDN
+ * - SQL                     : SQLite via sql.js (WASM) dari CDN
  */
 const LANGUAGES: LangDef[] = [
   {
@@ -84,6 +89,90 @@ console.log(perkenalan(user));
 `,
   },
   {
+    id: 'css',
+    label: 'CSS',
+    template: `/* Belajar CSS: tulis gaya di sini, halaman contoh
+   di panel output langsung berubah saat Run. */
+
+body {
+  font-family: sans-serif;
+  background: #f0f4ff;
+  padding: 1.5rem;
+}
+
+h1 {
+  color: #4f46e5;
+  border-bottom: 3px solid #4f46e5;
+  padding-bottom: .5rem;
+}
+
+button {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: .6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+  margin-top: 1rem;
+}
+
+.card h2 { margin-top: 0; color: #1e293b; }
+.card li { color: #475569; margin-bottom: .25rem; }
+`,
+  },
+  {
+    id: 'php',
+    label: 'PHP',
+    template: `<?php
+// PHP dijalankan lewat php-wasm (WebAssembly) di browser.
+// Hasil echo/print dirender sebagai halaman web di panel output.
+// Unduhan pertama (runtime ~5 MB) butuh beberapa detik.
+
+$nama = "Aryanda";
+$umur = 21;
+
+function sapa($nama) {
+    return "Halo, $nama!";
+}
+
+$hobi = ["coding", "ngoding", "debugging"];
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: sans-serif; padding: 1.5rem; background: #faf5ff; }
+    h1 { color: #7c3aed; }
+    ul li { margin-bottom: .25rem; }
+  </style>
+</head>
+<body>
+  <h1><?= sapa($nama) ?></h1>
+  <p>Umur saya <?= $umur ?> tahun.</p>
+  <h3>Hobi:</h3>
+  <ul>
+    <?php foreach ($hobi as $h) : ?>
+      <li><?= $h ?></li>
+    <?php endforeach; ?>
+  </ul>
+</body>
+</html>
+`,
+  },
+  {
     id: 'python',
     label: 'Python',
     template: `# Python dijalankan lewat Pyodide (WASM).
@@ -96,6 +185,30 @@ for i in range(1, 6):
     print(sapa("Aryanda"), "- iterasi", i)
 
 print("Total 1..10 =", sum(range(1, 11)))
+`,
+  },
+  {
+    id: 'sql',
+    label: 'SQL',
+    template: `-- SQL dijalankan dengan SQLite (WASM) di browser.
+-- Hasil query ditampilkan sebagai tabel di output.
+
+CREATE TABLE mahasiswa (
+  id INTEGER PRIMARY KEY,
+  nama TEXT,
+  nilai REAL
+);
+
+INSERT INTO mahasiswa (nama, nilai) VALUES
+  ('Aryanda', 95),
+  ('Budi', 88),
+  ('Citra', 91);
+
+SELECT id, nama, nilai
+FROM mahasiswa
+ORDER BY nilai DESC;
+
+-- Coba juga: SELECT AVG(nilai) AS rata_rata FROM mahasiswa;
 `,
   },
 ];
@@ -215,8 +328,195 @@ async function runPython(code: string, onStatus: (text: string) => void): Promis
 }
 
 /**
+ * Memuat runtime php-wasm dari folder public/ (index.js + light/php_8_0 + wasm)
+ * yang tersaji dari origin kita sendiri (MIME wasm benar di dev & produksi).
+ *
+ * Vite melarang import ESM langsung dari /public di dev, dan modul blob tidak
+ * bisa me-resolve path absolut, jadi kedua file di-fetch lalu di-patch:
+ * - index.js: import loader diarahkan ke Blob URL (full URL).
+ * - php_8_0.js: konstanta URL wasm diganti dengan full URL (root runtime,
+ *   aman juga untuk deployment subpath).
+ * Hasil di-cache agar hanya dimuat sekali per sesi.
+ */
+interface PhpResponse {
+  text: string;
+  errors: string;
+  exitCode: number;
+}
+interface PhpInstance {
+  run(options: { code: string }): Promise<PhpResponse>;
+}
+interface PhpWasmModule {
+  WebPHP: { load(version: string): Promise<PhpInstance> };
+}
+
+async function loadPhpWasm(): Promise<PhpWasmModule> {
+  const base = `${appRoot()}php-wasm`;
+  const [indexRes, loaderRes] = await Promise.all([
+    fetch(`${base}/index.js`),
+    fetch(`${base}/light/php_8_0.js`),
+  ]);
+  if (!indexRes.ok || !loaderRes.ok) throw new Error('Gagal memuat runtime PHP (php-wasm).');
+
+  // Patch loader php_8_0.js: ganti konstanta URL wasm dengan full URL.
+  let loaderCode = await loaderRes.text();
+  loaderCode = loaderCode.replace(
+    "const dependencyFilename = '/php-wasm/light/8_0_30/php_8_0.wasm';",
+    `const dependencyFilename = ${JSON.stringify(`${base}/light/8_0_30/php_8_0.wasm`)};`
+  );
+  const loaderUrl = URL.createObjectURL(new Blob([loaderCode], { type: 'text/javascript' }));
+
+  // Patch index.js: import loader php_8_0.js diarahkan ke Blob URL.
+  let indexCode = await indexRes.text();
+  indexCode = indexCode.replace(/\.\/light\/php_8_0\.js/g, () => loaderUrl);
+  const indexUrl = URL.createObjectURL(new Blob([indexCode], { type: 'text/javascript' }));
+  try {
+    return (await import(/* @vite-ignore */ indexUrl)) as PhpWasmModule;
+  } finally {
+    window.setTimeout(() => URL.revokeObjectURL(indexUrl), 60000);
+  }
+}
+
+let phpWasmPromise: Promise<PhpWasmModule> | null = null;
+
+/** Menjalankan PHP via php-wasm (di-host dari origin sendiri). */
+async function runPhp(code: string, onStatus: (text: string) => void): Promise<{ lines: OutputLine[]; preview: string | null }> {
+  onStatus('Memuat PHP (php-wasm)… unduhan pertama butuh beberapa detik');
+  if (!phpWasmPromise) {
+    phpWasmPromise = loadPhpWasm().catch((err) => {
+      phpWasmPromise = null;
+      throw err;
+    });
+  }
+  const { WebPHP } = await phpWasmPromise;
+  const php = await WebPHP.load('8.0');
+  const res = await php.run({ code });
+  const lines: OutputLine[] = [];
+  if (res.errors) {
+    for (const l of res.errors.split('\n')) if (l.trim()) lines.push({ type: 'error', text: l });
+  }
+  if (res.exitCode !== 0 && lines.length === 0) {
+    lines.push({ type: 'error', text: `Proses keluar dengan kode ${res.exitCode}` });
+  }
+  const body = typeof res.text === 'string' ? res.text.trim() : '';
+  return { lines, preview: body.length > 0 ? body : null };
+}
+
+/** Menjalankan SQL via SQLite (sql.js, WASM dari CDN). */
+let sqlJsPromise: Promise<{
+  Database: new () => {
+    exec(sql: string): { columns: string[]; values: unknown[][] }[];
+    getRowsModified(): number;
+  };
+}> | null = null;
+
+function loadSqlJs() {
+  if (!sqlJsPromise) {
+    sqlJsPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.dataset.sqljs = '1';
+      script.src = 'https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/sql-wasm.js';
+      script.onload = async () => {
+        try {
+          const SQL = await (window as unknown as { initSqlJs(o: unknown): Promise<never> }).initSqlJs({
+            locateFile: (f: string) => 'https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/' + f,
+          });
+          resolve(SQL);
+        } catch (err) {
+          sqlJsPromise = null;
+          reject(err);
+        }
+      };
+      script.onerror = () => {
+        sqlJsPromise = null;
+        reject(new Error('Gagal memuat SQLite (sql.js) dari CDN. Periksa koneksi internet.'));
+      };
+      document.head.appendChild(script);
+    });
+  }
+  return sqlJsPromise;
+}
+
+function renderValue(v: unknown): string {
+  if (v === null || v === undefined) return 'NULL';
+  if (typeof v === 'number') return Number.isInteger(v) ? String(v) : String(Math.round(v * 1000) / 1000);
+  return String(v);
+}
+
+/** Merender hasil query SQL menjadi tabel ASCII. */
+function formatSqlResults(results: { columns: string[]; values: unknown[][] }[], rowsModified: number): OutputLine[] {
+  const lines: OutputLine[] = [];
+  if (results.length === 0) {
+    lines.push({ type: 'log', text: rowsModified > 0 ? `Query selesai. ${rowsModified} baris terpengaruh.` : 'Query selesai (tanpa hasil).' });
+    return lines;
+  }
+  for (const result of results) {
+    const cols = result.columns;
+    const rows = result.values;
+    const widths = cols.map((c, i) =>
+      Math.max(c.length, ...rows.map((r) => renderValue(r[i]).length))
+    );
+    const sep = cols.map((_, i) => '-'.repeat(widths[i])).join('-+-');
+    const header = cols.map((c, i) => c.padEnd(widths[i])).join(' | ');
+    lines.push({ type: 'log', text: header });
+    lines.push({ type: 'log', text: sep });
+    for (const row of rows) {
+      lines.push({
+        type: 'log',
+        text: cols.map((_, i) => renderValue(row[i]).padEnd(widths[i])).join(' | '),
+      });
+    }
+    lines.push({ type: 'log', text: `${rows.length} baris hasil` });
+  }
+  return lines;
+}
+
+async function runSql(code: string, onStatus: (text: string) => void): Promise<OutputLine[]> {
+  onStatus('Memuat SQLite (sql.js)…');
+  const SQL = await loadSqlJs();
+  const db = new SQL.Database();
+  const lines: OutputLine[] = [];
+  try {
+    const results = db.exec(code);
+    lines.push(...formatSqlResults(results, db.getRowsModified()));
+  } catch (err) {
+    lines.push({ type: 'error', text: String((err as Error)?.message ?? err) });
+  }
+  return lines;
+}
+
+/** Membungkus kode CSS ke dalam halaman contoh agar efeknya terlihat. */
+function cssPreviewHtml(css: string): string {
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+${css}
+</style>
+</head>
+<body>
+  <h1>Judul Halaman</h1>
+  <p>Contoh paragraf dengan <a href="#">tautan</a>, <strong>teks tebal</strong>, dan <em>miring</em>.</p>
+  <button>Tombol Utama</button>
+  <button class="secondary">Tombol Kedua</button>
+  <input placeholder="Input teks" />
+  <div class="card">
+    <h2>Kartu Contoh</h2>
+    <p>Ubah CSS di editor lalu tekan Run untuk melihat perubahannya.</p>
+    <ul>
+      <li>Item satu</li>
+      <li>Item dua</li>
+      <li>Item tiga</li>
+    </ul>
+  </div>
+</body>
+</html>`;
+}
+
+/**
  * Halaman Code Editor — tulis kode di editor, jalankan di browser
- * (100% frontend), lihat output di panel terminal / preview HTML.
+ * (100% frontend), lihat output di panel terminal / preview web.
  */
 export default function EditorPage() {
   const [lang, setLang] = useState<LangId>('javascript');
@@ -239,9 +539,12 @@ export default function EditorPage() {
     const started = performance.now();
     try {
       let lines: OutputLine[] = [];
+      let preview: string | null = null;
+
       if (lang === 'html') {
-        setHtmlPreview(code);
-        lines = [];
+        preview = code;
+      } else if (lang === 'css') {
+        preview = cssPreviewHtml(code);
       } else if (lang === 'javascript') {
         lines = await runJavaScript(code);
       } else if (lang === 'typescript') {
@@ -251,13 +554,21 @@ export default function EditorPage() {
           compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.None },
         }).outputText;
         lines = await runJavaScript(js);
+      } else if (lang === 'php') {
+        const result = await runPhp(code, setStatus);
+        lines = result.lines;
+        preview = result.preview;
       } else if (lang === 'python') {
         lines = await runPython(code, setStatus);
+      } else if (lang === 'sql') {
+        lines = await runSql(code, setStatus);
       }
-      if (lang !== 'html' && lines.length === 0) {
+
+      if (!preview && lines.length === 0) {
         lines = [{ type: 'log', text: '(tidak ada output — program selesai tanpa mencetak apa pun)' }];
       }
       setOutput(lines);
+      setHtmlPreview(preview);
       setElapsed(performance.now() - started);
     } catch (err) {
       setOutput([{ type: 'error', text: String((err as Error)?.message ?? err) }]);
@@ -408,7 +719,7 @@ export default function EditorPage() {
           <div className="flex items-center gap-2 border-b border-slate-800 px-3 py-2">
             <Terminal className="h-3.5 w-3.5 text-emerald-400" />
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Output
+              {htmlPreview ? 'Preview' : 'Output'}
             </span>
             {status && (
               <span className="flex items-center gap-1.5 text-xs text-slate-400">
@@ -432,15 +743,15 @@ export default function EditorPage() {
           >
             {htmlPreview !== null ? (
               <iframe
-                title="Preview HTML"
+                title="Preview halaman web"
                 sandbox="allow-scripts"
                 srcDoc={htmlPreview}
                 className="h-full w-full border-0 bg-white"
               />
             ) : output.length === 0 && !running ? (
               <p className="p-1 text-slate-600">
-                {lang === 'html'
-                  ? 'Klik Run untuk merender halaman HTML di panel ini.'
+                {lang === 'html' || lang === 'css' || lang === 'php'
+                  ? 'Klik Run untuk merender halaman web di panel ini.'
                   : 'Output akan muncul di sini. Tekan Run atau Ctrl+Enter untuk menjalankan kode.'}
               </p>
             ) : (

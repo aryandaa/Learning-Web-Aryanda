@@ -51,7 +51,7 @@
 | 🔍 **Pencarian Fuzzy (Fuse.js)** | Cari judul, heading, isi, tag, alias. Index dimuat lazy. |
 | 🕸 **Graph View** | Visualisasi sambungan antar-catatan ala Obsidian Graph View (d3-force di canvas). |
 | 🗺 **Roadmap Bercabang** | File `#roadmap` → pohon langkah belajar bertingkat dengan cabang materi rujukan. Landing page grid semua `#Subskill` per bidang. |
-| ⌨️ **Code Editor Interaktif** | Tulis & jalankan kode **tanpa backend**: JavaScript, TypeScript, HTML, Python (Pyodide WASM). |
+| ⌨️ **Code Editor Interaktif** | Tulis & jalankan kode **tanpa backend**: JavaScript, TypeScript, HTML, CSS, PHP, Python, SQL. |
 | 🌗 **Dark / Light Theme** | Theme switcher di navbar, pilihan tersimpan di `localStorage`. |
 | 📑 **Daftar Isi Hierarkis** | Otomatis dari heading `#` sampai `######`, indent sesuai level, scroll smooth. |
 | 🧱 **Code Block Pintar** | Syntax highlighting (highlight.js), label bahasa, tombol **Copy**. |
@@ -82,6 +82,7 @@
 **Runtime opsional (frontend-only):**
 
 - Pyodide (WASM): dipakai Code Editor untuk menjalankan Python di browser, dimuat lazy dari CDN.
+- php-wasm (WebAssembly): runtime PHP di-host di `public/php-wasm/` (di-hosting sendiri agar MIME wasm benar).
 
 > Tidak ada backend, tidak ada database, tidak ada API write. Hasil akhir adalah **static website**.
 
@@ -461,14 +462,17 @@ Dua file dengan nama sama di folder berbeda tetap dianggap dokumen berbeda (`PHP
 | `/search` | Pencarian fuzzy (Fuse.js, index lazy) |
 | `/graph` | Graph view antar-catatan (d3-force, canvas) |
 | `/roadmap` | Landing grid semua `#Subskill` per bidang → detail roadmap bercabang |
-| `/editor` | **Code Editor** interaktif (JS / TS / HTML / Python) |
+| `/editor` | **Code Editor** interaktif (JS / TS / HTML / CSS / PHP / Python / SQL) |
 
 **Code Editor** mendukung:
 
 - **JavaScript**: sandbox iframe, `console.log/error/warn` ditangkap.
 - **TypeScript**: ditranspilasi di browser (paket `typescript`, chunk lazy).
-- **HTML**: preview langsung di iframe sandbox.
+- **HTML**: preview halaman web langsung di iframe sandbox.
+- **CSS**: kode CSS dirender ke halaman contoh di iframe (belajar styling web).
+- **PHP**: dijalankan dengan php-wasm (WebAssembly); hasil echo/print dirender sebagai halaman web di panel output.
 - **Python**: Pyodide (WASM) dimuat sekali dari CDN, stdout/stderr ditangkap.
+- **SQL**: SQLite via sql.js (WASM); hasil query ditampilkan sebagai tabel ASCII di output.
 
 Semua eksekusi terjadi di browser pengunjung: **tidak ada backend**.
 
@@ -594,7 +598,7 @@ npm run build   # build produksi (pastikan lulus)
 - [ ] Flashcards / quiz dari materi
 - [ ] Progress belajar per dokumen
 - [ ] PWA / offline mode
-- [ ] Code editor: bahasa lain via WASM (mis. C via WebAssembly)
+- [ ] Code editor: dukungan bahasa lain via WASM (mis. C/C++, Java, Bash)
 - [ ] Export PDF per modul
 - [ ] Mode presentasi slide dari heading
 
