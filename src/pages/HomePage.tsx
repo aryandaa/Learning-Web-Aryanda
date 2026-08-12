@@ -157,7 +157,7 @@ export default function HomePage() {
                   <Folder className="h-5 w-5" />
                 </span>
                 <div>
-                  <h3 className="font-semibold text-slate-200 transition-colors group-hover:text-white">
+                  <h3 className="font-semibold text-slate-200 transition-colors group-hover:text-slate-100">
                     {folder.name}
                   </h3>
                   <p className="mt-0.5 text-xs text-slate-500">

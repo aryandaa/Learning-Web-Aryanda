@@ -31,7 +31,7 @@ export default function SearchPage() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-3xl px-4 sm:px-0">
       <header className="mb-6">
         <p className="eyebrow">Pencarian</p>
         <h1 className="mt-1.5 text-3xl font-bold tracking-tight text-slate-50">Cari Materi</h1>

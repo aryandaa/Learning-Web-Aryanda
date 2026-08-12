@@ -11,8 +11,8 @@ export function Breadcrumb({ folder, current }: { folder: string; current: strin
   const parts = folder ? folder.split('/') : [];
 
   return (
-    <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-xs text-slate-500">
-      <Link to="/" className="flex items-center gap-1 hover:text-slate-300">
+    <nav aria-label="Breadcrumb" className="flex min-w-0 flex-wrap items-center gap-x-1 gap-y-0.5 text-xs text-slate-500">
+      <Link to="/" className="flex shrink-0 items-center gap-1 hover:text-slate-300">
         <Home className="h-3 w-3" />
         Home
       </Link>
@@ -22,17 +22,17 @@ export function Breadcrumb({ folder, current }: { folder: string; current: strin
         // (folder tidak punya id sendiri — kami tampilkan sebagai teks).
         const key = `${path}-${index}`;
         return (
-          <span key={key} className="flex items-center gap-1">
-            <ChevronRight className="h-3 w-3" />
-            <Link to="/docs" className="hover:text-slate-300" title={path}>
+          <span key={key} className="flex min-w-0 items-center gap-1">
+            <ChevronRight className="h-3 w-3 shrink-0" />
+            <Link to="/docs" className="max-w-[9rem] truncate hover:text-slate-300" title={path}>
               {part}
             </Link>
           </span>
         );
       })}
-      <span className="flex items-center gap-1">
-        <ChevronRight className="h-3 w-3" />
-        <span className="font-medium text-slate-300">{current}</span>
+      <span className="flex min-w-0 items-center gap-1">
+        <ChevronRight className="h-3 w-3 shrink-0" />
+        <span className="max-w-[40vw] truncate font-medium text-slate-300 sm:max-w-[24rem]">{current}</span>
       </span>
     </nav>
   );

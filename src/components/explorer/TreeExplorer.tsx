@@ -11,6 +11,8 @@ interface TreeExplorerProps {
   /** Sidebar: kompak, bisa collapse. Page: mode eksplorasi penuh. */
   variant?: 'sidebar' | 'page';
   className?: string;
+  /** Dipanggil saat file diklik (mis. menutup drawer mobile). */
+  onNavigate?: () => void;
 }
 
 function ancestorsOf(nodes: TreeNode[], id: string, trail: string[] = []): string[] {
@@ -29,7 +31,7 @@ function ancestorsOf(nodes: TreeNode[], id: string, trail: string[] = []): strin
  * Sidebar dokumentasi recursive, dibangun dari tree.json (spec §34).
  * Tidak ada folder yang di-hardcode — semuanya berasal dari Obsidian.
  */
-export function TreeExplorer({ nodes, activeId, variant = 'sidebar', className }: TreeExplorerProps) {
+export function TreeExplorer({ nodes, activeId, variant = 'sidebar', className, onNavigate }: TreeExplorerProps) {
   const autoExpand = useMemo(
     () => (activeId ? new Set(ancestorsOf(nodes, activeId)) : new Set<string>()),
     [nodes, activeId]
@@ -64,6 +66,7 @@ export function TreeExplorer({ nodes, activeId, variant = 'sidebar', className }
             expanded={expanded}
             onToggle={toggle}
             variant={variant}
+            onNavigate={onNavigate}
           />
         ))}
       </ul>
@@ -78,9 +81,10 @@ interface RowProps {
   expanded: Set<string>;
   onToggle: (path: string) => void;
   variant: 'sidebar' | 'page';
+  onNavigate?: () => void;
 }
 
-function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant }: RowProps) {
+function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant, onNavigate }: RowProps) {
   if (node.type === 'file') {
     const active = activeId === node.id;
     const padding = variant === 'sidebar' ? 8 + depth * 14 : 8 + depth * 18;
@@ -88,12 +92,13 @@ function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant }: Row
       <li>
         <Link
           to={`/docs/${node.id}`}
+          onClick={onNavigate}
           className={cn(
             'flex items-center gap-2 rounded-md py-1.5 pr-2 text-sm transition-colors',
             active
               ? 'bg-indigo-500/15 text-indigo-300 font-medium'
               : node.isRoadmap
-                ? 'font-medium text-slate-200 hover:bg-slate-800/70 hover:text-white'
+                ? 'font-medium text-slate-200 hover:bg-slate-800/70 hover:text-slate-100'
                 : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
           )}
           style={{ paddingLeft: padding }}
@@ -122,7 +127,7 @@ function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant }: Row
     <li>
       <button
         onClick={() => onToggle(node.relativePath)}
-        className="flex w-full items-center gap-2 rounded-md py-1.5 pr-2 text-left text-sm text-slate-300 transition-colors hover:bg-slate-800/70 hover:text-white"
+        className="flex w-full items-center gap-2 rounded-md py-1.5 pr-2 text-left text-sm text-slate-300 transition-colors hover:bg-slate-800/70 hover:text-slate-100"
         style={{ paddingLeft: padding }}
         aria-expanded={isOpen}
       >
@@ -146,6 +151,7 @@ function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant }: Row
               expanded={expanded}
               onToggle={onToggle}
               variant={variant}
+              onNavigate={onNavigate}
             />
           ))}
         </ul>

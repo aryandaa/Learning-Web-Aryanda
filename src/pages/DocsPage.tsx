@@ -97,7 +97,7 @@ export default function DocsPage() {
                 onClick={() => scrollStrip(-1)}
                 disabled={!canScrollLeft}
                 aria-label="Geser subskill ke kiri"
-                className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-400 transition-colors hover:border-slate-500 hover:text-white disabled:pointer-events-none disabled:opacity-30"
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-400 transition-colors hover:border-slate-500 hover:text-slate-100 disabled:pointer-events-none disabled:opacity-30"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
@@ -105,7 +105,7 @@ export default function DocsPage() {
                 onClick={() => scrollStrip(1)}
                 disabled={!canScrollRight}
                 aria-label="Geser subskill ke kanan"
-                className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-400 transition-colors hover:border-slate-500 hover:text-white disabled:pointer-events-none disabled:opacity-30"
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-400 transition-colors hover:border-slate-500 hover:text-slate-100 disabled:pointer-events-none disabled:opacity-30"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>

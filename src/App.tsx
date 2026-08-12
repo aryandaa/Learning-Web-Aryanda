@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { SiteProvider } from './app/SiteProvider';
+import { ThemeProvider } from './app/ThemeProvider';
 import { Layout } from './app/Layout';
 import HomePage from './pages/HomePage';
 import DocsPage from './pages/DocsPage';
@@ -11,7 +12,8 @@ import RoadmapPage from './pages/RoadmapPage';
 function App() {
   return (
     <SiteProvider>
-      <Layout>
+      <ThemeProvider>
+        <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/docs" element={<DocsPage />} />
@@ -22,6 +24,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
+      </ThemeProvider>
     </SiteProvider>
   );
 }

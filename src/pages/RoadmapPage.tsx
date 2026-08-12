@@ -266,7 +266,7 @@ export default function RoadmapPage() {
                     </h2>
                     <Link
                       to={`/docs/${rm.id}`}
-                      className="shrink-0 rounded-md p-1.5 text-slate-500 transition-colors hover:bg-slate-800 hover:text-white"
+                      className="shrink-0 rounded-md p-1.5 text-slate-500 transition-colors hover:bg-slate-800 hover:text-slate-100"
                       title={`Buka dokumen ${rm.title}`}
                     >
                       <ExternalLink className="h-4 w-4" />

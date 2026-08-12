@@ -8,6 +8,7 @@ import {
   type SimulationNodeDatum,
 } from 'd3-force';
 import type { GraphData, GraphNode } from '../../domain/types';
+import { useTheme } from '../../app/ThemeProvider';
 
 interface GNode extends SimulationNodeDatum {
   id: string;
@@ -30,8 +31,19 @@ const FOLDER_COLORS: Record<string, string> = {
   Pemrograman: '#34d399',
 };
 const FALLBACK_COLOR = '#94a3b8';
-const EDGE_COLOR = 'rgba(148, 163, 184, 0.22)';
-const EDGE_DIM = 'rgba(148, 163, 184, 0.04)';
+// Warna edge/label mengikuti tema (dark vs light).
+const EDGE_COLOR_DARK = 'rgba(148, 163, 184, 0.22)';
+const EDGE_DIM_DARK = 'rgba(148, 163, 184, 0.04)';
+const EDGE_HOT_DARK = 'rgba(129, 140, 248, 0.7)';
+const EDGE_COLOR_LIGHT = 'rgba(71, 85, 105, 0.35)';
+const EDGE_DIM_LIGHT = 'rgba(71, 85, 105, 0.08)';
+const EDGE_HOT_LIGHT = 'rgba(79, 70, 229, 0.75)';
+const LABEL_COLOR_DARK = '#e2e8f0';
+const LABEL_OUTLINE_DARK = 'rgba(2, 6, 23, 0.9)';
+const LABEL_DIM_DARK = 'rgba(148, 163, 184, 0.85)';
+const LABEL_COLOR_LIGHT = '#334155';
+const LABEL_OUTLINE_LIGHT = 'rgba(248, 250, 252, 0.92)';
+const LABEL_DIM_LIGHT = 'rgba(71, 85, 105, 0.8)';
 
 function folderColor(folder: string): string {
   const top = folder.split('/')[0];
@@ -66,6 +78,9 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
   sizeRef.current = size;
 
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
+  const { theme } = useTheme();
+  const themeRef = useRef(theme);
+  themeRef.current = theme;
 
   const graphNodes = useMemo(() => {
     const degree = new Map<string, number>();
@@ -163,6 +178,13 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
     const nodes = nodesRef.current;
     const links = linksRef.current;
     const hovered = hoveredRef.current;
+    const light = themeRef.current === 'light';
+    const EDGE_COLOR = light ? EDGE_COLOR_LIGHT : EDGE_COLOR_DARK;
+    const EDGE_DIM = light ? EDGE_DIM_LIGHT : EDGE_DIM_DARK;
+    const EDGE_HOT = light ? EDGE_HOT_LIGHT : EDGE_HOT_DARK;
+    const LABEL_COLOR = light ? LABEL_COLOR_LIGHT : LABEL_COLOR_DARK;
+    const LABEL_OUTLINE = light ? LABEL_OUTLINE_LIGHT : LABEL_OUTLINE_DARK;
+    const LABEL_DIM = light ? LABEL_DIM_LIGHT : LABEL_DIM_DARK;
 
     const neighbors = new Set<string>();
     if (hovered) {
@@ -183,7 +205,7 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
       if (!s.x || !t.x) continue;
       const isHot = hovered && (s.id === hovered || t.id === hovered);
       const dimmed = hovered && !isHot;
-      ctx.strokeStyle = dimmed ? EDGE_DIM : isHot ? 'rgba(129, 140, 248, 0.7)' : EDGE_COLOR;
+      ctx.strokeStyle = dimmed ? EDGE_DIM : isHot ? EDGE_HOT : EDGE_COLOR;
       ctx.lineWidth = isHot ? 1.6 / zoom : 1 / zoom;
       ctx.beginPath();
       ctx.moveTo(s.x!, s.y!);
@@ -216,7 +238,7 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
       if (node && node.x && node.y) {
         const sx = node.x * zoom + panX;
         const sy = node.y * zoom + panY;
-        drawLabel(ctx, sx, sy - node.radius - 8, node.title, 12, '#e2e8f0');
+        drawLabel(ctx, sx, sy - node.radius - 8, node.title, 12, LABEL_COLOR, LABEL_OUTLINE);
       }
     }
 
@@ -233,7 +255,8 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
           node.y! * zoom + panY - node.radius - 4,
           node.title,
           10,
-          'rgba(148, 163, 184, 0.85)'
+          LABEL_DIM,
+          LABEL_OUTLINE
         );
       }
     }
@@ -402,13 +425,14 @@ function drawLabel(
   y: number,
   text: string,
   fontSize: number,
-  color: string
+  color: string,
+  outlineColor: string
 ): void {
   ctx.font = `${fontSize}px ui-sans-serif, system-ui, sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'bottom';
   ctx.lineWidth = 3;
-  ctx.strokeStyle = 'rgba(2, 6, 23, 0.9)';
+  ctx.strokeStyle = outlineColor;
   ctx.strokeText(text, x, y);
   ctx.fillStyle = color;
   ctx.fillText(text, x, y);

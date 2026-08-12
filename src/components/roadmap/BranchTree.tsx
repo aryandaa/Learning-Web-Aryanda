@@ -132,13 +132,13 @@ export function BranchTree({ roadmap, graph }: BranchTreeProps) {
         >
           Roadmap
         </span>
-        <span className="min-w-0 flex-1 truncate text-sm font-bold text-slate-100 group-hover:text-white">
+        <span className="min-w-0 flex-1 truncate text-sm font-bold text-slate-100 group-hover:text-slate-100">
           {roadmap.title}
         </span>
         <span className="shrink-0 text-[11px] tabular-nums text-slate-500">
           {roadmap.stepIds.length} langkah
         </span>
-        <ExternalLink className="h-3.5 w-3.5 shrink-0 text-slate-500 group-hover:text-white" />
+        <ExternalLink className="h-3.5 w-3.5 shrink-0 text-slate-500 group-hover:text-slate-100" />
       </Link>
 
       {tree.children.length === 0 ? (
@@ -206,7 +206,7 @@ function StepCard({ node }: { node: BranchNode }) {
       >
         {node.order}
       </span>
-      <span className="min-w-0 flex-1 truncate text-sm font-medium text-slate-200 group-hover:text-white">
+      <span className="min-w-0 flex-1 truncate text-sm font-medium text-slate-200 group-hover:text-slate-100">
         {node.title}
       </span>
     </Link>
