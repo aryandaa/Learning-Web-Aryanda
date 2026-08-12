@@ -8,6 +8,7 @@ import DocumentPage from './pages/DocumentPage';
 import SearchPage from './pages/SearchPage';
 import GraphPage from './pages/GraphPage';
 import RoadmapPage from './pages/RoadmapPage';
+import EditorPage from './pages/EditorPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/graph" element={<GraphPage />} />
           <Route path="/roadmap" element={<RoadmapPage />} />
+          <Route path="/editor" element={<EditorPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>

@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import {
   BookOpen,
   ChevronsRight,
+  Code2,
   Map,
   Menu,
   Moon,
@@ -133,6 +134,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
           Graph
         </span>
       </NavLink>
+      <NavLink to="/editor" className={navLinkClass}>
+        <span className="flex items-center gap-1">
+          <Code2 className="h-3.5 w-3.5" />
+          Code editor
+        </span>
+      </NavLink>
       <div className="mt-2 border-t border-slate-800" />
     </nav>
   );
@@ -175,6 +182,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <span className="flex items-center gap-1">
                 <Network className="h-3.5 w-3.5" />
                 Graph
+              </span>
+            </NavLink>
+            <NavLink to="/editor" className={navLinkClass}>
+              <span className="flex items-center gap-1">
+                <Code2 className="h-3.5 w-3.5" />
+                Code editor
               </span>
             </NavLink>
           </nav>
@@ -292,6 +305,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
               <Link to="/graph" className="transition-colors hover:text-slate-300">
                 Graph
+              </Link>
+              <Link to="/editor" className="transition-colors hover:text-slate-300">
+                Code editor
               </Link>
             </nav>
           </div>
