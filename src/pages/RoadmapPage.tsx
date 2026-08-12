@@ -194,10 +194,6 @@ export default function RoadmapPage() {
           <h1 className="mt-1.5 text-3xl font-bold tracking-tight text-slate-50">
             Pilih Jalur Belajar
           </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500">
-            Semua subskill (<span className="text-emerald-300">#Subskill</span>) dari vault.
-            Klik salah satu untuk melihat urutan langkah belajarnya secara bercabang.
-          </p>
         </header>
 
         {groups.length === 0 ? (
