@@ -6,6 +6,7 @@ import {
   FileText,
   Folder,
   FolderTree,
+  Github,
   Layers,
   Search,
   Sparkles,
@@ -186,6 +187,39 @@ export default function HomePage() {
               <ArrowRight className="h-4 w-4 text-slate-600 transition-transform group-hover:translate-x-1 group-hover:text-indigo-400" />
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Open Source */}
+      <section className="mt-16 rounded-2xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8">
+        <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-950 shadow-lg">
+              <Github className="h-6 w-6 text-slate-100" />
+            </span>
+            <div>
+              <h2 className="flex items-center gap-2.5 text-lg font-semibold text-slate-100">
+                Project Open Source
+                <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+                  Open Source
+                </span>
+              </h2>
+              <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-slate-400">
+                Website ini adalah project open source. Kamu bisa ikut berkontribusi,
+                melaporkan bug, menambahkan fitur, atau memakai kodenya untuk project
+                belajarmu sendiri. Semua kontribusi sangat diterima!
+              </p>
+            </div>
+          </div>
+          <a
+            href="https://github.com/aryandaa/Learning-Web-Aryanda"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-slate-100 px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-lg transition-all hover:bg-white hover:shadow-slate-500/25"
+          >
+            <Github className="h-4 w-4" />
+            Jadilah Contributor
+          </a>
         </div>
       </section>
     </div>
