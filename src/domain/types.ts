@@ -30,6 +30,10 @@ export interface MetadataFile {
   vaultBranch: string | null;
   totalNotes: number;
   totalFolders: number;
+  /** Jumlah file bertag #Subskill (skill). */
+  subskillCount: number;
+  /** Jumlah file bertag #Myskill (bidang). */
+  myskillCount: number;
   warningsCount: number;
   brokenLinksCount: number;
 }

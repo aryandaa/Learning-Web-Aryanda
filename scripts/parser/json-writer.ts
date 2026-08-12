@@ -77,6 +77,10 @@ export async function writeGenerated(
     vaultBranch: options.vaultBranch,
     totalNotes: options.records.length,
     totalFolders: folderSet.size,
+    // Tag khusus dihitung case-insensitive agar robust terhadap penulisan
+    // #Subskill / #subskill / #SubSkill di vault.
+    subskillCount: options.records.filter((r) => r.tags.some((t) => t.toLowerCase() === 'subskill')).length,
+    myskillCount: options.records.filter((r) => r.tags.some((t) => t.toLowerCase() === 'myskill')).length,
     warningsCount: context.warningsCount,
     brokenLinksCount: context.warnings.brokenWikiLinks.length,
   };

@@ -6,8 +6,10 @@ import {
   FileText,
   Folder,
   FolderTree,
+  Layers,
   Search,
   Sparkles,
+  Star,
   UserRound,
 } from 'lucide-react';
 import { useSiteData } from '../app/SiteProvider';
@@ -63,6 +65,20 @@ export default function HomePage() {
       tile: 'from-teal-500 to-emerald-600',
       shadow: 'shadow-teal-500/30',
     },
+    {
+      icon: Layers,
+      value: metadata?.subskillCount ?? 0,
+      label: 'Skill (#Subskill)',
+      tile: 'from-violet-500 to-purple-600',
+      shadow: 'shadow-violet-500/30',
+    },
+    {
+      icon: Star,
+      value: metadata?.myskillCount ?? 0,
+      label: 'Bidang (#Myskill)',
+      tile: 'from-rose-500 to-pink-600',
+      shadow: 'shadow-rose-500/30',
+    },
   ];
 
   return (
@@ -113,7 +129,7 @@ export default function HomePage() {
       </header>
 
       {/* Statistik */}
-      <section className="mt-16 grid gap-4 sm:grid-cols-3">
+      <section className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {stats.map((stat) => (
           <div
             key={stat.label}
