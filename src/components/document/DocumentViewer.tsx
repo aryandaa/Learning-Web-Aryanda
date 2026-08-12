@@ -216,23 +216,31 @@ export function DocumentViewer({ doc }: { doc: DocumentData }) {
     });
   }, [doc.id, doc.html]);
 
-  const toc = doc.headings.filter((h) => h.depth >= 1 && h.depth <= 3);
+  // TOC mencakup seluruh level heading Obsidian (# .. ######);
+  // item yang lebih dalam (banyak #) diindent sesuai levelnya.
+  const toc = doc.headings.filter((h) => h.depth >= 1 && h.depth <= 6);
   const tocAnchor = (id: string) => `${location.pathname}${location.search}#${id}`;
 
+  /** Gaya item daftar isi per kedalaman heading — semakin dalam, semakin indent. */
+  const TOC_DEPTH_CLASSES: Record<number, string> = {
+    1: 'pl-0 font-medium text-slate-300',
+    2: 'pl-3 text-slate-400',
+    3: 'pl-6 text-slate-500',
+    4: 'pl-9 text-slate-500',
+    5: 'pl-11 text-slate-500',
+    6: 'pl-14 text-slate-500',
+  };
+  const tocItemClass = (depth: number) =>
+    `block py-0.5 transition-colors hover:text-indigo-300 ${TOC_DEPTH_CLASSES[depth] ?? TOC_DEPTH_CLASSES[6]}`;
+
   const tocList = (mobile: boolean) => (
-    <ul className={mobile ? 'mt-2 space-y-1 text-sm' : 'mt-3 space-y-1 text-sm'}>
+    <ul className={mobile ? 'mt-2 space-y-0.5 text-sm' : 'mt-3 space-y-0.5 text-sm'}>
       {toc.map((heading) => (
         <li key={`${heading.id}-${heading.text}`}>
           <a
             href={tocAnchor(heading.id)}
             onClick={() => setTocOpen(false)}
-            className={
-              heading.depth === 1
-                ? 'block py-0.5 font-medium text-slate-400 hover:text-indigo-300'
-                : heading.depth === 2
-                  ? 'block py-0.5 text-slate-400 hover:text-indigo-300'
-                  : 'block py-0.5 pl-3 text-slate-500 hover:text-indigo-300'
-            }
+            className={tocItemClass(heading.depth)}
           >
             {heading.text}
           </a>
