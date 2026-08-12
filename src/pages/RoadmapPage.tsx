@@ -236,7 +236,7 @@ export default function RoadmapPage() {
         {syncedAt && (
           <p className="mt-10 flex items-center gap-1.5 border-t border-slate-800/60 pt-5 text-[11px] text-slate-600">
             <RefreshCw className="h-3 w-3 shrink-0" />
-            Sinkron dari Obsidian · {syncedAt}
+            Terakhir diperbarui · {syncedAt}
           </p>
         )}
       </div>
@@ -305,7 +305,7 @@ export default function RoadmapPage() {
         {syncedAt && (
           <p className="mt-4 flex items-center gap-1.5 border-t border-slate-800/60 px-2 pt-3 text-[11px] text-slate-600">
             <RefreshCw className="h-3 w-3 shrink-0" />
-            Sinkron dari Obsidian
+            Terakhir diperbarui
             <br />
             {syncedAt}
           </p>

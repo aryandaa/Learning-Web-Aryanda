@@ -71,7 +71,7 @@ export default function HomePage() {
       <header className="text-center">
         <span className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-medium text-indigo-300">
           <Sparkles className="h-3.5 w-3.5" />
-          Personal learning platform · materi dari Obsidian Vault
+          Personal learning platform
         </span>
 
         <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-extrabold tracking-tight text-slate-50 sm:text-6xl">
@@ -80,7 +80,7 @@ export default function HomePage() {
 
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
           Dokumentasi statis dengan navigasi, pencarian, graph antar-catatan, dan roadmap
-          belajar yang ter-resolve otomatis. Semua dari catatan Obsidian Anda.
+          belajar yang ter-resolve otomatis.
         </p>
 
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">

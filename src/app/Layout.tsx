@@ -282,8 +282,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <BookOpen className="h-3.5 w-3.5 text-white" />
               </span>
               <span className="font-medium text-slate-300">Learning Web Aryanda</span>
-              <span className="text-slate-700">·</span>
-              <span className="text-xs text-slate-600">Dibangun otomatis dari Obsidian Vault</span>
             </div>
             <nav className="flex items-center gap-5 text-xs text-slate-500">
               <Link to="/docs" className="transition-colors hover:text-slate-300">
