@@ -4,12 +4,12 @@
  */
 
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Search, Star } from 'lucide-react';
-import { CATEGORIES, allTools, getCategory, getTool } from '../registry';
+import { CATEGORIES, allTools, getTool } from '../registry';
 import { useToolHistory } from '../hooks/useToolHistory';
 import { cn } from '../../../lib/utils';
-import type { ToolCategoryId, ToolMeta } from '../types';
+import type { ToolMeta } from '../types';
 
 function ToolGrid({ tools, empty }: { tools: ToolMeta[]; empty?: string }) {
   if (tools.length === 0) {
@@ -73,29 +73,26 @@ function ToolGrid({ tools, empty }: { tools: ToolMeta[]; empty?: string }) {
 
 export default function CySecToolsPage() {
   const [query, setQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState<ToolCategoryId | 'all'>('all');
+  const location = useLocation();
   const { recent, favorites } = useToolHistory();
+
+  // Badge kategori kini navigasi ke halaman kategori (bukan filter in-place).
+  const isCategoryPage = location.pathname.startsWith('/cysec-tools/category/');
+  const activeCatId = isCategoryPage ? decodeURIComponent(location.pathname.split('/')[3] ?? '') : null;
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let tools = activeCategory === 'all' ? allTools() : allTools().filter((t) =>
-      t.category === activeCategory || (t.alsoIn ?? []).includes(activeCategory)
+    if (!q) return [];
+    return allTools().filter(
+      (t) =>
+        t.name.toLowerCase().includes(q) ||
+        t.description.toLowerCase().includes(q) ||
+        t.tags.some((tag) => tag.toLowerCase().includes(q))
     );
-    if (q) {
-      tools = tools.filter(
-        (t) =>
-          t.name.toLowerCase().includes(q) ||
-          t.description.toLowerCase().includes(q) ||
-          t.tags.some((tag) => tag.toLowerCase().includes(q))
-      );
-    }
-    return tools;
-  }, [query, activeCategory]);
+  }, [query]);
 
   const recentTools = recent.map(getTool).filter((t): t is ToolMeta => !!t);
   const favoriteTools = favorites.map(getTool).filter((t): t is ToolMeta => !!t);
-
-  const categorySelected = activeCategory !== 'all';
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-8">
@@ -117,41 +114,39 @@ export default function CySecToolsPage() {
             className="h-11 w-full rounded-lg border border-slate-700 bg-slate-900 pl-9 pr-3 text-sm text-slate-200 placeholder:text-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
           />
         </div>
-        <div className="scrollbar-thin flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Filter kategori">
-          <button
-            role="tab"
-            aria-selected={activeCategory === 'all'}
-            onClick={() => setActiveCategory('all')}
+        <div className="scrollbar-thin flex gap-2 overflow-x-auto pb-1" role="navigation" aria-label="Kategori tools">
+          <Link
+            to="/cysec-tools"
+            aria-current={!isCategoryPage ? 'page' : undefined}
             className={cn(
               'shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
-              activeCategory === 'all'
+              !isCategoryPage
                 ? 'border-indigo-500 bg-indigo-500/15 text-indigo-300'
                 : 'border-slate-700 bg-slate-900/50 text-slate-400 hover:border-slate-500 hover:text-slate-200'
             )}
           >
             Semua
-          </button>
+          </Link>
           {CATEGORIES.map((c) => (
-            <button
+            <Link
               key={c.id}
-              role="tab"
-              aria-selected={activeCategory === c.id}
-              onClick={() => setActiveCategory(c.id)}
+              to={`/cysec-tools/category/${c.id}`}
+              aria-current={activeCatId === c.id ? 'page' : undefined}
               className={cn(
                 'shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
-                activeCategory === c.id
+                activeCatId === c.id
                   ? 'border-indigo-500 bg-indigo-500/15 text-indigo-300'
                   : 'border-slate-700 bg-slate-900/50 text-slate-400 hover:border-slate-500 hover:text-slate-200'
               )}
             >
               {c.icon} {c.shortName}
-            </button>
+            </Link>
           ))}
         </div>
       </div>
 
-      {/* Recent + Favorites — hanya di tampilan ringkasan (semua kategori, tanpa pencarian) */}
-      {(recentTools.length > 0 || favoriteTools.length > 0) && !query.trim() && !categorySelected && (
+      {/* Recent + Favorites — ringkasan (sembunyi saat sedang mencari) */}
+      {(recentTools.length > 0 || favoriteTools.length > 0) && !query.trim() && (
         <div className="mb-8 grid gap-4 md:grid-cols-2">
           {recentTools.length > 0 && (
             <section>
@@ -190,8 +185,15 @@ export default function CySecToolsPage() {
         </div>
       )}
 
-      {/* Katalog: ringkasan semua kategori ATAU hasil filter kategori/pencarian */}
-      {!categorySelected && !query.trim() ? (
+      {/* Katalog: ringkasan semua kategori ATAU hasil pencarian */}
+      {query.trim() ? (
+        <section className="mb-8" aria-live="polite">
+          <h2 className="mb-3 text-sm font-semibold text-slate-300">
+            Hasil pencarian “{query.trim()}” ({filtered.length})
+          </h2>
+          <ToolGrid tools={filtered} empty="Tidak ada tool yang cocok." />
+        </section>
+      ) : (
         <div className="space-y-10">
           {CATEGORIES.map((cat) => {
             const tools = allTools().filter(
@@ -221,25 +223,6 @@ export default function CySecToolsPage() {
             );
           })}
         </div>
-      ) : (
-        <section className="mb-8" aria-live="polite">
-          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-semibold text-slate-300">
-              {query.trim()
-                ? `Hasil pencarian “${query.trim()}” (${filtered.length})`
-                : `${getCategory(activeCategory).icon} ${getCategory(activeCategory).name} (${filtered.length} tools)`}
-            </h2>
-            {categorySelected && (
-              <button
-                onClick={() => setActiveCategory('all')}
-                className="rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-400 transition-colors hover:border-indigo-500/50 hover:text-indigo-300"
-              >
-                ✕ Tampilkan semua kategori
-              </button>
-            )}
-          </div>
-          <ToolGrid tools={filtered} empty={query.trim() ? 'Tidak ada tool yang cocok.' : 'Kategori ini belum memiliki tool.'} />
-        </section>
       )}
     </div>
   );
