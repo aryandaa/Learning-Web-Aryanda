@@ -8,12 +8,17 @@
 
 export type ToolCategoryId =
   | 'crypto'
+  | 'osint'
   | 'forensics'
   | 'pcap'
   | 're'
   | 'web'
   | 'ctf'
-  | 'log';
+  | 'log'
+  | 'malware'
+  | 'hash'
+  | 'file-metadata'
+  | 'utilities';
 
 /** Status kesiapan tool (untuk menandai batasan client-side). */
 export type ToolStatus = 'ready' | 'partial' | 'unavailable';

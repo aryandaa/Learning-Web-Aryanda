@@ -76,7 +76,7 @@ export default function OSINTToolPage() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
         <p className="text-slate-400">Tool tidak ditemukan.</p>
-        <Link to="/osint" className="mt-3 inline-block text-sm text-indigo-400 hover:underline">
+        <Link to="/cysec-tools/category/osint" className="mt-3 inline-block text-sm text-indigo-400 hover:underline">
           ← Kembali ke OSINT
         </Link>
       </div>
@@ -112,10 +112,14 @@ export default function OSINTToolPage() {
 
         {/* Workspace utama */}
         <div className="min-w-0 flex-1">
-          <div className="mb-4">
-            <Link to="/osint" className="inline-flex items-center gap-1 text-xs text-slate-500 transition-colors hover:text-indigo-300">
+          <div className="mb-4 flex items-center gap-1.5 text-xs text-slate-500" aria-label="Breadcrumb">
+            <Link to="/cysec-tools" className="transition-colors hover:text-indigo-300">CySec Tools</Link>
+            <span>/</span>
+            <Link to="/cysec-tools/category/osint" className="inline-flex items-center gap-1 transition-colors hover:text-indigo-300">
               <ArrowLeft className="h-3 w-3" /> OSINT
             </Link>
+            <span>/</span>
+            <span className="text-slate-300">{meta.title}</span>
           </div>
 
           <header className="mb-4">

@@ -12,7 +12,6 @@ import EditorPage from './pages/EditorPage';
 import CySecToolsPage from './features/cysec-tools/pages/CySecToolsPage';
 import CategoryPage from './features/cysec-tools/pages/CategoryPage';
 import ToolPage from './features/cysec-tools/pages/ToolPage';
-import OSINTPage from './features/osint/pages/OSINTPage';
 import OSINTToolPage from './features/osint/pages/OSINTToolPage';
 
 function App() {
@@ -31,7 +30,8 @@ function App() {
           <Route path="/cysec-tools" element={<CySecToolsPage />} />
           <Route path="/cysec-tools/category/:categoryId" element={<CategoryPage />} />
           <Route path="/cysec-tools/:toolId" element={<ToolPage />} />
-          <Route path="/osint" element={<OSINTPage />} />
+          {/* OSINT kini kategori di dalam CySec Tools; /osint dialihkan */}
+          <Route path="/osint" element={<Navigate to="/cysec-tools/category/osint" replace />} />
           <Route path="/osint/:toolId" element={<OSINTToolPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

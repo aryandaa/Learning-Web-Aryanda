@@ -411,3 +411,46 @@ npm run osint:check   # selfcheck 48 kasus (domain/ip/email/ioc/hash/text/timeli
 npm run cysec:check   # 62 kasus — memastikan modul lama tidak rusak
 npm run build
 ```
+
+---
+
+# RESTRUKTURISASI: OSINT MENJADI KATEGORI CYSEC TOOLS
+
+> Perubahan information architecture (IA), bukan rewrite. Semua tool tetap utuh.
+
+## Apa yang berubah
+
+- **Navbar**: item "OSINT" dihapus. Entry point cybersecurity hanya "CySec Tools".
+- **`/cysec-tools`**: kini *category selector* (kartu workspace besar), bukan daftar semua tools.
+  Flow: CySec Tools → pilih kategori → daftar tool kategori → tool.
+- **OSINT** menjadi kategori resmi di dalam CySec Tools: `/cysec-tools/category/osint`
+  (tools OSINT tetap di route `/osint/:toolId` — tidak dipindah agar tidak merusak).
+- **`/osint`** (landing lama) → redirect ke `/cysec-tools/category/osint` (client-side).
+  File `OSINTPage.tsx` dihapus.
+- **12 kategori** (kategori kosong tidak ditampilkan):
+  crypto, osint, forensics, pcap, re, web, ctf, log, malware, hash, file-metadata, utilities.
+  - `malware`/`hash`/`file-metadata`/`utilities` diisi via `EXTRA_CATEGORY_TOOLS` di `catalog.ts`
+    (data-driven; field `category` tool existing TIDAK diubah → backward-compatible).
+- **Breadcrumb**: kategori & tool (CySec Tools / Kategori / Tool); tombol "← Back to CySec Tools".
+- **Search**: global (nama kategori + nama tool + deskripsi + tags) di dashboard;
+  search per-kategori di category page (link "Cari di semua kategori" → `/cysec-tools?q=…`).
+- **Recently Used / Favorites**: digabung CySec + OSINT, tiap item menampilkan label kategori.
+
+## File kunci
+
+- `src/features/cysec-tools/catalog.ts` — KATALOG TERPADU (category cards, entries, search).
+  Tambah tool/kategori baru di sini + `registry.ts` + `osint/registry.ts`.
+- `src/features/cysec-tools/pages/CySecToolsPage.tsx` — dashboard category selector.
+- `src/features/cysec-tools/pages/CategoryPage.tsx` — halaman kategori (breadcrumb + search + chips).
+- `src/App.tsx` — route `/osint` → redirect; `/osint/:toolId` tetap.
+- `src/app/Layout.tsx` — nav OSINT dihapus.
+
+## Verifikasi
+
+```bash
+npm run build        # ✅
+npm run cysec:check  # ✅ 62/62 (tools lama tidak berubah)
+npm run osint:check  # ✅ 48/48
+```
+Semua route dicek via preview: kategori baru (hash/malware/file-metadata/utilities),
+`/cysec-tools/category/osint`, `/osint/dns`, tool CySec lama, `/docs` — semua 200.

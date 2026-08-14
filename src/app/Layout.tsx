@@ -13,7 +13,6 @@ import {
   Shield,
   Sun,
   X,
-  Eye,
 } from 'lucide-react';
 import { useSiteData } from './SiteProvider';
 import { useTheme } from './ThemeProvider';
@@ -148,12 +147,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           CySec Tools
         </span>
       </NavLink>
-      <NavLink to="/osint" className={navLinkClass}>
-        <span className="flex items-center gap-1">
-          <Eye className="h-3.5 w-3.5" />
-          OSINT
-        </span>
-      </NavLink>
       <div className="mt-2 border-t border-slate-800" />
     </nav>
   );
@@ -208,12 +201,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <span className="flex items-center gap-1">
                 <Shield className="h-3.5 w-3.5" />
                 CySec Tools
-              </span>
-            </NavLink>
-            <NavLink to="/osint" className={navLinkClass}>
-              <span className="flex items-center gap-1">
-                <Eye className="h-3.5 w-3.5" />
-                OSINT
               </span>
             </NavLink>
           </nav>
@@ -337,9 +324,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
               <Link to="/cysec-tools" className="transition-colors hover:text-slate-300">
                 CySec Tools
-              </Link>
-              <Link to="/osint" className="transition-colors hover:text-slate-300">
-                OSINT
               </Link>
             </nav>
           </div>
