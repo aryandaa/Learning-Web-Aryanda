@@ -14,11 +14,7 @@ export type ToolCategoryId =
   | 're'
   | 'web'
   | 'ctf'
-  | 'log'
-  | 'malware'
-  | 'hash'
-  | 'file-metadata'
-  | 'utilities';
+  | 'log';
 
 /** Status kesiapan tool (untuk menandai batasan client-side). */
 export type ToolStatus = 'ready' | 'partial' | 'unavailable';
@@ -37,13 +33,11 @@ export interface CategoryMeta {
 }
 
 export interface ToolMeta {
-  /** id unik — sekaligus slug route `/cysec-tools/<id>`. */
+  /** id unik. Sekaligus slug route `/cysec-tools/<id>`. */
   id: string;
   name: string;
-  /** Kategori utama (untuk lazy-load chunk). */
+  /** Satu kategori canonical. Satu tool = satu category. */
   category: ToolCategoryId;
-  /** Kategori tambahan tempat tool juga muncul. */
-  alsoIn?: ToolCategoryId[];
   description: string;
   /** Emoji ikon tool. */
   icon: string;
@@ -57,6 +51,8 @@ export interface ToolMeta {
   status?: ToolStatus;
   /** Catatan status khusus (mis. alasan tidak tersedia). */
   statusNote?: string;
+  /** Alias route lama (redirect ke id canonical). Tidak menambah kategori. */
+  aliases?: string[];
   /** Disclaimer edukasi. */
   disclaimer?: string;
 }

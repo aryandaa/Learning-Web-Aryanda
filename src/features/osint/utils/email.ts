@@ -1,5 +1,5 @@
 /**
- * Email intelligence — validasi sintaks, normalisasi, disposable-domain
+ * Email intelligence. validasi sintaks, normalisasi, disposable-domain
  * (dataset lokal kecil), role-based, klasifikasi provider. Tanpa permintaan
  * eksternal; HIBP hanya sebagai link (tanpa memasukkan password).
  */

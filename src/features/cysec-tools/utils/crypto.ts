@@ -75,7 +75,7 @@ export async function pbkdf2(password: Uint8Array, salt: Uint8Array, iterations:
 }
 
 // ---------------------------------------------------------------------------
-// AES (GCM / CBC) — key dari passphrase via PBKDF2
+// AES (GCM / CBC). key dari passphrase via PBKDF2
 // ---------------------------------------------------------------------------
 
 export interface AesOptions {
@@ -140,7 +140,7 @@ export async function aesDecrypt(data: Uint8Array, passphrase: string, opts: Aes
 }
 
 // ---------------------------------------------------------------------------
-// MD5 (RFC 1321) — untuk compatibility/CTF/forensik, BUKAN untuk password
+// MD5 (RFC 1321). untuk compatibility/CTF/forensik, BUKAN untuk password
 // ---------------------------------------------------------------------------
 
 const MD5_S: number[] = [
@@ -223,7 +223,7 @@ export function md5(data: Uint8Array): string {
 }
 
 // ---------------------------------------------------------------------------
-// SHA-3 (Keccak-f[1600]) — implementasi TypeScript murni
+// SHA-3 (Keccak-f[1600]). implementasi TypeScript murni
 // ---------------------------------------------------------------------------
 
 const KECCAK_MASK = 0xffffffffffffffffn;
@@ -285,7 +285,7 @@ function keccakStoreLane(b: Uint8Array, off: number, v: bigint): void {
   for (let i = 0; i < 8; i++) b[off + i] = Number((v >> BigInt(8 * i)) & 0xffn);
 }
 
-/** SHA-3 (FIPS 202) — bits: 224 | 256 | 384 | 512. Domain byte 0x06. */
+/** SHA-3 (FIPS 202). bits: 224 | 256 | 384 | 512. Domain byte 0x06. */
 export function sha3(data: Uint8Array, bits: 224 | 256 | 384 | 512): Uint8Array {
   const rate = (1600 - 2 * bits) / 8;
   const state = new Array<bigint>(25).fill(0n);
@@ -321,7 +321,7 @@ export function sha3(data: Uint8Array, bits: 224 | 256 | 384 | 512): Uint8Array 
 }
 
 // ---------------------------------------------------------------------------
-// ChaCha20 (RFC 8439) — edukasi
+// ChaCha20 (RFC 8439) (edukasi)
 // ---------------------------------------------------------------------------
 
 const CHACHA_SIGMA = [0x61707865, 0x3320646e, 0x79622d32, 0x6b206574];
@@ -472,7 +472,7 @@ export function rsaGenerateKeyPair(primeBits = 16): RsaKeyPair {
   return { p, q, n, e, d, phi, blockBytes };
 }
 
-/** Enkripsi teks dengan kunci publik (n, e) — edukasi, blok kecil. */
+/** Enkripsi teks dengan kunci publik (n, e) (edukasi), blok kecil. */
 export function rsaEncryptText(text: string, n: bigint, e: bigint, blockBytes: number): string {
   const bytes = utf8ToBytes(text);
   const blocks: string[] = [];

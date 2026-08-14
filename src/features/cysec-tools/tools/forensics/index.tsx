@@ -1,5 +1,5 @@
 /**
- * Tools kategori Digital Forensics — analisis file 100% lokal.
+ * Tools kategori Digital Forensics. analisis file 100% lokal.
  */
 
 import { useState } from 'react';
@@ -49,7 +49,7 @@ function MetadataTool() {
                   { k: 'Size', v: `${info.size} (${info.sizeHuman})` },
                   { k: 'MIME type', v: info.type },
                   { k: 'Extension', v: info.extension || '(tidak ada)' },
-                  { k: 'Last modified', v: info.lastModifiedISO ?? '—' },
+                  { k: 'Last modified', v: info.lastModifiedISO ?? '-' },
                   { k: 'Magic bytes (16)', v: info.magicHex },
                   { k: 'SHA-256', v: info.sha256 },
                   { k: 'SHA-1', v: info.sha1 },
@@ -162,7 +162,7 @@ function FileSignatureTool() {
                 </div>
               ) : (
                 <p className="text-sm text-slate-500">
-                  Tidak ada signature umum yang cocok. Periksa hex di atas — bisa jadi format custom/teks, atau file rusak. <strong>Perhatikan:</strong> extension file bisa dipalsukan; magic bytes tidak.
+                  Tidak ada signature umum yang cocok. Periksa hex di atas. bisa jadi format custom/teks, atau file rusak. <strong>Perhatikan:</strong> extension file bisa dipalsukan; magic bytes tidak.
                 </p>
               )}
             </ResultPanel>
@@ -195,14 +195,14 @@ function MimeTool() {
             <ResultPanel title="MIME analysis">
               <KeyValueTable
                 rows={[
-                  { k: 'File.type (dari browser)', v: file.type || '(kosong — browser tidak tahu)' },
+                  { k: 'File.type (dari browser)', v: file.type || '(kosong. browser tidak tahu)' },
                   { k: 'Sniffed dari magic bytes', v: sniffed },
-                  { k: 'Cocok?', v: file.type && sniffed !== 'application/octet-stream' ? (file.type === sniffed ? '✅ Ya' : '⚠️ Tidak — kemungkinan salah label / spoofing') : 'Tidak dapat dibandingkan' },
-                  { k: 'Extension', v: file.name.includes('.') ? file.name.split('.').pop()!.toLowerCase() : '—' },
+                  { k: 'Cocok?', v: file.type && sniffed !== 'application/octet-stream' ? (file.type === sniffed ? '✅ Ya' : '⚠️ Tidak. kemungkinan salah label / spoofing') : 'Tidak dapat dibandingkan' },
+                  { k: 'Extension', v: file.name.includes('.') ? file.name.split('.').pop()!.toLowerCase() : '-' },
                 ]}
               />
               <p className="mt-3 text-xs text-slate-500">
-                Browser menentukan <code>File.type</code> dari metadata sistem, bukan dari isi file — bisa salah. Sniffing magic bytes lebih dapat diandalkan.
+                Browser menentukan <code>File.type</code> dari metadata sistem, bukan dari isi file. bisa salah. Sniffing magic bytes lebih dapat diandalkan.
               </p>
             </ResultPanel>
           );
@@ -236,7 +236,7 @@ function FileHexTool() {
             <ResultPanel title={`Hex dump (${slice.length.toLocaleString()} byte ditampilkan)`} textToCopy={dump}>
               {bytes.length > limit && (
                 <p className="mb-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
-                  Large file — hanya {limitKb} KB pertama ditampilkan. Total {bytes.length.toLocaleString()} byte.
+                  Large file. hanya {limitKb} KB pertama ditampilkan. Total {bytes.length.toLocaleString()} byte.
                 </p>
               )}
               <pre className="max-h-[36rem] overflow-auto rounded-lg border border-slate-800 bg-slate-950/70 p-3 font-mono text-[11px] leading-4 text-slate-300">
@@ -289,7 +289,7 @@ function StringsTool() {
           );
         },
         notes: forensicsNotes(
-          'Menampilkan run karakter printable (ASCII dan UTF-16LE) — teknik dasar malware analysis & CTF.',
+          'Menampilkan run karakter printable (ASCII dan UTF-16LE). teknik dasar malware analysis & CTF.',
           'Upload file → strings diekstrak dari bytes.',
           'Gunakan min length lebih besar untuk mengurangi noise pada file besar.'
         ),
@@ -316,7 +316,7 @@ function EntropyTool() {
               <KeyValueTable
                 rows={[
                   { k: 'Entropy', v: `${e.entropyBitsPerByte.toFixed(3)} bit/byte` },
-                  { k: 'Interpretasi', v: e.entropyBitsPerByte > 7 ? '⚠️ Tinggi (7–8) — kemungkinan terenkripsi, dikompresi, atau acak' : e.entropyBitsPerByte > 5 ? 'Sedang — campuran data (kode, teks)' : 'Rendah — data terstruktur/teks polos' },
+                  { k: 'Interpretasi', v: e.entropyBitsPerByte > 7 ? '⚠️ Tinggi (7–8). kemungkinan terenkripsi, dikompresi, atau acak' : e.entropyBitsPerByte > 5 ? 'Sedang. campuran data (kode, teks)' : 'Rendah. data terstruktur/teks polos' },
                   { k: 'Total bytes', v: e.totalBytes.toLocaleString() },
                   { k: 'Distinct bytes', v: String(e.distinctBytes) },
                 ]}
@@ -342,9 +342,9 @@ function EntropyTool() {
           );
         },
         notes: forensicsNotes(
-          'Shannon entropy mengukur "keacakan" byte — dipakai mendeteksi file terenkripsi/dikompresi atau packed malware.',
+          'Shannon entropy mengukur "keacakan" byte. dipakai mendeteksi file terenkripsi/dikompresi atau packed malware.',
           'Upload file → entropy + histogram 16 byte teratas.',
-          'Entropy tinggi juga umum pada file terkompresi (zip, jpg) — kombinasikan dengan magic bytes.'
+          'Entropy tinggi juga umum pada file terkompresi (zip, jpg). kombinasikan dengan magic bytes.'
         ),
       }}
     />
@@ -441,13 +441,13 @@ function ExifTool() {
                 <ResultPanel title="GPS metadata">
                   <KeyValueTable
                     rows={[
-                      { k: 'Latitude', v: exif.gps.lat ?? '—' },
-                      { k: 'Longitude', v: exif.gps.lon ?? '—' },
-                      { k: 'Altitude', v: exif.gps.alt ?? '—' },
+                      { k: 'Latitude', v: exif.gps.lat ?? '-' },
+                      { k: 'Longitude', v: exif.gps.lon ?? '-' },
+                      { k: 'Altitude', v: exif.gps.alt ?? '-' },
                     ]}
                   />
                   <p className="mt-3 text-sm text-amber-200">
-                    ⚠️ Foto berisi lokasi GPS. Banyak platform menghapus EXIF otomatis, tetapi file asli tetap memuatnya — berhati-hatilah membagikan foto mentah.
+                    ⚠️ Foto berisi lokasi GPS. Banyak platform menghapus EXIF otomatis, tetapi file asli tetap memuatnya. berhati-hatilah membagikan foto mentah.
                   </p>
                 </ResultPanel>
               ) : (
@@ -496,11 +496,11 @@ function PdfMetadataTool() {
                 <KeyValueTable rows={rows} />
               ) : (
                 <p className="text-sm text-slate-500">
-                  Tidak ada metadata literal ditemukan (bisa PDF yang di-strip atau metadata tersimpan di XMP — belum diparse).
+                  Tidak ada metadata literal ditemukan (bisa PDF yang di-strip atau metadata tersimpan di XMP. belum diparse).
                 </p>
               )}
               <p className="mt-3 text-xs text-slate-500">
-                Metadata PDF dapat berisi author, software pembuat, dan waktu — jejak digital penting dalam forensik dokumen.
+                Metadata PDF dapat berisi author, software pembuat, dan waktu. jejak digital penting dalam forensik dokumen.
               </p>
             </ResultPanel>
           );
@@ -533,7 +533,7 @@ function ZipMetadataTool() {
           return (
             <ResultPanel title={`ZIP entries (${entries.length})`} textToCopy={entries.map((e) => `${e.name}\t${e.method}\t${e.compressedSize}\t${e.uncompressedSize}`).join('\n')}>
               {entries.length === 0 ? (
-                <p className="text-sm text-amber-300">Tidak ada local file header ZIP ditemukan — bukan arsip ZIP.</p>
+                <p className="text-sm text-amber-300">Tidak ada local file header ZIP ditemukan. bukan arsip ZIP.</p>
               ) : (
                 <>
                   <KeyValueTable
@@ -541,7 +541,7 @@ function ZipMetadataTool() {
                       { k: 'Jumlah entri', v: String(entries.length) },
                       { k: 'Total terkompresi', v: totalComp.toLocaleString() },
                       { k: 'Total asli', v: totalUncomp.toLocaleString() },
-                      { k: 'Rasio', v: totalUncomp ? `${((1 - totalComp / totalUncomp) * 100).toFixed(1)}%` : '—' },
+                      { k: 'Rasio', v: totalUncomp ? `${((1 - totalComp / totalUncomp) * 100).toFixed(1)}%` : '-' },
                     ]}
                   />
                   <div className="mt-4 overflow-x-auto">
@@ -576,7 +576,7 @@ function ZipMetadataTool() {
         notes: forensicsNotes(
           'Membaca local file header ZIP: nama entri, metode kompresi (Stored/Deflate…), ukuran, tanggal DOS.',
           'Upload file ZIP (termasuk .jar/.docx/.epub yang berbasis ZIP) → daftar entri.',
-          'Isi tidak di-ekstrak — hanya metadata. Deflate tidak di-decompress pada tool ini.'
+          'Isi tidak di-ekstrak. hanya metadata. Deflate tidak di-decompress pada tool ini.'
         ),
       }}
     />
@@ -679,7 +679,7 @@ function FileCompareTool() {
 }
 
 export const tools: Record<string, ComponentType> = {
-  metadata: MetadataTool,
+  'file-metadata': MetadataTool,
   'file-hash': FileHashTool,
   'file-signature': FileSignatureTool,
   mime: MimeTool,

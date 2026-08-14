@@ -1,7 +1,7 @@
 import type { CategoryMeta, ToolCategory, ToolCategoryId, ToolMeta } from './types';
 
 /**
- * Registry tool CySec Tools — sumber kebenaran (data-driven).
+ * Registry tool CySec Tools. sumber kebenaran (data-driven).
  *
  * - Katalog dashboard dirender dari data ini (tanpa import implementasi).
  * - Implementasi tool di-lazy-load per kategori lewat `import.meta.glob`
@@ -16,7 +16,7 @@ export const CATEGORIES: CategoryMeta[] = [
     name: 'Cryptography & Encoding',
     shortName: 'Crypto',
     icon: '🔐',
-    description: 'Enkripsi, hash, dan encoding — bedakan encoding ≠ encryption ≠ hashing.',
+    description: 'Enkripsi, hash, dan encoding. bedakan encoding ≠ encryption ≠ hashing.',
     color: 'from-indigo-500/20 to-violet-500/10 border-indigo-500/30',
   },
   {
@@ -48,7 +48,7 @@ export const CATEGORIES: CategoryMeta[] = [
     name: 'Web Security',
     shortName: 'Web',
     icon: '🛡️',
-    description: 'Analisis URL, JWT, header, cookie, CSP/CORS — semua berbasis input manual.',
+    description: 'Analisis URL, JWT, header, cookie, CSP/CORS. semua berbasis input manual.',
     color: 'from-rose-500/20 to-pink-500/10 border-rose-500/30',
   },
   {
@@ -64,7 +64,7 @@ export const CATEGORIES: CategoryMeta[] = [
     name: 'Log Analysis',
     shortName: 'Log',
     icon: '📋',
-    description: 'Analisis access log, auth.log, dan log aplikasi — lokal di browser.',
+    description: 'Analisis access log, auth.log, dan log aplikasi. lokal di browser.',
     color: 'from-sky-500/20 to-blue-500/10 border-sky-500/30',
   },
   {
@@ -74,38 +74,6 @@ export const CATEGORIES: CategoryMeta[] = [
     icon: '🔎',
     description: 'Open Source Intelligence untuk pengumpulan, normalisasi, dan korelasi informasi publik.',
     color: 'from-amber-500/20 to-yellow-500/10 border-amber-500/30',
-  },
-  {
-    id: 'malware',
-    name: 'Malware Analysis',
-    shortName: 'Malware',
-    icon: '🦠',
-    description: 'Strings, entropy, header PE/ELF, dan analisis dasar sampel — read-only & lokal.',
-    color: 'from-red-500/20 to-rose-500/10 border-red-500/30',
-  },
-  {
-    id: 'hash',
-    name: 'Hash & Password Analysis',
-    shortName: 'Hash',
-    icon: '#️⃣',
-    description: 'Hash generator, HMAC, PBKDF2, SHA-3, dan verifikasi integritas.',
-    color: 'from-purple-500/20 to-fuchsia-500/10 border-purple-500/30',
-  },
-  {
-    id: 'file-metadata',
-    name: 'File & Metadata Analysis',
-    shortName: 'File/Meta',
-    icon: '📄',
-    description: 'Metadata viewer, EXIF, PDF, ZIP, strings, entropy, dan perbandingan file.',
-    color: 'from-teal-500/20 to-cyan-500/10 border-teal-500/30',
-  },
-  {
-    id: 'utilities',
-    name: 'Utilities / Converters',
-    shortName: 'Utils',
-    icon: '🧰',
-    description: 'Encode/decode, integer & endianness, tabel referensi, generator acak.',
-    color: 'from-slate-500/20 to-zinc-500/10 border-slate-500/30',
   },
 ];
 
@@ -120,37 +88,37 @@ const CHACHA_DISCLAIMER =
 
 const TOOLS: ToolMeta[] = [
   // ============ CRYPTOGRAPHY & ENCODING ============
-  { id: 'base64', name: 'Base64 Encode/Decode', category: 'crypto', alsoIn: ['ctf'], icon: '🔤', description: 'Encode/decode data Base64 (RFC 4648).', tags: ['base64', 'encoding', 'decode', 'encode'] },
+  { id: 'base64', name: 'Base64 Encode/Decode', category: 'crypto', icon: '🔤', description: 'Encode/decode data Base64 (RFC 4648).', tags: ['base64', 'encoding', 'decode', 'encode'] },
   { id: 'base32', name: 'Base32 Encode/Decode', category: 'crypto', icon: '🔤', description: 'Encode/decode Base32 (RFC 4648, alphabet A–Z 2–7).', tags: ['base32', 'encoding'] },
-  { id: 'base16', name: 'Base16 / Hex Encode/Decode', category: 'crypto', alsoIn: ['ctf'], icon: '🔢', description: 'Encode/decode hex (base16) dari/ke teks.', tags: ['hex', 'base16', 'encoding'] },
-  { id: 'url-encoder', name: 'URL Encode/Decode', category: 'crypto', alsoIn: ['web', 'ctf'], icon: '🔗', description: 'Percent-encoding untuk URL (application/x-www-form-urlencoded).', tags: ['url', 'percent', 'encoding'] },
-  { id: 'html-encoder', name: 'HTML Encode/Decode', category: 'crypto', alsoIn: ['web'], icon: '🏷️', description: 'Encode/decode entity HTML (named + numeric).', tags: ['html', 'entity', 'encoding'] },
+  { id: 'base16', name: 'Base16 / Hex Encode/Decode', category: 'crypto', icon: '🔢', description: 'Encode/decode hex (base16) dari/ke teks.', tags: ['hex', 'base16', 'encoding'] },
+  { id: 'url-encoder', name: 'URL Encode/Decode', category: 'crypto', icon: '🔗', description: 'Percent-encoding untuk URL (application/x-www-form-urlencoded).', tags: ['url', 'percent', 'encoding'] },
+  { id: 'html-encoder', name: 'HTML Encode/Decode', category: 'crypto', icon: '🏷️', description: 'Encode/decode entity HTML (named + numeric).', tags: ['html', 'entity', 'encoding'] },
   { id: 'ascii-hex', name: 'ASCII ↔ Hex', category: 'crypto', icon: '🔡', description: 'Konversi karakter ASCII ke hex dan sebaliknya.', tags: ['ascii', 'hex', 'converter'] },
-  { id: 'binary-text', name: 'Binary ↔ Text', category: 'crypto', alsoIn: ['ctf'], icon: '0️⃣1️⃣', description: 'Konversi teks ke biner dan sebaliknya (8 bit/karakter).', tags: ['binary', 'converter'] },
+  { id: 'binary-text', name: 'Binary ↔ Text', category: 'crypto', icon: '0️⃣1️⃣', description: 'Konversi teks ke biner dan sebaliknya (8 bit/karakter).', tags: ['binary', 'converter'] },
   { id: 'decimal-hex', name: 'Decimal ↔ Hex', category: 'crypto', icon: '🔟', description: 'Konversi bilangan desimal ke hex/oktal/biner.', tags: ['decimal', 'hex', 'converter', 'integer'] },
-  { id: 'rot13', name: 'ROT13', category: 'crypto', alsoIn: ['ctf'], icon: '🌀', description: 'Caesar shift 13 (simetris).', tags: ['rot13', 'caesar', 'cipher'] },
+  { id: 'rot13', name: 'ROT13', category: 'crypto', icon: '🌀', description: 'Caesar shift 13 (simetris).', tags: ['rot13', 'caesar', 'cipher'] },
   { id: 'rot47', name: 'ROT47', category: 'crypto', icon: '🌀', description: 'Rotasi seluruh karakter printable ASCII (33–126) sejauh 47.', tags: ['rot47', 'cipher'] },
   { id: 'caesar', name: 'Caesar Cipher', category: 'crypto', icon: '🗝️', description: 'Enkripsi/dekripsi Caesar dengan shift bebas (0–25).', tags: ['caesar', 'cipher', 'shift'] },
-  { id: 'xor-calc', name: 'XOR Calculator', category: 'crypto', alsoIn: ['ctf'], icon: '⊕', description: 'XOR byte-per-byte antara dua input / dengan key.', tags: ['xor', 'byte', 'calculator'] },
+  { id: 'xor-calc', name: 'XOR Calculator', category: 'crypto', icon: '⊕', description: 'XOR byte-per-byte antara dua input / dengan key.', tags: ['xor', 'byte', 'calculator'] },
   { id: 'xor-text', name: 'XOR Text Encoder/Decoder', category: 'crypto', icon: '⊕', description: 'Enkripsi/dekripsi teks dengan XOR key (output hex/base64).', tags: ['xor', 'text', 'cipher'] },
   { id: 'aes', name: 'AES Encrypt/Decrypt', category: 'crypto', icon: '🔒', usesWebCrypto: true, description: 'AES-256-GCM / CBC via Web Crypto API, key dari passphrase (PBKDF2).', tags: ['aes', 'encryption', 'gcm', 'cbc', 'webcrypto'] },
   { id: 'chacha20', name: 'ChaCha20 (Edukasi)', category: 'crypto', icon: '🔀', disclaimer: CHACHA_DISCLAIMER, description: 'Implementasi edukasi ChaCha20 (key 256-bit, nonce 96-bit).', tags: ['chacha20', 'stream', 'cipher'] },
   { id: 'rsa', name: 'RSA (Edukasional)', category: 'crypto', icon: '🔑', disclaimer: RSA_DISCLAIMER, description: 'RSA textbook dengan kunci kecil untuk memahami mekanisme.', tags: ['rsa', 'public-key', 'education'] },
-  { id: 'hash-generator', name: 'Hash Generator', category: 'crypto', alsoIn: ['ctf'], icon: '#️⃣', usesWebCrypto: true, description: 'SHA-1/256/384/512, MD5, SHA3 — input teks, hex, base64, atau file.', tags: ['hash', 'sha', 'md5', 'sha3'] },
+  { id: 'hash-generator', name: 'Hash Generator', category: 'crypto', icon: '#️⃣', usesWebCrypto: true, description: 'SHA-1/256/384/512, MD5, SHA3. input teks, hex, base64, atau file.', tags: ['hash', 'sha', 'md5', 'sha3'] },
   { id: 'hmac', name: 'HMAC Generator', category: 'crypto', icon: '🔐', usesWebCrypto: true, description: 'HMAC-SHA1/256/384/512 dengan secret key.', tags: ['hmac', 'mac', 'sha', 'webcrypto'] },
   { id: 'pbkdf2', name: 'PBKDF2 Key Derivation', category: 'crypto', icon: '🧂', usesWebCrypto: true, description: 'Derivasi key dari password + salt + iterasi.', tags: ['pbkdf2', 'kdf', 'password', 'webcrypto'] },
   { id: 'uuid', name: 'UUID Generator', category: 'crypto', icon: '🆔', description: 'Generate UUID v4 acak (RFC 4122).', tags: ['uuid', 'random', 'generate'] },
   { id: 'random-bytes', name: 'Random Bytes Generator', category: 'crypto', icon: '🎲', description: 'Generate byte acak aman kriptografis (hex/base64).', tags: ['random', 'bytes', 'entropy'] },
-  { id: 'sha3', name: 'SHA-3 (Keccak)', category: 'crypto', icon: '🧮', description: 'SHA3-224/256/384/512 — implementasi Keccak murni TypeScript.', tags: ['sha3', 'keccak', 'hash'] },
+  { id: 'sha3', name: 'SHA-3 (Keccak)', category: 'crypto', icon: '🧮', description: 'SHA3-224/256/384/512. implementasi Keccak murni TypeScript.', tags: ['sha3', 'keccak', 'hash'] },
 
   // ============ DIGITAL FORENSICS ============
-  { id: 'metadata', name: 'File Metadata Viewer', category: 'forensics', icon: '📄', needsFile: true, description: 'Filename, size, MIME, extension, magic bytes, hash, timestamps.', tags: ['metadata', 'file', 'info'] },
-  { id: 'file-hash', name: 'File Hash Calculator', category: 'forensics', icon: '#️⃣', needsFile: true, usesWebCrypto: true, description: 'SHA-256/1, MD5 file — diproses lokal.', tags: ['hash', 'file', 'integrity'] },
-  { id: 'file-signature', name: 'File Signature / Magic Number', category: 'forensics', alsoIn: ['re'], icon: '🪄', needsFile: true, description: 'Deteksi jenis file dari magic bytes (signature).', tags: ['magic', 'signature', 'file-type'] },
+  { id: 'file-metadata', name: 'File Metadata Viewer', aliases: ['metadata'], category: 'forensics', icon: '📄', needsFile: true, description: 'Filename, size, MIME, extension, magic bytes, hash, timestamps.', tags: ['metadata', 'file', 'info'] },
+  { id: 'file-hash', name: 'File Hash Calculator', category: 'forensics', icon: '#️⃣', needsFile: true, usesWebCrypto: true, description: 'SHA-256/1, MD5 file. diproses lokal.', tags: ['hash', 'file', 'integrity'] },
+  { id: 'file-signature', name: 'File Signature / Magic Number', category: 'forensics', icon: '🪄', needsFile: true, description: 'Deteksi jenis file dari magic bytes (signature).', tags: ['magic', 'signature', 'file-type'] },
   { id: 'mime', name: 'MIME Type Detector', category: 'forensics', icon: '📇', needsFile: true, description: 'Deteksi MIME type dari File API + sniffing magic bytes.', tags: ['mime', 'content-type'] },
   { id: 'file-hex', name: 'File Hex Viewer', category: 'forensics', icon: '🔍', needsFile: true, heavy: true, description: 'Lihat isi file sebagai hex + ASCII (offset address).', tags: ['hex', 'viewer', 'file'] },
-  { id: 'strings', name: 'Strings Extractor', category: 'forensics', alsoIn: ['re'], icon: '🔡', needsFile: true, description: 'Ekstrak string ASCII / UTF-16LE dari file (min length).', tags: ['strings', 'extract', 'forensics'] },
-  { id: 'entropy', name: 'Entropy Analyzer', category: 'forensics', alsoIn: ['re'], icon: '🎲', needsFile: true, description: 'Shannon entropy file + histogram byte — deteksi enkripsi/packing.', tags: ['entropy', 'analysis', 'randomness'] },
+  { id: 'strings', name: 'Strings Extractor', category: 'forensics', icon: '🔡', needsFile: true, description: 'Ekstrak string ASCII / UTF-16LE dari file (min length).', tags: ['strings', 'extract', 'forensics'] },
+  { id: 'entropy', name: 'Entropy Analyzer', category: 'forensics', icon: '🎲', needsFile: true, description: 'Shannon entropy file + histogram byte. deteksi enkripsi/packing.', tags: ['entropy', 'analysis', 'randomness'] },
   { id: 'timestamp', name: 'Timestamp Inspector', category: 'forensics', icon: '🕒', description: 'Konversi timestamp Unix (s/ms) ↔ ISO ↔ tanggal terbaca.', tags: ['timestamp', 'epoch', 'converter'] },
   { id: 'exif', name: 'EXIF Metadata Viewer', category: 'forensics', icon: '📷', needsFile: true, description: 'Baca EXIF image (JPEG): kamera, GPS, software, tanggal.', tags: ['exif', 'image', 'gps', 'camera'] },
   { id: 'pdf-metadata', name: 'PDF Metadata Viewer', category: 'forensics', icon: '📕', needsFile: true, description: 'Baca metadata PDF: title, author, creator, dates.', tags: ['pdf', 'metadata'] },
@@ -172,9 +140,9 @@ const TOOLS: ToolMeta[] = [
   { id: 'integer-converter', name: 'Integer Converter', category: 're', icon: '🔢', description: 'Konversi integer: dec/hex/bin/oct, signed/unsigned, endian byte order.', tags: ['integer', 'converter', 'endian'] },
   { id: 'endianness', name: 'Endianness Converter', category: 're', icon: '↔️', description: 'Ubah byte order 16/32/64-bit (little ↔ big endian).', tags: ['endian', 'byte-order', 'converter'] },
   { id: 'xor-analyzer', name: 'XOR Byte Analyzer', category: 're', icon: '⊕', description: 'Brute-force single-byte XOR + skor kemiripan teks.', tags: ['xor', 'bruteforce', 'cryptanalysis'] },
-  { id: 'pe-viewer', name: 'PE Header Viewer', category: 're', icon: '🪟', needsFile: true, description: 'Parse header PE (DOS, COFF, optional, sections, imports) — read-only.', tags: ['pe', 'exe', 'windows', 'portable-executable'] },
-  { id: 'elf-viewer', name: 'ELF Header Viewer', category: 're', icon: '🐧', needsFile: true, description: 'Parse header ELF (class, endian, entry, program/section headers) — read-only.', tags: ['elf', 'linux', 'binary'] },
-  { id: 'macho-viewer', name: 'Mach-O Header Viewer', category: 're', icon: '🍎', needsFile: true, status: 'partial', statusNote: 'Menampilkan header dasar 64-bit LE (magic, cputype, filetype, load commands count). Parsing penuh load commands belum disertakan.', description: 'Parse header dasar Mach-O 64-bit — read-only.', tags: ['macho', 'macos', 'binary'] },
+  { id: 'pe-viewer', name: 'PE Header Viewer', category: 're', icon: '🪟', needsFile: true, description: 'Parse header PE (DOS, COFF, optional, sections, imports) (read-only).', tags: ['pe', 'exe', 'windows', 'portable-executable'] },
+  { id: 'elf-viewer', name: 'ELF Header Viewer', category: 're', icon: '🐧', needsFile: true, description: 'Parse header ELF (class, endian, entry, program/section headers) (read-only).', tags: ['elf', 'linux', 'binary'] },
+  { id: 'macho-viewer', name: 'Mach-O Header Viewer', category: 're', icon: '🍎', needsFile: true, status: 'partial', statusNote: 'Menampilkan header dasar 64-bit LE (magic, cputype, filetype, load commands count). Parsing penuh load commands belum disertakan.', description: 'Parse header dasar Mach-O 64-bit (read-only).', tags: ['macho', 'macos', 'binary'] },
   { id: 'printable-strings', name: 'Printable Strings Scanner', category: 're', icon: '📜', needsFile: true, description: 'Scan string printable (ASCII) dari data hex atau file.', tags: ['strings', 'printable', 'scan'] },
 
   // ============ WEB SECURITY ============
@@ -191,9 +159,9 @@ const TOOLS: ToolMeta[] = [
   { id: 'js-uri', name: 'JavaScript URI Decoder', category: 'web', icon: '🕹️', description: 'Decode URI ber-scheme javascript: + deteksi obfuscation.', tags: ['javascript', 'uri', 'obfuscation'] },
   { id: 'url-normalizer', name: 'URL Normalization Analyzer', category: 'web', icon: '🧹', description: 'Normalisasi URL (default port, dot-segments, lowercase) + diff.', tags: ['url', 'normalize', 'canonical'] },
   { id: 'open-redirect', name: 'Open Redirect Analyzer', category: 'web', icon: '↪️', description: 'Deteksi pola open redirect pada URL (//, \\, javascript:, data:).', tags: ['open-redirect', 'url', 'security'] },
-  { id: 'path-traversal', name: 'Path Traversal Analyzer', category: 'web', icon: '🗂️', description: 'Scan pola traversal (../, %2e%2e, ..%2f, null byte) — edukasi.', tags: ['path-traversal', 'lfi', 'security'] },
-  { id: 'sqli-analyzer', name: 'SQLi Payload Analyzer', category: 'web', icon: '🗄️', description: 'Highlighter/analisis pola payload SQL injection — edukasi.', tags: ['sqli', 'sql', 'payload', 'education'] },
-  { id: 'xss-analyzer', name: 'XSS Payload Analyzer', category: 'web', icon: '⚡', description: 'Analisis pola payload XSS (event handler, javascript:, encoding) — edukasi.', tags: ['xss', 'payload', 'education'] },
+  { id: 'path-traversal', name: 'Path Traversal Analyzer', category: 'web', icon: '🗂️', description: 'Scan pola traversal (../, %2e%2e, ..%2f, null byte) (edukasi).', tags: ['path-traversal', 'lfi', 'security'] },
+  { id: 'sqli-analyzer', name: 'SQLi Payload Analyzer', category: 'web', icon: '🗄️', description: 'Highlighter/analisis pola payload SQL injection (edukasi).', tags: ['sqli', 'sql', 'payload', 'education'] },
+  { id: 'xss-analyzer', name: 'XSS Payload Analyzer', category: 'web', icon: '⚡', description: 'Analisis pola payload XSS (event handler, javascript:, encoding) (edukasi).', tags: ['xss', 'payload', 'education'] },
   { id: 'regex-tester', name: 'Regex Tester', category: 'web', icon: '🧩', description: 'Uji regex JavaScript dengan match highlight & captures.', tags: ['regex', 'regular-expression', 'tester'] },
   { id: 'http-request', name: 'HTTP Request Formatter', category: 'web', icon: '📤', description: 'Parse raw HTTP request → struktur terbaca (line, headers, body).', tags: ['http', 'request', 'formatter'] },
   { id: 'http-response', name: 'HTTP Response Formatter', category: 'web', icon: '📥', description: 'Parse raw HTTP response → status, headers, body.', tags: ['http', 'response', 'formatter'] },
@@ -221,7 +189,7 @@ const TOOLS: ToolMeta[] = [
   { id: 'unicode-table', name: 'Unicode Table', category: 'ctf', icon: '🔣', description: 'Eksplorasi Unicode: range & block, codepoint info.', tags: ['unicode', 'table', 'reference'] },
 
   // ============ LOG ANALYZER ============
-  { id: 'log-analyzer', name: 'Log Analyzer', category: 'log', icon: '📋', needsFile: true, heavy: true, description: 'Apache/Nginx access log, auth.log, log generik — IP, status, brute-force, timeline.', tags: ['log', 'apache', 'nginx', 'auth', 'analysis'] },
+  { id: 'log-analyzer', name: 'Log Analyzer', category: 'log', icon: '📋', needsFile: true, heavy: true, description: 'Apache/Nginx access log, auth.log, log generik. IP, status, brute-force, timeline.', tags: ['log', 'apache', 'nginx', 'auth', 'analysis'] },
 ];
 
 /** Index tool by id. */
@@ -229,11 +197,9 @@ export const TOOL_INDEX: Record<string, ToolMeta> = Object.fromEntries(
   TOOLS.map((t) => [t.id, t])
 );
 
-/** Tool per kategori (termasuk `alsoIn`). */
+/** Tool per kategori (canonical: satu tool = satu kategori). */
 export function toolsInCategory(category: ToolCategoryId): ToolMeta[] {
-  return TOOLS.filter(
-    (t) => t.category === category || (t.alsoIn ?? []).includes(category)
-  ).sort((a, b) => a.name.localeCompare(b.name));
+  return TOOLS.filter((t) => t.category === category).sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export function getCategory(id: string): CategoryMeta {
@@ -244,6 +210,13 @@ export function getCategory(id: string): CategoryMeta {
 
 export function getTool(id: string): ToolMeta | undefined {
   return TOOL_INDEX[id];
+}
+
+/** Resolve id canonical (dukungan alias route lama). */
+export function resolveToolId(id: string): string {
+  if (TOOL_INDEX[id]) return id;
+  const match = TOOLS.find((t) => (t.aliases ?? []).includes(id));
+  return match ? match.id : id;
 }
 
 export function allCategories(): ToolCategory[] {

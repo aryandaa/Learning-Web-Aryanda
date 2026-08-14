@@ -1,5 +1,5 @@
 /**
- * Resolver halaman tool OSINT — lazy-load chunk per tool (import.meta.glob),
+ * Resolver halaman tool OSINT. lazy-load chunk per tool (import.meta.glob),
  * render di dalam shell konsisten. Route: /osint/:toolId
  */
 
@@ -88,7 +88,7 @@ export default function OSINTToolPage() {
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-8">
       <div className="flex gap-8">
-        {/* Sidebar kategori — desktop */}
+        {/* Sidebar kategori. desktop */}
         <aside className="sticky top-20 hidden w-60 shrink-0 self-start xl:block" aria-label="Daftar tool OSINT">
           <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
             {category.icon} {category.name}
@@ -147,7 +147,7 @@ export default function OSINTToolPage() {
             <ToolBody meta={meta} />
           </Suspense>
 
-          {/* Navigasi kategori lain — mobile/tablet */}
+          {/* Navigasi kategori lain. mobile/tablet */}
           <nav className="scrollbar-thin mt-10 flex gap-2 overflow-x-auto border-t border-slate-800 pt-4 xl:hidden" aria-label="Tool lain">
             {categoryTools.map((t) => (
               <Link

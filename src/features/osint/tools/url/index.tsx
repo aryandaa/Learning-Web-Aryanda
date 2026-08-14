@@ -1,5 +1,5 @@
 /**
- * URL Analyzer — parse + decode bertingkat + deteksi pola mencurigakan.
+ * URL Analyzer. parse + decode bertingkat + deteksi pola mencurigakan.
  */
 
 import { useState } from 'react';

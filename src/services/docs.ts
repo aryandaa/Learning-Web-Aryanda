@@ -10,32 +10,32 @@ async function getJson<T>(path: string): Promise<T> {
   return (await response.json()) as T;
 }
 
-/** tree.json — dimuat sekali di awal aplikasi. */
+/** tree.json. dimuat sekali di awal aplikasi. */
 export function fetchTree(): Promise<TreeFolderNode[]> {
   return getJson<TreeFolderNode[]>('docs/tree.json');
 }
 
-/** metadata.json — dimuat sekali di awal aplikasi. */
+/** metadata.json. dimuat sekali di awal aplikasi. */
 export function fetchMetadata(): Promise<MetadataFile> {
   return getJson<MetadataFile>('docs/metadata.json');
 }
 
-/** search-index.json — lazy load hanya saat halaman pencarian dibuka. */
+/** search-index.json. lazy load hanya saat halaman pencarian dibuka. */
 export function fetchSearchIndex(): Promise<SearchIndexEntry[]> {
   return getJson<SearchIndexEntry[]>('docs/search-index.json');
 }
 
-/** graph.json — lazy load hanya saat halaman graph dibuka. */
+/** graph.json. lazy load hanya saat halaman graph dibuka. */
 export function fetchGraph(): Promise<GraphData> {
   return getJson<GraphData>('docs/graph.json');
 }
 
-/** roadmaps.json — lazy load hanya saat halaman roadmap dibuka. */
+/** roadmaps.json. lazy load hanya saat halaman roadmap dibuka. */
 export function fetchRoadmaps(): Promise<RoadmapsData> {
   return getJson<RoadmapsData>('docs/roadmaps.json');
 }
 
-/** Dokumen individual — dimuat on-demand berdasarkan outputPath dari tree. */
+/** Dokumen individual. dimuat on-demand berdasarkan outputPath dari tree. */
 export function fetchDocument(outputPath: string): Promise<DocumentData> {
   return getJson<DocumentData>(`docs/${encodeURI(outputPath)}.json`);
 }

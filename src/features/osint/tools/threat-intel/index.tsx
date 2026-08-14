@@ -1,5 +1,5 @@
 /**
- * Threat Intel Hub — deteksi tipe IOC + tombol lookup ke sumber publik.
+ * Threat Intel Hub. deteksi tipe IOC + tombol lookup ke sumber publik.
  * Tidak ada data IOC dikirim otomatis; lookup terjadi di situs tujuan.
  */
 
@@ -143,7 +143,7 @@ function ThreatIntelTool() {
           <ToolNotes
             notes={[
               { title: 'What is this?', content: 'Mendeteksi tipe IOC dan menyusun tautan lookup ke sumber threat intel publik.' },
-              { title: 'How to use', content: 'Masukkan IOC (atau tempel teks — IOC diekstrak otomatis), klik Deteksi & susun lookup.' },
+              { title: 'How to use', content: 'Masukkan IOC (atau tempel teks. IOC diekstrak otomatis), klik Deteksi & susun lookup.' },
               { title: 'Input', content: 'Domain, IP, URL, hash, atau teks.' },
               { title: 'Output', content: 'Kartu per IOC dengan tombol "Open in …".' },
               { title: 'Notes', content: 'Beberapa sumber memerlukan akun (mis. VirusTotal). Tidak ada secret/key di frontend. Tanpa cracking, tanpa eksploitasi.' },

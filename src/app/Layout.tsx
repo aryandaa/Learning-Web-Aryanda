@@ -156,7 +156,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* ============ NAVBAR ============ */}
       <header className="sticky top-0 z-40 border-b border-slate-800/60 bg-slate-950/85 backdrop-blur supports-[backdrop-filter]:bg-slate-950/70">
         <div className="mx-auto flex h-14 max-w-[1500px] items-center gap-2 px-3 sm:gap-3 sm:px-4">
-          {/* Hamburger — mobile/tablet (< lg) */}
+          {/* Hamburger. mobile/tablet (< lg) */}
           <button
             onClick={() => setDrawerOpen(true)}
             className="rounded-md p-2 text-slate-400 transition-colors hover:bg-slate-800 hover:text-slate-100 lg:hidden"
@@ -174,7 +174,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </span>
           </Link>
 
-          {/* Nav utama — tablet/desktop */}
+          {/* Nav utama. tablet/desktop */}
           <nav className="ml-6 hidden items-center gap-1 md:flex">
             <NavLink to="/docs" className={navLinkClass}>
               Docs
@@ -206,7 +206,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-            {/* Search bar — sm+ */}
+            {/* Search bar. sm+ */}
             <Link
               to="/search"
               className="hidden items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/70 px-3 py-1.5 text-sm text-slate-500 transition-colors hover:border-slate-600 hover:bg-slate-900 hover:text-slate-300 sm:flex"
@@ -218,7 +218,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 /
               </kbd>
             </Link>
-            {/* Search icon — mobile (< sm) */}
+            {/* Search icon. mobile (< sm) */}
             <Link
               to="/search"
               className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/70 text-slate-400 transition-colors hover:border-slate-600 hover:text-slate-200 sm:hidden"
@@ -227,7 +227,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Search className="h-4 w-4" />
             </Link>
 
-            {/* Theme toggle — selalu tampil di kanan search bar */}
+            {/* Theme toggle. selalu tampil di kanan search bar */}
             <button
               onClick={toggleTheme}
               className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/70 text-slate-400 transition-colors hover:border-slate-600 hover:text-slate-200"

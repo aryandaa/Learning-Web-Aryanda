@@ -1,5 +1,5 @@
 /**
- * PCAP Analyzer — parsing .pcap/.pcapng 100% lokal dengan tab ringkasan,
+ * PCAP Analyzer. parsing .pcap/.pcapng 100% lokal dengan tab ringkasan,
  * paket, conversation, protocol, DNS, HTTP, TLS SNI, timeline, dan
  * indikator mencurigakan. Tidak ada upload; tidak ada decryption TLS.
  */
@@ -28,7 +28,7 @@ const TABS: { id: Tab; label: string }[] = [
 ];
 
 function fmtTs(ts: number | null): string {
-  if (ts == null) return '—';
+  if (ts == null) return '-';
   return formatDate(ts * 1000);
 }
 
@@ -52,14 +52,14 @@ function SummaryTab({ analysis }: { analysis: PcapAnalysis }) {
           <table className="w-full border-collapse text-sm">
             <tbody>
               {[
-                ['Format', analysis.format === 'pcap' ? 'PCAP (klasik)' : analysis.format === 'pcapng' ? 'PCAPNG' : '—'],
+                ['Format', analysis.format === 'pcap' ? 'PCAP (klasik)' : analysis.format === 'pcapng' ? 'PCAPNG' : '-'],
                 ['Paket', String(analysis.packetCount)],
                 ['Link type', String(analysis.linkType)],
                 ['Snaplen', String(analysis.snaplen)],
                 ['Interface', String(analysis.interfaceCount)],
                 ['Mulai capture', fmtTs(analysis.firstTs)],
                 ['Akhir capture', fmtTs(analysis.lastTs)],
-                ['Durasi', analysis.duration != null ? `${analysis.duration.toFixed(3)} s` : '—'],
+                ['Durasi', analysis.duration != null ? `${analysis.duration.toFixed(3)} s` : '-'],
                 ['Truncated', analysis.truncated ? 'Ya (batas paket tercapai)' : 'Tidak'],
               ].map(([k, v]) => (
                 <tr key={k} className="border-b border-slate-800/60 last:border-0">
@@ -141,7 +141,7 @@ function PacketsTab({ analysis, filter }: { analysis: PcapAnalysis; filter: { ip
             {packets.map((p) => (
               <tr key={p.index} className="border-t border-slate-800/50">
                 <td className="px-2 py-1 font-mono text-slate-600">{p.index}</td>
-                <td className="whitespace-nowrap px-2 py-1 font-mono text-slate-500">{p.ts != null ? new Date(p.ts * 1000).toISOString().slice(11, 23) : '—'}</td>
+                <td className="whitespace-nowrap px-2 py-1 font-mono text-slate-500">{p.ts != null ? new Date(p.ts * 1000).toISOString().slice(11, 23) : '-'}</td>
                 <td className="px-2 py-1">
                   <span className={cn(
                     'rounded px-1.5 py-0.5 text-[10px] font-medium',
@@ -213,7 +213,7 @@ function PcapTool() {
   return (
     <div className="space-y-4">
       <Notice tone="success">
-        PCAP diproses secara lokal di browser dan tidak dikirim ke server. Tidak ada decryption TLS — hanya metadata
+        PCAP diproses secara lokal di browser dan tidak dikirim ke server. Tidak ada decryption TLS. hanya metadata
         (SNI, versi, record). Tool untuk pembelajaran, CTF, forensik, dan analisis defensif.
       </Notice>
 
@@ -222,9 +222,9 @@ function PcapTool() {
         multiple={false}
         onFiles={(f) => void handleFile(f)}
         loading={busy}
-        hint="Upload .pcap / .pcapng — diparsing lokal (PCAP klasik & PCAPNG: EPB/SPB/PB)."
+        hint="Upload .pcap / .pcapng. diparsing lokal (PCAP klasik & PCAPNG: EPB/SPB/PB)."
       />
-      {file && <p className="text-xs text-slate-500">{file.file.name} · {file.bytes.length.toLocaleString()} byte {largeFileHint(file.bytes.length) ? '· ⚠ file besar — parsing bisa lama' : ''}</p>}
+      {file && <p className="text-xs text-slate-500">{file.file.name} · {file.bytes.length.toLocaleString()} byte {largeFileHint(file.bytes.length) ? '· ⚠ file besar. parsing bisa lama' : ''}</p>}
       <ErrorAlert message={error} />
 
       {analysis && (
@@ -453,7 +453,7 @@ function PcapTool() {
                 ))}
               </div>
               <p className="mt-3 text-xs text-slate-500">
-                Heuristik sederhana (SYN flood, port scan, 404 flood, volume). Ini alat bantu — keputusan forensik tetap butuh analisis manusia.
+                Heuristik sederhana (SYN flood, port scan, 404 flood, volume). Ini alat bantu. keputusan forensik tetap butuh analisis manusia.
               </p>
             </Panel>
           )}
@@ -466,7 +466,7 @@ function PcapTool() {
           { title: 'How to use', content: 'Export capture dari Wireshark/tcpdump (`.pcap` atau `.pcapng`) lalu upload. Gunakan tab untuk menjelajah, filter IP/protocol/teks pada tab Packets.' },
           { title: 'Input', content: 'File .pcap / .pcapng. Batas 500.000 paket per parse (file lebih besar di-truncate dengan peringatan).' },
           { title: 'Output', content: 'Summary, daftar paket, conversation, distribusi protocol, DNS, HTTP, TLS SNI, timeline, indikator mencurigakan. Export TSV tersedia.' },
-          { title: 'Notes', content: 'Jangan upload PCAP sensitif ke layanan eksternal — tool ini tidak pernah mengirim data. TLS TIDAK di-decrypt; payload terenkripsi tetap rahasia. Dukungan linktype: Ethernet (1) dan Raw IP (101/228); linktype lain ditandai.' },
+          { title: 'Notes', content: 'Jangan upload PCAP sensitif ke layanan eksternal. tool ini tidak pernah mengirim data. TLS TIDAK di-decrypt; payload terenkripsi tetap rahasia. Dukungan linktype: Ethernet (1) dan Raw IP (101/228); linktype lain ditandai.' },
         ]}
       />
     </div>

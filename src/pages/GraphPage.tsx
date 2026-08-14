@@ -14,7 +14,7 @@ const FOLDER_LABELS: Record<string, { label: string; color: string }> = {
 };
 
 /**
- * Halaman graph — visualisasi sambungan antar catatan
+ * Halaman graph. visualisasi sambungan antar catatan
  * (gaya Obsidian Graph View). Data graph.json dimuat lazy.
  */
 export default function GraphPage() {

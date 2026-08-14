@@ -1,5 +1,5 @@
 /**
- * Hash intelligence — deteksi tipe hash dari panjang/charset (tanpa cracking)
+ * Hash intelligence. deteksi tipe hash dari panjang/charset (tanpa cracking)
  * + link lookup eksternal.
  */
 
@@ -29,7 +29,7 @@ export function detectHash(input: string): HashDetection {
   else if (/^[a-f0-9]{40}$/.test(normalized)) candidates.push({ algorithm: 'SHA-1', confidence: 'high' });
   else if (/^[a-f0-9]{32}$/.test(normalized)) candidates.push(
     { algorithm: 'MD5', confidence: 'high' },
-    { algorithm: 'NTLM', confidence: 'medium', note: 'NTLM juga 32 hex — tidak bisa dibedakan dari panjang saja.' },
+    { algorithm: 'NTLM', confidence: 'medium', note: 'NTLM juga 32 hex. tidak bisa dibedakan dari panjang saja.' },
     { algorithm: 'MD4', confidence: 'low' }
   );
   else if (/^[a-f0-9]{16}$/.test(normalized)) candidates.push({ algorithm: 'CRC32 / LM hash / 8-byte hash', confidence: 'low' });

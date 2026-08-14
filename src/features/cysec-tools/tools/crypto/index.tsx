@@ -211,7 +211,7 @@ function DecimalHexTool() {
         hex: (n < 0n ? '-' : '') + '0x' + (n < 0n ? -n : n).toString(16),
         oct: (n < 0n ? '-' : '') + '0o' + (n < 0n ? -n : n).toString(8),
         bin: (n < 0n ? '-' : '') + '0b' + (n < 0n ? -n : n).toString(2),
-        note: n > 0x7fffffff ? 'Nilai > 32-bit — gunakan BigInt/Number yang tepat di kode Anda.' : undefined,
+        note: n > 0x7fffffff ? 'Nilai > 32-bit. gunakan BigInt/Number yang tepat di kode Anda.' : undefined,
       });
     } catch {
       setError('Input bukan bilangan valid. Gunakan desimal, atau awalan 0x (hex), 0b (biner), 0o (oktal).');
@@ -253,14 +253,14 @@ function DecimalHexTool() {
 
 const rot13Tool: TransformConfig = {
   title: 'ROT13',
-  description: 'Caesar shift 13 — simetris',
+  description: 'Caesar shift 13. simetris',
   placeholder: 'Teks… contoh: Uryyb Jbeyq',
   encode: (s) => rot13(s),
   decode: (s) => rot13(s),
   example: 'Hello World',
   notes: basicNotes(
     'ROT13 menggeser huruf sejauh 13. Karena 13+13=26, encode dan decode identik.',
-    'Ketik teks lalu klik Encode (atau Decode — sama saja).',
+    'Ketik teks lalu klik Encode (atau Decode. sama saja).',
     'Teks',
     'Teks ter-ROT13'
   ),
@@ -290,7 +290,7 @@ const caesarTool: TransformConfig = {
   keyFields: [{ id: 'shift', label: 'Shift (0–25)', type: 'number', defaultValue: '3', placeholder: '3' }],
   example: 'The quick brown fox jumps over the lazy dog',
   notes: basicNotes(
-    'Caesar menggeser tiap huruf sejauh N posisi dalam alfabet. Hanya 25 kemungkinan — mudah di-brute-force.',
+    'Caesar menggeser tiap huruf sejauh N posisi dalam alfabet. Hanya 25 kemungkinan. mudah di-brute-force.',
     'Atur shift, ketik teks, klik Encode/Decode.',
     'Teks + nilai shift',
     'Teks ter-geser'
@@ -504,7 +504,7 @@ function AesTool() {
         </Panel>
       )}
       <ToolNotes notes={[
-        { title: 'What is this?', content: 'AES (Advanced Encryption Standard) — enkripsi simetris standar. Di sini memakai Web Crypto API (bukan implementasi sendiri): AES-GCM (autentikasi + integritas) atau AES-CBC. Key diturunkan dari passphrase via PBKDF2-SHA256 + salt acak.' },
+        { title: 'What is this?', content: 'AES (Advanced Encryption Standard). enkripsi simetris standar. Di sini memakai Web Crypto API (bukan implementasi sendiri): AES-GCM (autentikasi + integritas) atau AES-CBC. Key diturunkan dari passphrase via PBKDF2-SHA256 + salt acak.' },
         { title: 'How to use', content: 'Set mode/key size/iterasi, isi passphrase, ketik plaintext → Encrypt. Untuk decrypt, tempel ciphertext (cysec1:...) + passphrase yang sama → Decrypt.' },
         { title: 'Input', content: 'Plaintext (encrypt) atau ciphertext berformat cysec1 (decrypt).' },
         { title: 'Output', content: 'Ciphertext base64 dengan salt+iv (encrypt), atau plaintext (decrypt).' },
@@ -575,11 +575,11 @@ function Chacha20Tool() {
         </Panel>
       )}
       <ToolNotes notes={[
-        { title: 'What is this?', content: 'ChaCha20 — stream cipher modern (RFC 8439), dipakai TLS 1.3 dan banyak protokol. Implementasi ini ditulis murni TypeScript untuk tujuan edukasi/CTF.' },
+        { title: 'What is this?', content: 'ChaCha20. stream cipher modern (RFC 8439), dipakai TLS 1.3 dan banyak protokol. Implementasi ini ditulis murni TypeScript untuk tujuan edukasi/CTF.' },
         { title: 'How to use', content: 'Isi key 32 byte + nonce 12 byte (hex), masukkan data, klik Apply. Karena stream cipher bersifat XOR, operasi yang sama melakukan enkripsi DAN dekripsi.' },
         { title: 'Input', content: 'Hex (otomatis) atau teks + key + nonce.' },
         { title: 'Output', content: 'Data ter-XOR dalam hex.' },
-        { title: 'Notes', content: 'JANGAN gunakan ulang nonce dengan key yang sama (kerusakan keamanan total). Implementasi ini untuk belajar — verifikasi dengan test vector RFC 8439 jika dipakai serius.' },
+        { title: 'Notes', content: 'JANGAN gunakan ulang nonce dengan key yang sama (kerusakan keamanan total). Implementasi ini untuk belajar. verifikasi dengan test vector RFC 8439 jika dipakai serius.' },
       ]} />
     </div>
   );
@@ -630,7 +630,7 @@ function RsaTool() {
       const d = BigInt(privD);
       setOutput(rsaDecryptText(output || message, n, d, blockBytes));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Dekripsi gagal — periksa kunci & blok.');
+      setError(err instanceof Error ? err.message : 'Dekripsi gagal. periksa kunci & blok.');
     }
   };
 
@@ -651,7 +651,7 @@ function RsaTool() {
       </div>
 
       {keys && (
-        <Panel title="Key pair (edukasi — JANGAN dipakai produksi)">
+        <Panel title="Key pair (edukasi. JANGAN dipakai produksi)">
           <KeyValueTable rows={[
             { k: 'p (prima)', v: keys.p.toString() },
             { k: 'q (prima)', v: keys.q.toString() },
@@ -727,7 +727,7 @@ function HashTool() {
       if (file) {
         data = file.bytes;
       } else {
-        if (!input.trim()) throw new Error('Input kosong — ketik teks, pilih mode input, atau upload file.');
+        if (!input.trim()) throw new Error('Input kosong. ketik teks, pilih mode input, atau upload file.');
         if (inputMode === 'hex') data = hexToBytes(input);
         else if (inputMode === 'base64') data = base64ToBytes(input);
         else data = utf8ToBytes(input);
@@ -801,7 +801,7 @@ function HashTool() {
       <ToolNotes notes={[
         { title: 'What is this?', content: 'Hash satu arah (deterministik): perubahan 1 bit input mengubah hash total. Encoding ≠ encryption ≠ hashing.' },
         { title: 'How to use', content: 'Ketik data (atau pilih mode hex/base64, atau upload file) lalu klik Hash.' },
-        { title: 'Input', content: 'Teks / hex / base64 / file — diproses sebagai byte.' },
+        { title: 'Input', content: 'Teks / hex / base64 / file. diproses sebagai byte.' },
         { title: 'Output', content: 'MD5, SHA-1, SHA-256, SHA-384, SHA-512, SHA3-256, SHA3-512 (hex).' },
         { title: 'Notes', content: 'SHA-1 & MD5 sudah dianggap lemah (collision). Untuk password gunakan bcrypt/argon2, bukan hash cepat. SHA-256/384/512 & SHA3 memakai Web Crypto API + implementasi Keccak lokal.' },
       ]} />
@@ -911,7 +911,7 @@ function Pbkdf2Tool() {
             <input id="pbkdf2-pass" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none" />
           </div>
           <div>
-            <label htmlFor="pbkdf2-salt" className="mb-1 block text-xs text-slate-400">Salt (teks atau hex — kosongkan untuk acak)</label>
+            <label htmlFor="pbkdf2-salt" className="mb-1 block text-xs text-slate-400">Salt (teks atau hex. kosongkan untuk acak)</label>
             <input id="pbkdf2-salt" value={salt} onChange={(e) => setSalt(e.target.value)} placeholder="kosong = salt acak" className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none" />
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
@@ -936,7 +936,7 @@ function Pbkdf2Tool() {
       {result && (
         <Panel title="Derived key (hex)" action={<><CopyButton text={result} /><DownloadButton text={result} filename="pbkdf2.txt" /></>}>
           <code className="break-all font-mono text-[13px] text-emerald-300">{result}</code>
-          <p className="mt-2 text-xs text-slate-500">Iterasi tinggi membuat brute-force mahal — OWASP menyarankan ≥ 600.000 (SHA-256).</p>
+          <p className="mt-2 text-xs text-slate-500">Iterasi tinggi membuat brute-force mahal. OWASP menyarankan ≥ 600.000 (SHA-256).</p>
         </Panel>
       )}
       <ToolNotes notes={[
@@ -973,7 +973,7 @@ function UuidTool() {
         </Panel>
       )}
       <ToolNotes notes={[
-        { title: 'What is this?', content: 'UUID v4 — 122 bit acak (kriptografis) dari crypto.getRandomValues, format RFC 4122.' },
+        { title: 'What is this?', content: 'UUID v4. 122 bit acak (kriptografis) dari crypto.getRandomValues, format RFC 4122.' },
         { title: 'How to use', content: 'Atur jumlah, klik Generate.' },
         { title: 'Input', content: 'Jumlah UUID (1–100).' },
         { title: 'Output', content: 'Daftar UUID v4.' },
@@ -1067,11 +1067,11 @@ function Sha3Tool() {
         </Panel>
       )}
       <ToolNotes notes={[
-        { title: 'What is this?', content: 'SHA-3 (FIPS 202) berbasis fungsi spons Keccak — berbeda konstruksi dari SHA-2.' },
+        { title: 'What is this?', content: 'SHA-3 (FIPS 202) berbasis fungsi spons Keccak. berbeda konstruksi dari SHA-2.' },
         { title: 'How to use', content: 'Ketik data (atau hex), pilih varian, klik SHA-3.' },
         { title: 'Input', content: 'Teks atau hex.' },
         { title: 'Output', content: 'Hash hex sesuai varian.' },
-        { title: 'Notes', content: 'Implementasi Keccak-f[1600] murni TypeScript lokal — baik untuk mempelajari konstruksi spons.' },
+        { title: 'Notes', content: 'Implementasi Keccak-f[1600] murni TypeScript lokal. baik untuk mempelajari konstruksi spons.' },
       ]} />
     </div>
   );

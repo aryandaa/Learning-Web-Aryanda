@@ -1,5 +1,5 @@
 /**
- * IOC Extractor — ekstraksi & dedup IOC dari teks/log/email/report.
+ * IOC Extractor. ekstraksi & dedup IOC dari teks/log/email/report.
  */
 
 import { useState } from 'react';
@@ -109,7 +109,7 @@ function IocExtractorTool() {
               { title: 'How to use', content: 'Tempel teks/log, klik Ekstrak IOC.' },
               { title: 'Input', content: 'Teks bebas.' },
               { title: 'Output', content: 'Tabel Type/Value/Count/Context + export JSON/CSV.' },
-              { title: 'Notes', content: 'Semua lokal (privacy: LOCAL). Hash MD5/SHA1/SHA256 hanya dideteksi dari panjang — verifikasi dengan Hash Analyzer.' },
+              { title: 'Notes', content: 'Semua lokal (privacy: LOCAL). Hash MD5/SHA1/SHA256 hanya dideteksi dari panjang. verifikasi dengan Hash Analyzer.' },
             ]}
           />
         </>

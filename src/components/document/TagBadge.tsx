@@ -16,7 +16,7 @@ const SPECIAL_ICONS: Record<SpecialTag, typeof Map> = {
 };
 
 /**
- * Badge tag. Tag khusus (meta) — #roadmap, #Subskill, #Myskill, #latihan —
+ * Badge tag. Tag khusus (meta). #roadmap, #Subskill, #Myskill, #latihan.
  * tampil dengan ikon + huruf kapital + warna khas, berbeda dari tag topik
  * biasa yang berwarna-warni.
  */

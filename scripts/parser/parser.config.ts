@@ -5,7 +5,7 @@ export interface ParserConfig {
   ignored: string[];
   /**
    * Folders (by name, any depth, case-insensitive) excluded entirely from the
-   * website — notes, subfolders, and assets inside them are skipped.
+   * website. notes, subfolders, and assets inside them are skipped.
    * Example: "Note Personal" (catatan pribadi), "Praktek" (folder latihan).
    */
   excludeFolders: string[];

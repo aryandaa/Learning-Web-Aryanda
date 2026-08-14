@@ -25,7 +25,7 @@ export function exportJson(data: unknown, filename: string) {
   downloadBlob(JSON.stringify(data, null, 2), filename, 'application/json');
 }
 
-/** rows: array of object — kolom diambil dari header pertama yang konsisten. */
+/** rows: array of object. kolom diambil dari header pertama yang konsisten. */
 export function exportCsv(rows: Record<string, unknown>[], filename: string) {
   if (rows.length === 0) return;
   const headers = Object.keys(rows[0]);

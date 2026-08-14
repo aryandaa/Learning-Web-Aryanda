@@ -1,5 +1,5 @@
 /**
- * FileDrop — upload file via drag & drop + input file. Aksesibel,
+ * FileDrop. upload file via drag & drop + input file. Aksesibel,
  * membaca ArrayBuffer secara lokal, dan menampilkan warning untuk file besar.
  */
 
@@ -92,7 +92,7 @@ export function FileDrop({
           {loading ? 'Memproses…' : `Klik untuk ${label.toLowerCase()} atau seret ke sini`}
         </span>
         <span className="text-xs text-slate-500">
-          {hint ?? 'File diproses sepenuhnya di browser — tidak pernah di-upload ke server.'}
+          {hint ?? 'File diproses sepenuhnya di browser. tidak pernah di-upload ke server.'}
         </span>
       </div>
       <input

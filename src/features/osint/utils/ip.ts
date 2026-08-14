@@ -1,5 +1,5 @@
 /**
- * IP intelligence — validasi & klasifikasi IPv4/IPv6 murni client-side.
+ * IP intelligence. validasi & klasifikasi IPv4/IPv6 murni client-side.
  * Lookup ASN/geo opsional via ipwho.is (CORS publik, tanpa key).
  */
 
@@ -121,7 +121,7 @@ function classifyIpv6(groups: number[]): { label: string; kind: 'info' | 'warn' 
   if (allZero) out.push({ label: 'Unspecified (::/128)', kind: 'warn' });
   else if (groups.slice(0, 7).every((g) => g === 0) && groups[7] === 1) {
     out.push({ label: 'Loopback (::1/128)', kind: 'warn' });
-  } else if (is([0xfc00], 7)) out.push({ label: 'Unique Local Address (fc00::/7) — private', kind: 'info' });
+  } else if (is([0xfc00], 7)) out.push({ label: 'Unique Local Address (fc00::/7). private', kind: 'info' });
   else if (is([0xfe80], 10)) out.push({ label: 'Link-local (fe80::/10)', kind: 'info' });
   else if (is([0x2001, 0x0db8], 32)) out.push({ label: 'Documentation (2001:db8::/32)', kind: 'ok' });
   else if (is([0xff00], 8)) out.push({ label: 'Multicast (ff00::/8)', kind: 'warn' });
@@ -166,7 +166,7 @@ export interface IpWhoIsResult {
   error?: string;
 }
 
-/** Lookup publik ipwho.is — CORS enabled, tanpa key. */
+/** Lookup publik ipwho.is. CORS enabled, tanpa key. */
 export async function lookupIpWhoIs(ip: string): Promise<IpWhoIsResult> {
   let res: Response;
   try {

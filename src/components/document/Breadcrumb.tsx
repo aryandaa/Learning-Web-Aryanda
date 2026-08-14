@@ -19,7 +19,7 @@ export function Breadcrumb({ folder, current }: { folder: string; current: strin
       {parts.map((part, index) => {
         const path = parts.slice(0, index + 1).join('/');
         // Cari folder di dalam tree via relativePath yang cocok di fileMap
-        // (folder tidak punya id sendiri — kami tampilkan sebagai teks).
+        // (folder tidak punya id sendiri. kami tampilkan sebagai teks).
         const key = `${path}-${index}`;
         return (
           <span key={key} className="flex min-w-0 items-center gap-1">

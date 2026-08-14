@@ -1,5 +1,5 @@
 /**
- * URL intelligence — parse, decode bertingkat, dan deteksi pola mencurigakan.
+ * URL intelligence. parse, decode bertingkat, dan deteksi pola mencurigakan.
  * Semua lokal; URL tidak pernah dibuka otomatis.
  */
 
@@ -38,7 +38,7 @@ export function analyzeUrlIntel(input: string): UrlIntel {
   try {
     parsed = new URL(raw);
   } catch {
-    return { input: raw, valid: false, error: 'URL tidak valid — pastikan menyertakan scheme (mis. https://example.com).', components: [], decodedLayers: [], params: [], issues: [], normalized: raw };
+    return { input: raw, valid: false, error: 'URL tidak valid. pastikan menyertakan scheme (mis. https://example.com).', components: [], decodedLayers: [], params: [], issues: [], normalized: raw };
   }
 
   const components: UrlComponent[] = [
@@ -96,25 +96,25 @@ export function analyzeUrlIntel(input: string): UrlIntel {
 
   // Deteksi
   const host = parsed.hostname;
-  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(host)) issues.push('Host berupa IP literal — tidak bisa diverifikasi sertifikat/domain; umum pada phishing.');
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(host)) issues.push('Host berupa IP literal. tidak bisa diverifikasi sertifikat/domain; umum pada phishing.');
   if (host.includes(':')) issues.push('Host berupa IPv6 literal.');
-  if (/^xn--/.test(host) || /[^\x00-\x7F]/.test(host)) issues.push('Punycode/IDN terdeteksi — periksa visual huruf dengan hati-hati (homograph attack).');
+  if (/^xn--/.test(host) || /[^\x00-\x7F]/.test(host)) issues.push('Punycode/IDN terdeteksi. periksa visual huruf dengan hati-hati (homograph attack).');
   const subdomainCount = host.split('.').length - 2;
-  if (subdomainCount > 2) issues.push(`Subdomain berlebihan (${subdomainCount} level) — pola umum phishing.`);
+  if (subdomainCount > 2) issues.push(`Subdomain berlebihan (${subdomainCount} level). pola umum phishing.`);
   const tld = host.split('.').pop() ?? '';
   if (SUSPICIOUS_TLDS.includes(tld.toLowerCase())) issues.push(`TLD ${tld} sering dipakai domain murah/abusive.`);
-  if (SHORTENERS.some((s) => host === s || host.endsWith('.' + s))) issues.push('URL shortener terdeteksi — tujuan disembunyikan.');
-  if (parsed.protocol === 'javascript:') issues.push('Scheme javascript: — eksekusi kode; JANGAN dibuka.');
-  if (parsed.protocol === 'data:') issues.push('Scheme data: — konten inline; bisa menyamar.');
-  if (parsed.protocol === 'file:') issues.push('Scheme file: — akses lokal; tidak boleh dari web.');
-  if (parsed.username || parsed.password) issues.push('Userinfo dalam URL (user:pass@) — bocor ke log dan sering dipakai spoofing host.');
-  if (/\\/.test(raw)) issues.push('Backslash terdeteksi — beberapa parser memperlakukannya sebagai separator host.');
-  if (/%25/i.test(raw)) issues.push('Double-encoding (%25) terdeteksi — upaya bypass filter/decoder.');
-  if (/%[0-9a-f]{2}/i.test(raw)) issues.push('Karakter percent-encoded — cek lapisan decode di bawah.');
+  if (SHORTENERS.some((s) => host === s || host.endsWith('.' + s))) issues.push('URL shortener terdeteksi. tujuan disembunyikan.');
+  if (parsed.protocol === 'javascript:') issues.push('Scheme javascript:. eksekusi kode; JANGAN dibuka.');
+  if (parsed.protocol === 'data:') issues.push('Scheme data:. konten inline; bisa menyamar.');
+  if (parsed.protocol === 'file:') issues.push('Scheme file:. akses lokal; tidak boleh dari web.');
+  if (parsed.username || parsed.password) issues.push('Userinfo dalam URL (user:pass@). bocor ke log dan sering dipakai spoofing host.');
+  if (/\\/.test(raw)) issues.push('Backslash terdeteksi. beberapa parser memperlakukannya sebagai separator host.');
+  if (/%25/i.test(raw)) issues.push('Double-encoding (%25) terdeteksi. upaya bypass filter/decoder.');
+  if (/%[0-9a-f]{2}/i.test(raw)) issues.push('Karakter percent-encoded. cek lapisan decode di bawah.');
   const redirectParams = ['redirect', 'next', 'url', 'return', 'goto', 'target', 'r', 'u'];
   for (const p of params) {
     if (redirectParams.includes(p.name.toLowerCase()) && /^(https?:)?\/\//.test(p.decoded)) {
-      issues.push(`Parameter "${p.name}" berisi URL eksternal — potensi open redirect; verifikasi whitelist.`);
+      issues.push(`Parameter "${p.name}" berisi URL eksternal. potensi open redirect; verifikasi whitelist.`);
     }
     if (/['"<>]/ .test(p.decoded)) issues.push(`Parameter "${p.name}" mengandung karakter injeksi (' " < >).`);
   }

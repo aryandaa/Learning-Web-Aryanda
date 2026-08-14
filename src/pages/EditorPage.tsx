@@ -561,7 +561,7 @@ ${css}
 }
 
 /**
- * Halaman Code Editor — tulis kode di editor, jalankan di browser
+ * Halaman Code Editor. tulis kode di editor, jalankan di browser
  * (100% frontend), lihat output di panel terminal / preview web.
  */
 export default function EditorPage() {
@@ -613,7 +613,7 @@ export default function EditorPage() {
       }
 
       if (!preview && lines.length === 0) {
-        lines = [{ type: 'log', text: '(tidak ada output — program selesai tanpa mencetak apa pun)' }];
+        lines = [{ type: 'log', text: '(tidak ada output. program selesai tanpa mencetak apa pun)' }];
       }
       setOutput(lines);
       setHtmlPreview(preview);

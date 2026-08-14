@@ -1,5 +1,5 @@
 /**
- * Log Analyzer — parsing Apache/Nginx access log, auth.log (sshd), dan log
+ * Log Analyzer. parsing Apache/Nginx access log, auth.log (sshd), dan log
  * generik. Seluruhnya client-side; tidak ada pengiriman log ke server.
  */
 
@@ -194,7 +194,7 @@ export function analyzeLog(text: string): LogAnalysis {
       suspicious.push({
         severity: count >= 1000 ? 'high' : 'low',
         title: `Volume request tinggi dari ${ip}`,
-        detail: `${count} request — kemungkinan scraping atau serangan.`,
+        detail: `${count} request. kemungkinan scraping atau serangan.`,
       });
     }
   }
@@ -217,7 +217,7 @@ export function analyzeLog(text: string): LogAnalysis {
       suspicious.push({
         severity: 'medium',
         title: `Directory scan dari ${ip}`,
-        detail: `${count} respons 404 — kemungkinan enumerasi path.`,
+        detail: `${count} respons 404. kemungkinan enumerasi path.`,
       });
     }
   }

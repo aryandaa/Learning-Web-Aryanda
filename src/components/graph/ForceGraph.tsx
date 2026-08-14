@@ -142,7 +142,7 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
       .velocityDecay(0.4);
 
     simulation.on('tick', draw);
-    // Posisi awal (phyllotaxis) tidak mewakili layout akhir — ikuti
+    // Posisi awal (phyllotaxis) tidak mewakili layout akhir. ikuti
     // pergerakan node dengan re-fit berkala, lalu finalisasi saat selesai.
     const fitInterval = setInterval(() => {
       if (simulation.alpha() > 0.02) fitView();

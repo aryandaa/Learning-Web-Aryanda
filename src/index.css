@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 /* ============================================================
-   Tema — slate dipetakan ke CSS variables (lihat tailwind.config.js).
+   Tema. slate dipetakan ke CSS variables (lihat tailwind.config.js).
    Dark adalah tema default; `html.light` membalik palet untuk light mode.
    ============================================================ */
 :root {
   color-scheme: dark;
-  /* slate (dark) — nilai default Tailwind */
+  /* slate (dark). nilai default Tailwind */
   --tw-slate-50: 248 250 252;
   --tw-slate-100: 241 245 249;
   --tw-slate-200: 226 232 240;
@@ -24,7 +24,7 @@
 
 html.light {
   color-scheme: light;
-  /* slate (light) — palet terang yang didesain, bukan inversi mentah */
+  /* slate (light). palet terang yang didesain, bukan inversi mentah */
   --tw-slate-50: 2 6 23;
   --tw-slate-100: 15 23 42;
   --tw-slate-200: 30 41 59;
@@ -360,7 +360,7 @@ html.light .nav-active {
 }
 
 /* ============================================================
-   Light theme — penyesuaian warna aksen & konten.
+   Light theme. penyesuaian warna aksen & konten.
    Slate otomatis lewat CSS variables; di sini yang diperbaiki
    adalah warna aksen (indigo/amber/dll) yang terlalu terang di
    atas latar putih, plus syntax highlighting versi GitHub light.
@@ -434,7 +434,7 @@ html.light .doc-content a.wiki-link {
   color: #4f46e5;
 }
 
-/* syntax highlighting — palet GitHub light */
+/* syntax highlighting. palet GitHub light */
 html.light .doc-content .hljs {
   color: #24292e;
 }

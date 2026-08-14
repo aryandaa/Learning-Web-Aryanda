@@ -1,5 +1,5 @@
 /**
- * IP Analyzer — klasifikasi lokal + lookup ipwho.is + reverse DNS (DoH) + sumber publik.
+ * IP Analyzer. klasifikasi lokal + lookup ipwho.is + reverse DNS (DoH) + sumber publik.
  */
 
 import { useState } from 'react';
@@ -103,14 +103,14 @@ function IpAnalyzerTool() {
               ) : (
                 <KeyValueTable
                   rows={[
-                    { k: 'ASN', v: whois.asn ?? '—' },
-                    { k: 'Organization', v: whois.org ?? '—' },
-                    { k: 'ISP', v: whois.isp ?? '—' },
-                    { k: 'Country', v: whois.country ? `${whois.country} (${whois.countryCode})` : '—' },
-                    { k: 'Continent', v: whois.continent ?? '—' },
-                    { k: 'Region/City', v: [whois.region, whois.city].filter(Boolean).join(', ') || '—' },
-                    { k: 'Timezone', v: whois.timezone ?? '—' },
-                    { k: 'Reverse DNS (PTR)', v: ptr ?? '—' },
+                    { k: 'ASN', v: whois.asn ?? '-' },
+                    { k: 'Organization', v: whois.org ?? '-' },
+                    { k: 'ISP', v: whois.isp ?? '-' },
+                    { k: 'Country', v: whois.country ? `${whois.country} (${whois.countryCode})` : '-' },
+                    { k: 'Continent', v: whois.continent ?? '-' },
+                    { k: 'Region/City', v: [whois.region, whois.city].filter(Boolean).join(', ') || '-' },
+                    { k: 'Timezone', v: whois.timezone ?? '-' },
+                    { k: 'Reverse DNS (PTR)', v: ptr ?? '-' },
                   ]}
                 />
               )}
@@ -142,7 +142,7 @@ function IpAnalyzerTool() {
               { title: 'How to use', content: 'Masukkan IP (IPv4/IPv6, opsional CIDR). Klik Analisis untuk klasifikasi lokal; External lookup untuk ASN/negara via ipwho.is dan PTR via DoH.' },
               { title: 'Input', content: 'Alamat IP.' },
               { title: 'Output', content: 'Klasifikasi + data ASN/geo/PTR (bila lookup berhasil).' },
-              { title: 'Notes', content: 'Klasifikasi lokal; lookup mengirim IP ke ipwho.is (CORS publik, tanpa key) dan resolver DoH. Defensif — tanpa scanning aktif.' },
+              { title: 'Notes', content: 'Klasifikasi lokal; lookup mengirim IP ke ipwho.is (CORS publik, tanpa key) dan resolver DoH. Defensif. tanpa scanning aktif.' },
             ]}
           />
         </>

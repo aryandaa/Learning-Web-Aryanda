@@ -24,8 +24,8 @@ export function titleFromPath(relativePath: string): string {
 /**
  * Validates the scanned snapshot:
  * - malformed/invalid source paths
- * - duplicate document ids (FATAL — two different files normalizing to one id)
- * - duplicate asset output paths (FATAL — data would be overwritten)
+ * - duplicate document ids (FATAL. two different files normalizing to one id)
+ * - duplicate asset output paths (FATAL. data would be overwritten)
  */
 export function validateSnapshot(context: ParserContext): void {
   const { files, assets } = context.snapshot!;

@@ -30,7 +30,7 @@ check('MD5("")', md5(new Uint8Array(0)), 'd41d8cd98f00b204e9800998ecf8427e');
 check('MD5("abc")', md5(utf8ToBytes('abc')), '900150983cd24fb0d6963f7d28e17f72');
 check('MD5("The quick brown fox jumps over the lazy dog")', md5(utf8ToBytes('The quick brown fox jumps over the lazy dog')), '9e107d9d372bb6826bd81d3542a419d6');
 
-console.log('SHA-3 (Keccak) — NIST vectors:');
+console.log('SHA-3 (Keccak). NIST vectors:');
 check('SHA3-224("")', bytesToHex(sha3(new Uint8Array(0), 224)), '6b4e03423667dbb73b6e15454f0eb1abd4597f9a1b078e3f5b5a6bc7');
 check('SHA3-256("")', bytesToHex(sha3(new Uint8Array(0), 256)), 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a');
 check('SHA3-512("")', bytesToHex(sha3(new Uint8Array(0), 512)), 'a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26');
@@ -114,7 +114,7 @@ console.log('PCAP parser (PCAP klasik, 3 paket Ethernet/IPv4/TCP/UDP/DNS):');
   checkTrue('PCAP protocol distribution ada', result.protocols.length >= 2);
 }
 
-console.log('PE/ELF/Mach-O (magic only — invalid files):');
+console.log('PE/ELF/Mach-O (magic only. invalid files):');
 checkTrue('PE invalid', parsePe(new Uint8Array([0x4d, 0x5a, 0, 0])).valid === false);
 checkTrue('ELF invalid', parseElf(new Uint8Array([0x7f, 0x45, 0x4c, 0x46])).valid === false);
 checkTrue('Mach-O invalid', parseMacho(new Uint8Array([1, 2, 3, 4])).valid === false);

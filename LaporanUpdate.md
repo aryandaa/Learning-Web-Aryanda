@@ -1,8 +1,8 @@
-# Laporan Update — Fitur CySec Tools (Learning-Web Aryanda)
+# Laporan Update. Fitur CySec Tools (Learning-Web Aryanda)
 
 > Dokumen ini adalah **handoff report** untuk AI berikutnya. Bacalah **dulu** sebelum
 > menyentuh kode, agar tidak merusak yang sudah ada dan tidak bingung dengan arsitektur.
-> Project ini **SUDAH STABIL** — tambahkan fitur secara modular, jangan rewrite.
+> Project ini **SUDAH STABIL**. tambahkan fitur secara modular, jangan rewrite.
 
 ---
 
@@ -36,9 +36,9 @@ npm run dev              # coba di browser: http://localhost:4173/cysec-tools
 
 Route utama:
 
-- `/cysec-tools` — dashboard katalog + search + recent/favorites (localStorage)
-- `/cysec-tools/category/:categoryId` — halaman kategori
-- `/cysec-tools/:toolId` — halaman tool (lazy-load chunk per kategori)
+- `/cysec-tools`. dashboard katalog + search + recent/favorites (localStorage)
+- `/cysec-tools/category/:categoryId`. halaman kategori
+- `/cysec-tools/:toolId`. halaman tool (lazy-load chunk per kategori)
 
 ---
 
@@ -83,13 +83,13 @@ src/features/cysec-tools/
 
 - **Registry data-driven**: `registry.ts` mendeklarasikan semua tool
   (`id`, `name`, `category`, `description`, `icon`, `tags`, `status`, `disclaimer`).
-  Katalog dashboard & halaman kategori dirender dari sini — tanpa import implementasi.
+  Katalog dashboard & halaman kategori dirender dari sini. tanpa import implementasi.
 - **Lazy loading**: ToolPage memakai `import.meta.glob('../tools/*/index.tsx')` →
   tiap kategori menjadi chunk terpisah. Bundle utama hanya +~40 KB (gzip).
 - **Satu tool boleh muncul di beberapa kategori** lewat field `alsoIn`
   (mis. `strings` ada di Forensics & Reverse Engineering; `hash-generator` di Crypto & CTF).
   Implementasi tetap satu, chunk dimuat dari kategori utama (`meta.category`).
-- **Tema**: memakai CSS variables slate existing (`html.light`) — tidak ada theme baru.
+- **Tema**: memakai CSS variables slate existing (`html.light`). tidak ada theme baru.
 - **UI**: memakai Button/Input/Badge/Spinner dari `src/components/ui/` + komponen sendiri.
 
 ---
@@ -131,7 +131,7 @@ src/features/cysec-tools/
 - `src/features/cysec-tools/tools/log/index.tsx`
 
 ### Test
-- `scripts/cysec-selfcheck.ts` — regression test 62 kasus (MD5, SHA-3, ChaCha20 RFC 8439,
+- `scripts/cysec-selfcheck.ts`. regression test 62 kasus (MD5, SHA-3, ChaCha20 RFC 8439,
   encoding, PCAP/PCAPNG sintetik, PE/ELF minimal, EXIF sintetik, log, JWT).
   Dijalankan via `npm run cysec:check`.
 
@@ -168,7 +168,7 @@ strings extractor, entropy analyzer, timestamp inspector, **exif viewer**, **pdf
 **zip-metadata**, file-compare.
 
 ### 🌐 PCAP (1 tool besar)
-**PCAP Analyzer** — PCAP klasik + PCAPNG (SHB/IDB/EPB/SPB/PB), Ethernet/VLAN/IPv4/IPv6,
+**PCAP Analyzer**. PCAP klasik + PCAPNG (SHB/IDB/EPB/SPB/PB), Ethernet/VLAN/IPv4/IPv6,
 TCP/UDP/ICMP/ARP, DNS query, HTTP host/method/status, **TLS SNI (tanpa decrypt)**,
 conversations, top talkers, TCP flags, timeline, packet-size distribution,
 suspicious heuristics (SYN flood, port scan, 404 flood), filter & search, export TSV.
@@ -179,7 +179,7 @@ ascii-viewer, utf8 decoder, utf16 decoder, binary-hex, integer-converter,
 endianness converter, xor-analyzer (single-byte brute force + repeating-key),
 **pe-viewer**, **elf-viewer**, **macho-viewer (dasar)**, printable-strings scanner.
 
-### 🛡️ Web Security (19 tool) — semua input manual, tanpa request keluar
+### 🛡️ Web Security (19 tool). semua input manual, tanpa request keluar
 url-parser, query-parser, **jwt (decode + verifikasi HS\*)**, http-headers,
 cookie-analyzer, user-agent parser, csp analyzer, cors analyzer, security-headers checker,
 html-entity, js-uri decoder, url-normalizer, open-redirect analyzer,
@@ -221,8 +221,8 @@ Semua implementasi memakai Web APIs + TypeScript murni:
 - `pbkdf2`
 - `uuid` (crypto.getRandomValues)
 - `random-bytes` (crypto.getRandomValues)
-- `jwt` — verifikasi signature HS256/384/512 (importKey + sign, bandingkan)
-- `metadata` / `file-hash` / `file-compare` — SHA-256/1 via subtle
+- `jwt`. verifikasi signature HS256/384/512 (importKey + sign, bandingkan)
+- `metadata` / `file-hash` / `file-compare`. SHA-256/1 via subtle
 
 ---
 
@@ -242,7 +242,7 @@ Semua implementasi memakai Web APIs + TypeScript murni:
 
 | Tool | Status | Alasan |
 |---|---|---|
-| `macho-viewer` | `partial` | Hanya header dasar 64-bit LE/BE (magic, cputype, filetype, ncmds, flags). Parsing penuh load commands (segments, symbols, dylibs) belum disertakan — bukan mustahil, tinggal dikerjakan. |
+| `macho-viewer` | `partial` | Hanya header dasar 64-bit LE/BE (magic, cputype, filetype, ncmds, flags). Parsing penuh load commands (segments, symbols, dylibs) belum disertakan. bukan mustahil, tinggal dikerjakan. |
 | PCAP linktype selain Ethernet(1)/RawIP(101/228) | `partial` | Linktype lain (mis. Linux SLL, 802.11) ditandai "belum didukung penuh". |
 | PCAPNG `if_tsresol` (resolusi timestamp non-default) | catatan | Dianggap 1e-6 (default). Opsi tsresol di IDB belum diparse. |
 | EXIF TIFF big-endian | `partial` | Parser BE hanya menangani entry dasar (tanpa follow sub-IFD/ExifIFD penuh). |
@@ -266,32 +266,32 @@ npm run cysec:check  # ✅ 62 pass / 0 fail
 
 Catatan build:
 
-- Main bundle: `index-*.js` ~420 KB (gzip ~132 KB) — naik ~43 KB dari sebelum fitur
+- Main bundle: `index-*.js` ~420 KB (gzip ~132 KB). naik ~43 KB dari sebelum fitur
   (komponen shell + registry + pages; implementasi tool masuk chunk lazy).
 - Chunk lazy per kategori: `crypto` 36 KB, `web` 49 KB, `re` 34 KB, `ctf` 32 KB,
-  `pcap` 28 KB, `forensics` 19 KB, `log` 17 KB (angka pre-gzip) — hanya dimuat saat tool dibuka.
+  `pcap` 28 KB, `forensics` 19 KB, `log` 17 KB (angka pre-gzip). hanya dimuat saat tool dibuka.
 - Warning chunk besar yang sudah ada sebelumnya (typescript 3.4 MB dari Code Editor)
-  tetap muncul — bukan regresi.
+  tetap muncul. bukan regresi.
 
 ---
 
 ## 12. Potensi issue yang masih tersisa (todo untuk AI berikutnya)
 
-1. **Tidak ada test browser E2E** — selfcheck menguji logika murni; UI belum diuji
+1. **Tidak ada test browser E2E**. selfcheck menguji logika murni; UI belum diuji
    otomatis (disarankan manual smoke test dulu sebelum deploy).
-2. **File sangat besar** (>200 MB) bisa lambat — hash/metadata memproses ArrayBuffer
+2. **File sangat besar** (>200 MB) bisa lambat. hash/metadata memproses ArrayBuffer
    utuh. Roadmap: Web Worker + chunked reading (`File.slice`) untuk `file-hash`,
    `entropy`, `strings`, `file-hex`.
 3. **PCAP**: belum ada dukungan linktype Linux SLL / 802.11; `if_tsresol` PCAPNG
    diabaikan; belum ada tab raw hex per paket (hanya summary).
 4. **EXIF big-endian** & sub-IFD GPS BE masih parsial; XMP PDF belum diparse.
-5. **`htmlDecode`** memakai trik textarea (aman, tanpa eksekusi) — sudah diverifikasi
+5. **`htmlDecode`** memakai trik textarea (aman, tanpa eksekusi). sudah diverifikasi
    menangani entity bernama & numerik browser, tapi entity eksotis bisa terlewat.
-6. **RSA edukasi** menggunakan `Math.random` pada Miller-Rabin (bukan CSPRNG) —
+6. **RSA edukasi** menggunakan `Math.random` pada Miller-Rabin (bukan CSPRNG).
    sengaja (edukasi, kunci kecil), jangan dipakai produksi. Catatan sudah ada di UI.
 7. **Batas render**: `strings` menampilkan max 500 baris, hex viewer max 256 KB,
-   conversation/top-list di-batas — sudah ada indikator "menampilkan X".
-8. **Konten Indonesia/Inggris campur** — konsisten dengan gaya Learning-Web yang lain;
+   conversation/top-list di-batas. sudah ada indikator "menampilkan X".
+8. **Konten Indonesia/Inggris campur**. konsisten dengan gaya Learning-Web yang lain;
    tidak diubah agar tidak menyentuh materi existing.
 9. Aksesibilitas: label & focus state sudah dipasang; belum diuji dengan screen reader.
 10. Jika nanti menambah tool: daftarkan metadata di `registry.ts` + komponen di
@@ -304,7 +304,7 @@ Catatan build:
 - [ ] **Web Worker** untuk `file-hash`/`entropy`/`strings`/`file-hex` pada file besar
 - [ ] PCAP: linktype SLL/802.11, tab raw hex paket, `if_tsresol`
 - [ ] EXIF big-endian penuh + XMP
-- [ ] Mach-O load commands (segments/symbols) — selesaikan `partial`
+- [ ] Mach-O load commands (segments/symbols). selesaikan `partial`
 - [ ] Tool baru yang mudah: JWT RS256 verify (input public key PEM), Hashcat-style
       wordlist offline (opsional), diff hex
 - [ ] E2E test (Playwright) untuk route & tool utama sebelum deploy besar
@@ -313,18 +313,18 @@ Catatan build:
 
 ## 14. Konvensi & jebakan yang harus diingat AI berikutnya
 
-- **JANGAN** menambah tool dengan menyalin seluruh file — daftarkan di `registry.ts`,
+- **JANGAN** menambah tool dengan menyalin seluruh file. daftarkan di `registry.ts`,
   implementasi di `tools/<cat>/index.tsx` (objek `tools: Record<string, ComponentType>`).
-- `ToolPage` mencari `m.tools[meta.id] ?? m.default` — setiap modul kategori wajib
+- `ToolPage` mencari `m.tools[meta.id] ?? m.default`. setiap modul kategori wajib
   mengekspor `tools`.
 - Field network (ethertype, port, DNS, TLS) **big-endian**; PCAP classic endianness
   dari magic; PCAPNG **little-endian**; EXIF/TIFF endianness dari byte order mark.
-- Web Crypto butuh secure context (https/localhost) — sudah ada `assertSubtle()`.
+- Web Crypto butuh secure context (https/localhost). sudah ada `assertSubtle()`.
 - `toArrayBuffer()` di `utils/bytes.ts` wajib dipakai saat passing `Uint8Array` ke
   WebCrypto/Blob (typing TS 5.7 `Uint8Array<ArrayBufferLike>`).
 - MD5/SHA-3/ChaCha20/RSA adalah implementasi edukasi yang **sudah diuji test vector**
-  (lihat `scripts/cysec-selfcheck.ts`) — jangan "perbaiki" tanpa menjalankan test.
-- Tema light/dark otomatis lewat CSS variables — komponen baru cukup pakai kelas
+  (lihat `scripts/cysec-selfcheck.ts`). jangan "perbaiki" tanpa menjalankan test.
+- Tema light/dark otomatis lewat CSS variables. komponen baru cukup pakai kelas
   `slate-*` existing, jangan hardcode warna hex.
 
 ---
@@ -373,7 +373,7 @@ Tambah `OsintCategoryId` di `types.ts` + object di `CATEGORIES` registry.
 
 ## Cara menambahkan external source
 
-- DoH: tambahkan entry di `DOH_RESOLVERS` (`utils/dns.ts`) — endpoint harus ber-CORS.
+- DoH: tambahkan entry di `DOH_RESOLVERS` (`utils/dns.ts`). endpoint harus ber-CORS.
 - Lainnya: cukup tambahkan link di bagian "Public Sources" tool; tampilkan
   "External lookup required" bila tidak ber-CORS. JANGAN simpan API key di kode.
 
@@ -389,14 +389,14 @@ Gunakan helper di `utils/shared.ts`: `exportJson`, `exportCsv`, `exportTxt` (Blo
   Notice/ToolNotes` (`src/features/cysec-tools/components/ui.tsx`) dan
   `FileDrop` (`src/features/cysec-tools/components/FileDrop.tsx`).
 
-## Privacy indicator — cara kerja
+## Privacy indicator. cara kerja
 
-- `local` → badge emerald "LOCAL — Processed locally…" (tidak ada data keluar).
-- `external` → badge amber "EXTERNAL — uses an external public service."
+- `local` → badge emerald "LOCAL. Processed locally…" (tidak ada data keluar).
+- `external` → badge amber "EXTERNAL. uses an external public service."
 - `hybrid` → badge cyan (lokal + lookup publik opsional).
 - Jangan menampilkan klaim LOCAL jika tool benar-benar memanggil network.
 
-## Route segments (PENTING — jangan lupa)
+## Route segments (PENTING. jangan lupa)
 
 `osint` sudah ditambahkan ke daftar route segment di:
 - `index.html` (skrip injeksi `<base>`)
@@ -408,7 +408,7 @@ Bila menambah modul route baru di masa depan, lakukan hal yang sama di kedua tem
 
 ```bash
 npm run osint:check   # selfcheck 48 kasus (domain/ip/email/ioc/hash/text/timeline/url/username)
-npm run cysec:check   # 62 kasus — memastikan modul lama tidak rusak
+npm run cysec:check   # 62 kasus. memastikan modul lama tidak rusak
 npm run build
 ```
 
@@ -424,7 +424,7 @@ npm run build
 - **`/cysec-tools`**: kini *category selector* (kartu workspace besar), bukan daftar semua tools.
   Flow: CySec Tools → pilih kategori → daftar tool kategori → tool.
 - **OSINT** menjadi kategori resmi di dalam CySec Tools: `/cysec-tools/category/osint`
-  (tools OSINT tetap di route `/osint/:toolId` — tidak dipindah agar tidak merusak).
+  (tools OSINT tetap di route `/osint/:toolId`. tidak dipindah agar tidak merusak).
 - **`/osint`** (landing lama) → redirect ke `/cysec-tools/category/osint` (client-side).
   File `OSINTPage.tsx` dihapus.
 - **12 kategori** (kategori kosong tidak ditampilkan):
@@ -438,12 +438,12 @@ npm run build
 
 ## File kunci
 
-- `src/features/cysec-tools/catalog.ts` — KATALOG TERPADU (category cards, entries, search).
+- `src/features/cysec-tools/catalog.ts`. KATALOG TERPADU (category cards, entries, search).
   Tambah tool/kategori baru di sini + `registry.ts` + `osint/registry.ts`.
-- `src/features/cysec-tools/pages/CySecToolsPage.tsx` — dashboard category selector.
-- `src/features/cysec-tools/pages/CategoryPage.tsx` — halaman kategori (breadcrumb + search + chips).
-- `src/App.tsx` — route `/osint` → redirect; `/osint/:toolId` tetap.
-- `src/app/Layout.tsx` — nav OSINT dihapus.
+- `src/features/cysec-tools/pages/CySecToolsPage.tsx`. dashboard category selector.
+- `src/features/cysec-tools/pages/CategoryPage.tsx`. halaman kategori (breadcrumb + search + chips).
+- `src/App.tsx`. route `/osint` → redirect; `/osint/:toolId` tetap.
+- `src/app/Layout.tsx`. nav OSINT dihapus.
 
 ## Verifikasi
 
@@ -453,4 +453,56 @@ npm run cysec:check  # ✅ 62/62 (tools lama tidak berubah)
 npm run osint:check  # ✅ 48/48
 ```
 Semua route dicek via preview: kategori baru (hash/malware/file-metadata/utilities),
-`/cysec-tools/category/osint`, `/osint/dns`, tool CySec lama, `/docs` — semua 200.
+`/cysec-tools/category/osint`, `/osint/dns`, tool CySec lama, `/docs`. semua 200.
+
+---
+
+# CLEANUP: EM DASH + ONE TOOL = ONE CATEGORY
+
+## 1. Em dash (—) dihapus dari seluruh website
+
+- Semua em dash (U+2014) dihapus dari `src/`, `index.html`, `scripts/`, konfigurasi,
+  README, dan LaporanUpdate.md. Penggantian kontekstual:
+  - pemisah kalimat " — " → ". "
+  - " — read-only/edukasi/client-side" → "(read-only/edukasi/client-side)"
+  - placeholder nilai kosong '—' → '-'
+- En dash (U+2013) untuk rentang angka (mis. A–Z, 33–126) TIDAK disentuh.
+- `grep -rl "—"` pada source → **0 hasil**.
+- Pengecualian: `generated/` & `public/` hanya mengandung em dash di **file PNG biner**
+  (konten gambar, bukan teks UI). Konten vault (docs JSON) tidak diubah karena
+  diregenerasi oleh pipeline Obsidian sync (off-limits).
+
+## 2. ONE TOOL = ONE CATEGORY (single source of truth)
+
+- Field `category` pada registry kini satu string canonical. **`alsoIn` dihapus total**
+  (field juga dihapus dari tipe `ToolMeta` agar ter-enforce saat compile).
+- `catalog.ts` tidak lagi memakai `EXTRA_CATEGORY_TOOLS`; `toolsInCategory` = exact match.
+- Kategori ekstra (malware/hash/file-metadata/utilities) dihapus karena tidak punya
+  owner tunggal (tidak menampilkan kategori kosong). Kategori final: 8.
+- ID bentrok lintas namespace: tool CySec `metadata` di-rename menjadi `file-metadata`
+  dengan alias `['metadata']` (route lama `/cysec-tools/metadata` redirect client-side
+  ke `/cysec-tools/file-metadata`, bookmark tidak rusak). OSINT `metadata` tetap.
+- Tool OSINT `certificates` (implementasi sudah ada) ditambahkan ke registry OSINT
+  (sebelumnya tidak terdaftar sehingga tidak tampil; kini 15 tool OSINT).
+
+## 3. Validation development-time
+
+`npm run validate` (scripts/validate-registry.ts) memeriksa:
+1. duplicate tool ID
+2. tool tanpa category
+3. category tidak dikenal
+4. multi-category (`alsoIn` / `categories` array) → error arsitektur
+5. duplicate route/path (global CySec + OSINT)
+6. alias bentrok (route lama)
+
+Hasil: **0 error, 0 warning**. 105 tool unik, semua tepat 1 kategori.
+
+## Verifikasi
+
+```bash
+npm run validate     # ✅ 0 error
+npm run cysec:check  # ✅ 62/62
+npm run osint:check  # ✅ 48/48
+npm run build        # ✅
+grep -rl "—" src/    # ✅ 0
+```

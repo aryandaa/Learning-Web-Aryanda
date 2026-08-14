@@ -1,5 +1,5 @@
 /**
- * Tools kategori Reverse Engineering — hex/binary, integer/endian,
+ * Tools kategori Reverse Engineering. hex/binary, integer/endian,
  * XOR cryptanalysis, parser header PE/ELF/Mach-O (read-only).
  */
 
@@ -23,7 +23,7 @@ import type { ComponentType } from 'react';
 const reNotes = (what: string, how: string, extra?: string) => [
   { title: 'What is this?', content: what },
   { title: 'How to use', content: how },
-  { title: 'Input', content: 'Teks / hex / file — tergantung tool.' },
+  { title: 'Input', content: 'Teks / hex / file. tergantung tool.' },
   { title: 'Output', content: 'Hasil parsing/analisis read-only.' },
   { title: 'Notes', content: `Semua diproses lokal.${extra ? ' ' + extra : ''}` },
 ];
@@ -142,9 +142,9 @@ function HexEditorTool() {
       <Panel title="Pratinjau">
         <KeyValueTable
           rows={[
-            { k: 'Panjang', v: bytes.bytes ? `${bytes.bytes.length} byte` : '—' },
-            { k: 'ASCII', v: asciiPreview || '—' },
-            { k: 'Entropy', v: bytes.bytes ? `${entropyOf(bytes.bytes).entropyBitsPerByte.toFixed(2)} bit/byte` : '—' },
+            { k: 'Panjang', v: bytes.bytes ? `${bytes.bytes.length} byte` : '-' },
+            { k: 'ASCII', v: asciiPreview || '-' },
+            { k: 'Entropy', v: bytes.bytes ? `${entropyOf(bytes.bytes).entropyBitsPerByte.toFixed(2)} bit/byte` : '-' },
           ]}
         />
         <pre className="mt-3 max-h-60 overflow-auto whitespace-pre-wrap break-all font-mono text-[11px] text-slate-300">
@@ -651,7 +651,7 @@ function XorAnalyzerTool() {
       <ToolNotes notes={reNotes(
         'Brute-force single-byte XOR dengan skor kemiripan bahasa Inggris, atau tebak repeating-key per posisi.',
         'Tempel hex (ciphertext), atur panjang key, klik Analisis XOR.',
-        'Heuristik — bukan jaminan. Untuk CTF, cek hasil yang paling "manusiawi".'
+        'Heuristik. bukan jaminan. Untuk CTF, cek hasil yang paling "manusiawi".'
       )} />
     </div>
   );
@@ -684,13 +684,13 @@ function PeViewerTool() {
                   rows={[
                     { k: 'Machine', v: `${pe.machine} (${pe.machineCode})` },
                     { k: 'Sections', v: String(pe.numberOfSections) },
-                    { k: 'TimeDateStamp', v: pe.timeDateStamp ?? '—' },
-                    { k: 'Magic', v: pe.magic ?? '—' },
-                    { k: 'Entry point (RVA)', v: `${pe.entryPointRva} (file offset ${pe.entryPointFileOffset ?? '—'})` },
-                    { k: 'Image base', v: pe.imageBase ?? '—' },
-                    { k: 'Subsystem', v: pe.subsystem ?? '—' },
-                    { k: 'DLL characteristics', v: (pe.dllCharacteristic ?? []).join(', ') || '—' },
-                    { k: 'Characteristics', v: (pe.characteristics ?? []).join(', ') || '—' },
+                    { k: 'TimeDateStamp', v: pe.timeDateStamp ?? '-' },
+                    { k: 'Magic', v: pe.magic ?? '-' },
+                    { k: 'Entry point (RVA)', v: `${pe.entryPointRva} (file offset ${pe.entryPointFileOffset ?? '-'})` },
+                    { k: 'Image base', v: pe.imageBase ?? '-' },
+                    { k: 'Subsystem', v: pe.subsystem ?? '-' },
+                    { k: 'DLL characteristics', v: (pe.dllCharacteristic ?? []).join(', ') || '-' },
+                    { k: 'Characteristics', v: (pe.characteristics ?? []).join(', ') || '-' },
                   ]}
                 />
               </ResultPanel>
@@ -745,7 +745,7 @@ function PeViewerTool() {
         notes: reNotes(
           'Parser PE read-only: DOS header, PE signature, COFF header, optional header (PE32/PE32+), section table, dan import table (dengan mapping RVA→offset).',
           'Upload file .exe/.dll → header ditampilkan.',
-          'Read-only — tidak ada eksekusi. RWX section adalah indikator mencurigakan pada malware.'
+          'Read-only. tidak ada eksekusi. RWX section adalah indikator mencurigakan pada malware.'
         ),
       }}
     />
@@ -777,12 +777,12 @@ function ElfViewerTool() {
               <ResultPanel title="ELF header" textToCopy={JSON.stringify(elf, null, 2)}>
                 <KeyValueTable
                   rows={[
-                    { k: 'Class', v: elf.className ?? '—' },
-                    { k: 'Endianness', v: elf.endian ?? '—' },
-                    { k: 'OS/ABI', v: elf.osabi ?? '—' },
-                    { k: 'Type', v: elf.type ?? '—' },
-                    { k: 'Machine', v: elf.machine ?? '—' },
-                    { k: 'Entry point', v: elf.entryPoint ?? '—' },
+                    { k: 'Class', v: elf.className ?? '-' },
+                    { k: 'Endianness', v: elf.endian ?? '-' },
+                    { k: 'OS/ABI', v: elf.osabi ?? '-' },
+                    { k: 'Type', v: elf.type ?? '-' },
+                    { k: 'Machine', v: elf.machine ?? '-' },
+                    { k: 'Entry point', v: elf.entryPoint ?? '-' },
                     { k: 'ELF header size', v: String(elf.elfHeaderSize) },
                   ]}
                 />
@@ -879,23 +879,23 @@ function MachoViewerTool() {
             <ResultPanel title="Mach-O header" textToCopy={JSON.stringify(macho, null, 2)}>
               <KeyValueTable
                 rows={[
-                  { k: 'Arch', v: macho.arch ?? '—' },
-                  { k: 'CPU type', v: macho.cputype ?? '—' },
-                  { k: 'CPU subtype', v: macho.cpusubtype ?? '—' },
-                  { k: 'File type', v: macho.filetype ?? '—' },
+                  { k: 'Arch', v: macho.arch ?? '-' },
+                  { k: 'CPU type', v: macho.cputype ?? '-' },
+                  { k: 'CPU subtype', v: macho.cpusubtype ?? '-' },
+                  { k: 'File type', v: macho.filetype ?? '-' },
                   { k: 'Load commands', v: String(macho.ncmds ?? 0) },
                   { k: 'Size of load commands', v: String(macho.sizeofcmds ?? 0) },
-                  { k: 'Flags', v: (macho.flags ?? []).join(', ') || '—' },
+                  { k: 'Flags', v: (macho.flags ?? []).join(', ') || '-' },
                 ]}
               />
-              <Notice tone="warn">Parsing penuh load commands (segments, symbols, dylibs) belum disertakan — hanya header dasar 64-bit LE/BE.</Notice>
+              <Notice tone="warn">Parsing penuh load commands (segments, symbols, dylibs) belum disertakan. hanya header dasar 64-bit LE/BE.</Notice>
             </ResultPanel>
           );
         },
         notes: reNotes(
           'Menampilkan header dasar Mach-O: magic, cputype, filetype, load commands count, flags.',
           'Upload binary Mach-O (macOS) → header dasar ditampilkan.',
-          'Status: sebagian — parsing load commands penuh adalah client-side limitation untuk versi ini.'
+          'Status: sebagian. parsing load commands penuh adalah client-side limitation untuk versi ini.'
         ),
       }}
     />
@@ -939,7 +939,7 @@ function PrintableStringsTool() {
           <input type="number" value={minLen} min={1} max={64} onChange={(e) => setMinLen(Number(e.target.value) || 4)} className="h-8 w-16 rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200" />
         </label>
       </div>
-      <FileDrop multiple={false} onFiles={(f) => setFile(f[0] ?? null)} hint="Opsional — atau tempel hex di bawah." />
+      <FileDrop multiple={false} onFiles={(f) => setFile(f[0] ?? null)} hint="Opsional. atau tempel hex di bawah." />
       <Panel title="Atau paste hex">
         <LabeledTextarea id="printable-input" label="Hex data" value={hex} onChange={setHex} rows={5} placeholder="48 65 6c 6c 6f …" />
       </Panel>

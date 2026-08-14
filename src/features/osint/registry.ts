@@ -1,7 +1,7 @@
 import type { OsintCategory, OsintCategoryId, OsintCategoryMeta, OsintToolMeta } from './types';
 
 /**
- * Registry tool OSINT — data-driven. Tambah tool baru cukup dengan menambah
+ * Registry tool OSINT. data-driven. Tambah tool baru cukup dengan menambah
  * satu object di daftar TOOLS + komponen di `tools/<id>/index.tsx`.
  * Lihat LaporanUpdate.md §OSINT-DEV untuk panduan lengkap.
  */
@@ -12,8 +12,8 @@ export const CATEGORIES: OsintCategoryMeta[] = [
   { id: 'ip', name: 'IP Intelligence', shortName: 'IP', icon: '📡', description: 'Klasifikasi IPv4/IPv6 + ASN/negara dari sumber publik.', color: 'from-indigo-500/20 to-violet-500/10 border-indigo-500/30' },
   { id: 'url', name: 'URL Intelligence', shortName: 'URL', icon: '🔗', description: 'Parse & analisis URL: param, encoding, pola mencurigakan.', color: 'from-emerald-500/20 to-green-500/10 border-emerald-500/30' },
   { id: 'username', name: 'Username OSINT', shortName: 'Username', icon: '👤', description: 'Public presence username di platform publik (bukan data privat).', color: 'from-fuchsia-500/20 to-pink-500/10 border-fuchsia-500/30' },
-  { id: 'email', name: 'Email Intelligence', shortName: 'Email', icon: '✉️', description: 'Validasi, disposable-domain, role-based — tanpa bocorkan data.', color: 'from-rose-500/20 to-red-500/10 border-rose-500/30' },
-  { id: 'metadata', name: 'Metadata Analysis', shortName: 'Metadata', icon: '📄', description: 'Metadata file (EXIF, PDF, ZIP, Office) — 100% lokal.', color: 'from-amber-500/20 to-orange-500/10 border-amber-500/30' },
+  { id: 'email', name: 'Email Intelligence', shortName: 'Email', icon: '✉️', description: 'Validasi, disposable-domain, role-based. tanpa bocorkan data.', color: 'from-rose-500/20 to-red-500/10 border-rose-500/30' },
+  { id: 'metadata', name: 'Metadata Analysis', shortName: 'Metadata', icon: '📄', description: 'Metadata file (EXIF, PDF, ZIP, Office). 100% lokal.', color: 'from-amber-500/20 to-orange-500/10 border-amber-500/30' },
   { id: 'ioc', name: 'IOC Extraction', shortName: 'IOC', icon: '🩸', description: 'Ekstrak IP, domain, URL, hash, CVE, ATT&CK dari teks/log.', color: 'from-red-500/20 to-rose-500/10 border-red-500/30' },
   { id: 'threat', name: 'Threat Intelligence', shortName: 'Threat Intel', icon: '☠️', description: 'Korelasi IOC ke sumber threat intel publik (link, bukan auto-send).', color: 'from-slate-500/20 to-zinc-500/10 border-slate-500/30' },
   { id: 'hash', name: 'Hash Intelligence', shortName: 'Hash', icon: '#️⃣', description: 'Deteksi tipe hash + lookup link (VT, MalwareBazaar, dll).', color: 'from-purple-500/20 to-fuchsia-500/10 border-purple-500/30' },
@@ -34,11 +34,11 @@ const TOOLS: OsintToolMeta[] = [
   // ---- URL ----
   { id: 'url', title: 'URL Analyzer', description: 'Parse komponen URL, decode bertingkat, deteksi IP-URL, punycode, shortener, double-encoding, scheme berbahaya.', category: 'url', path: '/osint/url', icon: '🔗', tags: ['url', 'parse', 'phishing', 'encoding'], privacy: 'local', privacyNote: 'Proses lokal. Tidak ada URL yang dibuka otomatis.' },
   // ---- Username ----
-  { id: 'username', title: 'Username Analyzer', description: 'Daftar platform publik + template profil untuk memeriksa presence username secara manual.', category: 'username', path: '/osint/username', icon: '👤', tags: ['username', 'social', 'presence'], privacy: 'local', privacyNote: 'Tidak ada pengecekan otomatis/scraping — status selalu "requires manual verification".' },
+  { id: 'username', title: 'Username Analyzer', description: 'Daftar platform publik + template profil untuk memeriksa presence username secara manual.', category: 'username', path: '/osint/username', icon: '👤', tags: ['username', 'social', 'presence'], privacy: 'local', privacyNote: 'Tidak ada pengecekan otomatis/scraping. status selalu "requires manual verification".' },
   // ---- Email ----
   { id: 'email', title: 'Email Analyzer', description: 'Validasi sintaks, normalized email, disposable-domain (dataset lokal), role-based, klasifikasi provider.', category: 'email', path: '/osint/email', icon: '✉️', tags: ['email', 'disposable', 'validation'], privacy: 'local', privacyNote: 'Dataset disposable dibundel lokal. Tidak ada permintaan ke layanan eksternal.', disclaimer: 'Jangan gunakan untuk password reset / account takeover / credential discovery. Ini alat analisis format, bukan pembobolan.' },
   // ---- Metadata ----
-  { id: 'metadata', title: 'Metadata Analyzer', description: 'Metadata file (JPEG/PNG/PDF/DOCX/XLSX/ZIP/TXT): EXIF/GPS, PDF author, Office author, hash — 100% lokal.', category: 'metadata', path: '/osint/metadata', icon: '📄', tags: ['metadata', 'exif', 'pdf', 'office', 'forensics'], privacy: 'local', needsFile: true, privacyNote: 'File diproses di browser (ArrayBuffer) dan tidak pernah di-upload.' },
+  { id: 'metadata', title: 'Metadata Analyzer', description: 'Metadata file (JPEG/PNG/PDF/DOCX/XLSX/ZIP/TXT): EXIF/GPS, PDF author, Office author, hash. 100% lokal.', category: 'metadata', path: '/osint/metadata', icon: '📄', tags: ['metadata', 'exif', 'pdf', 'office', 'forensics'], privacy: 'local', needsFile: true, privacyNote: 'File diproses di browser (ArrayBuffer) dan tidak pernah di-upload.' },
   // ---- IOC ----
   { id: 'ioc', title: 'IOC Extractor', description: 'Ekstrak & dedup IPv4/IPv6, domain, URL, email, MD5/SHA1/SHA256, CVE, ATT&CK, file path dari teks/log.', category: 'ioc', path: '/osint/ioc', icon: '🩸', tags: ['ioc', 'extract', 'cti', 'regex'], privacy: 'local', privacyNote: 'Proses lokal penuh.' },
   // ---- Threat Intel ----
@@ -49,8 +49,9 @@ const TOOLS: OsintToolMeta[] = [
   { id: 'text', title: 'Text Analyzer', description: 'Word/line/char count, ekstraksi URL/domain/email/IP/hash/username/tanggal, regex, normalize, dedup, export.', category: 'text', path: '/osint/text', icon: '📝', tags: ['text', 'stats', 'extract', 'regex'], privacy: 'local', privacyNote: 'Proses lokal penuh.' },
   // ---- Analysis ----
   { id: 'timeline', title: 'Timeline Analyzer', description: 'Deteksi timestamp (ISO, RFC, DD/MM/YYYY), normalisasi ISO 8601, visual timeline, filter & export.', category: 'analysis', path: '/osint/timeline', icon: '🕐', tags: ['timeline', 'timestamp', 'normalize'], privacy: 'local', privacyNote: 'Proses lokal penuh.' },
+  { id: 'certificates', title: 'Certificate Intelligence', description: 'Ambil data Certificate Transparency (crt.sh): common name, issuer, valid dates, dan ekstraksi subdomain dari SAN. Dengan fallback paste JSON.', category: 'threat', path: '/osint/certificates', icon: '📜', tags: ['certificate', 'ct', 'crt.sh', 'subdomain'], privacy: 'external', privacyNote: 'Fetch ke crt.sh saat diminta; fallback paste JSON bila CORS/rate-limit.' },
   { id: 'workspace', title: 'OSINT Workspace', description: 'Kumpulkan IOC dalam satu tempat: kelompokkan domain/IP/URL/hash/email/username, tag, export, clear.', category: 'analysis', path: '/osint/workspace', icon: '🗂️', tags: ['workspace', 'ioc', 'organize'], privacy: 'local', privacyNote: 'Disimpan hanya di localStorage browser Anda.' },
-  { id: 'case', title: 'OSINT Case', description: 'Case investigasi lokal: title, deskripsi, IOC, notes, sources, timeline events — export/import JSON.', category: 'analysis', path: '/osint/case', icon: '📁', tags: ['case', 'investigation', 'export'], privacy: 'local', privacyNote: 'Disimpan hanya di localStorage browser Anda.' },
+  { id: 'case', title: 'OSINT Case', description: 'Case investigasi lokal: title, deskripsi, IOC, notes, sources, timeline events. export/import JSON.', category: 'analysis', path: '/osint/case', icon: '📁', tags: ['case', 'investigation', 'export'], privacy: 'local', privacyNote: 'Disimpan hanya di localStorage browser Anda.' },
 ];
 
 export const OSINT_INDEX: Record<string, OsintToolMeta> = Object.fromEntries(TOOLS.map((t) => [t.id, t]));

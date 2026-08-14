@@ -96,7 +96,7 @@ function buildSidebarGroups(roadmaps: RoadmapsData): SidebarGroup[] {
 }
 
 /**
- * Halaman Roadmap — dua mode:
+ * Halaman Roadmap. dua mode:
  *
  * 1. GRID (landing): tanpa ?sub= → menampilkan SEMUA subskill (#Subskill)
  *    dari seluruh path (CyberSecurity, DevOps, Jaringan, Pemrograman),
@@ -135,7 +135,7 @@ export default function RoadmapPage() {
   const groups = useMemo(() => (roadmaps ? buildSidebarGroups(roadmaps) : []), [roadmaps]);
   const allItems = useMemo(() => groups.flatMap((g) => g.items), [groups]);
 
-  // Item aktif HANYA dari URL — tanpa ?sub= tampilkan grid semua subskill.
+  // Item aktif HANYA dari URL. tanpa ?sub= tampilkan grid semua subskill.
   const selected = useMemo(() => {
     if (!urlId || allItems.length === 0) return null;
     return allItems.find((item) => item.id === urlId) ?? null;

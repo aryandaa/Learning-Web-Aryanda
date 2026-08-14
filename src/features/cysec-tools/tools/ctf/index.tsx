@@ -1,5 +1,5 @@
 /**
- * Tools kategori CTF — decoder, brute-force cipher, frequency analysis,
+ * Tools kategori CTF. decoder, brute-force cipher, frequency analysis,
  * kalkulator jaringan, tabel referensi. Semua client-side.
  */
 
@@ -20,7 +20,7 @@ const ctfNotes = (what: string, how: string, extra?: string) => [
   { title: 'How to use', content: how },
   { title: 'Input', content: 'Teks / hex yang ditempel.' },
   { title: 'Output', content: 'Kandidat/kunci hasil analisis.' },
-  { title: 'Notes', content: extra ?? 'Semua diproses lokal. Gunakan untuk CTF & belajar — bukan untuk menyerang sistem orang lain.' },
+  { title: 'Notes', content: extra ?? 'Semua diproses lokal. Gunakan untuk CTF & belajar. bukan untuk menyerang sistem orang lain.' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -60,7 +60,7 @@ function CtfCaesarTool() {
       <ToolNotes notes={ctfNotes(
         'Mencoba semua 25 kemungkinan shift Caesar dan memberi skor kemiripan bahasa.',
         'Tempel ciphertext, klik Coba semua shift.',
-        'Kandidat teratas biasanya plaintext — verifikasi secara visual.'
+        'Kandidat teratas biasanya plaintext. verifikasi secara visual.'
       )} />
     </div>
   );
@@ -189,7 +189,7 @@ function CtfXorTool() {
       <ToolNotes notes={ctfNotes(
         'Brute-force XOR single-byte (dengan skor bahasa) atau repeating-key per posisi.',
         'Tempel ciphertext, atur panjang key, klik Solve.',
-        'Heuristik — cek kandidat secara visual untuk yang paling masuk akal.'
+        'Heuristik. cek kandidat secara visual untuk yang paling masuk akal.'
       )} />
     </div>
   );
@@ -224,7 +224,7 @@ function Base64DetectorTool() {
       isValid: decoded !== '' || (validCharset && lenOk && hasBase64Look),
       decoded,
       reason: decoded !== ''
-        ? 'Decode berhasil — string ini adalah Base64 valid dan menghasilkan teks UTF-8.'
+        ? 'Decode berhasil. string ini adalah Base64 valid dan menghasilkan teks UTF-8.'
         : validCharset && lenOk && hasBase64Look
           ? 'Charset & panjang Base64 valid, tetapi tidak menghasilkan teks UTF-8 (mungkin data biner atau bukan Base64).'
           : 'Bukan Base64: charset/length tidak valid.',
@@ -257,7 +257,7 @@ function Base64DetectorTool() {
       <ToolNotes notes={ctfNotes(
         'Memeriksa apakah teks adalah Base64 valid dan mencoba decode.',
         'Tempel teks, klik Deteksi & decode.',
-        'Banyak string acak lolos charset Base64 — cek hasil decode untuk kejelasan.'
+        'Banyak string acak lolos charset Base64. cek hasil decode untuk kejelasan.'
       )} />
     </div>
   );
@@ -314,10 +314,10 @@ function EncodingDetectorTool() {
     }
     const lettersOnly = s.replace(/[^A-Za-z]/g, '');
     if (lettersOnly.length >= 8 && /[a-z]/.test(s) && /[A-Z]/.test(s) === false) {
-      candidates.push({ encoding: 'ROT/Caesar', confidence: 35, note: 'Teks huruf — coba brute-force shift.', nextStep: 'Coba Caesar decoder' });
+      candidates.push({ encoding: 'ROT/Caesar', confidence: 35, note: 'Teks huruf. coba brute-force shift.', nextStep: 'Coba Caesar decoder' });
     }
     if (/^\d+$/.test(clean) && clean.length >= 4) {
-      candidates.push({ encoding: 'Decimal / integer', confidence: 55, note: 'Deret angka — bisa ASCII decimal atau koordinat.', nextStep: 'Coba Integer converter / ASCII table' });
+      candidates.push({ encoding: 'Decimal / integer', confidence: 55, note: 'Deret angka. bisa ASCII decimal atau koordinat.', nextStep: 'Coba Integer converter / ASCII table' });
     }
     if (candidates.length === 0) {
       candidates.push({ encoding: 'Tidak terdeteksi', confidence: 0, note: 'Tidak ada pola encoding umum.', nextStep: 'Coba analisis frekuensi' });
@@ -351,7 +351,7 @@ function EncodingDetectorTool() {
       <ToolNotes notes={ctfNotes(
         'Heuristik mendeteksi kemungkinan encoding: hex, base64, base32, biner, URL, Morse, Bacon, ROT, desimal.',
         'Tempel string, klik Deteksi encoding.',
-        'Kandidat hanyalah tebakan berbasis pola — konfirmasi dengan decoder terkait.'
+        'Kandidat hanyalah tebakan berbasis pola. konfirmasi dengan decoder terkait.'
       )} />
     </div>
   );
@@ -392,7 +392,7 @@ function FrequencyTool() {
         </Panel>
       )}
       <ToolNotes notes={ctfNotes(
-        'Menghitung frekuensi huruf — dasar kriptanalisis substitution.',
+        'Menghitung frekuensi huruf. dasar kriptanalisis substitution.',
         'Tempel teks, klik Analisis frekuensi.'
       )} />
     </div>
@@ -457,7 +457,7 @@ function SubstitutionTool() {
       <ToolNotes notes={ctfNotes(
         'Helper substitution monoalphabetic: terapkan mapping manual atau auto-suggest berbasis frekuensi.',
         'Tempel ciphertext, atur mapping (atau Auto-suggest), klik Terapkan mapping.',
-        'Auto-suggest hanyalah titik awal — sesuaikan mapping secara iteratif.'
+        'Auto-suggest hanyalah titik awal. sesuaikan mapping secara iteratif.'
       )} />
     </div>
   );
@@ -476,7 +476,7 @@ const vigenereTool: TransformConfig = {
   keyFields: [{ id: 'key', label: 'Key (huruf A–Z)', placeholder: 'LEMON' }],
   example: 'ATTACKATDAWN',
   notes: ctfNotes(
-    'Vigenère = deret Caesar dengan key berulang. Polyalphabetic — lebih kuat dari Caesar tunggal.',
+    'Vigenère = deret Caesar dengan key berulang. Polyalphabetic. lebih kuat dari Caesar tunggal.',
     'Isi key, ketik teks, klik Encode/Decode.',
     'Key hanya huruf; huruf non-alfabet dipertahankan.'
   ),
@@ -579,7 +579,7 @@ function UnicodeAnalyzerTool() {
               </tbody>
             </table>
           </div>
-          <p className="mt-3 text-xs text-slate-500">Waspada homoglyph & karakter tak terlihat (zero-width) pada input penting — cek kategori Control/Other.</p>
+          <p className="mt-3 text-xs text-slate-500">Waspada homoglyph & karakter tak terlihat (zero-width) pada input penting. cek kategori Control/Other.</p>
         </Panel>
       )}
       <ToolNotes notes={ctfNotes(
@@ -875,14 +875,14 @@ const PORTS: { port: number; proto: string; name: string; desc: string }[] = [
   { port: 80, proto: 'TCP', name: 'HTTP', desc: 'Web (plaintext)' },
   { port: 110, proto: 'TCP', name: 'POP3', desc: 'Email retrieval' },
   { port: 111, proto: 'TCP/UDP', name: 'RPCbind', desc: 'Sun RPC port mapper' },
-  { port: 135, proto: 'TCP', name: 'MSRPC', desc: 'Windows RPC — target umum' },
+  { port: 135, proto: 'TCP', name: 'MSRPC', desc: 'Windows RPC. target umum' },
   { port: 137, proto: 'UDP', name: 'NetBIOS-NS', desc: 'Windows name service' },
   { port: 139, proto: 'TCP', name: 'NetBIOS-SSN', desc: 'Windows file sharing (SMB)' },
   { port: 143, proto: 'TCP', name: 'IMAP', desc: 'Email retrieval' },
   { port: 161, proto: 'UDP', name: 'SNMP', desc: 'Network management' },
   { port: 389, proto: 'TCP', name: 'LDAP', desc: 'Directory service' },
   { port: 443, proto: 'TCP', name: 'HTTPS', desc: 'Web (TLS)' },
-  { port: 445, proto: 'TCP', name: 'SMB', desc: 'Windows file sharing — target umum' },
+  { port: 445, proto: 'TCP', name: 'SMB', desc: 'Windows file sharing. target umum' },
   { port: 465, proto: 'TCP', name: 'SMTPS', desc: 'SMTP over TLS' },
   { port: 514, proto: 'UDP', name: 'Syslog', desc: 'System logging' },
   { port: 587, proto: 'TCP', name: 'SMTP-Sub', desc: 'SMTP submission (TLS)' },
@@ -902,7 +902,7 @@ const PORTS: { port: number; proto: string; name: string; desc: string }[] = [
   { port: 5432, proto: 'TCP', name: 'PostgreSQL', desc: 'PostgreSQL database' },
   { port: 5900, proto: 'TCP', name: 'VNC', desc: 'Remote desktop VNC' },
   { port: 5985, proto: 'TCP', name: 'WinRM', desc: 'Windows Remote Management (HTTP)' },
-  { port: 6379, proto: 'TCP', name: 'Redis', desc: 'Redis — tanpa auth = bahaya' },
+  { port: 6379, proto: 'TCP', name: 'Redis', desc: 'Redis. tanpa auth = bahaya' },
   { port: 6443, proto: 'TCP', name: 'K8s API', desc: 'Kubernetes API server' },
   { port: 8000, proto: 'TCP', name: 'Alt-HTTP', desc: 'Web alternatif (dev)' },
   { port: 8080, proto: 'TCP', name: 'Alt-HTTP', desc: 'Web alternatif / proxy' },
@@ -910,9 +910,9 @@ const PORTS: { port: number; proto: string; name: string; desc: string }[] = [
   { port: 8888, proto: 'TCP', name: 'Jupyter/dev', desc: 'Jupyter, proxy dev' },
   { port: 9000, proto: 'TCP', name: 'App', desc: 'SonarQube, PHP-FPM, dll' },
   { port: 9092, proto: 'TCP', name: 'Kafka', desc: 'Apache Kafka' },
-  { port: 9200, proto: 'TCP', name: 'Elasticsearch', desc: 'Elasticsearch — tanpa auth = bahaya' },
+  { port: 9200, proto: 'TCP', name: 'Elasticsearch', desc: 'Elasticsearch. tanpa auth = bahaya' },
   { port: 11211, proto: 'UDP/TCP', name: 'Memcached', desc: 'Memcached (amplification)' },
-  { port: 27017, proto: 'TCP', name: 'MongoDB', desc: 'MongoDB — tanpa auth = bahaya' },
+  { port: 27017, proto: 'TCP', name: 'MongoDB', desc: 'MongoDB. tanpa auth = bahaya' },
 ];
 
 function PortReferenceTool() {

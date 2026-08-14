@@ -1,5 +1,5 @@
 /**
- * Log Analyzer — Apache/Nginx access log, auth.log (sshd), dan log generik.
+ * Log Analyzer. Apache/Nginx access log, auth.log (sshd), dan log generik.
  * 100% client-side; tidak ada pengiriman log ke server.
  */
 
@@ -347,7 +347,7 @@ function LogAnalyzerToolInner() {
           { title: 'How to use', content: 'Upload file log atau tempel isinya. Gunakan tab untuk eksplorasi dan filter IP/status/method/keyword pada tab Events.' },
           { title: 'Input', content: 'File log teks atau paste. Ukuran besar diproses bertahap; untuk file sangat besar pertimbangkan membagi log.' },
           { title: 'Output', content: 'Ringkasan, event, IP, status/method, path, timeline, auth failures, indikator mencurigakan.' },
-          { title: 'Notes', content: 'Log bisa berisi data sensitif — semua diproses lokal, tidak dikirim ke server. Format yang tidak dikenali tetap diekstrak IP/timestamp-nya (source: app).' },
+          { title: 'Notes', content: 'Log bisa berisi data sensitif. semua diproses lokal, tidak dikirim ke server. Format yang tidak dikenali tetap diekstrak IP/timestamp-nya (source: app).' },
         ]}
       />
     </div>
@@ -358,9 +358,9 @@ function EventRow({ e }: { e: LogEvent }) {
   return (
     <tr className="border-t border-slate-800/50">
       <td className="px-2 py-1 font-mono text-slate-600">{e.lineNumber}</td>
-      <td className="whitespace-nowrap px-2 py-1 font-mono text-slate-500">{e.timestamp ?? '—'}</td>
-      <td className="px-2 py-1 font-mono text-slate-400">{e.ip ?? '—'}</td>
-      <td className="px-2 py-1 font-mono text-slate-400">{e.method ?? '—'}</td>
+      <td className="whitespace-nowrap px-2 py-1 font-mono text-slate-500">{e.timestamp ?? '-'}</td>
+      <td className="px-2 py-1 font-mono text-slate-400">{e.ip ?? '-'}</td>
+      <td className="px-2 py-1 font-mono text-slate-400">{e.method ?? '-'}</td>
       <td className="px-2 py-1">
         {e.status != null ? (
           <span className={cn('rounded px-1.5 py-0.5 text-[10px]', e.status >= 500 ? 'bg-red-500/10 text-red-300' : e.status >= 400 ? 'bg-amber-500/10 text-amber-300' : 'bg-emerald-500/10 text-emerald-300')}>
@@ -368,7 +368,7 @@ function EventRow({ e }: { e: LogEvent }) {
           </span>
         ) : (
           <span className={cn('rounded px-1.5 py-0.5 text-[10px]', e.authResult === 'failure' ? 'bg-red-500/10 text-red-300' : e.authResult === 'success' ? 'bg-emerald-500/10 text-emerald-300' : 'bg-slate-700/50 text-slate-400')}>
-            {e.authResult === 'failure' ? 'AUTH FAIL' : e.authResult === 'success' ? 'AUTH OK' : e.authResult === 'invalid' ? 'INVALID USER' : '—'}
+            {e.authResult === 'failure' ? 'AUTH FAIL' : e.authResult === 'success' ? 'AUTH OK' : e.authResult === 'invalid' ? 'INVALID USER' : '-'}
           </span>
         )}
       </td>

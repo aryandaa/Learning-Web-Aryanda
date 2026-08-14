@@ -32,7 +32,7 @@ export function appRoot(): string {
     return configured.endsWith('/') ? configured : `${configured}/`;
   }
 
-  // 2) Dibuka via file:// — fetch JSON tidak akan pernah jalan.
+  // 2) Dibuka via file://. fetch JSON tidak akan pernah jalan.
   if (typeof window !== 'undefined' && window.location.protocol === 'file:') {
     throw new Error(
       'Aplikasi dibuka langsung dari file (file://). Jalankan melalui server: npm run dev atau npm run preview.'

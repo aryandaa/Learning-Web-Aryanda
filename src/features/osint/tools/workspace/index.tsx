@@ -1,5 +1,5 @@
 /**
- * OSINT Workspace — kumpulkan IOC dalam satu tempat (localStorage).
+ * OSINT Workspace. kumpulkan IOC dalam satu tempat (localStorage).
  */
 
 import { useCallback, useEffect, useState } from 'react';

@@ -1,20 +1,20 @@
 /**
- * Halaman tool — resolve tool dari registry, lazy-load implementasi per
+ * Halaman tool. resolve tool dari registry, lazy-load implementasi per
  * kategori (import.meta.glob → code-split per chunk), render di dalam shell
  * konsisten. Route: /cysec-tools/:toolId
  */
 
 import { Suspense, useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Star, ArrowLeft } from 'lucide-react';
-import { getCategory, getTool, toolsInCategory } from '../registry';
+import { getCategory, getTool, resolveToolId, toolsInCategory } from '../registry';
 import { useToolHistory } from '../hooks/useToolHistory';
 import { ToolHeader, PrivacyBadge, Disclaimer, ErrorAlert } from '../components/ui';
 import { Spinner } from '../../../components/ui/spinner';
 import { cn } from '../../../lib/utils';
 import type { ToolMeta } from '../types';
 
-// Lazy-load chunk per kategori — hanya dimuat saat tool dibuka.
+// Lazy-load chunk per kategori. hanya dimuat saat tool dibuka.
 const toolModules = import.meta.glob('../tools/*/index.tsx');
 
 function ToolBody({ meta }: { meta: ToolMeta }) {
@@ -62,15 +62,21 @@ function ToolBody({ meta }: { meta: ToolMeta }) {
 
 export default function ToolPage() {
   const { toolId } = useParams<{ toolId: string }>();
-  const meta = toolId ? getTool(toolId) : undefined;
+  const navigate = useNavigate();
+  const canonicalId = toolId ? resolveToolId(toolId) : '';
+  const meta = canonicalId ? getTool(canonicalId) : undefined;
   const { recordUsage, isFavorite, toggleFavorite } = useToolHistory();
 
   const categoryTools = useMemo(() => (meta ? toolsInCategory(meta.category) : []), [meta]);
 
   useEffect(() => {
+    // Redirect alias route lama ke id canonical (tanpa merusak bookmark).
+    if (toolId && toolId !== canonicalId) {
+      navigate(`/cysec-tools/${canonicalId}`, { replace: true });
+    }
     if (meta) recordUsage(meta.id);
     window.scrollTo({ top: 0 });
-  }, [meta, recordUsage]);
+  }, [meta, recordUsage, navigate, toolId, canonicalId]);
 
   if (!meta) {
     return (
@@ -89,7 +95,7 @@ export default function ToolPage() {
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-8">
       <div className="flex gap-8">
-        {/* Sidebar kategori — desktop */}
+        {/* Sidebar kategori. desktop */}
         <aside className="sticky top-20 hidden w-60 shrink-0 self-start xl:block" aria-label="Daftar tool kategori">
           <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
             {category.icon} {category.name}
@@ -166,7 +172,7 @@ export default function ToolPage() {
             </>
           )}
 
-          {/* Navigasi kategori lain — mobile/tablet */}
+          {/* Navigasi kategori lain. mobile/tablet */}
           <nav className="scrollbar-thin mt-10 flex gap-2 overflow-x-auto border-t border-slate-800 pt-4 xl:hidden" aria-label="Tool lain di kategori">
             {categoryTools.map((t) => (
               <Link

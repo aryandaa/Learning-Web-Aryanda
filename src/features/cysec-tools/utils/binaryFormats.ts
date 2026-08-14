@@ -1,6 +1,6 @@
 /**
  * Parser read-only untuk format biner: PE (Windows), ELF (Linux), Mach-O (macOS).
- * Tidak ada eksekusi/modifikasi — hanya menampilkan header & metadata.
+ * Tidak ada eksekusi/modifikasi. hanya menampilkan header & metadata.
  */
 
 import { readAscii, u16, u32 } from './bytes';
@@ -447,7 +447,7 @@ export function parseMacho(bytes: Uint8Array): MachOResult {
     is64 = false;
     be = true;
   } else {
-    result.error = `Magic tidak dikenal: 0x${magic.toString(16)} — bukan Mach-O.`;
+    result.error = `Magic tidak dikenal: 0x${magic.toString(16)}. bukan Mach-O.`;
     return result;
   }
   result.valid = true;

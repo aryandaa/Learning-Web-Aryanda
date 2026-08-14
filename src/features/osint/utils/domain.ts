@@ -1,7 +1,7 @@
 /**
- * Domain intelligence — parsing/normalisasi murni client-side.
+ * Domain intelligence. parsing/normalisasi murni client-side.
  * Registrable domain memakai daftar suffix multi-bagian umum (best-effort,
- * bukan full PSL — untuk edukasi).
+ * bukan full PSL. untuk edukasi).
  */
 
 const MULTI_PART_SUFFIXES = new Set([
@@ -63,7 +63,7 @@ export function analyzeDomain(input: string): DomainAnalysis {
     return { input: raw, normalized: hostPart.toLowerCase(), hostname: hostPart.toLowerCase(), isIdn, unicodeForm: hostPart, isPunycode: false, labels: hostPart.toLowerCase().split('.'), tld: '', registrableDomain: '', subdomain: null, suspiciousChars: [], protocol, valid: false, error: 'Domain tidak valid.' };
   }
   if (!hostname.includes('.')) {
-    return { input: raw, normalized: hostname, hostname, isIdn, unicodeForm: hostPart, isPunycode: false, labels: [hostname], tld: '', registrableDomain: '', subdomain: null, suspiciousChars: [], protocol, valid: false, error: 'Bukan FQDN — tidak ada titik (mis. "localhost").' };
+    return { input: raw, normalized: hostname, hostname, isIdn, unicodeForm: hostPart, isPunycode: false, labels: [hostname], tld: '', registrableDomain: '', subdomain: null, suspiciousChars: [], protocol, valid: false, error: 'Bukan FQDN. tidak ada titik (mis. "localhost").' };
   }
   const normalized = hostname.replace(/\.$/, '');
   const labels = normalized.split('.');

@@ -1,5 +1,5 @@
 /**
- * Username Analyzer — daftar platform publik + tautan profil (manual check).
+ * Username Analyzer. daftar platform publik + tautan profil (manual check).
  */
 
 import { useState } from 'react';
@@ -42,7 +42,7 @@ function UsernameAnalyzerTool() {
 
       <Notice tone="info">
         Presence does not prove identity. The same username may belong to different people. Tool ini hanya membentuk
-        tautan publik — tidak ada pengecekan/scraping otomatis, dan tidak mengakses data privat.
+        tautan publik. tidak ada pengecekan/scraping otomatis, dan tidak mengakses data privat.
       </Notice>
 
       {links && (
@@ -71,7 +71,7 @@ function UsernameAnalyzerTool() {
 
       <ToolNotes
         notes={[
-          { title: 'What is this?', content: 'Menyusun tautan profil publik dari username di berbagai platform. Fokus pada availability/presence publik — bukan data privat.' },
+          { title: 'What is this?', content: 'Menyusun tautan profil publik dari username di berbagai platform. Fokus pada availability/presence publik. bukan data privat.' },
           { title: 'How to use', content: 'Masukkan username, klik Buat daftar profil, lalu buka "Open Public Profile" (buka manual) untuk verifikasi.' },
           { title: 'Input', content: 'Username.' },
           { title: 'Output', content: 'Daftar platform + URL profil.' },

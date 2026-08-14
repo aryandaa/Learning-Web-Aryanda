@@ -1,5 +1,5 @@
 /**
- * Domain Analyzer — parsing lokal + pengecekan DNS opsional + sumber publik.
+ * Domain Analyzer. parsing lokal + pengecekan DNS opsional + sumber publik.
  */
 
 import { useState } from 'react';
@@ -75,11 +75,11 @@ function DomainAnalyzerTool() {
               rows={[
                 { k: 'Normalized', v: result.normalized },
                 { k: 'Registrable domain', v: result.registrableDomain },
-                { k: 'TLD', v: result.tld || '—' },
+                { k: 'TLD', v: result.tld || '-' },
                 { k: 'Subdomain', v: result.subdomain ?? '(tidak ada)' },
                 { k: 'Labels', v: result.labels.join(' · ') },
                 { k: 'IDN (Unicode)', v: result.isIdn ? result.unicodeForm : 'Tidak' },
-                { k: 'Punycode', v: result.isPunycode ? 'Ya — hostname dalam bentuk ASCII' : 'Tidak' },
+                { k: 'Punycode', v: result.isPunycode ? 'Ya. hostname dalam bentuk ASCII' : 'Tidak' },
                 { k: 'Protocol', v: result.protocol ?? '(tidak diberikan)' },
               ]}
             />
@@ -87,7 +87,7 @@ function DomainAnalyzerTool() {
               <div className="mt-3">
                 <IndicatorBadge tone="warn">⚠ Karakter mencurigakan: {result.suspiciousChars.join(', ')}</IndicatorBadge>
                 <p className="mt-1 text-xs text-amber-200">
-                  Periksa visual domain dengan teliti — huruf mirip (homograph) sering dipakai phishing.
+                  Periksa visual domain dengan teliti. huruf mirip (homograph) sering dipakai phishing.
                 </p>
               </div>
             )}
@@ -137,7 +137,7 @@ function DomainAnalyzerTool() {
               ))}
             </div>
             <p className="mt-2 text-xs text-slate-500">
-              Beberapa sumber membutuhkan pembukaan manual di browser (external lookup required) — data tidak dikirim otomatis.
+              Beberapa sumber membutuhkan pembukaan manual di browser (external lookup required). data tidak dikirim otomatis.
             </p>
           </Panel>
 
@@ -146,7 +146,7 @@ function DomainAnalyzerTool() {
           <ToolNotes
             notes={[
               { title: 'What is this?', content: 'Menganalisis domain: normalisasi, registrable domain (best-effort tanpa full PSL), TLD, subdomain, IDN/punycode, dan karakter mencurigakan.' },
-              { title: 'How to use', content: 'Masukkan domain (atau URL — protocol diekstrak), klik Analisis. Opsional: cek record A via DNS-over-HTTPS.' },
+              { title: 'How to use', content: 'Masukkan domain (atau URL. protocol diekstrak), klik Analisis. Opsional: cek record A via DNS-over-HTTPS.' },
               { title: 'Input', content: 'Domain atau URL.' },
               { title: 'Output', content: 'Komponen domain + catatan keamanan + tautan sumber publik.' },
               { title: 'Notes', content: 'Parsing lokal. DNS lookup mengirim nama domain ke resolver DoH publik (Cloudflare). Jangan lakukan scanning aktif.' },

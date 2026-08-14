@@ -1,5 +1,5 @@
 /**
- * Email Analyzer — validasi, disposable-domain lokal, role-based, provider.
+ * Email Analyzer. validasi, disposable-domain lokal, role-based, provider.
  */
 
 import { useState } from 'react';
@@ -42,11 +42,11 @@ function EmailAnalyzerTool() {
           <Panel title="Hasil analisis" action={<CopyButton text={JSON.stringify(result, null, 2)} />}>
             <KeyValueTable
               rows={[
-                { k: 'Normalized', v: result.normalized ?? '—' },
-                { k: 'Local part', v: result.localPart ?? '—' },
-                { k: 'Domain', v: result.domain ?? '—' },
-                { k: 'TLD', v: result.tld ?? '—' },
-                { k: 'Provider', v: result.provider ?? '—' },
+                { k: 'Normalized', v: result.normalized ?? '-' },
+                { k: 'Local part', v: result.localPart ?? '-' },
+                { k: 'Domain', v: result.domain ?? '-' },
+                { k: 'TLD', v: result.tld ?? '-' },
+                { k: 'Provider', v: result.provider ?? '-' },
               ]}
             />
             <div className="mt-3 flex flex-wrap gap-2">
@@ -73,7 +73,7 @@ function EmailAnalyzerTool() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-2 text-sm text-slate-300 transition-colors hover:border-indigo-500/50 hover:text-indigo-300"
             >
-              Have I Been Pwned — domain search ↗
+              Have I Been Pwned. domain search ↗
             </a>
             <p className="mt-2 text-xs text-slate-500">
               HIBP dibuka manual di browser. Tidak ada data yang dikirim otomatis, dan Anda tidak perlu memasukkan password.
@@ -91,7 +91,7 @@ function EmailAnalyzerTool() {
               { title: 'How to use', content: 'Masukkan email, klik Analisis email.' },
               { title: 'Input', content: 'Alamat email.' },
               { title: 'Output', content: 'Komponen email + indikator disposable/role + catatan.' },
-              { title: 'Notes', content: 'Semua analisis lokal (privacy: LOCAL). Dataset disposable dibundel dan tidak sempurna — gunakan sebagai indikasi, bukan kepastian.' },
+              { title: 'Notes', content: 'Semua analisis lokal (privacy: LOCAL). Dataset disposable dibundel dan tidak sempurna. gunakan sebagai indikasi, bukan kepastian.' },
             ]}
           />
         </>

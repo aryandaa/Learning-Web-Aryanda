@@ -1,5 +1,5 @@
 /**
- * Hash Analyzer — deteksi tipe hash + link lookup eksternal (tanpa cracking).
+ * Hash Analyzer. deteksi tipe hash + link lookup eksternal (tanpa cracking).
  */
 
 import { useState } from 'react';
@@ -70,7 +70,7 @@ function HashAnalyzerTool() {
               ))}
             </div>
             <p className="mt-2 text-xs text-slate-500">
-              Lookup dibuka manual di situs tujuan saat diklik — tidak ada data dikirim otomatis. Tidak ada cracking
+              Lookup dibuka manual di situs tujuan saat diklik. tidak ada data dikirim otomatis. Tidak ada cracking
               / rainbow-table di tool ini.
             </p>
           </Panel>
@@ -81,7 +81,7 @@ function HashAnalyzerTool() {
               { title: 'How to use', content: 'Masukkan hash, klik Analisis. Buka link lookup untuk mengecek reputasi.' },
               { title: 'Input', content: 'Satu nilai hash.' },
               { title: 'Output', content: 'Kandidat algoritma + link lookup.' },
-              { title: 'Notes', content: 'MD5 dan NTLM sama-sama 32 hex — tidak bisa dibedakan dari panjang saja. Deteksi adalah perkiraan, bukan kepastian.' },
+              { title: 'Notes', content: 'MD5 dan NTLM sama-sama 32 hex. tidak bisa dibedakan dari panjang saja. Deteksi adalah perkiraan, bukan kepastian.' },
             ]}
           />
         </>

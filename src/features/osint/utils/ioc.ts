@@ -1,5 +1,5 @@
 /**
- * IOC extraction — regex untuk IP, domain, URL, email, hash, CVE, ATT&CK,
+ * IOC extraction. regex untuk IP, domain, URL, email, hash, CVE, ATT&CK,
  * file path. Dedup + konteks. Semua lokal.
  */
 
@@ -26,10 +26,10 @@ const RE_HASH_SHA1 = /\b[a-fA-F0-9]{40}\b/g;
 const RE_HASH_SHA256 = /\b[a-fA-F0-9]{64}\b/g;
 const RE_HASH_SHA512 = /\b[a-fA-F0-9]{128}\b/g;
 
-// Domain: label.label.tld — bukan IP, bukan hostname punycode bermasalah.
+// Domain: label.label.tld. bukan IP, bukan hostname punycode bermasalah.
 const RE_DOMAIN = /\b(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}\b/g;
 
-// IPv6 (longgar namun aman — hindari false positive berlebihan)
+// IPv6 (longgar namun aman. hindari false positive berlebihan)
 const RE_IPV6 = /\b(?:[0-9a-fA-F]{1,4}:){2,7}[0-9a-fA-F]{0,4}(?::[0-9a-fA-F]{1,4})?\b/g;
 
 function cleanContext(line: string, value: string, radius = 40): string {
@@ -83,7 +83,7 @@ export function extractIocs(text: string): IocHit[] {
   collect(RE_UNIXPATH, 'filepath');
   collect(RE_DOMAIN, 'domain');
 
-  // Filter: hash yang juga cocok domain? 32-hex tidak valid domain (digit-only TLD dicek regex domain? no — [a-zA-Z]{2} TLD, hex bisa huruf).
+  // Filter: hash yang juga cocok domain? 32-hex tidak valid domain (digit-only TLD dicek regex domain? no. [a-zA-Z]{2} TLD, hex bisa huruf).
   const result = Array.from(counts.values()).sort((a, b) => b.count - a.count);
 
   // Bersihkan: hapus nilai yang jelas-jelas bagian dari yang lain (url berisi domain)

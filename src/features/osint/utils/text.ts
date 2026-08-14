@@ -1,5 +1,5 @@
 /**
- * Text intelligence — statistik + ekstraksi entitas + normalisasi + dedup.
+ * Text intelligence. statistik + ekstraksi entitas + normalisasi + dedup.
  */
 
 import { extractIocs } from './ioc';

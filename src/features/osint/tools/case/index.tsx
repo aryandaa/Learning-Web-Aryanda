@@ -1,5 +1,5 @@
 /**
- * OSINT Case — case investigasi lokal (localStorage) + export/import JSON.
+ * OSINT Case. case investigasi lokal (localStorage) + export/import JSON.
  */
 
 import { useEffect, useState } from 'react';
@@ -291,7 +291,7 @@ function CaseTool() {
                 {active.sources.map((s, i) => (
                   <li key={i} className="flex items-center justify-between gap-2 rounded border border-slate-800 bg-slate-900/40 px-3 py-1.5">
                     <a href={s.url} target="_blank" rel="noopener noreferrer" className="min-w-0 flex-1 truncate text-xs text-indigo-400 hover:text-indigo-300">
-                      {s.title} — {s.url} ↗
+                      {s.title}. {s.url} ↗
                     </a>
                     <button onClick={() => update({ sources: active.sources.filter((_, j) => j !== i) })} className="text-xs text-slate-600 hover:text-red-300" aria-label="Hapus sumber">
                       ✕

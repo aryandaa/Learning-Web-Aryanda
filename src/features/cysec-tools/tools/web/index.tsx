@@ -1,5 +1,5 @@
 /**
- * Tools kategori Web Security — semua berbasis input manual / analisis lokal.
+ * Tools kategori Web Security. semua berbasis input manual / analisis lokal.
  * Tidak ada request jaringan ke target; tidak ada bypass CORS.
  */
 
@@ -21,7 +21,7 @@ import type { ComponentType } from 'react';
 const webNotes = (what: string, how: string, extra?: string) => [
   { title: 'What is this?', content: what },
   { title: 'How to use', content: how },
-  { title: 'Input', content: 'Data yang Anda tempel — TIDAK ada request keluar.' },
+  { title: 'Input', content: 'Data yang Anda tempel. TIDAK ada request keluar.' },
   { title: 'Output', content: 'Analisis lokal.' },
   { title: 'Notes', content: `${extra ?? 'Tool ini tidak melakukan request ke target mana pun. Untuk penilaian keamanan terhadap sistem milik Anda, gunakan scanner yang diizinkan secara hukum.'}` },
 ];
@@ -111,11 +111,11 @@ function QueryParserTool() {
         }
         params.push({ name, value, decoded, duplicated: nameCount > 0 });
         if (name === 'redirect' || name === 'next' || name === 'url' || name === 'return' || name === 'goto' || name === 'target') {
-          issues.push(`Parameter "${name}" sering menjadi target open redirect — verifikasi whitelist.`);
+          issues.push(`Parameter "${name}" sering menjadi target open redirect. verifikasi whitelist.`);
         }
       }
       for (const [name, count] of seen) {
-        if (count > 1) issues.push(`Parameter "${name}" muncul ${count}x — perilaku bisa bergantung parser (PHP memakai yang terakhir, Python yang pertama).`);
+        if (count > 1) issues.push(`Parameter "${name}" muncul ${count}x. perilaku bisa bergantung parser (PHP memakai yang terakhir, Python yang pertama).`);
       }
       setResult({ params, issues });
     } catch (err) {
@@ -239,7 +239,7 @@ function JwtTool() {
             <pre className="overflow-auto rounded-lg border border-slate-800 bg-slate-950/70 p-3 font-mono text-[13px] text-slate-200">{JSON.stringify(result.payload, null, 2)}</pre>
             {result.claims && result.claims.length > 0 && (
               <div className="mt-3">
-                <KeyValueTable rows={result.claims.map((c) => ({ k: c.name, v: c.meaning ? `${c.value} — ${c.meaning}` : c.value }))} />
+                <KeyValueTable rows={result.claims.map((c) => ({ k: c.name, v: c.meaning ? `${c.value}. ${c.meaning}` : c.value }))} />
               </div>
             )}
           </Panel>
@@ -255,7 +255,7 @@ function JwtTool() {
           {sigResult !== 'idle' && (
             <Panel title="Verifikasi signature">
               {sigResult === 'valid' && <p className="text-sm text-emerald-300">✅ Signature valid untuk secret ini.</p>}
-              {sigResult === 'invalid' && <p className="text-sm text-red-300">❌ Signature TIDAK valid — token diubah atau secret salah.</p>}
+              {sigResult === 'invalid' && <p className="text-sm text-red-300">❌ Signature TIDAK valid. token diubah atau secret salah.</p>}
               {sigResult === 'error' && <p className="text-sm text-amber-300">Verifikasi gagal (algoritma non-HS atau secret tidak cocok).</p>}
             </Panel>
           )}
@@ -267,7 +267,7 @@ function JwtTool() {
       <ToolNotes notes={webNotes(
         'Decode JWT (header + payload base64url), jelaskan claims, dan verifikasi signature HS256/384/512 dengan secret.',
         'Tempel token → Decode. Masukkan secret → Verify signature.',
-        'Verifikasi hanya untuk algoritma HMAC (HS*). RSA (RS*) tidak diverifikasi di tool ini — tanpa public key. Token di-decrypt/decode lokal, tidak dikirim.'
+        'Verifikasi hanya untuk algoritma HMAC (HS*). RSA (RS*) tidak diverifikasi di tool ini. tanpa public key. Token di-decrypt/decode lokal, tidak dikirim.'
       )} />
     </div>
   );
@@ -406,7 +406,7 @@ function UserAgentTool() {
               ))}
             </ul>
           )}
-          <p className="mt-3 text-xs text-slate-500">Parsing heuristik — UA bisa dipalsukan (spoofing), jangan jadikan satu-satunya sumber keputusan keamanan.</p>
+          <p className="mt-3 text-xs text-slate-500">Parsing heuristik. UA bisa dipalsukan (spoofing), jangan jadikan satu-satunya sumber keputusan keamanan.</p>
         </Panel>
       )}
       <ToolNotes notes={webNotes(
@@ -570,7 +570,7 @@ function SecurityHeadersTool() {
                   <div className="min-w-0">
                     <p className="font-mono text-xs text-slate-200">{c.name}</p>
                     <p className="mt-0.5 text-xs text-slate-500">
-                      <span className="text-slate-400">{c.value}</span> — {c.note}
+                      <span className="text-slate-400">{c.value}</span>. {c.note}
                     </p>
                   </div>
                 </div>
@@ -617,7 +617,7 @@ function JsUriTool() {
   const run = () => {
     const warnings: string[] = [];
     if (!/^javascript:/i.test(input.trim())) {
-      warnings.push('Scheme bukan javascript: — pastikan Anda menganalisis URI yang benar.');
+      warnings.push('Scheme bukan javascript:. pastikan Anda menganalisis URI yang benar.');
     }
     let current = input.trim();
     const layers: string[] = [current];
@@ -638,10 +638,10 @@ function JsUriTool() {
       guard++;
     }
     const lower = current.toLowerCase();
-    if (/eval\(/.test(lower)) warnings.push('Mengandung eval() — eksekusi kode dinamis.');
-    if (/fromcharcode/i.test(lower)) warnings.push('Mengandung String.fromCharCode — teknik obfuscation umum.');
-    if (/atob\(/.test(lower)) warnings.push('Mengandung atob() — base64 decode runtime.');
-    if (/(\\x[0-9a-f]{2}|\\u[0-9a-f]{4})/i.test(current)) warnings.push('Mengandung escape hex/unicode — obfuscation.');
+    if (/eval\(/.test(lower)) warnings.push('Mengandung eval(). eksekusi kode dinamis.');
+    if (/fromcharcode/i.test(lower)) warnings.push('Mengandung String.fromCharCode. teknik obfuscation umum.');
+    if (/atob\(/.test(lower)) warnings.push('Mengandung atob(). base64 decode runtime.');
+    if (/(\\x[0-9a-f]{2}|\\u[0-9a-f]{4})/i.test(current)) warnings.push('Mengandung escape hex/unicode. obfuscation.');
     if (/document\.cookie|fetch\(|xmlhttprequest|location\.href|top\.location/i.test(lower)) warnings.push('Akses data sensitif / navigasi terdeteksi.');
     setResult({ decoded: current, layers, warnings });
   };
@@ -671,7 +671,7 @@ function JsUriTool() {
       <ToolNotes notes={webNotes(
         'Decode bertingkat URI ber-scheme javascript: dan deteksi pola obfuscation.',
         'Tempel URI, klik Decode & analisis.',
-        'Jangan jalankan payload — hanya analisis teks.'
+        'Jangan jalankan payload. hanya analisis teks.'
       )} />
     </div>
   );
@@ -710,7 +710,7 @@ function UrlNormalizerTool() {
               rows={[
                 { k: 'Original', v: result.original },
                 { k: 'Normalized', v: result.normalized },
-                { k: 'Identik?', v: result.original === result.normalized ? 'Ya' : 'Tidak — perhatikan perbedaan!' },
+                { k: 'Identik?', v: result.original === result.normalized ? 'Ya' : 'Tidak. perhatikan perbedaan!' },
               ]}
             />
           </Panel>
@@ -769,7 +769,7 @@ function OpenRedirectTool() {
       <ToolNotes notes={webNotes(
         'Mendeteksi pola open redirect pada URL: //host, backslash, scheme javascript:/data:, encoding.',
         'Tempel URL (termasuk parameter), klik Analisis.',
-        'Open redirect dipakai phishing — selalu whitelist tujuan redirect server-side.'
+        'Open redirect dipakai phishing. selalu whitelist tujuan redirect server-side.'
       )} />
     </div>
   );
@@ -799,7 +799,7 @@ function PathTraversalTool() {
               <div className="mt-2 space-y-1">
                 {result.patterns.map((p, i) => (
                   <p key={i} className="break-all font-mono text-xs text-amber-200">
-                    <span className="text-red-300">{p.value}</span> — {p.description}
+                    <span className="text-red-300">{p.value}</span>. {p.description}
                   </p>
                 ))}
               </div>
@@ -812,7 +812,7 @@ function PathTraversalTool() {
       <ToolNotes notes={webNotes(
         'Memindai pola path traversal: ../, ..\\, encoding URL, double-encoding, null byte, path sistem sensitif.',
         'Tempel input, klik Scan.',
-        'Edukasi defensif — untuk memahami cara filter di-bypass agar bisa menulis filter yang benar.'
+        'Edukasi defensif. untuk memahami cara filter di-bypass agar bisa menulis filter yang benar.'
       )} />
     </div>
   );
@@ -846,7 +846,7 @@ function SqliAnalyzerTool() {
             ))}
           </div>
           <p className="mt-3 text-xs text-slate-500">
-            Highlighter/analyzer edukasi — BUKAN scanner otomatis ke target. Pengujian SQLi hanya boleh dilakukan pada target yang Anda miliki/izinkan.
+            Highlighter/analyzer edukasi. BUKAN scanner otomatis ke target. Pengujian SQLi hanya boleh dilakukan pada target yang Anda miliki/izinkan.
           </p>
         </Panel>
       )}
@@ -883,14 +883,14 @@ function XssAnalyzerTool() {
             ))}
           </div>
           <p className="mt-3 text-xs text-slate-500">
-            Highlighter/analyzer edukasi — BUKAN scanner otomatis. Pertahanan utama: context-aware output encoding + CSP + HttpOnly cookies.
+            Highlighter/analyzer edukasi. BUKAN scanner otomatis. Pertahanan utama: context-aware output encoding + CSP + HttpOnly cookies.
           </p>
         </Panel>
       )}
       <ToolNotes notes={webNotes(
         'Menganalisis pola payload XSS (tag script, event handler, javascript:, encoding, iframe, srcdoc).',
         'Tempel payload, klik Analisis payload.',
-        'Encoding bertingkat sering dipakai melewati filter — perhatikan bagian encoded payload.'
+        'Encoding bertingkat sering dipakai melewati filter. perhatikan bagian encoded payload.'
       )} />
     </div>
   );
@@ -995,7 +995,7 @@ function RegexTesterTool() {
       <ToolNotes notes={webNotes(
         'Uji regex JavaScript: highlight match, daftar match + capture groups.',
         'Isi pola + flags, tempel teks, klik Test regex.',
-        'Catastrophic backtracking (ReDoS) bisa terjadi pada pola buruk — hindari nested quantifier pada input besar.'
+        'Catastrophic backtracking (ReDoS) bisa terjadi pada pola buruk. hindari nested quantifier pada input besar.'
       )} />
     </div>
   );
@@ -1074,14 +1074,14 @@ function HttpMessageFormatter({ kind }: { kind: 'request' | 'response' }) {
               rows={
                 kind === 'request'
                   ? [
-                      { k: 'Method', v: result.parsed.method ?? '—' },
-                      { k: 'Path', v: result.parsed.path ?? '—' },
-                      { k: 'Version', v: result.parsed.version ?? '—' },
+                      { k: 'Method', v: result.parsed.method ?? '-' },
+                      { k: 'Path', v: result.parsed.path ?? '-' },
+                      { k: 'Version', v: result.parsed.version ?? '-' },
                     ]
                   : [
-                      { k: 'Version', v: result.parsed.version ?? '—' },
-                      { k: 'Status', v: result.parsed.status ?? '—' },
-                      { k: 'Reason', v: result.parsed.reason ?? '—' },
+                      { k: 'Version', v: result.parsed.version ?? '-' },
+                      { k: 'Status', v: result.parsed.status ?? '-' },
+                      { k: 'Reason', v: result.parsed.reason ?? '-' },
                     ]
               }
             />

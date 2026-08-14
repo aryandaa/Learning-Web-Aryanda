@@ -1,5 +1,5 @@
 /**
- * Dashboard CySec Tools — selector kategori (workspace category).
+ * Dashboard CySec Tools. selector kategori (workspace category).
  * /cysec-tools → pilih kategori → daftar tool kategori → tool.
  * Search global (kategori + tool) + recently used (localStorage).
  */
@@ -175,7 +175,7 @@ export default function CySecToolsPage() {
           )}
           <section>
             <h2 className="mb-3 text-sm font-semibold text-slate-300">
-              Tools ({results.tools.length}) — untuk “{query.trim()}”
+              Tools ({results.tools.length}). untuk “{query.trim()}”
             </h2>
             {results.tools.length === 0 ? (
               <p className="py-8 text-center text-sm text-slate-500">
@@ -191,7 +191,7 @@ export default function CySecToolsPage() {
           </section>
         </div>
       ) : (
-        /* Category selector — kartu workspace besar */
+        /* Category selector. kartu workspace besar */
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {cards.map((c) => (
             <CategoryCardView key={c.id} card={c} />

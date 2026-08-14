@@ -8,7 +8,7 @@
  * top talkers, TCP flags, timeline, indikator mencurigakan.
  *
  * Catatan: file diproses lokal; tidak ada upload. Decryption TLS tidak
- * dilakukan — hanya metadata.
+ * dilakukan. hanya metadata.
  */
 
 import { u16, u32, readAscii } from './bytes';
@@ -355,7 +355,7 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
           ] as const;
           tcpFlags = flagNames.filter(([, m]) => flagsByte & m).map(([n]) => n);
           const tcpPayload = ipPayload.subarray(Math.min(dataOff, ipPayload.length));
-          summary = `${src}:${srcPort} → ${dst}:${dstPort} TCP [${tcpFlags.join(',') || '—'}]`;
+          summary = `${src}:${srcPort} → ${dst}:${dstPort} TCP [${tcpFlags.join(',') || '-'}]`;
 
           if (srcPort === 53 || dstPort === 53) {
             const dns = parseDns(tcpPayload, 0, tcpPayload.length);
@@ -381,7 +381,7 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
               if (sni || tcpPayload[0] === 0x16) {
                 proto = 'TLS';
                 tlsSni = sni ?? undefined;
-                summary = `TLS record (SNI: ${sni ?? '—'})`;
+                summary = `TLS record (SNI: ${sni ?? '-'})`;
               }
             }
           }
@@ -454,7 +454,7 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
             ] as const;
             tcpFlags = flagNames.filter(([, m]) => flagsByte & m).map(([n]) => n);
             const tcpPayload = ipPayload.subarray(Math.min(dataOff, ipPayload.length));
-            summary = `${src}:${srcPort} → ${dst}:${dstPort} TCP [${tcpFlags.join(',') || '—'}]`;
+            summary = `${src}:${srcPort} → ${dst}:${dstPort} TCP [${tcpFlags.join(',') || '-'}]`;
             if (srcPort === 53 || dstPort === 53) {
               const dns = parseDns(tcpPayload, 0, tcpPayload.length);
               if (dns && dns.query) {
@@ -477,7 +477,7 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
                 const sni = parseTlsSni(tcpPayload, 0, tcpPayload.length);
                 proto = 'TLS';
                 tlsSni = sni ?? undefined;
-                summary = `TLS record (SNI: ${sni ?? '—'})`;
+                summary = `TLS record (SNI: ${sni ?? '-'})`;
               }
             }
           } else {
@@ -578,7 +578,7 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
       const blockType = dv.getUint32(off, true);
       const blockLen = dv.getUint32(off + 4, true);
       if (blockLen < 12 || off + blockLen > bytes.length) {
-        analysis.errors.push(`PCAPNG: block length tidak valid pada offset ${off} — parsing dihentikan.`);
+        analysis.errors.push(`PCAPNG: block length tidak valid pada offset ${off}. parsing dihentikan.`);
         break;
       }
       const body = off + 8;
@@ -632,7 +632,7 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
       off += blockLen;
       if (epbCount > 500_000) {
         analysis.truncated = true;
-        analysis.errors.push('Batas 500.000 paket tercapai — parsing dihentikan (file sangat besar).');
+        analysis.errors.push('Batas 500.000 paket tercapai. parsing dihentikan (file sangat besar).');
         break;
       }
     }
@@ -654,7 +654,7 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
       const origLen = rdU32(off + 12);
       const dataStart = off + 16;
       if (dataStart + inclLen > bytes.length) {
-        analysis.errors.push(`PCAP: paket #${count} melebihi akhir file — parsing dihentikan.`);
+        analysis.errors.push(`PCAP: paket #${count} melebihi akhir file. parsing dihentikan.`);
         break;
       }
       const ts = tsSec + tsUsec / 1_000_000;
@@ -663,13 +663,13 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
       count++;
       if (count > 500_000) {
         analysis.truncated = true;
-        analysis.errors.push('Batas 500.000 paket tercapai — parsing dihentikan (file sangat besar).');
+        analysis.errors.push('Batas 500.000 paket tercapai. parsing dihentikan (file sangat besar).');
         break;
       }
     }
     analysis.packetCount = count;
   } else {
-    analysis.errors.push('Magic number tidak dikenali — bukan file PCAP/PCAPNG yang valid.');
+    analysis.errors.push('Magic number tidak dikenali. bukan file PCAP/PCAPNG yang valid.');
     return analysis;
   }
 
@@ -759,7 +759,7 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
   const findings: SuspiciousFinding[] = [];
   if (analysis.packetCount > 0 && analysis.firstTs != null && analysis.lastTs != null && analysis.duration! > 0) {
     const pps = analysis.packetCount / analysis.duration!;
-    if (pps > 1000) findings.push({ severity: 'high', title: 'Traffic density tinggi', detail: `${pps.toFixed(0)} paket/detik rata-rata — kemungkinan scan/DoS.` });
+    if (pps > 1000) findings.push({ severity: 'high', title: 'Traffic density tinggi', detail: `${pps.toFixed(0)} paket/detik rata-rata. kemungkinan scan/DoS.` });
   }
   for (const [ip, list] of synSrc) {
     if (list.length > 20) {
@@ -780,13 +780,13 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
   }
   for (const [ip, count] of http404) {
     if (count > 10) {
-      findings.push({ severity: 'medium', title: `Banyak HTTP 404 dari ${ip}`, detail: `${count} respons 404 — kemungkinan directory brute-force.` });
+      findings.push({ severity: 'medium', title: `Banyak HTTP 404 dari ${ip}`, detail: `${count} respons 404. kemungkinan directory brute-force.` });
     }
   }
   // DNS query mencurigakan
   const dnsEntries = Array.from(dnsMap.entries());
   if (dnsEntries.length > 100) {
-    findings.push({ severity: 'low', title: 'Volume DNS tinggi', detail: `${dnsEntries.length} query unik — periksa kemungkinan exfiltration/DDNS.` });
+    findings.push({ severity: 'low', title: 'Volume DNS tinggi', detail: `${dnsEntries.length} query unik. periksa kemungkinan exfiltration/DDNS.` });
   }
   analysis.suspicious = findings;
 

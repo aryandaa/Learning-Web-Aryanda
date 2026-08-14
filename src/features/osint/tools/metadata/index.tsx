@@ -1,5 +1,5 @@
 /**
- * Metadata Analyzer — analisis metadata file 100% lokal (EXIF/PDF/ZIP/Office/PNG).
+ * Metadata Analyzer. analisis metadata file 100% lokal (EXIF/PDF/ZIP/Office/PNG).
  */
 
 import { useState } from 'react';
@@ -69,7 +69,7 @@ function MetadataAnalyzerTool() {
                 { k: 'Size', v: fmtBytes(result.size) },
                 { k: 'MIME', v: result.mime },
                 { k: 'Extension', v: result.extension || '(tidak ada)' },
-                { k: 'Last modified', v: result.lastModified ?? '—' },
+                { k: 'Last modified', v: result.lastModified ?? '-' },
                 { k: 'SHA-256', v: result.sha256 },
                 { k: 'SHA-1', v: result.sha1 },
                 { k: 'MD5', v: result.md5 },
@@ -113,13 +113,13 @@ function MetadataAnalyzerTool() {
             <Panel title="Office core properties (docx/xlsx/pptx)">
               <KeyValueTable
                 rows={[
-                  { k: 'Title', v: result.office.title ?? '—' },
-                  { k: 'Subject', v: result.office.subject ?? '—' },
-                  { k: 'Author (creator)', v: result.office.creator ?? '—' },
-                  { k: 'Last modified by', v: result.office.lastModifiedBy ?? '—' },
-                  { k: 'Created', v: result.office.created ?? '—' },
-                  { k: 'Modified', v: result.office.modified ?? '—' },
-                  { k: 'Application', v: result.office.application ?? '—' },
+                  { k: 'Title', v: result.office.title ?? '-' },
+                  { k: 'Subject', v: result.office.subject ?? '-' },
+                  { k: 'Author (creator)', v: result.office.creator ?? '-' },
+                  { k: 'Last modified by', v: result.office.lastModifiedBy ?? '-' },
+                  { k: 'Created', v: result.office.created ?? '-' },
+                  { k: 'Modified', v: result.office.modified ?? '-' },
+                  { k: 'Application', v: result.office.application ?? '-' },
                 ]}
               />
             </Panel>
@@ -160,7 +160,7 @@ function MetadataAnalyzerTool() {
               { title: 'How to use', content: 'Upload file → analisis lokal (ArrayBuffer).' },
               { title: 'Input', content: 'Satu file.' },
               { title: 'Output', content: 'Metadata + hash.' },
-              { title: 'Notes', content: 'Semua lokal. Metadata bisa dipalsukan; hash hanya untuk integritas. DOCX/XLSX/PPTX adalah ZIP — entri & core.xml diekstrak tanpa library.' },
+              { title: 'Notes', content: 'Semua lokal. Metadata bisa dipalsukan; hash hanya untuk integritas. DOCX/XLSX/PPTX adalah ZIP. entri & core.xml diekstrak tanpa library.' },
             ]}
           />
         </>

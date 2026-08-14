@@ -20,7 +20,7 @@ export interface EntropyResult {
 }
 
 export function entropyOf(bytes: Uint8Array, hexDumpLen = 256): EntropyResult {
-  if (bytes.length === 0) throw new Error('File kosong — tidak ada data untuk dianalisis.');
+  if (bytes.length === 0) throw new Error('File kosong. tidak ada data untuk dianalisis.');
   const counts = new Uint32Array(256);
   for (const b of bytes) counts[b]++;
   let entropy = 0;
@@ -75,7 +75,7 @@ export interface StringHit {
   value: string;
 }
 
-/** Ekstrak run printable ASCII (min length) — chunked untuk file besar. */
+/** Ekstrak run printable ASCII (min length). chunked untuk file besar. */
 export function extractAsciiStrings(bytes: Uint8Array, minLength = 4): StringHit[] {
   const out: StringHit[] = [];
   let start = -1;
@@ -95,7 +95,7 @@ export function extractAsciiStrings(bytes: Uint8Array, minLength = 4): StringHit
   return out;
 }
 
-/** Ekstrak run UTF-16LE printable (kata 16-bit di 32..126) — chunked. */
+/** Ekstrak run UTF-16LE printable (kata 16-bit di 32..126). chunked. */
 export function extractUtf16Strings(bytes: Uint8Array, minLength = 4): StringHit[] {
   const out: StringHit[] = [];
   let start = -1;
@@ -165,12 +165,12 @@ const SIGNATURES: { magic: number[]; mask?: number[]; offset?: number; sig: Omit
   { magic: [0x00, 0x01, 0x00, 0x00], sig: { name: 'TrueType font', extension: 'ttf', mime: 'font/ttf' }, confidence: 'medium' },
   { magic: [0x4f, 0x54, 0x54, 0x4f], sig: { name: 'OpenType font', extension: 'otf', mime: 'font/otf' }, confidence: 'high' },
   { magic: [0x53, 0x43, 0x48, 0x4c], sig: { name: 'Sketch document (zip)', extension: 'sketch', mime: 'application/octet-stream' }, confidence: 'medium' },
-  { magic: [0x45, 0x4c, 0x46, 0x46], sig: { name: 'ELF-like (EF) — kemungkinan objek', extension: 'bin', mime: 'application/octet-stream' }, confidence: 'low' },
+  { magic: [0x45, 0x4c, 0x46, 0x46], sig: { name: 'ELF-like (EF). kemungkinan objek', extension: 'bin', mime: 'application/octet-stream' }, confidence: 'low' },
   { magic: [0x52, 0x61, 0x72, 0x21, 0x1a, 0x07], sig: { name: 'RAR archive', extension: 'rar', mime: 'application/vnd.rar' }, confidence: 'high' },
   { magic: [0x5b, 0x50, 0x61, 0x63, 0x6b, 0x65, 0x74, 0x5d], sig: { name: 'NSIS installer', extension: 'exe', mime: 'application/x-msdownload' }, confidence: 'medium' },
 ];
 
-/** Deteksi magic number — signature umum. */
+/** Deteksi magic number. signature umum. */
 export function detectSignature(bytes: Uint8Array): SignatureMatch[] {
   const matches: SignatureMatch[] = [];
   const maxOffset = Math.max(257, bytes.length);

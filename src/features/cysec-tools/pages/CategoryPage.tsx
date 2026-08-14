@@ -1,5 +1,5 @@
 /**
- * Halaman kategori CySec Tools — daftar tool satu bidang (data-driven).
+ * Halaman kategori CySec Tools. daftar tool satu bidang (data-driven).
  * Route: /cysec-tools/category/:categoryId (termasuk OSINT)
  */
 

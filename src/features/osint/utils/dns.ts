@@ -1,5 +1,5 @@
 /**
- * DNS intelligence — DNS-over-HTTPS (RFC 8484 style JSON) ke resolver publik
+ * DNS intelligence. DNS-over-HTTPS (RFC 8484 style JSON) ke resolver publik
  * yang mendukung CORS: Cloudflare & Google. Tanpa backend proxy.
  */
 
@@ -87,7 +87,7 @@ export function typeName(t: number): string {
 /** Susunan hostname dari IP (untuk PTR). */
 export function reverseName(ip: string): string {
   if (ip.includes(':')) {
-    // IPv6 — implementasi sederhana untuk bentuk penuh
+    // IPv6. implementasi sederhana untuk bentuk penuh
     const groups = ip.replace(/^::/, '0:').replace(/::$/, ':0').split(':');
     const out: string[] = [];
     for (const g of groups) {

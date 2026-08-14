@@ -1,7 +1,7 @@
 /**
- * Tipe data modul OSINT — terisolasi dari fitur lain, data-driven registry.
+ * Tipe data modul OSINT. terisolasi dari fitur lain, data-driven registry.
  * Semua tool berjalan client-side; integrasi eksternal hanya ke API publik
- * yang mendukung CORS (DoH, ipwho.is) — tanpa secret/key di frontend.
+ * yang mendukung CORS (DoH, ipwho.is). tanpa secret/key di frontend.
  */
 
 export type OsintCategoryId =
@@ -31,7 +31,7 @@ export interface OsintCategoryMeta {
 }
 
 export interface OsintToolMeta {
-  /** id unik — sekaligus slug route `/osint/<id>`. */
+  /** id unik. sekaligus slug route `/osint/<id>`. */
   id: string;
   title: string;
   description: string;

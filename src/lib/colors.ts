@@ -1,5 +1,5 @@
 /**
- * Warna per folder level-1 (skill) — dipakai konsisten di graph,
+ * Warna per folder level-1 (skill). dipakai konsisten di graph,
  * roadmap, dan legenda. Folder baru otomatis mendapat warna fallback.
  */
 export const FOLDER_COLORS: Record<string, string> = {

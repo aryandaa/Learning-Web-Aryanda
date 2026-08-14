@@ -22,7 +22,7 @@ function readStoredTheme(): Theme {
     const saved = window.localStorage.getItem(STORAGE_KEY);
     if (saved === 'light' || saved === 'dark') return saved;
   } catch {
-    /* localStorage tidak tersedia — pakai default dark */
+    /* localStorage tidak tersedia. pakai default dark */
   }
   return 'dark';
 }

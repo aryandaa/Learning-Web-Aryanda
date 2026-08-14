@@ -1,5 +1,5 @@
 /**
- * Recent OSINT tools — localStorage. Tanpa backend.
+ * Recent OSINT tools (local)Storage. Tanpa backend.
  */
 
 import { useCallback, useEffect, useState } from 'react';

@@ -1,5 +1,5 @@
 /**
- * FileAnalyzer — kerangka generik untuk tool analisis file:
+ * FileAnalyzer. kerangka generik untuk tool analisis file:
  * upload → baca ArrayBuffer → analyze(bytes, file) → hasil render.
  * Menampilkan badge "diproses lokal" dan warning file besar.
  */

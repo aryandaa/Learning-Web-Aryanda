@@ -1,5 +1,5 @@
 /**
- * DNS Analyzer — DNS-over-HTTPS (Cloudflare/Google), multi-record.
+ * DNS Analyzer. DNS-over-HTTPS (Cloudflare/Google), multi-record.
  */
 
 import { useState } from 'react';
@@ -126,7 +126,7 @@ function DnsAnalyzerTool() {
       </Panel>
 
       <Notice tone="info">
-        Query DNS dikirim ke resolver DoH publik pilihan Anda (Cloudflare/Google) — bukan ke server kami. Ini adalah
+        Query DNS dikirim ke resolver DoH publik pilihan Anda (Cloudflare/Google). bukan ke server kami. Ini adalah
         layanan publik yang mendukung akses browser. PTR membutuhkan alamat reverse (mis. 8.8.8.8.in-addr.arpa).
       </Notice>
 
@@ -158,7 +158,7 @@ function DnsAnalyzerTool() {
                     <td className="px-2 py-1 font-mono text-xs text-slate-400">{r.record}</td>
                     <td className="px-2 py-1 font-mono text-xs text-indigo-300">{r.type}</td>
                     <td className="break-all px-2 py-1 font-mono text-xs text-slate-200">{r.value}</td>
-                    <td className="px-2 py-1 font-mono text-xs text-slate-500">{r.ttl || '—'}</td>
+                    <td className="px-2 py-1 font-mono text-xs text-slate-500">{r.ttl || '-'}</td>
                   </tr>
                 ))}
               </tbody>

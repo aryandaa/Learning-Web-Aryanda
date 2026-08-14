@@ -29,7 +29,7 @@ function ancestorsOf(nodes: TreeNode[], id: string, trail: string[] = []): strin
 
 /**
  * Sidebar dokumentasi recursive, dibangun dari tree.json (spec §34).
- * Tidak ada folder yang di-hardcode — semuanya berasal dari Obsidian.
+ * Tidak ada folder yang di-hardcode. semuanya berasal dari Obsidian.
  */
 export function TreeExplorer({ nodes, activeId, variant = 'sidebar', className, onNavigate }: TreeExplorerProps) {
   const autoExpand = useMemo(

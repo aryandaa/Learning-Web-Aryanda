@@ -144,7 +144,7 @@ export class LinkLookup {
     return { kind: 'broken', raw };
   }
 
-  /** Resolves `![[embed]]` — image, note, or unsupported asset. */
+  /** Resolves `![[embed]]`. image, note, or unsupported asset. */
   resolveEmbed(raw: string, from?: NoteRecord): LinkTarget {
     const [pathPart = '', section = ''] = raw.split('#');
     const target = pathPart.trim();
@@ -165,7 +165,7 @@ export class LinkLookup {
       return this.assetTarget(chosen.relativePath, chosen.isImage);
     }
 
-    // Not an asset — maybe an embedded note.
+    // Not an asset. maybe an embedded note.
     const note = this.resolveWiki(target, from);
     if (note.kind === 'note') return note;
     return { kind: 'broken', raw };

@@ -1,5 +1,5 @@
 /**
- * Katalog terpadu CySec Tools — menyatukan kategori/tool CySec dan kategori OSINT
+ * Katalog terpadu CySec Tools. menyatukan kategori/tool CySec dan kategori OSINT
  * dalam satu sumber data (data-driven). Landing, category pages, dan search
  * memakai modul ini. Tool OSINT tetap di route /osint/:toolId (tidak dipindah).
  */
@@ -32,25 +32,7 @@ export interface CatalogEntry {
   osint?: boolean;
 }
 
-/** Keanggotaan kategori baru (hash/file-metadata/malware/utilities) — data-driven,
- *  tidak mengubah `category` tool existing (tetap backward-compatible). */
-const EXTRA_CATEGORY_TOOLS: Record<string, string[]> = {
-  hash: ['hash-generator', 'hmac', 'pbkdf2', 'sha3', 'file-hash'],
-  'file-metadata': [
-    'metadata', 'file-hash', 'file-signature', 'mime', 'file-hex', 'strings',
-    'entropy', 'exif', 'pdf-metadata', 'zip-metadata', 'file-compare', 'timestamp',
-  ],
-  malware: [
-    'strings', 'entropy', 'file-signature', 'hex-viewer', 'byte-frequency',
-    'pe-viewer', 'elf-viewer', 'macho-viewer', 'printable-strings', 'xor-analyzer',
-  ],
-  utilities: [
-    'base64', 'base32', 'base16', 'url-encoder', 'ascii-hex', 'binary-text',
-    'decimal-hex', 'uuid', 'random-bytes', 'timestamp', 'integer-converter',
-    'endianness', 'binary-hex', 'ascii-table', 'port-reference', 'cidr', 'subnet',
-    'ip-converter', 'unicode-analyzer', 'unicode-table',
-  ],
-};
+/** Keanggotaan kategori bersifat canonical: satu tool = satu category. */
 
 function entryFromCysecTool(t: ToolMeta, categoryName: string): CatalogEntry {
   return {
@@ -82,28 +64,15 @@ function entryFromOsintTool(t: OsintToolMeta): CatalogEntry {
   };
 }
 
-/** Daftar tool untuk satu kategori (CySec + OSINT). */
+/** Daftar tool untuk satu kategori (canonical, tanpa duplikasi). */
 export function catalogEntries(categoryId: string): CatalogEntry[] {
   if (categoryId === 'osint') {
     return allOsintTools().map(entryFromOsintTool).sort((a, b) => a.title.localeCompare(b.title));
   }
   const cat = getCategory(categoryId);
-  const extraIds = EXTRA_CATEGORY_TOOLS[categoryId] ?? [];
-  const seen = new Set<string>();
-  const out: CatalogEntry[] = [];
-  for (const t of toolsInCategory(categoryId as ToolCategoryId)) {
-    if (seen.has(t.id)) continue;
-    seen.add(t.id);
-    out.push(entryFromCysecTool(t, cat.name));
-  }
-  for (const id of extraIds) {
-    const t = getTool(id);
-    if (t && !seen.has(t.id)) {
-      seen.add(t.id);
-      out.push(entryFromCysecTool(t, cat.name));
-    }
-  }
-  return out.sort((a, b) => a.title.localeCompare(b.title));
+  return toolsInCategory(categoryId as ToolCategoryId)
+    .map((t) => entryFromCysecTool(t, cat.name))
+    .sort((a, b) => a.title.localeCompare(b.title));
 }
 
 /** Kartu kategori dengan jumlah tool (hanya kategori yang punya tool). */

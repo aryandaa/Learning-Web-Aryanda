@@ -1,6 +1,6 @@
 /**
- * Metadata intelligence — bungkus parser cysec (EXIF/PDF/ZIP) + PNG tEXt
- * chunks + Office core.xml (docx/xlsx) — semua lokal.
+ * Metadata intelligence. bungkus parser cysec (EXIF/PDF/ZIP) + PNG tEXt
+ * chunks + Office core.xml (docx/xlsx). semua lokal.
  */
 
 import { collectFileInfo, parseExif, parsePdfMetadata, parseZipListing, formatDate } from '../../cysec-tools/utils/files';
@@ -83,7 +83,7 @@ export function extractPngTextChunks(bytes: Uint8Array): PngTextChunk[] {
         p += 4 + langLen + transLen;
         if (p < dataStart + len) {
           const value = readAscii(bytes, p, dataStart + len - p);
-          out.push({ keyword, text: compFlag === 0 ? value : '(compressed — belum di-decompress)' });
+          out.push({ keyword, text: compFlag === 0 ? value : '(compressed. belum di-decompress)' });
         }
       }
     }

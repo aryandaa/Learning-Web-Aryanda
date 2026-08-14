@@ -97,7 +97,7 @@ export type TreeFileNode = {
   id: string;
   relativePath: string;
   outputPath: string;
-  /** File bertag #roadmap — rujukan urutan belajar folder ini. */
+  /** File bertag #roadmap. rujukan urutan belajar folder ini. */
   isRoadmap?: boolean;
 };
 

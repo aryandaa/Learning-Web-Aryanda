@@ -107,7 +107,7 @@ function buildBranchTree(roadmap: RoadmapInfo, graph: GraphData): BranchNode {
 /**
  * Detail roadmap BERCABANG: pohon vertikal dengan garis penghubung.
  * Kotak bernomor = langkah (urut atas→bawah); kotak kecil di bawahnya =
- * file yang dirujuk langkah itu — makin dalam, makin detail materi.
+ * file yang dirujuk langkah itu. makin dalam, makin detail materi.
  */
 export function BranchTree({ roadmap, graph }: BranchTreeProps) {
   const tree = useMemo(() => buildBranchTree(roadmap, graph), [roadmap, graph]);

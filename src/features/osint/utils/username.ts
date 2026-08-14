@@ -1,5 +1,5 @@
 /**
- * Username OSINT — daftar platform publik + template URL profil.
+ * Username OSINT. daftar platform publik + template URL profil.
  * Tidak ada pengecekan otomatis/scraping; status selalu manual.
  */
 
@@ -15,7 +15,7 @@ export const USERNAME_PLATFORMS: UsernamePlatform[] = [
   { name: 'GitLab', urlTemplate: 'https://gitlab.com/{username}', category: 'code' },
   { name: 'Reddit', urlTemplate: 'https://www.reddit.com/user/{username}', category: 'social', note: 'Komentar & postingan publik.' },
   { name: 'X (Twitter)', urlTemplate: 'https://x.com/{username}', category: 'social' },
-  { name: 'Mastodon', urlTemplate: 'https://mastodon.social/@{username}', category: 'social', note: 'Instance bervariasi — cek juga di server lain.' },
+  { name: 'Mastodon', urlTemplate: 'https://mastodon.social/@{username}', category: 'social', note: 'Instance bervariasi. cek juga di server lain.' },
   { name: 'Keybase', urlTemplate: 'https://keybase.io/{username}', category: 'tech', note: 'Verifikasi identitas kriptografis.' },
   { name: 'Dev.to', urlTemplate: 'https://dev.to/{username}', category: 'code' },
   { name: 'Medium', urlTemplate: 'https://medium.com/@{username}', category: 'tech' },

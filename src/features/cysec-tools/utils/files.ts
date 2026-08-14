@@ -37,7 +37,7 @@ export function formatBytes(n: number): string {
 
 export function formatDate(ms: number): string {
   const d = new Date(ms);
-  if (Number.isNaN(d.getTime())) return '—';
+  if (Number.isNaN(d.getTime())) return '-';
   return d.toISOString().replace('T', ' ').replace(/\.\d{3}Z$/, ' UTC');
 }
 

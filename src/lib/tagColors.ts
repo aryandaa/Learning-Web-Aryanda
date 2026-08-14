@@ -69,7 +69,7 @@ export const TAG_COLOR_CLASSES: Record<TagColorName, string> = {
 
 /* ============================================================
    Tag khusus (meta): roadmap, subskill, myskill, latihan.
-   Tampil sebagai badge tersendiri — berbeda dari tag topik biasa.
+   Tampil sebagai badge tersendiri. berbeda dari tag topik biasa.
    ============================================================ */
 export const SPECIAL_TAGS = ['roadmap', 'subskill', 'myskill', 'latihan'] as const;
 

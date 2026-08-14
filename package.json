@@ -10,7 +10,8 @@
     "parse": "tsx scripts/parse-docs.ts",
     "check": "tsc --noEmit",
     "cysec:check": "tsx scripts/cysec-selfcheck.ts",
-    "osint:check": "tsx scripts/osint-selfcheck.ts"
+    "osint:check": "tsx scripts/osint-selfcheck.ts",
+    "validate": "tsx scripts/validate-registry.ts"
   },
   "dependencies": {
     "d3-force": "^3.0.0",

@@ -1,5 +1,5 @@
 /**
- * TransformTool — kerangka generik untuk tool encode/decode/cipher.
+ * TransformTool. kerangka generik untuk tool encode/decode/cipher.
  * Menyediakan: input, opsi key (opsional), aksi encode/decode/swap,
  * output, copy/clear/download, dan dukungan file input bila relevan.
  */
@@ -33,7 +33,7 @@ export interface TransformConfig {
   title: string;
   description: string;
   placeholder?: string;
-  /** transform(input, keyValues, meta) — throw Error bila input tidak valid */
+  /** transform(input, keyValues, meta). throw Error bila input tidak valid */
   encode: (input: string, keys: Record<string, string>, meta: { file: LoadedFile | null }) => string | Promise<string>;
   decode: (input: string, keys: Record<string, string>, meta: { file: LoadedFile | null }) => string | Promise<string>;
   keyFields?: KeyField[];
@@ -72,7 +72,7 @@ export function TransformTool(config: TransformConfig) {
           : bytesToHex(file.bytes);
       }
       if (!effectiveInput.trim()) {
-        setError('Input kosong — masukkan data terlebih dahulu.');
+        setError('Input kosong. masukkan data terlebih dahulu.');
         setOutput('');
         return;
       }
@@ -132,7 +132,7 @@ export function TransformTool(config: TransformConfig) {
             <FileDrop
               multiple={false}
               onFiles={(files) => setFile(files[0] ?? null)}
-              hint="File dibaca lokal (ArrayBuffer) — tidak di-upload."
+              hint="File dibaca lokal (ArrayBuffer). tidak di-upload."
             />
           )}
           {!config.fileInput && (

@@ -30,14 +30,14 @@ export interface JwtResult {
 }
 
 const JWT_CLAIM_MEANING: Record<string, string> = {
-  iss: 'Issuer — siapa yang menerbitkan token',
-  sub: 'Subject — pemilik token (user id)',
-  aud: 'Audience — siapa yang boleh menerima token',
-  exp: 'Expiration — token kedaluwarsa (Unix seconds)',
-  nbf: 'Not Before — token berlaku mulai',
-  iat: 'Issued At — waktu token diterbitkan',
-  jti: 'JWT ID — identifier unik token',
-  nonce: 'Nonce — anti-replay untuk OpenID Connect',
+  iss: 'Issuer. siapa yang menerbitkan token',
+  sub: 'Subject. pemilik token (user id)',
+  aud: 'Audience. siapa yang boleh menerima token',
+  exp: 'Expiration. token kedaluwarsa (Unix seconds)',
+  nbf: 'Not Before. token berlaku mulai',
+  iat: 'Issued At. waktu token diterbitkan',
+  jti: 'JWT ID. identifier unik token',
+  nonce: 'Nonce. anti-replay untuk OpenID Connect',
   azp: 'Authorized Party',
   scope: 'Scope / otorisasi',
   email: 'Email user',
@@ -68,7 +68,7 @@ export function parseJwt(token: string): JwtResult {
   }
   const alg = String(header.alg ?? '');
   if (!alg) warnings.push('Claim "alg" tidak ada di header.');
-  if (alg === 'none') warnings.push('Peringatan keamanan: algoritma "none" — token tidak terverifikasi. Jangan terima di produksi.');
+  if (alg === 'none') warnings.push('Peringatan keamanan: algoritma "none". token tidak terverifikasi. Jangan terima di produksi.');
   if (header.typ && header.typ !== 'JWT') warnings.push(`Header typ="${header.typ}" (bukan standar JWT).`);
 
   const claims: JwtClaimInfo[] = [];
@@ -81,7 +81,7 @@ export function parseJwt(token: string): JwtResult {
       if (!Number.isNaN(num)) {
         value = `${num} (${new Date(num * 1000).toISOString()})`;
         if (k === 'exp' && num < now) warnings.push('Token sudah kedaluwarsa (exp < now).');
-        if (k === 'exp' && num > now) meaning = `${JWT_CLAIM_MEANING[k]} — masih valid (${Math.floor((num - now) / 60)} menit lagi)`;
+        if (k === 'exp' && num > now) meaning = `${JWT_CLAIM_MEANING[k]}. masih valid (${Math.floor((num - now) / 60)} menit lagi)`;
         if (k === 'nbf' && num > now) warnings.push('Token belum berlaku (nbf > now).');
       }
     }
@@ -90,7 +90,7 @@ export function parseJwt(token: string): JwtResult {
 
   const result: JwtResult = { valid: true, header, payload, signature: parts[2], algorithm: alg, claims, warnings, signatureValid: null };
 
-  // Verifikasi HS* bila secret dimasukkan — dipanggil terpisah (async).
+  // Verifikasi HS* bila secret dimasukkan. dipanggil terpisah (async).
   return result;
 }
 
@@ -148,9 +148,9 @@ export function parseCookies(raw: string): CookieInfo[] {
     const flags = parts.slice(1).map((p) => p.trim()).filter(Boolean);
     const issues: string[] = [];
     if (isSetCookie) {
-      if (!flags.some((f) => /^httponly/i.test(f))) issues.push('HttpOnly tidak diset — cookie bisa diakses JavaScript (XSS risk).');
-      if (!flags.some((f) => /^secure/i.test(f))) issues.push('Secure tidak diset — cookie bisa dikirim lewat HTTP polos.');
-      if (!flags.some((f) => /^samesite/i.test(f))) issues.push('SameSite tidak diset — default Lax di browser modern, tapi sebaiknya eksplisit.');
+      if (!flags.some((f) => /^httponly/i.test(f))) issues.push('HttpOnly tidak diset. cookie bisa diakses JavaScript (XSS risk).');
+      if (!flags.some((f) => /^secure/i.test(f))) issues.push('Secure tidak diset. cookie bisa dikirim lewat HTTP polos.');
+      if (!flags.some((f) => /^samesite/i.test(f))) issues.push('SameSite tidak diset. default Lax di browser modern, tapi sebaiknya eksplisit.');
       if (flags.some((f) => /^samesite=none/i.test(f))) issues.push('SameSite=None membutuhkan Secure (browser menolak tanpa Secure).');
     }
     cookies.push({ name, value: value || '(kosong)', flags, issues });
@@ -281,7 +281,7 @@ export function analyzeCsp(policy: string): CspAnalysis {
       score -= 15;
     }
     if (value.includes("'unsafe-eval'")) {
-      dirIssues.push("'unsafe-eval' mengizinkan eval() — risiko code injection.");
+      dirIssues.push("'unsafe-eval' mengizinkan eval(). risiko code injection.");
       score -= 10;
     }
     if (value === '*' || /^\*($|\s)/.test(value)) {
@@ -289,21 +289,21 @@ export function analyzeCsp(policy: string): CspAnalysis {
       score -= 8;
     }
     if (name === 'default-src' && value.includes("'none'")) {
-      dirIssues.push("'none' memblokir semua — pastikan directive lain mengizinkan yang dibutuhkan.");
+      dirIssues.push("'none' memblokir semua. pastikan directive lain mengizinkan yang dibutuhkan.");
     }
     if (name === 'script-src' && !value.includes("'nonce-") && !value.includes("'sha256-") && !value.includes("'sha384-") && !value.includes("'sha512-")) {
-      dirIssues.push('Tidak ada nonce/hash — inline script akan diblokir (baik) atau butuh unsafe-inline (buruk).');
+      dirIssues.push('Tidak ada nonce/hash. inline script akan diblokir (baik) atau butuh unsafe-inline (buruk).');
     }
     directives.push({ name, value: value || '(kosong)', issues: dirIssues });
   }
 
   if (!/default-src/i.test(text)) {
-    issues.push('Directive default-src tidak ada — fallback ke allow-all di browser lama.');
+    issues.push('Directive default-src tidak ada. fallback ke allow-all di browser lama.');
     score -= 10;
   }
   if (!/script-src/i.test(text)) issues.push('script-src tidak ada (fallback ke default-src).');
-  if (!/object-src/i.test(text)) issues.push('object-src tidak ada — pertimbangkan "object-src \'none\'".');
-  if (!/base-uri/i.test(text)) issues.push('base-uri tidak diset — pertimbangkan "base-uri \'self\'".');
+  if (!/object-src/i.test(text)) issues.push('object-src tidak ada. pertimbangkan "object-src \'none\'".');
+  if (!/base-uri/i.test(text)) issues.push('base-uri tidak diset. pertimbangkan "base-uri \'self\'".');
   if (/frame-ancestors/i.test(text) && /frame-ancestors.*\*/.test(text)) {
     issues.push('frame-ancestors * mengizinkan clickjacking.');
     score -= 10;
@@ -343,7 +343,7 @@ export function analyzeCors(raw: string): CorsAnalysis {
   let score = 100;
 
   if (!allowOrigin) {
-    issues.push('Access-Control-Allow-Origin tidak ada — browser akan memblokir akses cross-origin (aman secara default).');
+    issues.push('Access-Control-Allow-Origin tidak ada. browser akan memblokir akses cross-origin (aman secara default).');
     score = 60;
   }
   if (allowOrigin === '*') {
@@ -357,7 +357,7 @@ export function analyzeCors(raw: string): CorsAnalysis {
     }
   }
   if (allowCredentials.toLowerCase() === 'true' && allowOrigin && allowOrigin !== '*') {
-    if (/\/\//.test(allowOrigin) && /null/i.test(allowOrigin)) issues.push('Origin "null" (file:// / sandbox) — bisa dimanfaatkan attacker.');
+    if (/\/\//.test(allowOrigin) && /null/i.test(allowOrigin)) issues.push('Origin "null" (file:// / sandbox). bisa dimanfaatkan attacker.');
   }
   if (allowMethods && /(GET|POST|PUT|DELETE|PATCH|OPTIONS)/i.test(allowMethods)) {
     const dangerous = ['TRACE', 'TRACK'].filter((m) => new RegExp(m, 'i').test(allowMethods));
@@ -386,24 +386,24 @@ export function checkSecurityHeaders(raw: string): { checks: SecurityHeaderCheck
   };
   const checks: SecurityHeaderCheck[] = [];
   const add = (name: string, present: boolean, value: string, status: SecurityHeaderCheck['status'], note: string) =>
-    checks.push({ name, present, value: value || '—', status, note });
+    checks.push({ name, present, value: value || '-', status, note });
 
   let score = 0;
   const csp = get('content-security-policy');
-  add('Content-Security-Policy', !!csp, csp, csp ? 'ok' : 'warn', csp ? 'CSP diset.' : 'CSP tidak diset — mitigasi XSS utama hilang.');
+  add('Content-Security-Policy', !!csp, csp, csp ? 'ok' : 'warn', csp ? 'CSP diset.' : 'CSP tidak diset. mitigasi XSS utama hilang.');
 
   const hsts = get('strict-transport-security');
   const hstsGood = !!hsts && /max-age=\d{6,}/i.test(hsts);
-  add('Strict-Transport-Security', !!hsts, hsts, hstsGood ? 'ok' : hsts ? 'warn' : 'bad', hstsGood ? 'HSTS dengan max-age ≥ 1.000.000.' : hsts ? 'HSTS ada tapi max-age pendek / tanpa includeSubDomains.' : 'HSTS tidak diset — risiko downgrade ke HTTP.');
+  add('Strict-Transport-Security', !!hsts, hsts, hstsGood ? 'ok' : hsts ? 'warn' : 'bad', hstsGood ? 'HSTS dengan max-age ≥ 1.000.000.' : hsts ? 'HSTS ada tapi max-age pendek / tanpa includeSubDomains.' : 'HSTS tidak diset. risiko downgrade ke HTTP.');
 
   const xfo = get('x-frame-options');
-  add('X-Frame-Options', !!xfo, xfo, /deny|sameorigin/i.test(xfo) ? 'ok' : xfo ? 'warn' : 'warn', xfo ? 'X-Frame-Options diset.' : 'X-Frame-Options tidak diset — pertimbangkan frame-ancestors CSP.');
+  add('X-Frame-Options', !!xfo, xfo, /deny|sameorigin/i.test(xfo) ? 'ok' : xfo ? 'warn' : 'warn', xfo ? 'X-Frame-Options diset.' : 'X-Frame-Options tidak diset. pertimbangkan frame-ancestors CSP.');
 
   const xcto = get('x-content-type-options');
-  add('X-Content-Type-Options', !!xcto, xcto, /nosniff/i.test(xcto) ? 'ok' : 'warn', xcto ? 'nosniff diset.' : 'Tidak diset — risiko MIME sniffing.');
+  add('X-Content-Type-Options', !!xcto, xcto, /nosniff/i.test(xcto) ? 'ok' : 'warn', xcto ? 'nosniff diset.' : 'Tidak diset. risiko MIME sniffing.');
 
   const rp = get('referrer-policy');
-  add('Referrer-Policy', !!rp, rp, rp ? 'ok' : 'info', rp ? 'Referrer-Policy diset.' : 'Tidak diset — default bervariasi per browser.');
+  add('Referrer-Policy', !!rp, rp, rp ? 'ok' : 'info', rp ? 'Referrer-Policy diset.' : 'Tidak diset. default bervariasi per browser.');
 
   const pp = get('permissions-policy');
   add('Permissions-Policy', !!pp, pp, pp ? 'ok' : 'info', pp ? 'Permissions-Policy diset.' : 'Tidak diset.');
@@ -413,14 +413,14 @@ export function checkSecurityHeaders(raw: string): { checks: SecurityHeaderCheck
 
   const cookies = parseCookies(raw);
   const hasCookies = cookies.length > 0;
-  add('Cookie Flags (HttpOnly/Secure)', hasCookies, hasCookies ? `${cookies.length} cookie ditemukan` : '—', hasCookies ? (cookies.some((c) => c.issues.length === 0) ? 'ok' : 'warn') : 'info',
+  add('Cookie Flags (HttpOnly/Secure)', hasCookies, hasCookies ? `${cookies.length} cookie ditemukan` : '-', hasCookies ? (cookies.some((c) => c.issues.length === 0) ? 'ok' : 'warn') : 'info',
     hasCookies ? (cookies.every((c) => c.issues.length === 0) ? 'Semua cookie sudah berflag aman.' : 'Beberapa cookie kehilangan flag keamanan.') : 'Tidak ada cookie pada input.');
 
   const server = get('server');
   add('Server Header', !!server, server, server ? 'info' : 'info', server ? 'Hindari versi detail pada header Server (information disclosure).' : 'Server header tidak ada.');
 
   const xPowered = get('x-powered-by');
-  add('X-Powered-By', !!xPowered, xPowered, xPowered ? 'bad' : 'ok', xPowered ? 'X-Powered-By membocorkan teknologi — sebaiknya dihapus.' : 'Tidak ada (baik).');
+  add('X-Powered-By', !!xPowered, xPowered, xPowered ? 'bad' : 'ok', xPowered ? 'X-Powered-By membocorkan teknologi. sebaiknya dihapus.' : 'Tidak ada (baik).');
 
   const weight: Record<SecurityHeaderCheck['status'], number> = { ok: 12.5, warn: 6, bad: 0, info: 4 };
   score = Math.round(checks.reduce((acc, c) => acc + weight[c.status], 0) / checks.length * 10) / 10;
@@ -445,12 +445,12 @@ export function analyzeSqliPayload(input: string): PatternFinding[] {
     findings.push({ pattern, description, severity, examples, encoded: false });
 
   if (/'|"|`/.test(input)) add('Quote injection', 'Kutipan dapat mengubah struktur query SQL.', 'medium', ["' OR '1'='1", "\" OR 1=1 --"]);
-  if (/\b(union\s+select|union\s+all\s+select)\b/i.test(input)) add('UNION SELECT', 'Menggabungkan hasil query — umum untuk ekstraksi data.', 'high', ['UNION SELECT username,password FROM users']);
-  if (/\b(or|and)\s+1\s*=\s*1\b/i.test(input)) add('Boolean tautology', 'Kondisi selalu benar — melewati autentikasi.', 'high', ["' OR 1=1 --", "AND 1=1"]);
-  if (/\b(or|and)\s+1\s*=\s*2\b/i.test(input)) add('Boolean false', 'Bandingkan respons true/false — teknik blind SQLi.', 'medium', ["' AND 1=2 --"]);
+  if (/\b(union\s+select|union\s+all\s+select)\b/i.test(input)) add('UNION SELECT', 'Menggabungkan hasil query. umum untuk ekstraksi data.', 'high', ['UNION SELECT username,password FROM users']);
+  if (/\b(or|and)\s+1\s*=\s*1\b/i.test(input)) add('Boolean tautology', 'Kondisi selalu benar. melewati autentikasi.', 'high', ["' OR 1=1 --", "AND 1=1"]);
+  if (/\b(or|and)\s+1\s*=\s*2\b/i.test(input)) add('Boolean false', 'Bandingkan respons true/false. teknik blind SQLi.', 'medium', ["' AND 1=2 --"]);
   if (/--|#|\/\*/i.test(input)) add('Comment injection', 'Mengomentari sisa query.', 'medium', ["' --", "'#", "1; DROP TABLE users--"]);
   if (/;\s*\w+/.test(input)) add('Stacked queries', 'Menambahkan query baru setelah pemisah titik koma.', 'high', ["'; DROP TABLE users;--"]);
-  if (/\b(sleep|benchmark|pg_sleep|waitfor\s+delay)\b/i.test(input)) add('Time-based', 'Penundaan respons — teknik blind SQLi berbasis waktu.', 'medium', ["' AND SLEEP(5)--"]);
+  if (/\b(sleep|benchmark|pg_sleep|waitfor\s+delay)\b/i.test(input)) add('Time-based', 'Penundaan respons. teknik blind SQLi berbasis waktu.', 'medium', ["' AND SLEEP(5)--"]);
   if (/information_schema|sys\.|master\.|sqlite_|pg_/i.test(input)) add('Meta tables', 'Query tabel sistem untuk enumerasi skema.', 'medium', ['information_schema.tables', 'sqlite_master']);
   if (/\b(load_file|into\s+outfile|exec\s|xp_cmdshell)\b/i.test(input)) add('File/system access', 'Fungsi baca file atau eksekusi perintah (jika diizinkan DB).', 'high', ["LOAD_FILE('/etc/passwd')", "xp_cmdshell('whoami')"]);
   if (/0x[0-9a-f]{8,}/i.test(input)) add('Hex-encoded payload', 'Data di-encode hex untuk menghindari filter.', 'medium', ["0x6f7220313d31"]);
@@ -502,7 +502,7 @@ export function analyzeUrl(url: string): UrlAnalysis {
   try {
     parsed = new URL(url);
   } catch {
-    return { valid: false, error: 'URL tidak valid — pastikan mengandung scheme (mis. https://example.com).', components: [], issues: [] };
+    return { valid: false, error: 'URL tidak valid. pastikan mengandung scheme (mis. https://example.com).', components: [], issues: [] };
   }
   const components: UrlAnalysis['components'] = [
     { name: 'Scheme', value: parsed.protocol.replace(':', '') },
@@ -515,17 +515,17 @@ export function analyzeUrl(url: string): UrlAnalysis {
     { name: 'Origin', value: parsed.origin },
   ];
 
-  if (parsed.protocol === 'http:') issues.push('Menggunakan HTTP polos — data tidak terenkripsi. Gunakan HTTPS.');
-  if (parsed.protocol === 'javascript:') issues.push('Scheme javascript: — eksekusi kode, jangan pernah arahkan pengguna ke ini.');
-  if (parsed.protocol === 'data:') issues.push('Scheme data: — bisa menyamar sebagai file; waspadai phishing.');
-  if (parsed.username || parsed.password) issues.push('Userinfo pada URL (user:pass@) — informasi kredensial dalam URL bocor ke log.');
-  if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') issues.push('Host lokal — SSRF risk bila URL dikontrol attacker dan di-fetch server-side.');
-  if (/^\d+\.\d+\.\d+\.\d+$/.test(parsed.hostname)) issues.push('Host berupa IP literal — verifikasi apakah ini diharapkan.');
-  if (parsed.pathname.includes('..')) issues.push('Path mengandung ".." — potensi path traversal.');
-  if (/%0[0-9a-f]|%2e|%2f/i.test(url)) issues.push('Path mengandung encoding berbahaya (%2e, %2f, %00…) — potensi filter bypass.');
-  if (/\\/.test(url)) issues.push('URL mengandung backslash — beberapa parser memperlakukannya sebagai separator host.');
-  if (/@/.test(url) && !parsed.username) issues.push('Karakter @ tanpa userinfo — bisa jadi teknik spoofing host (https://trusted.com@evil.example).');
-  if (/^https?:\/\/([^/]+)\/\/[^/]+/.test(url)) issues.push('Path dimulai // setelah host — pola umum open redirect.');
+  if (parsed.protocol === 'http:') issues.push('Menggunakan HTTP polos. data tidak terenkripsi. Gunakan HTTPS.');
+  if (parsed.protocol === 'javascript:') issues.push('Scheme javascript:. eksekusi kode, jangan pernah arahkan pengguna ke ini.');
+  if (parsed.protocol === 'data:') issues.push('Scheme data:. bisa menyamar sebagai file; waspadai phishing.');
+  if (parsed.username || parsed.password) issues.push('Userinfo pada URL (user:pass@). informasi kredensial dalam URL bocor ke log.');
+  if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') issues.push('Host lokal. SSRF risk bila URL dikontrol attacker dan di-fetch server-side.');
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(parsed.hostname)) issues.push('Host berupa IP literal. verifikasi apakah ini diharapkan.');
+  if (parsed.pathname.includes('..')) issues.push('Path mengandung "..". potensi path traversal.');
+  if (/%0[0-9a-f]|%2e|%2f/i.test(url)) issues.push('Path mengandung encoding berbahaya (%2e, %2f, %00…). potensi filter bypass.');
+  if (/\\/.test(url)) issues.push('URL mengandung backslash. beberapa parser memperlakukannya sebagai separator host.');
+  if (/@/.test(url) && !parsed.username) issues.push('Karakter @ tanpa userinfo. bisa jadi teknik spoofing host (https://trusted.com@evil.example).');
+  if (/^https?:\/\/([^/]+)\/\/[^/]+/.test(url)) issues.push('Path dimulai // setelah host. pola umum open redirect.');
   if (!parsed.search && !parsed.hash && parsed.pathname.endsWith('/') === false) {
     // ok
   }
@@ -581,15 +581,15 @@ export function normalizeUrl(url: string): { original: string; normalized: strin
 
 export function analyzeOpenRedirect(url: string): { risky: boolean; reasons: string[] } {
   const reasons: string[] = [];
-  if (/^\/\//.test(url)) reasons.push('Path dimulai // — interpretasi sebagai host baru oleh browser.');
+  if (/^\/\//.test(url)) reasons.push('Path dimulai //. interpretasi sebagai host baru oleh browser.');
   if (/^https?:\/\//.test(url) && !/^https?:\/\/(trusted|example|localhost)/.test(url)) {
-    reasons.push('URL eksternal penuh — verifikasi whitelist host.');
+    reasons.push('URL eksternal penuh. verifikasi whitelist host.');
   }
   if (/(\\)/.test(url)) reasons.push('Backslash bisa menjadi separator host di beberapa parser.');
-  if (/^javascript:/i.test(url)) reasons.push('Scheme javascript: — eksekusi kode.');
-  if (/^data:/i.test(url)) reasons.push('Scheme data: — konten inline.');
+  if (/^javascript:/i.test(url)) reasons.push('Scheme javascript:. eksekusi kode.');
+  if (/^data:/i.test(url)) reasons.push('Scheme data:. konten inline.');
   if (/^vbscript:/i.test(url)) reasons.push('Scheme vbscript: (IE legacy).');
-  if (/\/\/[^/]+\.[^/]+/.test(url) && /[?&#]/.test(url)) reasons.push('URL tujuan di parameter query — periksa apakah di-whitelist.');
+  if (/\/\/[^/]+\.[^/]+/.test(url) && /[?&#]/.test(url)) reasons.push('URL tujuan di parameter query. periksa apakah di-whitelist.');
   if (/%2f|%2e|%5c/i.test(url)) reasons.push('Encoding (%2f, %5c) bisa melewati filter redirect.');
   return { risky: reasons.length > 0, reasons };
 }
@@ -602,8 +602,8 @@ export function analyzePathTraversal(input: string): { found: boolean; patterns:
     [/%2e%2e%2f/gi, 'Encoded URL (%2e%2e%2f)'],
     [/%2e%2e%5c/gi, 'Encoded backslash (%2e%2e%5c)'],
     [/\.\.%2f/gi, 'Parsial encoded (..%2f)'],
-    [/%252e%252e%252f/gi, 'Double-encoded (%252e…) — filter bypass'],
-    [/%00/g, 'Null byte (%00) — truncation di aplikasi C-based'],
+    [/%252e%252e%252f/gi, 'Double-encoded (%252e…). filter bypass'],
+    [/%00/g, 'Null byte (%00). truncation di aplikasi C-based'],
     [/\/(etc|proc|windows|boot)($|\/)/i, 'Path sistem sensitif (/etc, /proc, C:\\Windows)'],
     [/\.(php|asp|jsp|exe|conf|passwd|shadow|ini)(\?|$)/i, 'File sensitif umum'],
   ];

@@ -1,5 +1,5 @@
 /**
- * Komponen UI bersama OSINT — konsisten dengan visual Learning-Web/CySec Tools.
+ * Komponen UI bersama OSINT. konsisten dengan visual Learning-Web/CySec Tools.
  */
 
 import { ExternalLink, Lock } from 'lucide-react';
@@ -22,9 +22,9 @@ export function PrivacyIndicator({ privacy, note }: { privacy: OsintPrivacy; not
         )}
       >
         <Lock className="h-3 w-3" />
-        {privacy === 'local' ? 'LOCAL — Processed locally. No data leaves your browser.' : ''}
-        {privacy === 'external' ? 'EXTERNAL — This lookup uses an external public service.' : ''}
-        {privacy === 'hybrid' ? 'HYBRID — Local processing + optional external public lookup.' : ''}
+        {privacy === 'local' ? 'LOCAL. Processed locally. No data leaves your browser.' : ''}
+        {privacy === 'external' ? 'EXTERNAL. This lookup uses an external public service.' : ''}
+        {privacy === 'hybrid' ? 'HYBRID. Local processing + optional external public lookup.' : ''}
       </span>
       {note && <span className="text-xs text-slate-500">{note}</span>}
     </div>

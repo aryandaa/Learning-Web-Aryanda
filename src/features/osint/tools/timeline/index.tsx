@@ -1,5 +1,5 @@
 /**
- * Timeline Analyzer — deteksi timestamp, normalisasi ISO, visual, filter, export.
+ * Timeline Analyzer. deteksi timestamp, normalisasi ISO, visual, filter, export.
  */
 
 import { useMemo, useState } from 'react';
@@ -106,7 +106,7 @@ function TimelineAnalyzerTool() {
                       key={i}
                       className="min-w-[3px] flex-1 rounded-t bg-cyan-500/60 hover:bg-cyan-400"
                       style={{ height: `${Math.max(8, h)}%` }}
-                      title={`${e.iso} (${e.source}) — ${e.line}`}
+                      title={`${e.iso} (${e.source}). ${e.line}`}
                     />
                   );
                 })}

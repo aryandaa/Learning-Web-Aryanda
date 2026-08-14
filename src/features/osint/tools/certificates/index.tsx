@@ -1,5 +1,5 @@
 /**
- * Certificate Intelligence — crt.sh (fetch dengan fallback) + mode paste JSON.
+ * Certificate Intelligence. crt.sh (fetch dengan fallback) + mode paste JSON.
  */
 
 import { useState } from 'react';
@@ -22,7 +22,7 @@ interface CertRow {
   dnsNames: string[];
 }
 
-/** Fetch crt.sh JSON — CORS tidak dijamin; fallback ke pesan manusiawi. */
+/** Fetch crt.sh JSON. CORS tidak dijamin; fallback ke pesan manusiawi. */
 async function fetchCrtSh(domain: string): Promise<CertRow[]> {
   let res: Response;
   try {
@@ -141,7 +141,7 @@ function CertIntelTool() {
       )}
 
       <Notice tone="info">
-        crt.sh adalah Certificate Transparency log — data publik. Fetch otomatis bisa gagal karena CORS/rate-limit;
+        crt.sh adalah Certificate Transparency log. data publik. Fetch otomatis bisa gagal karena CORS/rate-limit;
         bila gagal gunakan "Buka crt.sh" atau mode paste JSON. Tidak ada scanning aktif.
       </Notice>
 
@@ -228,7 +228,7 @@ function CertIntelTool() {
               { title: 'How to use', content: 'Masukkan domain → Ambil dari crt.sh. Bila gagal (CORS), gunakan paste JSON.' },
               { title: 'Input', content: 'Domain.' },
               { title: 'Output', content: 'Tabel sertifikat + daftar subdomain unik + tree.' },
-              { title: 'Notes', content: 'Privacy: EXTERNAL (data dikirim ke crt.sh saat fetch). Wildcard (*.domain) menampilkan banyak sertifikat — hasil dibatasi 500.' },
+              { title: 'Notes', content: 'Privacy: EXTERNAL (data dikirim ke crt.sh saat fetch). Wildcard (*.domain) menampilkan banyak sertifikat. hasil dibatasi 500.' },
             ]}
           />
         </>

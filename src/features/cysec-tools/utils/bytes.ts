@@ -1,6 +1,6 @@
 /**
  * Helper byte/buffer tingkat rendah untuk seluruh tool CySec Tools.
- * Semua operasi memakai ArrayBuffer / Uint8Array — tidak ada upload ke server.
+ * Semua operasi memakai ArrayBuffer / Uint8Array. tidak ada upload ke server.
  */
 
 /** String UTF-8 → bytes. */
@@ -61,7 +61,7 @@ export function bytesToBase64(bytes: Uint8Array): string {
   return btoa(bin);
 }
 
-/** Base64url (RFC 4648 §5) — dipakai JWT. */
+/** Base64url (RFC 4648 §5). dipakai JWT. */
 export function bytesToBase64Url(bytes: Uint8Array): string {
   return bytesToBase64(bytes).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }

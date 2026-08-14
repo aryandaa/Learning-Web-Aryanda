@@ -142,11 +142,11 @@ export function DocumentViewer({ doc }: { doc: DocumentData }) {
       const href = anchor.getAttribute('href') ?? '';
 
       if (href.startsWith('/docs/')) {
-        // Link antar dokumen (wiki-link / markdown link) — SPA navigation.
+        // Link antar dokumen (wiki-link / markdown link). SPA navigation.
         event.preventDefault();
         navigate(href);
       } else if (href === '#') {
-        // Link rusak / anchor kosong — jangan redirect ke dashboard.
+        // Link rusak / anchor kosong. jangan redirect ke dashboard.
         event.preventDefault();
       } else if (href.startsWith('#')) {
         // Anchor heading di dalam dokumen: scroll + update hash dengan aman.
@@ -221,7 +221,7 @@ export function DocumentViewer({ doc }: { doc: DocumentData }) {
   const toc = doc.headings.filter((h) => h.depth >= 1 && h.depth <= 6);
   const tocAnchor = (id: string) => `${location.pathname}${location.search}#${id}`;
 
-  /** Gaya item daftar isi per kedalaman heading — semakin dalam, semakin indent. */
+  /** Gaya item daftar isi per kedalaman heading. semakin dalam, semakin indent. */
   const TOC_DEPTH_CLASSES: Record<number, string> = {
     1: 'pl-0 font-medium text-slate-300',
     2: 'pl-3 text-slate-400',

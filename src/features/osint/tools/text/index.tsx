@@ -1,5 +1,5 @@
 /**
- * Text Analyzer — statistik + entitas + regex + normalisasi + dedup + export.
+ * Text Analyzer. statistik + entitas + regex + normalisasi + dedup + export.
  */
 
 import { useState } from 'react';
@@ -135,7 +135,7 @@ function TextAnalyzerTool() {
             {regexResult?.error && <p className="mt-2 text-sm text-red-300">{regexResult.error}</p>}
             {regexResult && !regexResult.error && (
               <p className="mt-2 text-xs text-slate-400">
-                {regexResult.matches.length} match —{' '}
+                {regexResult.matches.length} match ·{' '}
                 <code className="break-all font-mono text-slate-300">{regexResult.matches.slice(0, 50).join(' · ') || '(kosong)'}</code>
               </p>
             )}
