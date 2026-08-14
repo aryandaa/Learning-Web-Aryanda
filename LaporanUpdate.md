@@ -506,3 +506,38 @@ npm run osint:check  # ✅ 48/48
 npm run build        # ✅
 grep -rl "—" src/    # ✅ 0
 ```
+
+---
+
+# FITUR: GOOGLE DORK SEARCH (di kategori OSINT)
+
+Tool baru: **Google Dork Search**, 100% frontend, masuk ke CySec Tools → OSINT.
+
+## File dibuat
+- `src/features/osint/utils/dork.ts` — query builder murni (pure functions):
+  operator site/inurl/intitle/intext/filetype/ext/allinurl/allintitle/allintext/
+  before/after, exact phrase, exclude, OR, custom operators, validation
+  (filetype, tanggal, nilai kosong), presets, googleSearchUrl.
+- `src/features/osint/tools/google-dork-search/index.tsx` — komponen lazy
+  (realtime preview, Copy Query, Search Google buka tab baru, Query Explanation
+  dinamis, Learn Google Dorking, presets).
+
+## File dimodifikasi
+- `src/features/osint/registry.ts` — daftar tool `google-dork-search`
+  (category `search`, path `/osint/google-dork-search`) + kategori OSINT
+  internal baru `search` (Search & Dorking).
+- `src/features/osint/types.ts` — `OsintCategoryId` + `'search'`.
+- `scripts/osint-selfcheck.ts` — 18 unit test builder (kasus 1..10 dari spek +
+  realtime/target/quote/warning/preset/filetypes).
+
+## Verifikasi
+```bash
+npm run validate     # ✅ 0 error, OSINT = 16 tools
+npm run osint:check  # ✅ 66/66 (48 lama + 18 dork)
+npm run cysec:check  # ✅ 62/62
+tsc / build          # ✅
+route /osint/google-dork-search # ✅ 200 (chunk lazy terpisah)
+```
+Tool hanya muncul di kategori OSINT (cek katalog), tanpa navbar baru, tanpa backend,
+tanpa API key, tanpa scraping. "Search Google" hanya membuka
+`https://www.google.com/search?q=<encoded>` di tab baru.

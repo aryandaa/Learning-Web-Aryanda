@@ -129,3 +129,28 @@ console.log('Username:');
 
 console.log(`\nOSINT selfcheck: ${pass} pass, ${fail} fail`);
 if (fail > 0) process.exit(1);
+
+// ============ Google Dork Search: unit test query builder ============
+{
+  const { buildDork, EMPTY_DORK_FORM, DORK_PRESETS, googleSearchUrl, FILE_TYPES } = await import('../src/features/osint/utils/dork');
+  const base = (patch: Partial<typeof EMPTY_DORK_FORM>) => ({ ...EMPTY_DORK_FORM, ...patch });
+
+  check('1. keyword login', buildDork(base({ keyword: 'login' })).query, 'login');
+  check('2. target URL + login', buildDork(base({ keyword: 'login', target: 'url' })).query, 'inurl:login');
+  check('3. target Title + login', buildDork(base({ keyword: 'login', target: 'title' })).query, 'intitle:login');
+  check('4. site + keyword', buildDork(base({ keyword: 'login', site: 'example.com' })).query, 'site:example.com login');
+  check('5. site + URL + filetype', buildDork(base({ keyword: 'login', target: 'url', site: 'example.com', fileType: 'pdf' })).query, 'site:example.com inurl:login filetype:pdf');
+  check('6. exclude', buildDork(base({ exclude: 'admin' })).query, '-admin');
+  check('7. exact phrase', buildDork(base({ exactPhrase: 'admin login' })).query, '"admin login"');
+  check('8. multiple operators', buildDork(base({ keyword: 'admin', target: 'url', site: 'example.com', titleContains: 'login', fileType: 'pdf' })).query, 'site:example.com inurl:admin intitle:login filetype:pdf');
+  check('9. before', buildDork(base({ customOperators: [{ id: 'a', operator: 'before', value: '2025-01-01' }] })).query, 'before:2025-01-01');
+  check('10. OR', buildDork(base({ orKeywords: ['login', 'admin'] })).query, 'login OR admin');
+  checkTrue('realtime: target diganti ke text', buildDork(base({ keyword: 'admin', target: 'text' })).query === 'intext:admin');
+  checkTrue('contains value dengan spasi di-quote', buildDork(base({ textContains: 'powered by' })).query === 'intext:"powered by"');
+  checkTrue('query kosong menghasilkan empty', buildDork(base({})).query === '');
+  checkTrue('filetype tidak dikenal menghasilkan warning', buildDork(base({ fileType: 'bogus' })).warnings.length > 0);
+  checkTrue('tanggal malformed menghasilkan warning', buildDork(base({ customOperators: [{ id: 'b', operator: 'after', value: 'kemarin' }] })).warnings.length > 0);
+  checkTrue('google url encode', googleSearchUrl('site:example.com inurl:login').startsWith('https://www.google.com/search?q=site%3Aexample.com'));
+  checkTrue('preset ada', DORK_PRESETS.length >= 8);
+  checkTrue('filetypes lengkap', FILE_TYPES.includes('pdf') && FILE_TYPES.includes('env'));
+}

@@ -19,6 +19,7 @@ export const CATEGORIES: OsintCategoryMeta[] = [
   { id: 'hash', name: 'Hash Intelligence', shortName: 'Hash', icon: '#️⃣', description: 'Deteksi tipe hash + lookup link (VT, MalwareBazaar, dll).', color: 'from-purple-500/20 to-fuchsia-500/10 border-purple-500/30' },
   { id: 'text', name: 'Text Intelligence', shortName: 'Text', icon: '📝', description: 'Statistik teks + ekstraksi IOC + regex + normalisasi.', color: 'from-teal-500/20 to-cyan-500/10 border-teal-500/30' },
   { id: 'analysis', name: 'Analysis & Workspace', shortName: 'Analysis', icon: '🧠', description: 'Timeline, workspace IOC, dan case lokal untuk investigasi.', color: 'from-blue-500/20 to-indigo-500/10 border-blue-500/30' },
+  { id: 'search', name: 'Search & Dorking', shortName: 'Search', icon: '🔍', description: 'Bangun query pencarian Google Dork secara visual untuk OSINT.', color: 'from-lime-500/20 to-emerald-500/10 border-lime-500/30' },
 ];
 
 const OSINT_DISCLAIMER =
@@ -52,6 +53,7 @@ const TOOLS: OsintToolMeta[] = [
   { id: 'certificates', title: 'Certificate Intelligence', description: 'Ambil data Certificate Transparency (crt.sh): common name, issuer, valid dates, dan ekstraksi subdomain dari SAN. Dengan fallback paste JSON.', category: 'threat', path: '/osint/certificates', icon: '📜', tags: ['certificate', 'ct', 'crt.sh', 'subdomain'], privacy: 'external', privacyNote: 'Fetch ke crt.sh saat diminta; fallback paste JSON bila CORS/rate-limit.' },
   { id: 'workspace', title: 'OSINT Workspace', description: 'Kumpulkan IOC dalam satu tempat: kelompokkan domain/IP/URL/hash/email/username, tag, export, clear.', category: 'analysis', path: '/osint/workspace', icon: '🗂️', tags: ['workspace', 'ioc', 'organize'], privacy: 'local', privacyNote: 'Disimpan hanya di localStorage browser Anda.' },
   { id: 'case', title: 'OSINT Case', description: 'Case investigasi lokal: title, deskripsi, IOC, notes, sources, timeline events. export/import JSON.', category: 'analysis', path: '/osint/case', icon: '📁', tags: ['case', 'investigation', 'export'], privacy: 'local', privacyNote: 'Disimpan hanya di localStorage browser Anda.' },
+  { id: 'google-dork-search', title: 'Google Dork Search', description: 'Bangun query pencarian Google secara visual: site, inurl, intitle, intext, filetype, before/after, exact phrase, exclude, OR. 100% lokal.', category: 'search', path: '/osint/google-dork-search', icon: '🔍', tags: ['google', 'dork', 'search', 'osint', 'query'], privacy: 'local', privacyNote: 'Query dibangun lokal. Search Google membuka Google di tab baru (tanpa scraping).' },
 ];
 
 export const OSINT_INDEX: Record<string, OsintToolMeta> = Object.fromEntries(TOOLS.map((t) => [t.id, t]));

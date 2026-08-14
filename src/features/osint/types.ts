@@ -16,7 +16,8 @@ export type OsintCategoryId =
   | 'threat'
   | 'hash'
   | 'text'
-  | 'analysis';
+  | 'analysis'
+  | 'search';
 
 /** Indikator privasi tool. */
 export type OsintPrivacy = 'local' | 'external' | 'hybrid';
