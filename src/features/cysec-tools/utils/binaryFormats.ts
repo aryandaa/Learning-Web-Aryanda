@@ -14,6 +14,12 @@ export interface PeImportDll {
   functions: string[];
 }
 
+export interface PeExport {
+  name: string;
+  ordinal: number;
+  addressRva: string;
+}
+
 export interface PeSection {
   name: string;
   virtualSize: number;
@@ -45,6 +51,7 @@ export interface PeResult {
   dllCharacteristic?: string[];
   sections: PeSection[];
   imports: PeImportDll[];
+  exports: PeExport[];
   dataDirectories?: { name: string; rva: string; size: string }[];
 }
 
@@ -59,7 +66,7 @@ const SUBSYSTEMS: Record<number, string> = {
 };
 
 export function parsePe(bytes: Uint8Array): PeResult {
-  const result: PeResult = { valid: false, sections: [], imports: [] };
+  const result: PeResult = { valid: false, sections: [], imports: [], exports: [] };
   if (bytes.length < 0x40 || bytes[0] !== 0x4d || bytes[1] !== 0x5a) {
     result.error = 'Bukan file PE (magic "MZ" tidak ditemukan).';
     return result;
@@ -215,6 +222,42 @@ export function parsePe(bytes: Uint8Array): PeResult {
       off += 20;
     }
   }
+  // Exports (data directory 0: Export Table)
+  const exportDir = result.dataDirectories?.[0];
+  if (exportDir && exportDir.rva !== '0x0' && exportDir.size !== '0x0') {
+    const rvaToOff = (rva: number): number => {
+      for (const sec of result.sections) {
+        const span = Math.max(sec.virtualSize, sec.rawSize);
+        if (rva >= sec.virtualAddress && rva < sec.virtualAddress + span) {
+          return sec.rawOffset + (rva - sec.virtualAddress);
+        }
+      }
+      return -1;
+    };
+    const dirRva = parseInt(exportDir.rva, 16);
+    const dirOff = rvaToOff(dirRva);
+    if (dirOff >= 0 && dirOff + 40 <= bytes.length) {
+      const numberOfFunctions = u32(bytes, dirOff + 20);
+      const numberOfNames = u32(bytes, dirOff + 24);
+      const funcsRva = u32(bytes, dirOff + 28);
+      const namesRva = u32(bytes, dirOff + 32);
+      const ordinalsRva = u32(bytes, dirOff + 36);
+      const funcsOff = rvaToOff(funcsRva);
+      const namesOff = rvaToOff(namesRva);
+      const ordOff = rvaToOff(ordinalsRva);
+      if (namesOff >= 0 && ordOff >= 0 && funcsOff >= 0) {
+        const limit = Math.min(numberOfNames, 2000);
+        for (let i = 0; i < limit; i++) {
+          const nameRva = u32(bytes, namesOff + i * 4);
+          const ordinal = u16(bytes, ordOff + i * 2);
+          const fnRva = funcsOff >= 0 && ordinal < numberOfFunctions ? u32(bytes, funcsOff + ordinal * 4) : 0;
+          const nameOff = rvaToOff(nameRva);
+          const name = nameOff >= 0 ? readAscii(bytes, nameOff, 120).split('\0')[0] : `?rva:${nameRva.toString(16)}`;
+          result.exports.push({ name, ordinal, addressRva: `0x${fnRva.toString(16)}` });
+        }
+      }
+    }
+  }
   return result;
 }
 
@@ -242,6 +285,13 @@ export interface ElfSectionHeader {
   link: number;
 }
 
+export interface ElfSymbol {
+  name: string;
+  value: string;
+  size: string;
+  type: string;
+}
+
 export interface ElfResult {
   valid: boolean;
   error?: string;
@@ -254,6 +304,7 @@ export interface ElfResult {
   elfHeaderSize?: number;
   segments: ElfSegment[];
   sections: ElfSectionHeader[];
+  symbols: ElfSymbol[];
   sectionNames?: string;
 }
 
@@ -282,7 +333,7 @@ const ELF_SHT: Record<number, string> = {
 };
 
 export function parseElf(bytes: Uint8Array): ElfResult {
-  const result: ElfResult = { valid: false, segments: [], sections: [] };
+  const result: ElfResult = { valid: false, segments: [], sections: [], symbols: [] };
   if (bytes.length < 52 || bytes[0] !== 0x7f || bytes[1] !== 0x45 || bytes[2] !== 0x4c || bytes[3] !== 0x46) {
     result.error = 'Bukan file ELF (magic \\x7fELF tidak ditemukan).';
     return result;
@@ -380,6 +431,38 @@ export function parseElf(bytes: Uint8Array): ElfResult {
     });
   }
   result.sectionNames = strtabOff >= 0 ? `string table @ 0x${strtabOff.toString(16)}` : undefined;
+
+  // Symbols (SHT_SYMTAB = 2, SHT_DYNSYM = 11)
+  for (const sec of result.sections) {
+    if (sec.type !== 'SYMTAB' && sec.type !== 'DYNSYM') continue;
+    const secOff = parseInt(sec.offset, 16);
+    const secSize = parseInt(sec.size, 16);
+    const entrySize = is64 ? 24 : 16;
+    const linkIdx = sec.link;
+    const strSec = result.sections[linkIdx];
+    if (!strSec || secOff < 0 || secSize <= 0) continue;
+    const strOff = parseInt(strSec.offset, 16);
+    const strSize = parseInt(strSec.size, 16);
+    const count = Math.min(Math.floor(secSize / entrySize), 3000);
+    const symName = (nameOff: number): string => {
+      if (nameOff <= 0 || strOff < 0 || nameOff >= strSize) return '';
+      return readAscii(bytes, strOff + nameOff, 64).split('\0')[0];
+    };
+    const typeNames: Record<number, string> = { 0: 'NOTYPE', 1: 'OBJECT', 2: 'FUNC', 3: 'SECTION', 4: 'FILE', 5: 'COMMON', 6: 'TLS' };
+    for (let i = 1; i < count; i++) {
+      const off = secOff + i * entrySize;
+      if (off + entrySize > bytes.length) break;
+      const nameOff = rdU32(off);
+      const info = bytes[off + 4];
+      const type = typeNames[info & 0xf] ?? `0x${(info & 0xf).toString(16)}`;
+      const name = symName(nameOff);
+      if (!name) continue;
+      const value = is64 ? `0x${rdU64(bytes, off + 8, be).toString(16)}` : `0x${rdU32(off + 4).toString(16)}`;
+      const size = is64 ? String(rdU64(bytes, off + 16, be)) : String(rdU32(off + 8));
+      result.symbols.push({ name, value, size, type });
+    }
+    if (result.symbols.length > 0) break;
+  }
   return result;
 }
 
@@ -465,5 +548,8 @@ export function parseMacho(bytes: Uint8Array): MachOResult {
   result.ncmds = ncmds;
   result.sizeofcmds = sizeofcmds;
   result.flags = MACHO_FLAGS.filter(([m]) => flags & m).map(([, n]) => n);
+
+
+
   return result;
 }

@@ -3,7 +3,7 @@
  * Kode-split chunk ini hanya dimuat saat user membuka tool crypto.
  */
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '../../../../components/ui/button';
 import { TransformTool, type TransformConfig } from '../../components/TransformTool';
 import { FileDrop, type LoadedFile } from '../../components/FileDrop';
@@ -22,6 +22,7 @@ import {
   aesDecrypt, aesEncrypt, chacha20, getRandomBytes, hmacSign, md5, pbkdf2, randomHex, rsaDecryptText,
   rsaEncryptText, rsaGenerateKeyPair, sha3, shaDigest, uuidV4,
 } from '../../utils/crypto';
+import { PIPELINE_OPS, runPipeline } from '../../utils/pipeline';
 import type { ComponentType } from 'react';
 
 // ---------------------------------------------------------------------------
@@ -715,6 +716,7 @@ function HashTool() {
   const [input, setInput] = useState('');
   const [file, setFile] = useState<LoadedFile | null>(null);
   const [inputMode, setInputMode] = useState<'text' | 'hex' | 'base64'>('text');
+  const [targetHash, setTargetHash] = useState('');
   const [result, setResult] = useState<{ alg: string; value: string }[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -777,6 +779,10 @@ function HashTool() {
                 ))}
               </div>
               <LabeledTextarea id="hash-input" label="Data" value={input} onChange={setInput} rows={5} placeholder={inputMode === 'text' ? 'Ketik teks…' : inputMode === 'hex' ? 'Tempel hex…' : 'Tempel base64…'} />
+              <div>
+                <label htmlFor="hash-target" className="mb-1 block text-xs text-slate-400">Bandingkan dengan hash target (opsional)</label>
+                <input id="hash-target" value={targetHash} onChange={(e) => setTargetHash(e.target.value)} placeholder="Hash yang ingin dicocokkan…" className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none" />
+              </div>
             </>
           )}
         </div>
@@ -789,6 +795,11 @@ function HashTool() {
               <div key={r.alg} className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                 <span className="w-24 shrink-0 text-xs font-semibold uppercase tracking-wide text-slate-500">{r.alg}</span>
                 <code className="min-w-0 flex-1 break-all font-mono text-[13px] text-slate-200">{r.value}</code>
+                {targetHash.trim() && (
+                  <span className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium ${r.value === targetHash.trim().toLowerCase() ? 'bg-emerald-500/15 text-emerald-300' : 'bg-slate-800 text-slate-500'}`}>
+                    {r.value === targetHash.trim().toLowerCase() ? '✓ MATCH' : 'tidak cocok'}
+                  </span>
+                )}
                 <CopyButton text={r.value} label="" className="h-7 w-7 shrink-0" />
               </div>
             ))}
@@ -1104,8 +1115,204 @@ export const tools: Record<string, ComponentType> = {
   uuid: UuidTool,
   'random-bytes': RandomBytesTool,
   sha3: Sha3Tool,
+  'encoding-pipeline': EncodingPipelineTool,
 };
 
 export default function CryptoModule() {
   return null;
 }
+
+// ---------------------------------------------------------------------------
+// Cyber Encoding Pipeline + Data Converter
+// ---------------------------------------------------------------------------
+
+interface PipeStep {
+  key: string;
+  opId: string;
+  opKey: string;
+}
+
+let pipeCounter = 0;
+
+function EncodingPipelineTool() {
+  const [input, setInput] = useState('');
+  const [steps, setSteps] = useState<PipeStep[]>([{ key: 's1', opId: 'b64-enc', opKey: '' }]);
+  const [convInput, setConvInput] = useState('');
+  const [convMode, setConvMode] = useState<'text' | 'hex' | 'base64'>('text');
+
+  const output = useMemo(() => {
+    const res = runPipeline(input, steps.map((st) => ({ opId: st.opId, opKey: st.opKey })));
+    return res.ok ? res.value : `[${res.error}]`;
+  }, [input, steps]);
+
+  const updateStep = (key: string, patch: Partial<PipeStep>) => {
+    setSteps((prev) => prev.map((st) => (st.key === key ? { ...st, ...patch } : st)));
+  };
+  const removeStep = (key: string) => setSteps((prev) => prev.filter((st) => st.key !== key));
+  const duplicateStep = (key: string) => {
+    const src = steps.find((st) => st.key === key);
+    if (src) setSteps((prev) => [...prev, { ...src, key: `s${++pipeCounter}` }]);
+  };
+  const moveStep = (index: number, dir: -1 | 1) => {
+    setSteps((prev) => {
+      const next = [...prev];
+      const j = index + dir;
+      if (j < 0 || j >= next.length) return prev;
+      [next[index], next[j]] = [next[j], next[index]];
+      return next;
+    });
+  };
+  const addStep = () => setSteps((prev) => [...prev, { key: `s${++pipeCounter}`, opId: 'rot13', opKey: '' }]);
+
+  // Data converter preview
+  const converter = useMemo(() => {
+    const raw = convInput.trim();
+    if (!raw) return null;
+    try {
+      let bytes: Uint8Array;
+      if (convMode === 'hex') bytes = hexToBytes(raw);
+      else if (convMode === 'base64') bytes = base64ToBytes(raw);
+      else bytes = utf8ToBytes(raw);
+      const text = bytesToUtf8(bytes, true);
+      return {
+        text,
+        hex: bytesToHex(bytes),
+        binary: bytesToBinary(bytes, false).replace(/(.{8})/g, '$1 ').trim(),
+        base64: bytesToBase64(bytes),
+        url: urlEncode(text, 'component'),
+        html: htmlEncode(text),
+      };
+    } catch {
+      return null;
+    }
+  }, [convInput, convMode]);
+
+  return (
+    <div className="space-y-4">
+      <Panel title="Input">
+        <LabeledTextarea id="pipeline-input" label="Data awal" value={input} onChange={setInput} rows={4} placeholder="Tempel data…" />
+      </Panel>
+
+      <Panel
+        title={`Pipeline (${steps.length} operasi)`}
+        action={
+          <Button type="button" variant="secondary" size="sm" onClick={addStep} disabled={steps.length >= 10}>
+            + Add Operation
+          </Button>
+        }
+      >
+        {steps.length === 0 && <p className="text-sm text-slate-500">Pipeline kosong. Klik "+ Add Operation".</p>}
+        <div className="space-y-2">
+          {steps.map((step, i) => {
+            const op = PIPELINE_OPS.find((o) => o.id === step.opId);
+            return (
+              <div key={step.key} className="flex flex-wrap items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/50 px-3 py-2">
+                <span className="w-6 shrink-0 text-center font-mono text-xs text-slate-600">{i + 1}</span>
+                <select
+                  value={step.opId}
+                  onChange={(e) => updateStep(step.key, { opId: e.target.value })}
+                  aria-label={`Operasi ${i + 1}`}
+                  className="h-8 w-44 rounded-lg border border-slate-700 bg-slate-900 px-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none"
+                >
+                  <optgroup label="Encode">
+                    {PIPELINE_OPS.filter((o) => o.group === 'encode').map((o) => (
+                      <option key={o.id} value={o.id}>{o.label}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Decode">
+                    {PIPELINE_OPS.filter((o) => o.group === 'decode').map((o) => (
+                      <option key={o.id} value={o.id}>{o.label}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Transform">
+                    {PIPELINE_OPS.filter((o) => o.group === 'transform').map((o) => (
+                      <option key={o.id} value={o.id}>{o.label}</option>
+                    ))}
+                  </optgroup>
+                </select>
+                {op?.needsKey && (
+                  <input
+                    value={step.opKey}
+                    onChange={(e) => updateStep(step.key, { opKey: e.target.value })}
+                    placeholder="key / shift"
+                    aria-label={`Kunci operasi ${i + 1}`}
+                    className="h-8 w-24 rounded-lg border border-slate-700 bg-slate-950/70 px-2 font-mono text-xs text-slate-200 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+                  />
+                )}
+                {op && <span className="hidden text-[10px] text-slate-600 lg:inline" title={op.description}>{op.group}</span>}
+                <div className="ml-auto flex items-center gap-1">
+                  <button onClick={() => moveStep(i, -1)} disabled={i === 0} aria-label="Naik" className="rounded p-1 text-slate-500 hover:text-slate-200 disabled:opacity-30">↑</button>
+                  <button onClick={() => moveStep(i, 1)} disabled={i === steps.length - 1} aria-label="Turun" className="rounded p-1 text-slate-500 hover:text-slate-200 disabled:opacity-30">↓</button>
+                  <button onClick={() => duplicateStep(step.key)} aria-label="Duplikat" className="rounded p-1 text-slate-500 hover:text-slate-200">⧉</button>
+                  <button onClick={() => removeStep(step.key)} aria-label="Hapus" className="rounded p-1 text-slate-500 hover:text-red-300">✕</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {steps.length > 0 && (
+          <Button type="button" variant="ghost" size="sm" onClick={() => setSteps([])} className="mt-2">Clear pipeline</Button>
+        )}
+      </Panel>
+
+      <Panel title="Output" action={<CopyButton text={output} />}>
+        <pre className="max-h-64 overflow-auto whitespace-pre-wrap break-all rounded-lg border border-slate-800 bg-slate-950/70 p-3 font-mono text-[13px] leading-5 text-emerald-300">
+          {output || <span className="text-slate-600">Hasil pipeline akan tampil di sini…</span>}
+        </pre>
+        {steps.length > 1 && (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {steps.map((st, i) => {
+              const op = PIPELINE_OPS.find((o) => o.id === st.opId);
+              return (
+                <span key={st.key} className="rounded bg-slate-800/80 px-1.5 py-0.5 text-[10px] text-slate-400" title={op?.description}>
+                  {i + 1}. {op?.label ?? st.opId}
+                </span>
+              );
+            })}
+          </div>
+        )}
+      </Panel>
+
+      <Panel title="Cyber Data Converter">
+        <div className="flex flex-wrap items-center gap-2">
+          <LabeledTextarea id="conv-input" label="Input" value={convInput} onChange={setConvInput} rows={2} placeholder="Teks, hex, atau base64…" />
+          <div className="flex gap-2">
+            {(['text', 'hex', 'base64'] as const).map((m) => (
+              <label key={m} className="flex items-center gap-1.5 text-xs text-slate-400">
+                <input type="radio" checked={convMode === m} onChange={() => setConvMode(m)} className="accent-indigo-500" /> {m}
+              </label>
+            ))}
+          </div>
+        </div>
+        {converter ? (
+          <div className="mt-3 space-y-1.5">
+            {[
+              ['Text', converter.text],
+              ['Hex', converter.hex],
+              ['Binary', converter.binary],
+              ['Base64', converter.base64],
+              ['URL encoded', converter.url],
+              ['HTML encoded', converter.html],
+            ].map(([label, value]) => (
+              <div key={String(label)} className="flex items-start gap-2">
+                <span className="w-24 shrink-0 text-xs text-slate-500">{label}</span>
+                <code className="min-w-0 flex-1 break-all font-mono text-xs text-slate-300">{String(value)}</code>
+                <CopyButton text={String(value)} label="" className="h-6 w-6" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-2 text-xs text-slate-500">Preview konversi muncul realtime.</p>
+        )}
+      </Panel>
+
+      <ToolNotes notes={basicNotes(
+        'Pipeline encoding berantai: input melewati beberapa operasi (Base64, Hex, URL, HTML, Binary, ASCII, UTF-8, XOR, ROT13, ROT47, Caesar) secara berurutan, plus Data Converter untuk pratinjau format.',
+        'Tambah operasi, atur urutan, isi key bila diperlukan. Output dihitung realtime. Converter di panel bawah mengubah input ke semua format sekaligus.',
+        'Teks / hex / data ter-encode.',
+        'Hasil pipeline + tabel konversi. Semua lokal; error decode ditampilkan per langkah.'
+      )} />
+    </div>
+  );
+}
+

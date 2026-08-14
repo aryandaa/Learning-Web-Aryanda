@@ -10,6 +10,7 @@ import {
   CopyButton, ErrorAlert, KeyValueTable, LabeledTextarea, Notice, Panel, ToolNotes,
 } from '../../components/ui';
 import { caesar, rot, rot13, rot47, atbash, morseEncode, morseDecode, baconEncode, baconDecode, railFenceEncode, railFenceDecode, vigenere, substitutionApply, englishScore, letterFrequency } from '../../utils/encoding';
+import { ipv4Subnet, ipv6Subnet, ipv4ToInt, intToIpv4, ipv6Groups, splitSubnet4, type Subnet4Result, type Subnet6Result } from '../../utils/network';
 import { bytesToBase64, bytesToUtf8, hexToBytes, utf8ToBytes, binaryToBytes } from '../../utils/bytes';
 import { analyzeUnicode } from '../../utils/analysis';
 import { parseTimestamp } from '../../utils/files';
@@ -635,18 +636,6 @@ function TimestampConverterTool() {
 // IP converter / Subnet / CIDR
 // ---------------------------------------------------------------------------
 
-function ipv4ToInt(ip: string): number {
-  const parts = ip.split('.').map((p) => Number(p));
-  if (parts.length !== 4 || parts.some((p) => !Number.isInteger(p) || p < 0 || p > 255)) {
-    throw new Error('IPv4 tidak valid.');
-  }
-  return ((parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8) | parts[3]) >>> 0;
-}
-
-function intToIpv4(n: number): string {
-  return `${(n >>> 24) & 0xff}.${(n >>> 16) & 0xff}.${(n >>> 8) & 0xff}.${n & 0xff}`;
-}
-
 function IpConverterTool() {
   const [input, setInput] = useState('192.168.1.1');
   const [result, setResult] = useState<{ dotted: string; decimal: string; hex: string; binary: string; int: number } | null>(null);
@@ -657,7 +646,11 @@ function IpConverterTool() {
     try {
       const clean = input.trim();
       let ipInt: number;
-      if (clean.includes('.')) ipInt = ipv4ToInt(clean);
+      if (clean.includes('.')) {
+        const v = ipv4ToInt(clean);
+        if (v == null) throw new Error('IPv4 tidak valid.');
+        ipInt = v;
+      }
       else if (/^\d+$/.test(clean)) {
         const n = Number(clean);
         if (!Number.isSafeInteger(n) || n < 0 || n > 0xffffffff) throw new Error('Nilai desimal di luar range IPv4.');
@@ -714,41 +707,33 @@ function IpConverterTool() {
 function SubnetTool() {
   const [ip, setIp] = useState('192.168.1.0');
   const [prefix, setPrefix] = useState(24);
-  const [result, setResult] = useState<{
-    network: string; broadcast: string; mask: string; first: string; last: string;
-    total: number; usable: number; wildcard: string; classful: string;
-  } | null>(null);
+  const [subPrefix, setSubPrefix] = useState(26);
+  const [result, setResult] = useState<{ v4: Subnet4Result | null; v6: Subnet6Result | null } | null>(null);
+  const [split, setSplit] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const run = () => {
     setError(null);
-    try {
-      if (prefix < 0 || prefix > 32) throw new Error('Prefix harus 0–32.');
-      const ipInt = ipv4ToInt(ip);
-      const mask = prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0;
-      const network = (ipInt & mask) >>> 0;
-      const broadcast = (network | ~mask) >>> 0;
-      const total = 2 ** (32 - prefix);
-      const first = prefix >= 31 ? network : (network + 1) >>> 0;
-      const last = prefix >= 31 ? broadcast : (broadcast - 1) >>> 0;
-      const cls = ipInt >= 0x0a000000 && ipInt <= 0x0affffff ? 'Private (10/8)'
-        : ipInt >= 0xac100000 && ipInt <= 0xac1fffff ? 'Private (172.16/12)'
-        : ipInt >= 0xc0a80000 && ipInt <= 0xc0a8ffff ? 'Private (192.168/16)'
-        : ipInt === 0x7f000001 ? 'Loopback' : 'Public/other';
-      setResult({
-        network: intToIpv4(network),
-        broadcast: intToIpv4(broadcast),
-        mask: intToIpv4(mask),
-        first: intToIpv4(first),
-        last: intToIpv4(last),
-        total,
-        usable: prefix >= 31 ? total : Math.max(0, total - 2),
-        wildcard: intToIpv4(~mask >>> 0),
-        classful: cls,
-      });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Input tidak valid.');
-      setResult(null);
+    setSplit([]);
+    const v6 = ipv6Groups(ip.trim());
+    const v4 = ipv4ToInt(ip.trim());
+    if (v6) {
+      if (prefix < 0 || prefix > 128) return setError('Prefix IPv6 harus 0-128.');
+      const r = ipv6Subnet(ip.trim(), prefix);
+      if (r) setResult({ v4: null, v6: r });
+      else setError('Alamat IPv6 tidak valid.');
+    } else if (v4 != null) {
+      if (prefix < 0 || prefix > 32) return setError('Prefix IPv4 harus 0-32.');
+      const r = ipv4Subnet(ip.trim(), prefix);
+      if (r) {
+        setResult({ v4: r, v6: null });
+        if (subPrefix >= prefix && subPrefix <= 32) {
+          const parts = splitSubnet4(ip.trim(), prefix, subPrefix);
+          if (parts) setSplit(parts);
+        }
+      } else setError('Alamat IPv4 tidak valid.');
+    } else {
+      setError('Alamat IP tidak valid (IPv4 atau IPv6).');
     }
   };
 
@@ -758,35 +743,71 @@ function SubnetTool() {
       <Panel title="Input">
         <div className="flex flex-wrap items-end gap-3">
           <div className="min-w-52 flex-1">
-            <label htmlFor="subnet-ip" className="mb-1 block text-xs text-slate-400">IP address</label>
+            <label htmlFor="subnet-ip" className="mb-1 block text-xs text-slate-400">IP address (IPv4 / IPv6)</label>
             <input id="subnet-ip" value={ip} onChange={(e) => setIp(e.target.value)} className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200" />
           </div>
           <div className="w-32">
             <label htmlFor="subnet-prefix" className="mb-1 block text-xs text-slate-400">Prefix (/)</label>
-            <input id="subnet-prefix" type="number" value={prefix} min={0} max={32} onChange={(e) => setPrefix(Number(e.target.value) || 0)} className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200" />
+            <input id="subnet-prefix" type="number" value={prefix} min={0} max={128} onChange={(e) => setPrefix(Number(e.target.value) || 0)} className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200" />
           </div>
+          {result?.v4 && (
+            <div className="w-32">
+              <label htmlFor="subnet-sub" className="mb-1 block text-xs text-slate-400">Split ke /</label>
+              <input id="subnet-sub" type="number" value={subPrefix} min={prefix} max={32} onChange={(e) => setSubPrefix(Number(e.target.value) || 0)} className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200" />
+            </div>
+          )}
         </div>
       </Panel>
       <ErrorAlert message={error} />
-      {result && (
-        <Panel title="Hasil" action={<CopyButton text={JSON.stringify(result, null, 2)} />}>
-          <KeyValueTable rows={[
-            { k: 'Network', v: `${result.network}/${prefix}` },
-            { k: 'Netmask', v: result.mask },
-            { k: 'Wildcard', v: result.wildcard },
-            { k: 'Broadcast', v: result.broadcast },
-            { k: 'First host', v: result.first },
-            { k: 'Last host', v: result.last },
-            { k: 'Total address', v: result.total.toLocaleString() },
-            { k: 'Usable hosts', v: result.usable.toLocaleString() },
-            { k: 'Klasifikasi', v: result.classful },
-          ]} />
+
+      {result?.v4 && (
+        <>
+          <Panel title="Hasil IPv4" action={<CopyButton text={JSON.stringify(result.v4, null, 2)} />}>
+            <KeyValueTable
+              rows={[
+                { k: 'Network', v: `${result.v4.network}/${result.v4.prefix}` },
+                { k: 'Netmask', v: result.v4.mask },
+                { k: 'Wildcard', v: result.v4.wildcard },
+                { k: 'Broadcast', v: result.v4.broadcast },
+                { k: 'First host', v: result.v4.first },
+                { k: 'Last host', v: result.v4.last },
+                { k: 'Total address', v: result.v4.total.toLocaleString() },
+                { k: 'Usable hosts', v: result.v4.usable.toLocaleString() },
+                { k: 'Binary (network)', v: result.v4.binary },
+              ]}
+            />
+          </Panel>
+          {split.length > 0 && (
+            <Panel title={`Subnet hasil bagi /${subPrefix} (${split.length})`} action={<CopyButton text={split.join('\n')} />}>
+              <div className="flex flex-wrap gap-1.5">
+                {split.map((s2) => (
+                  <code key={s2} className="rounded bg-slate-800/80 px-1.5 py-0.5 font-mono text-xs text-slate-300">{s2}</code>
+                ))}
+              </div>
+            </Panel>
+          )}
+        </>
+      )}
+
+      {result?.v6 && (
+        <Panel title="Hasil IPv6" action={<CopyButton text={JSON.stringify(result.v6, null, 2)} />}>
+          <KeyValueTable
+            rows={[
+              { k: 'Network', v: `${result.v6.network}/${result.v6.prefix}` },
+              { k: 'Netmask', v: result.v6.mask },
+              { k: 'First', v: result.v6.first },
+              { k: 'Last', v: result.v6.last },
+              { k: 'Total address', v: result.v6.total.toString() },
+              { k: 'Usable', v: result.v6.usable.toString() },
+            ]}
+          />
         </Panel>
       )}
+
       <ToolNotes notes={ctfNotes(
-        'Menghitung network/broadcast/mask/host range dari IP + prefix.',
-        'Isi IP dan prefix, klik Hitung subnet.',
-        'Prefix 31/30 untuk point-to-point: host usable berbeda.'
+        'Menghitung network/broadcast/mask/host range dari IP + prefix, mendukung IPv4 dan IPv6, plus pembagian subnet (IPv4).',
+        'Isi IP dan prefix, klik Hitung subnet. Untuk split, atur "Split ke /" lalu klik lagi.',
+        'IPv4/IPv6 + prefix.'
       )} />
     </div>
   );
@@ -808,6 +829,7 @@ function CidrTool() {
         const prefix = Number(m[2]);
         if (prefix > 32) throw new Error(`Prefix > 32 pada "${line}"`);
         const ipInt = ipv4ToInt(m[1]);
+        if (ipInt == null) throw new Error(`Alamat IP tidak valid: "${line}"`);
         const mask = prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0;
         const network = (ipInt & mask) >>> 0;
         const broadcast = (network | ~mask) >>> 0;
@@ -1101,8 +1123,158 @@ export const tools: Record<string, ComponentType> = {
   'port-reference': PortReferenceTool,
   'ascii-table': AsciiTableTool,
   'unicode-table': UnicodeTableTool,
+  'cve-reference': CveReferenceTool,
 };
 
 export default function CtfModule() {
   return null;
 }
+
+// ---------------------------------------------------------------------------
+// CVE / Security Reference Explorer (local parser/reference)
+// ---------------------------------------------------------------------------
+
+function isValidCveId(id: string): boolean {
+  return /^CVE-\d{4}-\d{4,7}$/i.test(id.trim());
+}
+
+function cveLinks(cve: string): { name: string; url: string }[] {
+  const id = cve.trim().toUpperCase();
+  return [
+    { name: 'NVD (nvd.nist.gov)', url: `https://nvd.nist.gov/vuln/detail/${encodeURIComponent(id)}` },
+    { name: 'MITRE CVE', url: `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${encodeURIComponent(id)}` },
+    { name: 'CVE.org', url: `https://www.cve.org/CVERecord?id=${encodeURIComponent(id)}` },
+    { name: 'Vulners', url: `https://vulners.com/search?query=${encodeURIComponent(id)}` },
+  ];
+}
+
+function CveReferenceTool() {
+  const [input, setInput] = useState('');
+  const [single, setSingle] = useState('');
+  const [rows, setRows] = useState<{ cve: string; cvss?: string; severity?: string; cwe?: string; product?: string; refs?: string }[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const parseBlock = () => {
+    setError(null);
+    const text = input;
+    const found: { cve: string; cvss?: string; severity?: string; cwe?: string; product?: string; refs?: string }[] = [];
+    const seen = new Set<string>();
+    for (const rawLine of text.replace(/\r\n/g, '\n').split('\n')) {
+      const line = rawLine.trim();
+      if (!line) continue;
+      const m = /\bCVE-\d{4}-\d{4,7}\b/i.exec(line);
+      if (!m) continue;
+      const cve = m[0].toUpperCase();
+      if (seen.has(cve)) continue;
+      seen.add(cve);
+      const cvss = /CVSS[:=\s]*([0-9]+(?:\.[0-9]+)?)/i.exec(line)?.[1];
+      const sev = /\b(CRITICAL|HIGH|MEDIUM|LOW)\b/i.exec(line)?.[1];
+      const cwe = /\bCWE-\d+\b/i.exec(line)?.[0];
+      const product = /(?:Product|Affected)[:=]\s*([^;|]+)/i.exec(line)?.[1]?.trim();
+      const refs = /(?:References?|Ref)[:=]\s*(\S+)/i.exec(line)?.[1];
+      found.push({ cve, cvss, severity: sev ? sev[0] + sev.slice(1).toLowerCase() : undefined, cwe, product, refs });
+    }
+    if (found.length === 0) {
+      setError('Tidak ada CVE ID valid ditemukan. Gunakan format CVE-YYYY-NNNN.');
+    }
+    setRows(found);
+  };
+
+  const singleValid = isValidCveId(single);
+  const singleLinks = singleValid ? cveLinks(single) : [];
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <Button onClick={parseBlock}>Parse CVE dari teks</Button>
+      </div>
+
+      <Panel title="Paste data CVE">
+        <LabeledTextarea
+          id="cve-input"
+          label="Tempel teks/laporan berisi CVE (opsional: CVSS, severity, CWE, product, references)"
+          value={input}
+          onChange={setInput}
+          rows={6}
+          placeholder={'CVE-2023-1234 CVSS 9.8 Severity CRITICAL CWE-89 Product: myapp\nCVE-2024-5678 HIGH CVSS 7.5'}
+        />
+      </Panel>
+
+      <ErrorAlert message={error} />
+
+      {rows.length > 0 && (
+        <Panel title={`CVE terdeteksi (${rows.length})`} action={<CopyButton text={rows.map((r) => r.cve).join('\n')} />}>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-xs">
+              <thead>
+                <tr className="text-left text-slate-500">
+                  <th className="px-2 py-1">CVE</th>
+                  <th className="px-2 py-1">CVSS</th>
+                  <th className="px-2 py-1">Severity</th>
+                  <th className="px-2 py-1">CWE</th>
+                  <th className="px-2 py-1">Product</th>
+                  <th className="px-2 py-1">Links</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r, i) => (
+                  <tr key={i} className="border-t border-slate-800/50">
+                    <td className="px-2 py-1 font-mono text-red-300">{r.cve}</td>
+                    <td className="px-2 py-1 font-mono text-slate-400">{r.cvss ?? '-'}</td>
+                    <td className="px-2 py-1">
+                      {r.severity && (
+                        <span className={`rounded px-1.5 py-0.5 text-[10px] ${r.severity === 'Critical' ? 'bg-red-500/15 text-red-300' : r.severity === 'High' ? 'bg-amber-500/15 text-amber-300' : r.severity === 'Medium' ? 'bg-yellow-500/15 text-yellow-300' : 'bg-slate-700/50 text-slate-400'}`}>
+                          {r.severity}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-2 py-1 font-mono text-slate-400">{r.cwe ?? '-'}</td>
+                    <td className="break-all px-2 py-1 text-slate-400">{r.product ?? '-'}</td>
+                    <td className="px-2 py-1">
+                      <div className="flex flex-wrap gap-1">
+                        {cveLinks(r.cve).map((l) => (
+                          <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300">
+                            {l.name.split(' ')[0]} ↗
+                          </a>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Panel>
+      )}
+
+      <Panel title="Reference satu CVE">
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            value={single}
+            onChange={(e) => setSingle(e.target.value)}
+            placeholder="CVE-2023-1234"
+            aria-label="CVE ID"
+            className="h-9 w-56 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+          />
+          {single && !singleValid && <span className="text-xs text-amber-300">Format CVE ID tidak valid.</span>}
+        </div>
+        {singleValid && (
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            {singleLinks.map((l) => (
+              <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2 text-sm text-slate-300 transition-colors hover:border-indigo-500/50 hover:text-indigo-300">
+                {l.name} ↗
+              </a>
+            ))}
+          </div>
+        )}
+      </Panel>
+
+      <ToolNotes notes={ctfNotes(
+        'Parser/referensi CVE lokal: deteksi CVE ID, CVSS, severity, CWE, product, dan tautan ke NVD/MITRE/CVE.org.',
+        'Tempel teks berisi CVE lalu Parse, atau masukkan satu CVE di panel Reference.',
+        'Tanpa backend/API key. Data hanya diparse lokal; lookup dibuka manual saat diklik.'
+      )} />
+    </div>
+  );
+}
+

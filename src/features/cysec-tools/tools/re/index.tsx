@@ -17,6 +17,8 @@ import {
 } from '../../utils/bytes';
 import { englishScore, letterFrequency } from '../../utils/encoding';
 import { extractAsciiStrings, entropyOf } from '../../utils/analysis';
+import { interpretBytes, searchBytes } from '../../utils/binaryInspector';
+import { detectSignature } from '../../utils/analysis';
 import { parseElf, parseMacho, parsePe } from '../../utils/binaryFormats';
 import type { ComponentType } from 'react';
 
@@ -35,28 +37,50 @@ const reNotes = (what: string, how: string, extra?: string) => [
 function HexViewerTool() {
   const [input, setInput] = useState('');
   const [mode, setMode] = useState<'text' | 'hex'>('text');
-  const [rows, setRows] = useState(256);
-  const [result, setResult] = useState('');
+  const [rows, setRows] = useState(64);
+  const [offset, setOffset] = useState(0);
+  const [searchHex, setSearchHex] = useState('');
+  const [result, setResult] = useState<{ bytes: Uint8Array; dump: string; shown: number } | null>(null);
+  const [interpret, setInterpret] = useState<ReturnType<typeof interpretBytes> | null>(null);
+  const [magic, setMagic] = useState<string[]>([]);
+  const [hits, setHits] = useState<number[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const run = () => {
+  const run = (targetOffset?: number) => {
     setError(null);
     try {
       if (!input.trim()) throw new Error('Input kosong.');
       const bytes = mode === 'hex' ? hexToBytes(input) : utf8ToBytes(input);
-      const limit = Math.min(rows * 16, bytes.length);
-      setResult(hexDump(bytes.subarray(0, limit), { bytesPerRow: 16 }));
-      if (bytes.length > limit) setResult((r) => r + `\n… (${bytes.length - limit} byte lagi)`);
+      const off = Math.max(0, Math.min(targetOffset ?? offset, Math.max(0, bytes.length - 1)));
+      const limit = Math.min(rows * 16, bytes.length - off);
+      const slice = bytes.subarray(off, off + limit);
+      setResult({ bytes, dump: hexDump(slice, { offsetBase: off }), shown: slice.length });
+      setOffset(off);
+      setInterpret(bytes.length >= 1 ? interpretBytes(bytes.subarray(0, Math.min(8, bytes.length))) : null);
+      setMagic(detectSignature(bytes).map((sg) => `${sg.name} (${sg.mime})`));
+      if (searchHex.trim()) {
+        let needle: Uint8Array;
+        try {
+          needle = hexToBytes(searchHex);
+        } catch {
+          needle = utf8ToBytes(searchHex);
+        }
+        setHits(searchBytes(bytes, needle));
+      } else {
+        setHits([]);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Input tidak valid.');
-      setResult('');
+      setResult(null);
     }
   };
+
+  const jump = () => run(offset);
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-2">
-        <Button onClick={run}>Lihat hex dump</Button>
+        <Button onClick={() => run()}>Lihat hex dump</Button>
         <label className="flex items-center gap-1.5 text-xs text-slate-400">
           Mode
           <select value={mode} onChange={(e) => setMode(e.target.value as 'text' | 'hex')} className="h-8 rounded-lg border border-slate-700 bg-slate-900 px-2 text-xs text-slate-200">
@@ -68,28 +92,81 @@ function HexViewerTool() {
           Baris
           <input type="number" value={rows} min={1} max={100000} onChange={(e) => setRows(Number(e.target.value) || 16)} className="h-8 w-20 rounded-lg border border-slate-700 bg-slate-900 px-2 text-xs text-slate-200" />
         </label>
+        <label className="flex items-center gap-1.5 text-xs text-slate-400">
+          Offset
+          <input type="number" value={offset} min={0} onChange={(e) => setOffset(Number(e.target.value) || 0)} className="h-8 w-28 rounded-lg border border-slate-700 bg-slate-900 px-2 font-mono text-xs text-slate-200" />
+        </label>
+        <Button variant="secondary" size="sm" onClick={jump}>Jump</Button>
       </div>
+
       <Panel title="Input">
         <LabeledTextarea id="hexview-input" label={mode === 'text' ? 'Teks' : 'Hex'} value={input} onChange={setInput} rows={6} placeholder={mode === 'text' ? 'Tempel teks…' : 'Tempel hex…'} />
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <input
+            value={searchHex}
+            onChange={(e) => setSearchHex(e.target.value)}
+            placeholder="Search bytes (hex atau teks)…"
+            aria-label="Cari bytes"
+            className="h-8 w-64 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-indigo-500 focus:outline-none"
+          />
+          <Button variant="secondary" size="sm" onClick={() => run()}>Search</Button>
+        </div>
       </Panel>
+
       <ErrorAlert message={error} />
+
       {result && (
-        <Panel title="Hex dump" action={<><CopyButton text={result} /><DownloadButton text={result} filename="hexdump.txt" /></>}>
-          <pre className="max-h-[36rem] overflow-auto rounded-lg border border-slate-800 bg-slate-950/70 p-3 font-mono text-[11px] leading-4 text-slate-300">{result}</pre>
-        </Panel>
+        <>
+          <Panel title={`Hex dump (offset 0x${offset.toString(16)} - menampilkan ${result.shown} byte)`} action={<CopyButton text={result.dump} />}>
+            <pre className="max-h-[36rem] overflow-auto rounded-lg border border-slate-800 bg-slate-950/70 p-3 font-mono text-[11px] leading-4 text-slate-300">
+              {result.dump}
+            </pre>
+            {hits.length > 0 && (
+              <p className="mt-2 text-xs text-slate-400">
+                Ditemukan pada offset: {hits.slice(0, 20).map((h) => `0x${h.toString(16)}`).join(', ')}{hits.length > 20 ? ` … (+${hits.length - 20})` : ''}
+              </p>
+            )}
+          </Panel>
+
+          {interpret && (
+            <Panel title="Interpretasi byte (8 byte pertama)">
+              <KeyValueTable
+                rows={[
+                  { k: 'Decimal bytes', v: interpret.decimalBytes },
+                  { k: 'u8 / i8', v: `${interpret.u8} / ${interpret.i8}` },
+                  { k: 'u16 LE / BE', v: `${interpret.u16le} / ${interpret.u16be}` },
+                  { k: 'i16 LE / BE', v: `${interpret.i16le} / ${interpret.i16be}` },
+                  { k: 'u32 LE / BE', v: `${interpret.u32le} / ${interpret.u32be}` },
+                  { k: 'i32 LE / BE', v: `${interpret.i32le} / ${interpret.i32be}` },
+                  { k: 'u64 LE / BE', v: `${interpret.u64le} / ${interpret.u64be}` },
+                  { k: 'float32 LE / BE', v: `${interpret.f32le.toFixed(6)} / ${interpret.f32be.toFixed(6)}` },
+                  { k: 'float64 LE / BE', v: `${interpret.f64le.toFixed(6)} / ${interpret.f64be.toFixed(6)}` },
+                ]}
+              />
+              <p className="mt-2 text-xs text-slate-500">LE = little-endian, BE = big-endian. Nilai dibaca dari byte pertama.</p>
+            </Panel>
+          )}
+
+          {magic.length > 0 && (
+            <Panel title="Magic number terdeteksi">
+              <div className="flex flex-wrap gap-1.5">
+                {magic.map((m, i) => (
+                  <span key={i} className="rounded bg-emerald-500/10 px-2 py-1 text-xs text-emerald-300">{m}</span>
+                ))}
+              </div>
+            </Panel>
+          )}
+        </>
       )}
+
       <ToolNotes notes={reNotes(
-        'Hex dump dengan offset + kolom ASCII (ala xxd).',
-        'Tempel teks/hex, pilih mode, klik Lihat hex dump.',
+        'Hex dump dengan offset + ASCII, interpretasi integer/float (LE/BE), deteksi magic number, pencarian byte, dan lompat ke offset.',
+        'Tempel teks/hex, pilih mode, klik Lihat hex dump. Gunakan field offset + Jump, dan Search bytes untuk mencari pola.',
         'Teks atau hex.'
       )} />
     </div>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Hex editor (ringan)
-// ---------------------------------------------------------------------------
 
 function HexEditorTool() {
   const [hex, setHex] = useState('48 65 6c 6c 6f');
@@ -725,6 +802,30 @@ function PeViewerTool() {
                   </table>
                 </div>
               </ResultPanel>
+              {pe.exports.length > 0 && (
+                <ResultPanel title={`Exports (${pe.exports.length})`}>
+                  <div className="max-h-72 overflow-auto">
+                    <table className="w-full border-collapse text-xs">
+                      <thead>
+                        <tr className="text-left text-slate-500">
+                          <th className="px-2 py-1">Name</th>
+                          <th className="px-2 py-1">Ordinal</th>
+                          <th className="px-2 py-1">Address RVA</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pe.exports.slice(0, 300).map((ex, i) => (
+                          <tr key={i} className="border-t border-slate-800/50">
+                            <td className="break-all px-2 py-1 font-mono text-slate-200">{ex.name}</td>
+                            <td className="px-2 py-1 font-mono text-slate-500">{ex.ordinal}</td>
+                            <td className="px-2 py-1 font-mono text-slate-500">{ex.addressRva}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </ResultPanel>
+              )}
               <ResultPanel title={`Imports (${pe.imports.length} DLL)`}>
                 {pe.imports.length === 0 && <p className="text-sm text-slate-500">Tidak ada import table terdeteksi.</p>}
                 <div className="space-y-3">
@@ -815,6 +916,32 @@ function ElfViewerTool() {
                   </table>
                 </div>
               </ResultPanel>
+              {elf.symbols.length > 0 && (
+                <ResultPanel title={`Symbols (${elf.symbols.length})`}>
+                  <div className="max-h-72 overflow-auto">
+                    <table className="w-full border-collapse text-xs">
+                      <thead>
+                        <tr className="text-left text-slate-500">
+                          <th className="px-2 py-1">Name</th>
+                          <th className="px-2 py-1">Type</th>
+                          <th className="px-2 py-1">Value</th>
+                          <th className="px-2 py-1">Size</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {elf.symbols.slice(0, 300).map((sym, i) => (
+                          <tr key={i} className="border-t border-slate-800/50">
+                            <td className="break-all px-2 py-1 font-mono text-slate-200">{sym.name}</td>
+                            <td className="px-2 py-1 text-slate-500">{sym.type}</td>
+                            <td className="px-2 py-1 font-mono text-slate-500">{sym.value}</td>
+                            <td className="px-2 py-1 font-mono text-slate-500">{sym.size}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </ResultPanel>
+              )}
               <ResultPanel title={`Section headers (${elf.sections.length})`}>
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse text-xs">

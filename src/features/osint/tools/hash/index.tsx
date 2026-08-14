@@ -38,7 +38,7 @@ function HashAnalyzerTool() {
 
       {result && (
         <>
-          <Panel title="Deteksi" action={<CopyButton text={result.normalized} />}>
+          <Panel title="Possible algorithms" action={<CopyButton text={result.normalized} />}>
             <KeyValueTable
               rows={[
                 { k: 'Panjang', v: String(result.length) },

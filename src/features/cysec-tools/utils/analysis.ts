@@ -19,6 +19,27 @@ export interface EntropyResult {
   hexDump: string;
 }
 
+/** Entropy per blok (untuk grafik). blockSize default 256 byte, maks 4096 blok. */
+export function blockEntropy(bytes: Uint8Array, blockSize = 256): { offset: number; entropy: number }[] {
+  const out: { offset: number; entropy: number }[] = [];
+  const maxBlocks = 4096;
+  for (let off = 0; off < bytes.length && out.length < maxBlocks; off += blockSize) {
+    const slice = bytes.subarray(off, Math.min(off + blockSize, bytes.length));
+    if (slice.length === 0) break;
+    const counts = new Uint32Array(256);
+    for (const b of slice) counts[b]++;
+    let e = 0;
+    const n = slice.length;
+    for (let i = 0; i < 256; i++) {
+      if (counts[i] === 0) continue;
+      const p = counts[i] / n;
+      e -= p * Math.log2(p);
+    }
+    out.push({ offset: off, entropy: e });
+  }
+  return out;
+}
+
 export function entropyOf(bytes: Uint8Array, hexDumpLen = 256): EntropyResult {
   if (bytes.length === 0) throw new Error('File kosong. tidak ada data untuk dianalisis.');
   const counts = new Uint32Array(256);

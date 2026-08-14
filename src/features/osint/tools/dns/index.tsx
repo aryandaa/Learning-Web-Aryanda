@@ -8,7 +8,7 @@ import {
   CopyButton, ErrorAlert, LabeledTextarea, Notice, Panel, ToolNotes,
 } from '../../../cysec-tools/components/ui';
 import { SourceList } from '../../components/ui';
-import { DNS_TYPES, DOH_RESOLVERS, queryDns, typeName } from '../../utils/dns';
+import { DNS_TYPES, DOH_RESOLVERS, queryDns, parseDnsText, typeName } from '../../utils/dns';
 import { exportJson, nowIso } from '../../utils/shared';
 import type { ComponentType } from 'react';
 import type { OsintSource } from '../../types';
@@ -28,6 +28,20 @@ function DnsAnalyzerTool() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [sources, setSources] = useState<OsintSource[]>([]);
+  const [pasteText, setPasteText] = useState('');
+  const [pasteRecords, setPasteRecords] = useState<Row[] | null>(null);
+  const [pasteError, setPasteError] = useState<string | null>(null);
+
+  const parsePaste = () => {
+    setPasteError(null);
+    try {
+      const { records, warnings } = parseDnsText(pasteText);
+      setPasteRecords(records.map((r) => ({ record: r.name, type: r.type, value: r.value, ttl: r.ttl ?? 0 })));
+      if (warnings.length) setPasteError(`${warnings.length} baris tidak dikenali.`);
+    } catch {
+      setPasteError('Gagal mem-parse teks DNS.');
+    }
+  };
 
   const toggleType = (t: string) => {
     setTypes((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
@@ -129,6 +143,43 @@ function DnsAnalyzerTool() {
         Query DNS dikirim ke resolver DoH publik pilihan Anda (Cloudflare/Google). bukan ke server kami. Ini adalah
         layanan publik yang mendukung akses browser. PTR membutuhkan alamat reverse (mis. 8.8.8.8.in-addr.arpa).
       </Notice>
+
+      <Panel title="Paste raw DNS output (dig / nslookup / zone)">
+        <LabeledTextarea
+          id="osint-dns-paste"
+          label="Tempel hasil raw DNS (A, AAAA, CNAME, MX, NS, TXT, SOA, SRV, PTR, CAA)"
+          value={pasteText}
+          onChange={setPasteText}
+          rows={5}
+          placeholder={'example.com. 3600 IN A 93.184.216.34\nexample.com. 3600 IN MX 10 mail.example.com.'}
+        />
+        <Button variant="secondary" className="mt-2" onClick={parsePaste}>Parse teks</Button>
+        {pasteError && <p className="mt-2 text-xs text-amber-200">{pasteError}</p>}
+        {pasteRecords && (
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full border-collapse text-xs">
+              <thead>
+                <tr className="text-left text-slate-500">
+                  <th className="px-2 py-1">Record</th>
+                  <th className="px-2 py-1">Type</th>
+                  <th className="px-2 py-1">Value</th>
+                  <th className="px-2 py-1">TTL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pasteRecords.map((r, i) => (
+                  <tr key={i} className="border-t border-slate-800/50">
+                    <td className="px-2 py-1 font-mono text-slate-400">{r.record}</td>
+                    <td className="px-2 py-1 font-mono text-indigo-300">{r.type}</td>
+                    <td className="break-all px-2 py-1 font-mono text-slate-200">{r.value}</td>
+                    <td className="px-2 py-1 font-mono text-slate-500">{r.ttl || '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Panel>
 
       <ErrorAlert message={error} />
 

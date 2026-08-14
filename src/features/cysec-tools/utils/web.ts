@@ -411,6 +411,12 @@ export function checkSecurityHeaders(raw: string): { checks: SecurityHeaderCheck
   const coep = get('cross-origin-embedder-policy');
   add('Cross-Origin-Embedder-Policy', !!coep, coep, coep ? 'ok' : 'info', coep ? 'COEP diset.' : 'Tidak diset (opsional).');
 
+  const coop = get('cross-origin-opener-policy');
+  add('Cross-Origin-Opener-Policy', !!coop, coop, coop ? 'ok' : 'info', coop ? 'COOP diset (same-origin / same-origin-allow-popups).' : 'Tidak diset. COOP membantu mitigasi isolation (Spectre).');
+
+  const corp = get('cross-origin-resource-policy');
+  add('Cross-Origin-Resource-Policy', !!corp, corp, corp ? 'ok' : 'info', corp ? 'CORP diset.' : 'Tidak diset (opsional).');
+
   const cookies = parseCookies(raw);
   const hasCookies = cookies.length > 0;
   add('Cookie Flags (HttpOnly/Secure)', hasCookies, hasCookies ? `${cookies.length} cookie ditemukan` : '-', hasCookies ? (cookies.some((c) => c.issues.length === 0) ? 'ok' : 'warn') : 'info',
@@ -520,7 +526,14 @@ export function analyzeUrl(url: string): UrlAnalysis {
   if (parsed.protocol === 'data:') issues.push('Scheme data:. bisa menyamar sebagai file; waspadai phishing.');
   if (parsed.username || parsed.password) issues.push('Userinfo pada URL (user:pass@). informasi kredensial dalam URL bocor ke log.');
   if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') issues.push('Host lokal. SSRF risk bila URL dikontrol attacker dan di-fetch server-side.');
-  if (/^\d+\.\d+\.\d+\.\d+$/.test(parsed.hostname)) issues.push('Host berupa IP literal. verifikasi apakah ini diharapkan.');
+  if (/^10\.|^192\.168\.|^172\.(1[6-9]|2[0-9]|3[01])\./.test(parsed.hostname)) issues.push('Host berupa IP private (RFC1918). Bisa indikasi SSRF atau akses internal.');
+  if (/^169\.254\./.test(parsed.hostname)) issues.push('Host berupa link-local (169.254.x.x).');
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(parsed.hostname)) issues.push('Host berupa IP literal. Verifikasi apakah ini diharapkan.');
+  if (parsed.port && ((parsed.protocol === 'http:' && parsed.port !== '80') || (parsed.protocol === 'https:' && parsed.port !== '443'))) {
+    issues.push(`Port tidak standar (${parsed.port}) untuk ${parsed.protocol.replace(':', '')}. Bisa jadi layanan dev/alternatif.`);
+  }
+  if (parsed.protocol === 'file:') issues.push('Scheme file: akses file lokal. Tidak boleh diizinkan dari halaman web.');
+  if (parsed.protocol === 'ftp:') issues.push('Scheme ftp: kredensial bisa bocor plaintext.');
   if (parsed.pathname.includes('..')) issues.push('Path mengandung "..". potensi path traversal.');
   if (/%0[0-9a-f]|%2e|%2f/i.test(url)) issues.push('Path mengandung encoding berbahaya (%2e, %2f, %00…). potensi filter bypass.');
   if (/\\/.test(url)) issues.push('URL mengandung backslash. beberapa parser memperlakukannya sebagai separator host.');
@@ -612,4 +625,66 @@ export function analyzePathTraversal(input: string): { found: boolean; patterns:
     if (m && m.length) patterns.push({ value: m[0], description });
   }
   return { found: patterns.length > 0, patterns };
+}
+
+
+// ---------------------------------------------------------------------------
+// Observasi keamanan untuk pesan HTTP (request/response) yang ditempel
+// ---------------------------------------------------------------------------
+
+export interface HttpSecurityObservation {
+  type: 'info' | 'warn' | 'bad';
+  message: string;
+}
+
+export function httpSecurityObservations(
+  kind: 'request' | 'response',
+  headers: { name: string; value: string }[]
+): HttpSecurityObservation[] {
+  const out: HttpSecurityObservation[] = [];
+  const get = (name: string) => headers.find((h) => h.name.toLowerCase() === name.toLowerCase())?.value ?? '';
+  const names = headers.map((h) => h.name.toLowerCase());
+
+  const auth = get('authorization');
+  if (kind === 'request' && auth) {
+    const scheme = auth.split(' ')[0]?.toLowerCase() ?? '';
+    if (scheme === 'bearer') out.push({ type: 'info', message: 'Authorization: Bearer token. Pastikan token hanya dikirim via HTTPS.' });
+    else if (scheme === 'basic') out.push({ type: 'bad', message: 'Authorization: Basic (username:password base64). Wajib HTTPS; pertimbangkan Bearer/Digest.' });
+    else out.push({ type: 'warn', message: `Authorization dengan scheme tidak umum: ${scheme || '(kosong)'}.` });
+  }
+
+  if (kind === 'response' && !names.includes('content-security-policy')) {
+    out.push({ type: 'warn', message: 'Respons tanpa Content-Security-Policy (mitigasi XSS utama hilang).' });
+  }
+  if (kind === 'response' && !names.includes('strict-transport-security')) {
+    out.push({ type: 'warn', message: 'Respons tanpa Strict-Transport-Security (risiko downgrade HTTP).' });
+  }
+  if (kind === 'response' && !names.includes('x-content-type-options')) {
+    out.push({ type: 'warn', message: 'Respons tanpa X-Content-Type-Options: nosniff.' });
+  }
+
+  const setCookies = headers.filter((h) => h.name.toLowerCase() === 'set-cookie');
+  for (const c of setCookies) {
+    if (!/httponly/i.test(c.value)) out.push({ type: 'warn', message: `Set-Cookie "${c.value.split(';')[0]}" tanpa HttpOnly.` });
+    if (!/secure/i.test(c.value)) out.push({ type: 'warn', message: `Set-Cookie "${c.value.split(';')[0]}" tanpa Secure.` });
+  }
+
+  if (kind === 'request') {
+    const ct = get('content-type');
+    const cl = get('content-length');
+    if (ct) out.push({ type: 'info', message: `Content-Type: ${ct}` });
+    if (cl) out.push({ type: 'info', message: `Content-Length: ${cl} byte` });
+  }
+
+  if (kind === 'response' && names.includes('server')) {
+    out.push({ type: 'warn', message: 'Header Server membocorkan versi. Hapus/disederhanakan di produksi.' });
+  }
+  if (names.includes('x-powered-by')) {
+    out.push({ type: 'warn', message: 'Header X-Powered-By membocorkan teknologi.' });
+  }
+  if (names.includes('x-aspnet-version')) {
+    out.push({ type: 'warn', message: 'Header X-AspNet-Version membocorkan versi framework.' });
+  }
+
+  return out;
 }

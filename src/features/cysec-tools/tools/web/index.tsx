@@ -11,10 +11,11 @@ import {
 } from '../../components/ui';
 import {
   analyzeCors, analyzeCsp, analyzeOpenRedirect, analyzePathTraversal, analyzeSqliPayload,
-  analyzeUrl, analyzeXssPayload, checkSecurityHeaders, normalizeUrl, parseCookies,
-  parseHeaderLines, parseJwt, parseUserAgent, verifyJwtHs,
+  analyzeUrl, analyzeXssPayload, checkSecurityHeaders, httpSecurityObservations, normalizeUrl, parseCookies,
+  parseHeaderLines, parseJwt, parseUserAgent, verifyJwtHs, type HttpSecurityObservation,
 } from '../../utils/web';
 import { htmlDecode, htmlEncode, urlDecode } from '../../utils/encoding';
+import { analyzeRegex } from '../../utils/regexAnalyze';
 import { base64UrlToBytes, bytesToUtf8 } from '../../utils/bytes';
 import type { ComponentType } from 'react';
 
@@ -232,6 +233,33 @@ function JwtTool() {
       <ErrorAlert message={error} />
       {result && (
         <div className="space-y-4">
+          <Panel title="Token structure">
+            {(() => {
+              const parts = token.trim().split('.');
+              const exp = typeof result.payload?.exp === 'number' ? result.payload.exp : null;
+              const now = Math.floor(Date.now() / 1000);
+              const expired = exp != null && exp < now;
+              return (
+                <div className="space-y-2">
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    {['header', 'payload', 'signature'].map((label, i) => (
+                      <div key={label} className="rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{label}</p>
+                        <p className="break-all font-mono text-[11px] text-slate-300">{parts[i]?.slice(0, 24) ?? '-'}{parts[i] && parts[i].length > 24 ? '…' : ''}</p>
+                        <p className="text-[10px] text-slate-600">{parts[i]?.length ?? 0} chars</p>
+                      </div>
+                    ))}
+                  </div>
+                  {exp != null && (
+                    <p className={`text-xs ${expired ? 'text-red-300' : 'text-emerald-300'}`}>
+                      {expired ? 'Token sudah kedaluwarsa.' : 'Token masih valid.'} exp: {new Date(exp * 1000).toISOString()}
+                    </p>
+                  )}
+                </div>
+              );
+            })()}
+          </Panel>
+
           <Panel title="Header">
             <pre className="overflow-auto rounded-lg border border-slate-800 bg-slate-950/70 p-3 font-mono text-[13px] text-slate-200">{JSON.stringify(result.header, null, 2)}</pre>
           </Panel>
@@ -261,6 +289,9 @@ function JwtTool() {
           )}
           <p className="text-xs text-slate-500">
             Algorithm: <code className="text-slate-300">{result.algorithm}</code>. Jangan pernah menerima token dengan <code>alg: none</code>.
+          </p>
+          <p className="mt-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-3 py-2 text-xs text-emerald-300">
+            JWT verification dilakukan secara lokal di browser. Secret tidak disimpan dan tidak dikirim ke server.
           </p>
         </div>
       )}
@@ -905,8 +936,10 @@ function RegexTesterTool() {
   const [flags, setFlags] = useState('g');
   const [text, setText] = useState('Send email to john@example.com or jane@test.org today.');
   const [result, setResult] = useState<{ matches: { full: string; groups: (string | undefined)[]; index: number }[]; error: string | null; segments: { text: string; match: boolean }[] }>({ matches: [], error: null, segments: [] });
+  const [analysis, setAnalysis] = useState<ReturnType<typeof analyzeRegex> | null>(null);
 
   const run = () => {
+    setAnalysis(analyzeRegex(pattern, flags));
     let re: RegExp;
     let error: string | null = null;
     try {
@@ -963,6 +996,42 @@ function RegexTesterTool() {
         <LabeledTextarea id="regex-input" label="Teks" value={text} onChange={setText} rows={6} />
       </Panel>
       <ErrorAlert message={result.error} />
+
+      {analysis && (
+        <Panel title="Pattern analysis (keamanan)">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full border px-3 py-1 text-xs font-medium border-slate-700 text-slate-300">
+              Risiko ReDoS: {analysis.riskScore}/100
+            </span>
+            <span className={`rounded-full border px-3 py-1 text-xs font-medium ${analysis.riskScore >= 50 ? 'border-red-500/40 bg-red-500/10 text-red-300' : analysis.riskScore >= 20 ? 'border-amber-500/40 bg-amber-500/10 text-amber-300' : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'}`}>
+              {analysis.riskScore >= 50 ? 'Potensi catastrophic backtracking' : analysis.riskScore >= 20 ? 'Perlu perhatian' : 'Risiko rendah'}
+            </span>
+          </div>
+          {analysis.warnings.length > 0 ? (
+            <ul className="mt-2 list-inside list-disc space-y-1 text-xs text-amber-200">
+              {analysis.warnings.map((w, i) => (
+                <li key={i}>{w}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-2 text-xs text-emerald-300">Tidak ada pola quantifier berlapis yang terdeteksi.</p>
+          )}
+          {analysis.tokens.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {analysis.tokens.slice(0, 40).map((t, i) => (
+                <span key={i} title={t.kind} className="rounded bg-slate-800/80 px-1.5 py-0.5 font-mono text-[11px] text-slate-300">
+                  {t.token}
+                </span>
+              ))}
+            </div>
+          )}
+          <p className="mt-2 text-xs text-slate-500">
+            Edukasi ReDoS: pola seperti (a+)+ atau (a|a)* dapat menyebabkan backtracking eksponensial pada input
+            panjang. Selalu batasi panjang input di sisi server.
+          </p>
+        </Panel>
+      )}
+
       {result.segments.length > 0 && !result.error && (
         <Panel title="Highlight">
           <p className="rounded-lg border border-slate-800 bg-slate-950/70 p-3 text-sm leading-7 text-slate-300">
@@ -1011,6 +1080,7 @@ function HttpMessageFormatter({ kind }: { kind: 'request' | 'response' }) {
     startLine: string; headers: { name: string; value: string }[]; body: string;
     parsed: { method?: string; path?: string; version?: string; status?: string; reason?: string };
   } | null>(null);
+  const [observations, setObservations] = useState<HttpSecurityObservation[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const run = () => {
@@ -1050,6 +1120,7 @@ function HttpMessageFormatter({ kind }: { kind: 'request' | 'response' }) {
       }
     }
     setResult({ startLine, headers, body, parsed });
+    setObservations(httpSecurityObservations(kind, headers));
   };
 
   return (
@@ -1096,6 +1167,18 @@ function HttpMessageFormatter({ kind }: { kind: 'request' | 'response' }) {
           )}
         </div>
       )}
+      {observations.length > 0 && (
+        <Panel title="Security observations">
+          <div className="space-y-1.5">
+            {observations.map((o, i) => (
+              <p key={i} className={`rounded-lg border px-3 py-2 text-xs ${o.type === 'bad' ? 'border-red-500/40 bg-red-500/10 text-red-200' : o.type === 'warn' ? 'border-amber-500/40 bg-amber-500/10 text-amber-200' : 'border-sky-500/30 bg-sky-500/5 text-sky-200'}`}>
+                {o.type === 'bad' ? '❌ ' : o.type === 'warn' ? '⚠ ' : 'ℹ '}{o.message}
+              </p>
+            ))}
+          </div>
+        </Panel>
+      )}
+
       <ToolNotes notes={webNotes(
         `Parse raw HTTP ${kind === 'request' ? 'request' : 'response'} menjadi struktur: start line, headers, body.`,
         'Tempel raw message, klik Format.',

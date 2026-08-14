@@ -5,13 +5,18 @@
 
 export type IocType =
   | 'ipv4' | 'ipv6' | 'domain' | 'url' | 'email' | 'hash-md5' | 'hash-sha1'
-  | 'hash-sha256' | 'hash-sha512' | 'cve' | 'attack' | 'filepath';
+  | 'hash-sha256' | 'hash-sha512' | 'cve' | 'attack' | 'filepath' | 'mac';
 
 export interface IocHit {
   type: IocType;
   value: string;
   count: number;
   context: string;
+  /** Posisi sumber (baris/kolom, 1-based). */
+  line?: number;
+  col?: number;
+  /** Keyakinan deteksi: high/medium/low. */
+  confidence?: 'high' | 'medium' | 'low';
 }
 
 const RE_IPV4 = /\b(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)\b/g;
@@ -21,6 +26,7 @@ const RE_CVE = /\bCVE-\d{4}-\d{4,7}\b/gi;
 const RE_ATTACK = /\b(?:TA\d{4}|T\d{4}(?:\.\d{3})?)\b/g;
 const RE_WINPATH = /\b[A-Za-z]:\\[^\s"';<>]+/g;
 const RE_UNIXPATH = /\b(?:\/|\.\.\/)[^\s"'<>]{1,200}/g;
+const RE_MAC = /\b(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\b/g;
 const RE_HASH_MD5 = /\b[a-fA-F0-9]{32}\b/g;
 const RE_HASH_SHA1 = /\b[a-fA-F0-9]{40}\b/g;
 const RE_HASH_SHA256 = /\b[a-fA-F0-9]{64}\b/g;
@@ -44,16 +50,30 @@ function cleanContext(line: string, value: string, radius = 40): string {
 export function extractIocs(text: string): IocHit[] {
   const lines = text.replace(/\r\n/g, '\n').split('\n');
   const full = text;
-  const counts = new Map<string, { type: IocType; value: string; count: number; context: string }>();
+  const counts = new Map<string, IocHit>();
 
-  const add = (type: IocType, value: string, ctx: string) => {
+  const confidenceFor: Record<IocType, 'high' | 'medium' | 'low'> = {
+    ipv4: 'high', ipv6: 'high', domain: 'high', url: 'high', email: 'high',
+    'hash-md5': 'medium', 'hash-sha1': 'medium', 'hash-sha256': 'high',
+    'hash-sha512': 'high', cve: 'high', attack: 'high', filepath: 'medium', mac: 'high',
+  };
+  const posOf = (index: number): { line: number; col: number } => {
+    const before = full.slice(0, index);
+    const nl = before.lastIndexOf('\n');
+    return { line: (before.match(/\n/g) ?? []).length + 1, col: index - nl };
+  };
+  const add = (type: IocType, value: string, ctx: string, index?: number) => {
     const key = `${type}:${value.toLowerCase()}`;
     const existing = counts.get(key);
     if (existing) {
       existing.count++;
       return;
     }
-    counts.set(key, { type, value, count: 1, context: ctx });
+    counts.set(key, {
+      type, value, count: 1, context: ctx,
+      confidence: confidenceFor[type],
+      ...(index !== undefined ? posOf(index) : {}),
+    });
   };
 
   const collect = (re: RegExp, type: IocType) => {
@@ -64,11 +84,16 @@ export function extractIocs(text: string): IocHit[] {
       if (type === 'domain' && /^https?:\/\//i.test(full.slice(Math.max(0, m.index - 6), m.index))) {
         continue;
       }
-      add(type, v, cleanContext(full, v));
+      // IPv6 yang juga MAC (6 pasang 2-hex dipisah ':') sudah dicover type mac.
+      if (type === 'ipv6' && /^[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}$/.test(v)) {
+        continue;
+      }
+      add(type, v, cleanContext(full, v), m.index);
       if (m[0] === '') re.lastIndex++;
     }
   };
 
+  collect(RE_MAC, 'mac');
   collect(RE_URL, 'url');
   collect(RE_EMAIL, 'email');
   collect(RE_IPV4, 'ipv4');
@@ -100,7 +125,7 @@ export function iocTypeLabel(t: IocType): string {
   const map: Record<IocType, string> = {
     ipv4: 'IPv4', ipv6: 'IPv6', domain: 'Domain', url: 'URL', email: 'Email',
     'hash-md5': 'Hash MD5', 'hash-sha1': 'Hash SHA-1', 'hash-sha256': 'Hash SHA-256',
-    'hash-sha512': 'Hash SHA-512', cve: 'CVE', attack: 'MITRE ATT&CK', filepath: 'File path',
+    'hash-sha512': 'Hash SHA-512', cve: 'CVE', attack: 'MITRE ATT&CK', filepath: 'File path', mac: 'MAC address',
   };
   return map[t];
 }

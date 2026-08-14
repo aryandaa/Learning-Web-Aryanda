@@ -276,3 +276,60 @@ if (fail > 0) process.exit(1);
   checkTrue('EXIF Model', exif.entries.some((e) => e.tag === 'Model' && e.value.includes('EOS')));
   checkTrue('EXIF DateTime', exif.entries.some((e) => e.tag === 'DateTime' && e.value.includes('2023')));
 }
+
+// ============ Fitur baru: subnet, hex inspector, regex, entropy, pipeline ============
+{
+  const { ipv4Subnet, ipv6Subnet, splitSubnet4, ipv4ToInt } = await import('../src/features/cysec-tools/utils/network');
+  const r = ipv4Subnet('192.168.1.25', 24)!;
+  check('CIDR network', r.network, '192.168.1.0');
+  check('CIDR broadcast', r.broadcast, '192.168.1.255');
+  check('CIDR usable', String(r.usable), '254');
+  check('CIDR wildcard', r.wildcard, '0.0.0.255');
+  checkTrue('CIDR binary 32 bit', r.binary.replace(/\s/g, '').length === 32);
+  checkTrue('split /24 -> /26 = 4', splitSubnet4('192.168.1.0', 24, 26)?.length === 4);
+  const v6 = ipv6Subnet('2001:db8::1', 64)!;
+  check('IPv6 network', v6.network, '2001:db8:0:0:0:0:0:0');
+  checkTrue('IPv6 prefix 64', v6.prefix === 64);
+  checkTrue('ipv4ToInt null', ipv4ToInt('999.1.1.1') === null);
+}
+
+{
+  const { interpretBytes, searchBytes } = await import('../src/features/cysec-tools/utils/binaryInspector');
+  const mz = new Uint8Array([0x4d, 0x5a, 0x90, 0x00]);
+  const it = interpretBytes(mz);
+  check('MZ u16 LE', String(it.u16le), '23117');
+  check('MZ u16 BE', String(it.u16be), '19802');
+  checkTrue('searchBytes menemukan pola', searchBytes(new Uint8Array([1, 2, 3, 1, 2]), new Uint8Array([1, 2])).length === 2);
+}
+
+{
+  const { analyzeRegex, riskLabel } = await import('../src/features/cysec-tools/utils/regexAnalyze');
+  const bad = analyzeRegex('(a+)+$');
+  checkTrue('ReDoS nested quantifier terdeteksi', bad.warnings.length > 0);
+  checkTrue('ReDoS risk high', riskLabel(bad.riskScore) === 'high');
+  const ok = analyzeRegex('^\\d{3}-\\d{4}$');
+  checkTrue('regex aman tanpa warning', ok.warnings.length === 0);
+}
+
+{
+  const { blockEntropy, entropyOf } = await import('../src/features/cysec-tools/utils/analysis');
+  const zeros = blockEntropy(new Uint8Array(1024), 256);
+  checkTrue('entropy blok nol rendah', zeros.every((b) => b.entropy < 0.01));
+  const rand = blockEntropy(crypto.getRandomValues(new Uint8Array(1024)), 256);
+  checkTrue('entropy blok acak tinggi', rand.every((b) => b.entropy > 7));
+  checkTrue('jumlah blok = 4', zeros.length === 4);
+}
+
+{
+  const { runPipeline } = await import('../src/features/cysec-tools/utils/pipeline');
+  const enc = runPipeline('Hello', [{ opId: 'b64-enc', opKey: '' }]);
+  check('pipeline b64', enc.value, 'SGVsbG8=');
+  const chain = runPipeline('SGVsbG8=', [{ opId: 'b64-dec', opKey: '' }, { opId: 'hex-enc', opKey: '' }]);
+  check('pipeline b64->hex', chain.value, '48656c6c6f');
+  const err = runPipeline('!!!', [{ opId: 'hex-dec', opKey: '' }]);
+  checkTrue('pipeline error ditangkap', err.ok === false && !!err.error);
+  const caesarRes = runPipeline('Khoor', [{ opId: 'caesar', opKey: '3' }]);
+  check('pipeline caesar', caesarRes.value, 'Nkrru');
+  const caesarDec = runPipeline('Khoor', [{ opId: 'caesar', opKey: '-3' }]);
+  check('pipeline caesar decode', caesarDec.value, 'Hello');
+}

@@ -154,3 +154,33 @@ if (fail > 0) process.exit(1);
   checkTrue('preset ada', DORK_PRESETS.length >= 8);
   checkTrue('filetypes lengkap', FILE_TYPES.includes('pdf') && FILE_TYPES.includes('env'));
 }
+
+// ============ Upgrade OSINT: MAC/confidence/posisi, hash algs, DNS parser ============
+{
+  const { extractIocs } = await import('../src/features/osint/utils/ioc');
+  const iocs = extractIocs('MAC 00:11:22:33:44:55 ada di baris ini');
+  const mac = iocs.find((i) => i.type === 'mac');
+  checkTrue('MAC address terdeteksi', !!mac);
+  checkTrue('MAC confidence high', mac?.confidence === 'high');
+  checkTrue('posisi baris 1', mac?.line === 1);
+  const md5hit = extractIocs('hash d41d8cd98f00b204e9800998ecf8427e').find((i) => i.type === 'hash-md5');
+  checkTrue('hash md5 confidence medium', md5hit?.confidence === 'medium');
+}
+
+{
+  const { detectHash } = await import('../src/features/osint/utils/hash');
+  const sha224 = 'd14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f';
+  checkTrue('SHA-224 terdeteksi', detectHash(sha224).candidates.some((c) => c.algorithm === 'SHA-224'));
+  const sha3_384 = '0c63a75b845e4f7d01107d852e4c2485c51a50aaaa94fc61995e71bbee983a2ac3713831264adb47fb6bd1e058d5f004';
+  checkTrue('SHA3-384 terdeteksi', detectHash(sha3_384).candidates.some((c) => c.algorithm === 'SHA3-384'));
+  checkTrue('scrypt prefix terdeteksi', detectHash('$scrypt$ln=16$8BBy4iu9XpN1F1s= $wUuzlY8OzX8xIqE=').candidates.some((c) => c.algorithm === 'scrypt'));
+}
+
+{
+  const { parseDnsText } = await import('../src/features/osint/utils/dns');
+  const res = parseDnsText('example.com. 3600 IN A 93.184.216.34\nexample.com. 3600 IN MX 10 mail.example.com.\n;; comment');
+  checkTrue('DNS parse 2 records', res.records.length === 2);
+  check('DNS A record', res.records[0].value, '93.184.216.34');
+  check('DNS MX record', res.records[1].value, '10 mail.example.com');
+  check('DNS type MX', res.records[1].type, 'MX');
+}

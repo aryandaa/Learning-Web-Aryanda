@@ -10,7 +10,7 @@ import {
   CopyButton, ErrorAlert, KeyValueTable, LabeledTextarea, Notice, Panel, ToolNotes,
 } from '../../components/ui';
 import { bytesToHex, bytesToUtf8, hexDump } from '../../utils/bytes';
-import { detectSignature, entropyOf, extractAsciiStrings, extractUtf16Strings } from '../../utils/analysis';
+import { detectSignature, entropyOf, blockEntropy, extractAsciiStrings, extractUtf16Strings } from '../../utils/analysis';
 import {
   collectFileInfo, formatDate, parseExif, parsePdfMetadata, parseTimestamp,
   parseZipListing, pdfDateToISO,
@@ -303,48 +303,76 @@ function StringsTool() {
 // ---------------------------------------------------------------------------
 
 function EntropyTool() {
+  const [blockSize, setBlockSize] = useState(256);
   return (
     <FileAnalyzer
       config={{
         title: 'Entropy Analyzer',
-        description: 'Shannon entropy + histogram byte',
+        description: 'Shannon entropy + histogram byte + grafik per blok',
         analyze: ({ bytes }) => {
           const e = entropyOf(bytes);
+          const blocks = blockEntropy(bytes, Math.max(16, blockSize));
+          const avg = blocks.length ? blocks.reduce((a, b) => a + b.entropy, 0) / blocks.length : 0;
+          const min = blocks.length ? Math.min(...blocks.map((b) => b.entropy)) : 0;
+          const max = blocks.length ? Math.max(...blocks.map((b) => b.entropy)) : 0;
           const maxCount = Math.max(...e.topBytes.map((t) => t.count), 1);
+          const maxBlock = Math.max(...blocks.map((b) => b.entropy), 1);
           return (
-            <ResultPanel title="Entropy analysis" textToCopy={JSON.stringify(e, null, 2)}>
-              <KeyValueTable
-                rows={[
-                  { k: 'Entropy', v: `${e.entropyBitsPerByte.toFixed(3)} bit/byte` },
-                  { k: 'Interpretasi', v: e.entropyBitsPerByte > 7 ? '⚠️ Tinggi (7–8). kemungkinan terenkripsi, dikompresi, atau acak' : e.entropyBitsPerByte > 5 ? 'Sedang. campuran data (kode, teks)' : 'Rendah. data terstruktur/teks polos' },
-                  { k: 'Total bytes', v: e.totalBytes.toLocaleString() },
-                  { k: 'Distinct bytes', v: String(e.distinctBytes) },
-                ]}
-              />
-              <h3 className="mt-4 mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">Top bytes</h3>
-              <div className="space-y-1.5">
-                {e.topBytes.map((t) => (
-                  <div key={t.byte} className="flex items-center gap-2">
-                    <span className="w-24 shrink-0 font-mono text-xs text-slate-400">
-                      0x{t.hex} {t.byte >= 32 && t.byte < 127 ? `'${String.fromCharCode(t.byte)}'` : ''}
-                    </span>
-                    <div className="h-3 flex-1 overflow-hidden rounded bg-slate-800">
-                      <div className="h-full bg-indigo-500/70" style={{ width: `${(t.count / maxCount) * 100}%` }} />
+            <>
+              <ResultPanel title="Entropy analysis" textToCopy={JSON.stringify(e, null, 2)}>
+                <KeyValueTable
+                  rows={[
+                    { k: 'Entropy', v: `${e.entropyBitsPerByte.toFixed(3)} bit/byte` },
+                    { k: 'Interpretasi', v: e.entropyBitsPerByte > 7 ? 'Tinggi (7-8): kemungkinan terenkripsi, dikompresi, atau acak' : e.entropyBitsPerByte > 5 ? 'Sedang: campuran data (kode, teks)' : 'Rendah: data terstruktur atau teks polos' },
+                    { k: 'Total bytes', v: e.totalBytes.toLocaleString() },
+                    { k: 'Distinct bytes', v: String(e.distinctBytes) },
+                  ]}
+                />
+                <div className="mt-3 space-y-1.5">
+                  {e.topBytes.slice(0, 8).map((t) => (
+                    <div key={t.byte} className="flex items-center gap-2">
+                      <span className="w-24 shrink-0 font-mono text-xs text-slate-400">
+                        0x{t.hex} {t.byte >= 32 && t.byte < 127 ? `'${String.fromCharCode(t.byte)}'` : ''}
+                      </span>
+                      <div className="h-3 flex-1 overflow-hidden rounded bg-slate-800">
+                        <div className="h-full bg-indigo-500/70" style={{ width: `${(t.count / maxCount) * 100}%` }} />
+                      </div>
+                      <span className="w-28 shrink-0 text-right font-mono text-xs text-slate-500">{t.count.toLocaleString()}</span>
                     </div>
-                    <span className="w-28 shrink-0 text-right font-mono text-xs text-slate-500">{t.count.toLocaleString()} ({t.pct.toFixed(2)}%)</span>
+                  ))}
+                </div>
+              </ResultPanel>
+
+              <ResultPanel title={`Entropy per blok (${blocks.length} blok x ${blockSize} byte)`}>
+                <div className="h-32 w-full overflow-x-auto rounded-lg border border-slate-800 bg-slate-950/60 p-2">
+                  <div className="flex h-full min-w-[200px] items-end gap-px">
+                    {blocks.map((b, i) => (
+                      <div
+                        key={i}
+                        className="flex-1 rounded-t bg-cyan-500/60 hover:bg-cyan-400"
+                        style={{ height: `${Math.max(4, (b.entropy / 8) * 100)}%` }}
+                        title={`offset 0x${b.offset.toString(16)}: ${b.entropy.toFixed(2)} bit/byte`}
+                      />
+                    ))}
                   </div>
-                ))}
-              </div>
-              <p className="mt-4 text-xs text-slate-500">
-                Entropy mendekati 8 = byte mendekati acak (enkripsi/kompresi/padding). Teks/executable umumnya 4–6. Ini indikator, bukan bukti.
-              </p>
-            </ResultPanel>
+                </div>
+                <div className="mt-2 grid gap-2 sm:grid-cols-3">
+                  <p className="rounded border border-slate-800 bg-slate-900/50 px-2 py-1 text-xs text-slate-400">Rata-rata: {avg.toFixed(3)}</p>
+                  <p className="rounded border border-slate-800 bg-slate-900/50 px-2 py-1 text-xs text-slate-400">Min: {min.toFixed(3)}</p>
+                  <p className="rounded border border-slate-800 bg-slate-900/50 px-2 py-1 text-xs text-slate-400">Max: {max.toFixed(3)} (skala 0-8)</p>
+                </div>
+                <p className="mt-3 rounded-lg border border-sky-500/20 bg-sky-500/5 px-3 py-2 text-xs text-sky-200">
+                  Edukasi: entropy rendah (0-3) = data berulang/prediktabel (teks, padding). Entropy tinggi (7-8) = data
+                  terlihat acak (terenkripsi, dikompresi, atau packed). Entropy tinggi TIDAK otomatis berarti malware.
+                </p>
+              </ResultPanel>
+            </>
           );
         },
         notes: forensicsNotes(
-          'Shannon entropy mengukur "keacakan" byte. dipakai mendeteksi file terenkripsi/dikompresi atau packed malware.',
-          'Upload file → entropy + histogram 16 byte teratas.',
-          'Entropy tinggi juga umum pada file terkompresi (zip, jpg). kombinasikan dengan magic bytes.'
+          'Shannon entropy mengukur keacakan byte, dengan grafik per blok untuk melihat distribusi di seluruh file.',
+          'Upload file. Atur ukuran blok (16-4096) untuk grafik.',
+          'Entropy tinggi juga umum pada file terkompresi (zip, jpg). Kombinasikan dengan magic bytes dan konteks.'
         ),
       }}
     />

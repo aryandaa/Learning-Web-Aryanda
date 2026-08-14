@@ -190,6 +190,9 @@ const TOOLS: ToolMeta[] = [
 
   // ============ LOG ANALYZER ============
   { id: 'log-analyzer', name: 'Log Analyzer', category: 'log', icon: '📋', needsFile: true, heavy: true, description: 'Apache/Nginx access log, auth.log, log generik. IP, status, brute-force, timeline.', tags: ['log', 'apache', 'nginx', 'auth', 'analysis'] },
+  // ============ TOOL BARU ============
+  { id: 'cve-reference', name: 'CVE / Security Reference', category: 'ctf', icon: '🗳️', description: 'Parser & referensi CVE lokal: CVSS, severity, CWE, product, dan tautan NVD/MITRE/CVE.org.', tags: ['cve', 'cvss', 'cwe', 'reference', 'vulnerability'] },
+  { id: 'encoding-pipeline', name: 'Cyber Encoding Pipeline', category: 'crypto', icon: '🔀', description: 'Pipeline encoding berantai: Base64, Hex, URL, HTML, Binary, ASCII, UTF-8, XOR, ROT13/47, Caesar + Data Converter.', tags: ['pipeline', 'encoding', 'converter', 'cyberchef'] },
 ];
 
 /** Index tool by id. */

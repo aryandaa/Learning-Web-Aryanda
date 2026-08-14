@@ -99,3 +99,42 @@ export function reverseName(ip: string): string {
   const parts = ip.split('.');
   return parts.reverse().join('.') + '.in-addr.arpa';
 }
+
+// ---------------------------------------------------------------------------
+// Parser DNS record mentah (paste dari dig/nslookup/zone file)
+// ---------------------------------------------------------------------------
+
+export interface ParsedDnsRecord {
+  name: string;
+  type: string;
+  ttl: number | null;
+  value: string;
+}
+
+const DNS_LINE_RE =
+  /^(\S+)\s+(?:(\d+)\s+)?(?:IN\s+)?(A|AAAA|CNAME|MX|NS|TXT|SOA|SRV|PTR|CAA)\s+(.*)$/i;
+
+export function parseDnsText(text: string): { records: ParsedDnsRecord[]; warnings: string[] } {
+  const records: ParsedDnsRecord[] = [];
+  const warnings: string[] = [];
+  const lines = text.replace(/\r\n/g, '\n').split('\n');
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line || line.startsWith(';') || line.startsWith('#')) continue;
+    // gabung baris TXT lanjutan "..." sederhana
+    const m = DNS_LINE_RE.exec(line);
+    if (!m) {
+      warnings.push(`Baris tidak dikenali: ${line.slice(0, 80)}`);
+      continue;
+    }
+    const [, name, ttl, type, value] = m;
+    const cleanedValue = value.replace(/\s*"(.*)"\s*$/, (_, inner: string) => inner).trim();
+    records.push({
+      name: name.replace(/\.$/, ''),
+      type: type.toUpperCase(),
+      ttl: ttl ? Number(ttl) : null,
+      value: cleanedValue.replace(/\.$/, ''),
+    });
+  }
+  return { records, warnings };
+}

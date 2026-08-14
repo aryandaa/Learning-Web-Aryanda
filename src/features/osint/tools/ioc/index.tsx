@@ -2,7 +2,7 @@
  * IOC Extractor. ekstraksi & dedup IOC dari teks/log/email/report.
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../../../../components/ui/button';
 import {
   CopyButton, ErrorAlert, LabeledTextarea, Panel, ToolNotes,
@@ -25,6 +25,23 @@ function IocExtractorTool() {
   const [input, setInput] = useState('');
   const [result, setResult] = useState<IocHit[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Terima IOC yang dikirim tool lain (mis. PCAP Analyzer) via sessionStorage.
+  useEffect(() => {
+    try {
+      const pending = window.sessionStorage.getItem('osint-ioc-pending');
+      if (pending) {
+        window.sessionStorage.removeItem('osint-ioc-pending');
+        const values = JSON.parse(pending) as string[];
+        if (Array.isArray(values) && values.length > 0) {
+          setInput(values.join('\n'));
+          setResult(extractIocs(values.join('\n')));
+        }
+      }
+    } catch {
+      /* abaikan */
+    }
+  }, []);
 
   const run = () => {
     setError(null);
@@ -80,6 +97,8 @@ function IocExtractorTool() {
                   <tr className="text-left text-slate-500">
                     <th className="px-2 py-1.5">Type</th>
                     <th className="px-2 py-1.5">Value</th>
+                    <th className="px-2 py-1.5">Conf</th>
+                    <th className="px-2 py-1.5">Pos</th>
                     <th className="px-2 py-1.5">Count</th>
                     <th className="px-2 py-1.5">Context</th>
                   </tr>
@@ -90,7 +109,13 @@ function IocExtractorTool() {
                       <td className="px-2 py-1">
                         <span className={cn('rounded px-1.5 py-0.5 text-[10px] font-medium', TYPE_TONE[r.type])}>{iocTypeLabel(r.type)}</span>
                       </td>
-                      <td className="max-w-[22rem] break-all px-2 py-1 font-mono text-slate-200">{r.value}</td>
+                      <td className="max-w-[20rem] break-all px-2 py-1 font-mono text-slate-200">{r.value}</td>
+                      <td className="px-2 py-1">
+                        <span className={cn('rounded px-1.5 py-0.5 text-[10px]', r.confidence === 'high' ? 'bg-emerald-500/10 text-emerald-300' : r.confidence === 'medium' ? 'bg-amber-500/10 text-amber-300' : 'bg-slate-700/50 text-slate-400')}>
+                          {r.confidence ?? '?'}
+                        </span>
+                      </td>
+                      <td className="whitespace-nowrap px-2 py-1 font-mono text-slate-500">{r.line ? `${r.line}:${r.col}` : '-'}</td>
                       <td className="px-2 py-1 font-mono text-slate-500">{r.count}</td>
                       <td className="max-w-[18rem] truncate px-2 py-1 text-slate-500" title={r.context}>{r.context}</td>
                     </tr>

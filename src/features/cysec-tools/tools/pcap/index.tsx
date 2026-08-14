@@ -6,20 +6,23 @@
 
 import { useMemo, useState } from 'react';
 import { FileDrop, largeFileHint, type LoadedFile } from '../../components/FileDrop';
-import { CopyButton, DownloadButton, ErrorAlert, Notice, Panel, ToolNotes } from '../../components/ui';
+import { Button } from '../../../../components/ui/button';
+import { CopyButton, DownloadButton, ErrorAlert, KeyValueTable, Notice, Panel, ToolNotes } from '../../components/ui';
 import { analyzePcap, type PcapAnalysis, type PacketInfo } from '../../utils/pcap';
 import { formatDate } from '../../utils/files';
 import { toArrayBuffer } from '../../utils/bytes';
 import { cn } from '../../../../lib/utils';
 import type { ComponentType } from 'react';
 
-type Tab = 'summary' | 'packets' | 'conversations' | 'protocols' | 'dns' | 'http' | 'hosts' | 'timeline' | 'suspicious';
+type Tab = 'summary' | 'packets' | 'conversations' | 'protocols' | 'statistics' | 'iocs' | 'dns' | 'http' | 'hosts' | 'timeline' | 'suspicious';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'summary', label: 'Summary' },
   { id: 'packets', label: 'Packets' },
   { id: 'conversations', label: 'Conversations' },
   { id: 'protocols', label: 'Protocols' },
+  { id: 'statistics', label: 'Statistics' },
+  { id: 'iocs', label: 'IOCs' },
   { id: 'dns', label: 'DNS' },
   { id: 'http', label: 'HTTP' },
   { id: 'hosts', label: 'Hosts' },
@@ -40,6 +43,138 @@ function MiniBar({ value, max, label }: { value: number; max: number; label: str
         <div className="h-full bg-cyan-500/70" style={{ width: `${max ? (value / max) * 100 : 0}%` }} />
       </div>
       <span className="w-16 shrink-0 font-mono text-xs text-slate-500">{value}</span>
+    </div>
+  );
+}
+
+function StatisticsTab({ analysis }: { analysis: PcapAnalysis }) {
+  const stats = useMemo(() => {
+    let totalBytes = 0;
+    const protoCount: Record<string, number> = {};
+    const srcCount = new Map<string, number>();
+    const dstCount = new Map<string, number>();
+    const portCount = new Map<string, number>();
+    for (const p of analysis.packets) {
+      totalBytes += p.caplen;
+      protoCount[p.proto] = (protoCount[p.proto] ?? 0) + 1;
+      srcCount.set(p.src, (srcCount.get(p.src) ?? 0) + 1);
+      dstCount.set(p.dst, (dstCount.get(p.dst) ?? 0) + 1);
+      if (p.srcPort) portCount.set(`${p.srcPort} (src)`, (portCount.get(`${p.srcPort} (src)`) ?? 0) + 1);
+      if (p.dstPort) portCount.set(`${p.dstPort} (dst)`, (portCount.get(`${p.dstPort} (dst)`) ?? 0) + 1);
+    }
+    const keyCounts = analysis.protocols.map((p) => ({ key: p.proto, count: p.count, bytes: p.bytes }));
+    return {
+      totalBytes,
+      protoCount,
+      keyCounts,
+      topSrc: Array.from(srcCount.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10),
+      topDst: Array.from(dstCount.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10),
+      topPorts: Array.from(portCount.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10),
+    };
+  }, [analysis]);
+
+  return (
+    <div className="space-y-4">
+      <Panel title="Aggregate">
+        <KeyValueTable
+          rows={[
+            { k: 'Total packets', v: String(analysis.packetCount) },
+            { k: 'Total bytes', v: stats.totalBytes.toLocaleString() },
+            { k: 'TCP', v: String(stats.protoCount.TCP ?? 0) },
+            { k: 'UDP', v: String(stats.protoCount.UDP ?? 0) },
+            { k: 'ICMP', v: String(stats.protoCount.ICMP ?? 0) },
+            { k: 'DNS', v: String(stats.protoCount.DNS ?? 0) },
+            { k: 'HTTP', v: String(stats.protoCount.HTTP ?? 0) },
+            { k: 'TLS', v: String(stats.protoCount.TLS ?? 0) },
+          ]}
+        />
+      </Panel>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Panel title="Top source IP">
+          <div className="space-y-1.5">
+            {stats.topSrc.map(([ip, n]) => (
+              <MiniBar key={ip} label={ip} value={n} max={stats.topSrc[0]?.[1] ?? 1} />
+            ))}
+          </div>
+        </Panel>
+        <Panel title="Top destination IP">
+          <div className="space-y-1.5">
+            {stats.topDst.map(([ip, n]) => (
+              <MiniBar key={ip} label={ip} value={n} max={stats.topDst[0]?.[1] ?? 1} />
+            ))}
+          </div>
+        </Panel>
+      </div>
+      <Panel title="Top ports">
+        <div className="space-y-1.5">
+          {stats.topPorts.map(([port, n]) => (
+            <MiniBar key={port} label={port} value={n} max={stats.topPorts[0]?.[1] ?? 1} />
+          ))}
+        </div>
+      </Panel>
+    </div>
+  );
+}
+
+function IocsTab({ analysis, onSendToIoc }: { analysis: PcapAnalysis; onSendToIoc: (values: string[]) => void }) {
+  const iocs = useMemo(() => {
+    const ips = new Map<string, number>();
+    const domains = new Map<string, number>();
+    const urls = new Map<string, number>();
+    for (const p of analysis.packets) {
+      for (const ip of [p.src, p.dst]) if (ip && ip !== '?') ips.set(ip, (ips.get(ip) ?? 0) + 1);
+      if (p.dnsQuery) domains.set(p.dnsQuery, (domains.get(p.dnsQuery) ?? 0) + 1);
+      if (p.httpHost) domains.set(p.httpHost, (domains.get(p.httpHost) ?? 0) + 1);
+      if (p.tlsSni) domains.set(p.tlsSni, (domains.get(p.tlsSni) ?? 0) + 1);
+      if (p.httpHost && p.httpPath) {
+        const u = `http://${p.httpHost}${p.httpPath}`;
+        urls.set(u, (urls.get(u) ?? 0) + 1);
+      }
+    }
+    return {
+      ips: Array.from(ips.entries()).sort((a, b) => b[1] - a[1]),
+      domains: Array.from(domains.entries()).sort((a, b) => b[1] - a[1]),
+      urls: Array.from(urls.entries()).sort((a, b) => b[1] - a[1]),
+    };
+  }, [analysis]);
+
+  const allValues = [...iocs.ips.map(([v]) => v), ...iocs.domains.map(([v]) => v), ...iocs.urls.map(([v]) => v)];
+
+  const renderGroup = (title: string, list: [string, number][], color: string) => (
+    <Panel title={`${title} (${list.length})`}>
+      {list.length === 0 ? (
+        <p className="text-sm text-slate-500">Tidak ada.</p>
+      ) : (
+        <div className="max-h-56 space-y-1 overflow-auto">
+          {list.slice(0, 200).map(([v, n]) => (
+            <div key={v} className="flex items-center justify-between gap-3 rounded border border-slate-800/60 bg-slate-900/40 px-3 py-1">
+              <code className={cn('min-w-0 flex-1 truncate font-mono text-xs', color)}>{v}</code>
+              <span className="shrink-0 font-mono text-[10px] text-slate-500">{n}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </Panel>
+  );
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <CopyButton text={allValues.join('\n')} label="Copy all" />
+        <DownloadButton text={allValues.join('\n')} filename="pcap-iocs.txt" label="Export TXT" />
+        <Button type="button" variant="secondary" size="sm" onClick={() => onSendToIoc(allValues)} disabled={allValues.length === 0}>
+          Send to IOC Analyzer ↗
+        </Button>
+      </div>
+      <div className="grid gap-4 lg:grid-cols-3">
+        {renderGroup('IP addresses', iocs.ips, 'text-sky-300')}
+        {renderGroup('Domains (DNS/HTTP/TLS SNI)', iocs.domains, 'text-emerald-300')}
+        {renderGroup('URLs (HTTP)', iocs.urls, 'text-violet-300')}
+      </div>
+      <p className="text-xs text-slate-500">
+        IOC diekstrak dari metadata paket yang sudah diparsing (tanpa decrypt). Hash payload tidak tersedia tanpa
+        inspeksi data mentah. "Send to IOC Analyzer" membuka tool IOC dengan nilai terisi (lewat sessionStorage).
+      </p>
     </div>
   );
 }
@@ -343,6 +478,22 @@ function PcapTool() {
                 ))}
               </div>
             </Panel>
+          )}
+
+          {tab === 'statistics' && <StatisticsTab analysis={analysis} />}
+
+          {tab === 'iocs' && (
+            <IocsTab
+              analysis={analysis}
+              onSendToIoc={(values) => {
+                try {
+                  window.sessionStorage.setItem('osint-ioc-pending', JSON.stringify(values));
+                  window.open('/osint/ioc', '_blank');
+                } catch {
+                  /* abaikan */
+                }
+              }}
+            />
           )}
 
           {tab === 'dns' && (

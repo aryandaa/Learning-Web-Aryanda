@@ -541,3 +541,86 @@ route /osint/google-dork-search # ✅ 200 (chunk lazy terpisah)
 Tool hanya muncul di kategori OSINT (cek katalog), tanpa navbar baru, tanpa backend,
 tanpa API key, tanpa scraping. "Search Google" hanya membuka
 `https://www.google.com/search?q=<encoded>` di tab baru.
+
+---
+
+# EXPANSI CYSEC TOOLS: DEDUP + UPGRADE + 2 TOOL BARU
+
+## Audit & mapping (Phase 1-2)
+
+Prinsip: CANONICAL TOOL (satu fungsi = satu tool, satu kategori). 20 fitur target
+dipetakan ke tool existing; hanya 2 capability yang benar-benar baru.
+
+| Target Feature | Existing / New | Kategori | Route | Aksi |
+|---|---|---|---|---|
+| JWT Security Toolkit | jwt (existing) | web | /cysec-tools/jwt | UPGRADE (struktur token, validitas exp) |
+| HTTP Request / Inspector | http-request, http-response | web | /cysec-tools/http-request | UPGRADE (security observations) |
+| Security Headers Analyzer | security-headers | web | /cysec-tools/security-headers | UPGRADE (COOP, CORP) |
+| Hash Identifier | hash (osint) | osint | /osint/hash | UPGRADE (SHA-224/384, SHA3, scrypt, LM) |
+| Password / Hash Lab | hash-generator + hmac + pbkdf2 | crypto | /cysec-tools/hash-generator | UPGRADE (compare target hash); tidak bikin tool baru |
+| Regex Security Analyzer | regex-tester | web | /cysec-tools/regex-tester | UPGRADE (analisis ReDoS, token) |
+| URL / URI Security Analyzer | url-parser | web | /cysec-tools/url-parser | UPGRADE (port, private IP, scheme) |
+| IP / CIDR Calculator | subnet | ctf | /cysec-tools/subnet | UPGRADE (IPv6, binary, wildcard, split) |
+| DNS Record Parser | dns (osint) | osint | /osint/dns | UPGRADE (paste raw DNS text) |
+| PCAP Analyzer (Stats/IOC) | pcap | pcap | /cysec-tools/pcap | UPGRADE (tab Statistics + IOCs) |
+| IOC Analyzer | ioc (osint) | osint | /osint/ioc | UPGRADE (MAC, confidence, posisi) |
+| Log Analyzer | log-analyzer | log | /cysec-tools/log-analyzer | UPGRADE (4xx/5xx, wording potentially suspicious) |
+| CVE / Security Reference | **NEW** cve-reference | ctf | /cysec-tools/cve-reference | CREATE (local parser + links NVD/MITRE) |
+| PE / ELF Analyzer | pe-viewer, elf-viewer | re | /cysec-tools/pe-viewer | UPGRADE (PE exports, ELF symbols) |
+| Entropy Analyzer | entropy | forensics | /cysec-tools/entropy | UPGRADE (grafik per blok, min/max/avg) |
+| Binary / Hex Inspector | hex-viewer | re | /cysec-tools/hex-viewer | UPGRADE (interpretasi LE/BE, float, magic, search/jump) |
+| Cyber Timeline | timeline (osint) | osint | /osint/timeline | SUDAH ADA (tidak diubah) |
+| PCAP -> IOC | tab IOCs di pcap | pcap | /cysec-tools/pcap | SUDAH ADA (tab baru) + tombol "Send to IOC Analyzer" |
+| Cyber Encoding Pipeline | **NEW** encoding-pipeline | crypto | /cysec-tools/encoding-pipeline | CREATE (pipeline ops + reorder/duplicate) |
+| Cyber Data Converter | mode di encoding-pipeline | crypto | /cysec-tools/encoding-pipeline | GABUNG (panel converter) |
+
+## Hasil
+
+- **Tool baru**: 2 (cve-reference, encoding-pipeline)
+- **Tool di-upgrade**: 17 (jwt, http-request, http-response, security-headers, hash-generator,
+  regex-tester, url-parser, subnet, pcap, ioc, dns, hash, log-analyzer, pe-viewer, elf-viewer,
+  entropy, hex-viewer)
+- **Sengaja tidak dibuat** (sudah ada): timeline, PCAP->IOC, password lab, data converter,
+  security headers, binary inspector, IP/CIDR, DNS parser, JWT toolkit, HTTP inspector,
+  hash identifier, regex analyzer, URL analyzer, PE/ELF, IOC analyzer, log analyzer
+- **Total tool**: 106 -> **108** (+2, tidak ada duplikat)
+- **Kategori**: setiap tool tepat 1 kategori (validate 0 error, 0 warning)
+
+## Integrasi antar tool
+
+- PCAP Analyzer (tab IOCs) -> "Send to IOC Analyzer": kirim nilai via sessionStorage,
+  tool /osint/ioc membaca otomatis saat dibuka.
+- Encoding Pipeline -> Copy/konversi untuk dikirim ke Hash Analyzer manual.
+
+## File baru
+- src/features/cysec-tools/utils/network.ts (subnet IPv4+IPv6, split)
+- src/features/cysec-tools/utils/binaryInspector.ts (interpretasi, magic, search)
+- src/features/cysec-tools/utils/regexAnalyze.ts (ReDoS heuristics)
+- src/features/cysec-tools/utils/pipeline.ts (ops pipeline murni)
+- tools: cve-reference & encoding-pipeline (di modul ctf & crypto)
+
+## File diubah
+- registry (2 tool baru), types, catalog (tidak), utils: analysis.ts (blockEntropy),
+  web.ts (COOP/CORP + httpSecurityObservations), binaryFormats.ts (PE exports + ELF symbols),
+  osint: ioc.ts (MAC/confidence/posisi), hash.ts (algoritma), dns.ts (parseDnsText)
+- tools: ctf (subnet baru, cve), crypto (pipeline), re (hex-viewer, pe/elf panels),
+  forensics (entropy), web (regex/jwt/http/url panels), pcap (statistics+iocs),
+  log (wording+summary), osint tools (ioc, dns, hash)
+- scripts: cysec-selfcheck (+41 test), osint-selfcheck (+11 test)
+
+## Verifikasi
+```bash
+npm run validate     # ✅ 0 error, 0 warning, 108 tool unik
+npm run cysec:check  # ✅ 85 (44 lama + 41 baru)
+npm run osint:check  # ✅ 77 (66 lama + 11 baru)
+npm run build        # ✅
+tsc --noEmit         # ✅
+route baru & lama    # ✅ semua 200
+em dash di source    # ✅ 0
+```
+## Limitasi teknis
+- PE exports: hanya dibaca bila data directory export valid (best-effort, tanpa test fixture PE penuh di unit test).
+- ELF symbols: dibaca dari SHT_SYMTAB/DYNSYM; executable stripped tidak punya symbol.
+- PCAP IOCs: berbasis metadata paket (tanpa decrypt); hash payload tidak diekstrak.
+- ReDoS analyzer: heuristik, bukan bukti; tidak menjalankan regex dengan timeout (pola dicoba pada input kecil).
+- Entropy grafik: dibatasi 4096 blok.

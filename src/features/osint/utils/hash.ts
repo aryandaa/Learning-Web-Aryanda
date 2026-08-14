@@ -22,17 +22,33 @@ export function detectHash(input: string): HashDetection {
   if (/^\$2[aby]\$/.test(raw)) candidates.push({ algorithm: 'bcrypt', confidence: 'high', note: 'Prefix $2a/$2b/$2y.' });
   else if (/^\$argon2/.test(raw)) candidates.push({ algorithm: 'Argon2', confidence: 'high', note: 'Prefix $argon2.' });
   else if (/^\$pbkdf2/.test(raw)) candidates.push({ algorithm: 'PBKDF2', confidence: 'high', note: 'Prefix $pbkdf2.' });
-  else if (/^[a-f0-9]{128}$/.test(normalized)) candidates.push({ algorithm: 'SHA-512', confidence: 'high' }, { algorithm: 'SHA3-512', confidence: 'medium' });
-  else if (/^[a-f0-9]{96}$/.test(normalized)) candidates.push({ algorithm: 'SHA-384', confidence: 'high' }, { algorithm: 'SHA3-384', confidence: 'medium' });
-  else if (/^[a-f0-9]{64}$/.test(normalized)) candidates.push({ algorithm: 'SHA-256', confidence: 'high' }, { algorithm: 'SHA3-256', confidence: 'medium' });
-  else if (/^[a-f0-9]{56}$/.test(normalized)) candidates.push({ algorithm: 'SHA-224', confidence: 'high' });
-  else if (/^[a-f0-9]{40}$/.test(normalized)) candidates.push({ algorithm: 'SHA-1', confidence: 'high' });
+  else if (/^\$scrypt\$/.test(raw)) candidates.push({ algorithm: 'scrypt', confidence: 'high', note: 'Prefix $scrypt$.' });
+  else if (/^[a-f0-9]{128}$/.test(normalized)) candidates.push(
+    { algorithm: 'SHA-512', confidence: 'high' },
+    { algorithm: 'SHA3-512', confidence: 'medium' },
+    { algorithm: 'Whirlpool', confidence: 'low' }
+  );
+  else if (/^[a-f0-9]{96}$/.test(normalized)) candidates.push(
+    { algorithm: 'SHA-384', confidence: 'high' },
+    { algorithm: 'SHA3-384', confidence: 'medium' }
+  );
+  else if (/^[a-f0-9]{64}$/.test(normalized)) candidates.push(
+    { algorithm: 'SHA-256', confidence: 'high' },
+    { algorithm: 'SHA3-256', confidence: 'medium' },
+    { algorithm: 'BLAKE2b-256', confidence: 'low' }
+  );
+  else if (/^[a-f0-9]{56}$/.test(normalized)) candidates.push(
+    { algorithm: 'SHA-224', confidence: 'high' },
+    { algorithm: 'SHA3-224', confidence: 'medium' }
+  );
+  else if (/^[a-f0-9]{40}$/.test(normalized)) candidates.push({ algorithm: 'SHA-1', confidence: 'high' }, { algorithm: 'RIPEMD-160', confidence: 'low' });
   else if (/^[a-f0-9]{32}$/.test(normalized)) candidates.push(
     { algorithm: 'MD5', confidence: 'high' },
     { algorithm: 'NTLM', confidence: 'medium', note: 'NTLM juga 32 hex. tidak bisa dibedakan dari panjang saja.' },
-    { algorithm: 'MD4', confidence: 'low' }
+    { algorithm: 'MD4', confidence: 'low' },
+    { algorithm: 'LM', confidence: 'low', note: 'LM hash adalah 32 hex (16 byte).' }
   );
-  else if (/^[a-f0-9]{16}$/.test(normalized)) candidates.push({ algorithm: 'CRC32 / LM hash / 8-byte hash', confidence: 'low' });
+  else if (/^[a-f0-9]{16}$/.test(normalized)) candidates.push({ algorithm: 'LM hash (16 byte) / CRC32', confidence: 'low' });
   else if (!hex && length > 0) candidates.push({ algorithm: 'Non-hex digest (base64/base64url, contoh SHA-256 base64 = 44 char)', confidence: 'low' });
   else candidates.push({ algorithm: 'Tidak dikenal', confidence: 'low', note: 'Panjang/charset tidak cocok dengan digest umum.' });
 

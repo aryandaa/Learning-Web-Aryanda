@@ -20,7 +20,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'paths', label: 'Paths' },
   { id: 'timeline', label: 'Timeline' },
   { id: 'auth', label: 'Auth (ssh)' },
-  { id: 'suspicious', label: '⚠ Suspicious' },
+  { id: 'suspicious', label: '⚠ Potentially suspicious' },
 ];
 
 const FORMAT_LABEL: Record<string, string> = {
@@ -165,6 +165,8 @@ function LogAnalyzerToolInner() {
                         ['Baris tidak dikenali', String(analysis.errors)],
                         ['Unik IP', String(analysis.uniqueIps.length)],
                         ['Kegagalan auth', String(analysis.authFailures.length)],
+                        ['HTTP 4xx', String(analysis.statuses.filter((st) => Number(st.status) >= 400 && Number(st.status) < 500).reduce((a, st) => a + st.count, 0))],
+                        ['HTTP 5xx', String(analysis.statuses.filter((st) => Number(st.status) >= 500).reduce((a, st) => a + st.count, 0))],
                         ['Indikator mencurigakan', String(analysis.suspicious.length)],
                       ].map(([k, v]) => (
                         <tr key={k} className="border-b border-slate-800/60 last:border-0">
@@ -334,7 +336,8 @@ function LogAnalyzerToolInner() {
                 ))}
               </div>
               <p className="mt-3 text-xs text-slate-500">
-                Heuristik: brute-force SSH (≥5 gagal/IP), volume request tinggi, error spike 5xx, dan flood 404. Bukan pengganti analisis manusia.
+                Heuristik: brute-force SSH (≥5 gagal/IP), volume request tinggi, error spike 5xx, dan flood 404.
+                Istilah "potentially suspicious" dipakai karena heuristik bukan bukti definitif. Analisis manusia tetap diperlukan.
               </p>
             </Panel>
           )}
