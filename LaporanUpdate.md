@@ -242,7 +242,6 @@ Semua implementasi memakai Web APIs + TypeScript murni:
 
 | Tool | Status | Alasan |
 |---|---|---|
-| `des3des` (DES/3DES) | `unavailable` (ditampilkan greyed-out) | Web Crypto tidak mendukung DES; menambah library DES hanya untuk tool edukasi menambah attack surface. Ditandai di registry dengan catatan. Untuk CTF gunakan CyberChef/OpenSSL. |
 | `macho-viewer` | `partial` | Hanya header dasar 64-bit LE/BE (magic, cputype, filetype, ncmds, flags). Parsing penuh load commands (segments, symbols, dylibs) belum disertakan — bukan mustahil, tinggal dikerjakan. |
 | PCAP linktype selain Ethernet(1)/RawIP(101/228) | `partial` | Linktype lain (mis. Linux SLL, 802.11) ditandai "belum didukung penuh". |
 | PCAPNG `if_tsresol` (resolusi timestamp non-default) | catatan | Dianggap 1e-6 (default). Opsi tsresol di IDB belum diparse. |

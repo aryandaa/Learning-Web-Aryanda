@@ -78,9 +78,6 @@ const RSA_DISCLAIMER =
 const CHACHA_DISCLAIMER =
   'Implementasi ChaCha20 ini untuk pembelajaran dan CTF. Pastikan nonce unik per kunci dan jangan gunakan untuk data produksi tanpa review kriptografi.';
 
-const DES_DISCLAIMER =
-  'DES/3DES sudah usang dan tidak direkomendasikan. Tool tidak disertakan karena tidak ada implementasi client-side yang aman tanpa dependency tambahan.';
-
 const TOOLS: ToolMeta[] = [
   // ============ CRYPTOGRAPHY & ENCODING ============
   { id: 'base64', name: 'Base64 Encode/Decode', category: 'crypto', alsoIn: ['ctf'], icon: '🔤', description: 'Encode/decode data Base64 (RFC 4648).', tags: ['base64', 'encoding', 'decode', 'encode'] },
@@ -185,20 +182,6 @@ const TOOLS: ToolMeta[] = [
 
   // ============ LOG ANALYZER ============
   { id: 'log-analyzer', name: 'Log Analyzer', category: 'log', icon: '📋', needsFile: true, heavy: true, description: 'Apache/Nginx access log, auth.log, log generik — IP, status, brute-force, timeline.', tags: ['log', 'apache', 'nginx', 'auth', 'analysis'] },
-
-  // ============ CLIENT-SIDE LIMITATION (tidak disertakan) ============
-  {
-    id: 'des3des',
-    name: 'DES / 3DES',
-    category: 'crypto',
-    icon: '🔓',
-    status: 'unavailable',
-    statusNote:
-      'Tidak ada implementasi Web Crypto untuk DES/3DES, dan menambahkan library DES hanya untuk tool edukasi menambah attack surface. Untuk CTF/forensik, gunakan tool eksternal (CyberChef/OpenSSL) atau library audited di sisi Anda sendiri.',
-    disclaimer: DES_DISCLAIMER,
-    description: 'DES/3DES — belum tersedia (client-side limitation).',
-    tags: ['des', '3des', 'legacy'],
-  },
 ];
 
 /** Index tool by id. */
