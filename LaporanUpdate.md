@@ -684,3 +684,41 @@ npm run validate      # ✅ 0 error
 route /, /docs, /docs/<id>  # ✅ 200
 em dash di source     # ✅ 0
 ```
+
+---
+
+# REVISI DASHBOARD: HAPUS TRACKING, HANYA RECENTLY UPDATED
+
+## Perubahan
+- **Dihapus seluruh fitur tracking aktivitas belajar**: Continue Learning, Learning
+  Stats (Notes Read/Categories/Sessions/Completed/Last activity), Recently Read,
+  progress materi, last opened, dan seluruh logic localStorage tracking.
+- File dihapus: `src/services/learningActivity.ts`, `src/components/dashboard/LearningHub.tsx`,
+  `scripts/learning-selfcheck.ts`; script npm `learn:check` dihapus.
+- `src/pages/DocumentPage.tsx` dikembalikan ke versi asli (tanpa record/progress/
+  tombol continue).
+- Dashboard kini hanya menampilkan **Recently Updated** sebagai fitur utama
+  (`src/components/dashboard/RecentlyUpdated.tsx`):
+  - Heading "Recently Updated", subtitle "Materi terbaru yang baru diperbarui."
+  - Tanpa menyebut vault/Obsidian/parser.
+  - Item: judul, kategori/path, label status update, klik ke `/docs/<id>`.
+  - Timestamp tidak diarang: bila tidak ada, label "Recently updated";
+    bila ada, label relatif ("Updated 2 hours ago", "Updated yesterday", dll).
+  - Empty state jujur bila belum ada data.
+- localStorage/sessionStorage: key `learning-web:*` untuk tracking dihapus total.
+  `sessionStorage osint-ioc-pending` (integrasi PCAP -> IOC) DIPERTAHANKAN karena
+  itu fitur CySec/OSINT yang masih aktif.
+
+## Verifikasi
+```bash
+tsc --noEmit              # ✅
+npm run build             # ✅
+npm run cysec:check       # ✅ 85 (regresi aman)
+npm run osint:check       # ✅ 77 (regresi aman)
+npm run validate          # ✅ 0 error
+route /, /docs, /docs/<id> # ✅ 200
+em dash di source         # ✅ 0
+```
+Catatan: kata "vault" di bundle hanya tersisa dari fitur lama (pesan error parser
+"npm run parse -- --vault=..." di halaman error Docs dan label roadmap) yang bukan
+bagian dari Recently Updated dan tidak diubah sesuai aturan "jangan mengubah fitur lain".
