@@ -10,6 +10,7 @@ import {
   Network,
   PanelLeftClose,
   Search,
+  Shield,
   Sun,
   X,
 } from 'lucide-react';
@@ -140,6 +141,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
           Code editor
         </span>
       </NavLink>
+      <NavLink to="/cysec-tools" className={navLinkClass}>
+        <span className="flex items-center gap-1">
+          <Shield className="h-3.5 w-3.5" />
+          CySec Tools
+        </span>
+      </NavLink>
       <div className="mt-2 border-t border-slate-800" />
     </nav>
   );
@@ -188,6 +195,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <span className="flex items-center gap-1">
                 <Code2 className="h-3.5 w-3.5" />
                 Code editor
+              </span>
+            </NavLink>
+            <NavLink to="/cysec-tools" className={navLinkClass}>
+              <span className="flex items-center gap-1">
+                <Shield className="h-3.5 w-3.5" />
+                CySec Tools
               </span>
             </NavLink>
           </nav>
@@ -308,6 +321,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
               <Link to="/editor" className="transition-colors hover:text-slate-300">
                 Code editor
+              </Link>
+              <Link to="/cysec-tools" className="transition-colors hover:text-slate-300">
+                CySec Tools
               </Link>
             </nav>
           </div>
