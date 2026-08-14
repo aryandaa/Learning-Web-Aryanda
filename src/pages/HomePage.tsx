@@ -16,6 +16,7 @@ import {
 import { useSiteData } from '../app/SiteProvider';
 import { countFiles } from '../services/docs';
 import { Spinner } from '../components/ui/spinner';
+import LearningHub from '../components/dashboard/LearningHub';
 
 export default function HomePage() {
   const { tree, metadata, loading, error } = useSiteData();
@@ -128,6 +129,11 @@ export default function HomePage() {
           </a>
         </div>
       </header>
+
+      {/* Personal learning hub */}
+      <div className="mt-16">
+        <LearningHub tree={tree} />
+      </div>
 
       {/* Statistik */}
       <section className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">

@@ -624,3 +624,63 @@ em dash di source    # ✅ 0
 - PCAP IOCs: berbasis metadata paket (tanpa decrypt); hash payload tidak diekstrak.
 - ReDoS analyzer: heuristik, bukan bukti; tidak menjalankan regex dengan timeout (pola dicoba pada input kecil).
 - Entropy grafik: dibatasi 4096 blok.
+
+---
+
+# PERSONAL LEARNING DASHBOARD (Dashboard saja)
+
+Dashboard kini menjadi personal learning hub. Fitur hanya ada di halaman beranda;
+halaman materi tetap bersih. Frontend-only, localStorage, tanpa backend.
+
+## File baru
+- `src/services/learningActivity.ts` — service aktivitas belajar (localStorage).
+- `src/components/dashboard/LearningHub.tsx` — section Continue Learning, Recently
+  Updated, Recently Read, Learning Stats + privacy note.
+- `scripts/learning-selfcheck.ts` — unit test service (17 kasus, `npm run learn:check`).
+
+## File diubah
+- `src/pages/DocumentPage.tsx` — tracking saat membuka dokumen (record), scroll
+  progress throttled (800ms + scrollend), tombol "Continue where you left off".
+- `src/pages/HomePage.tsx` — sisipkan `<LearningHub tree={tree} />` setelah hero.
+- `package.json` — script `learn:check`.
+
+## localStorage keys (namespace khusus, tanpa bentrok)
+- `learning-web:last-read`
+- `learning-web:reading-history` (maks 20, upsert per documentId)
+- `learning-web:stats` (notesRead, sessions, categories, completed, lastActivity)
+
+## Tracking Last Read & progress
+- Identitas utama = `documentId` (path normalized dari tree), bukan slug.
+- Saat dokumen dibuka: `recordRead({documentId, relativePath, title, folder, slug})`.
+- Scroll progress = `window.scrollY / (scrollHeight - innerHeight)`, disimpan
+  throttled 800ms + saat scrollend + saat unmount.
+- Tombol "Continue where you left off (N%)" muncul bila progress 8-94%; klik
+  scroll halus ke posisi. Tidak ada auto-jump yang mengganggu.
+- Buka ulang dokumen yang sama: entry di-update, tidak duplikat.
+
+## Recently Updated (jujur, tanpa mengarang data)
+- Sumber: index opsional `docs/updated-index.json` (fetch sekali, 404 => kosong).
+- Audit: **0 dari 424 dokumen** punya `updated` non-null (vault tidak menyediakan
+  tanggal per materi). Sesuai aturan "jangan mengarang data" dan "jangan mengubah
+  parser", section menampilkan empty state jujur; akan otomatis terisi bila vault
+  menyediakan metadata tanggal.
+
+## Stale & update handling
+- `pruneStaleHistory(validIds)` dijalankan saat dashboard dimuat: entry dokumen
+  yang sudah dihapus dari tree dibersihkan, last-read dibuang, tanpa crash.
+- Dokumen yang diperbarui di vault tetap dikenali lewat documentId/relativePath.
+
+## Routing
+- Tidak ada route baru. Link dokumen memakai `/docs/<documentId>` (pola existing).
+
+## Verifikasi
+```bash
+tsc --noEmit          # ✅
+npm run build         # ✅
+npm run learn:check   # ✅ 17/17 (upsert, progress, prune, stats)
+npm run cysec:check   # ✅ 85 (regresi aman)
+npm run osint:check   # ✅ 77 (regresi aman)
+npm run validate      # ✅ 0 error
+route /, /docs, /docs/<id>  # ✅ 200
+em dash di source     # ✅ 0
+```
