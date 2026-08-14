@@ -326,3 +326,88 @@ Catatan build:
   (lihat `scripts/cysec-selfcheck.ts`) — jangan "perbaiki" tanpa menjalankan test.
 - Tema light/dark otomatis lewat CSS variables — komponen baru cukup pakai kelas
   `slate-*` existing, jangan hardcode warna hex.
+
+---
+
+# OSINT MODULE (ditambahkan setelah CySec Tools)
+
+> Modul kedua, mengikuti pola arsitektur CySec Tools yang sama. Semua client-side.
+
+## Ringkasan
+
+- Route: `/osint` (landing) + `/osint/:toolId` (resolver lazy).
+- 15 tool, 12 kategori, registry data-driven di `src/features/osint/registry.ts`.
+- Privacy indicator per tool: LOCAL / EXTERNAL / HYBRID.
+- Integrasi eksternal hanya ke API publik ber-CORS tanpa key: **Cloudflare/Google DoH**
+  (DNS), **ipwho.is** (IP ASN/geo). crt.sh (certificates) tidak stabil CORS → fetch
+  dengan fallback + mode "paste JSON" + link manual.
+- localStorage: recent tools, OSINT Workspace, OSINT Case. Tidak ada secret tersimpan.
+
+## Struktur
+
+```
+src/features/osint/
+├── types.ts / registry.ts        # data-driven (id, title, category, path, icon, tags, privacy)
+├── hooks/useOsintHistory.ts      # recent tools
+├── utils/  domain.ts dns.ts ip.ts url.ts username.ts email.ts ioc.ts hash.ts text.ts
+│           timeline.ts metadata.ts shared.ts (export/sanitasi)
+├── components/ui.tsx             # PrivacyIndicator, SourceList, IndicatorBadge, OsintResultPanel
+├── pages/  OSINTPage.tsx OSINTToolPage.tsx
+└── tools/  <toolId>/index.tsx    # 15 chunk lazy
+```
+
+## Cara menambahkan tool OSINT baru
+
+1. Buat komponen di `src/features/osint/tools/<id>/index.tsx`:
+   ```ts
+   export const tools: Record<string, ComponentType> = { '<id>': MyTool };
+   export default MyTool; // fallback
+   ```
+2. Tambah object di `TOOLS` pada `registry.ts` (id harus sama dengan nama folder
+   chunk agar `import.meta.glob('../tools/*/index.tsx')` di OSINTToolPage menemukannya).
+3. Route otomatis tersedia di `/osint/<id>`.
+
+## Cara menambahkan kategori
+
+Tambah `OsintCategoryId` di `types.ts` + object di `CATEGORIES` registry.
+
+## Cara menambahkan external source
+
+- DoH: tambahkan entry di `DOH_RESOLVERS` (`utils/dns.ts`) — endpoint harus ber-CORS.
+- Lainnya: cukup tambahkan link di bagian "Public Sources" tool; tampilkan
+  "External lookup required" bila tidak ber-CORS. JANGAN simpan API key di kode.
+
+## Cara menambahkan export format
+
+Gunakan helper di `utils/shared.ts`: `exportJson`, `exportCsv`, `exportTxt` (Blob API).
+
+## Komponen shared
+
+- `components/ui.tsx`: `PrivacyIndicator({privacy, note})`, `SourceList({sources})`,
+  `IndicatorBadge({tone})`, `OsintResultPanel({title, actions, children})`.
+- Reuse dari CySec Tools: `Panel/KeyValueTable/LabeledTextarea/CopyButton/ErrorAlert/
+  Notice/ToolNotes` (`src/features/cysec-tools/components/ui.tsx`) dan
+  `FileDrop` (`src/features/cysec-tools/components/FileDrop.tsx`).
+
+## Privacy indicator — cara kerja
+
+- `local` → badge emerald "LOCAL — Processed locally…" (tidak ada data keluar).
+- `external` → badge amber "EXTERNAL — uses an external public service."
+- `hybrid` → badge cyan (lokal + lookup publik opsional).
+- Jangan menampilkan klaim LOCAL jika tool benar-benar memanggil network.
+
+## Route segments (PENTING — jangan lupa)
+
+`osint` sudah ditambahkan ke daftar route segment di:
+- `index.html` (skrip injeksi `<base>`)
+- `src/lib/base.ts` (`ROUTE_SEGMENTS`)
+Bila menambah modul route baru di masa depan, lakukan hal yang sama di kedua tempat
+(bug white-screen pernah terjadi karena ini).
+
+## Verifikasi
+
+```bash
+npm run osint:check   # selfcheck 48 kasus (domain/ip/email/ioc/hash/text/timeline/url/username)
+npm run cysec:check   # 62 kasus — memastikan modul lama tidak rusak
+npm run build
+```

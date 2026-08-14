@@ -10,7 +10,7 @@
  * jadi root = segmen URL sebelum route tersebut (atau seluruh path
  * jika sedang di halaman beranda subpath).
  */
-const ROUTE_SEGMENTS = ['docs', 'search', 'graph', 'roadmap', 'editor', 'cysec-tools'];
+const ROUTE_SEGMENTS = ['docs', 'search', 'graph', 'roadmap', 'editor', 'cysec-tools', 'osint'];
 
 function detectBasePath(pathname: string): string {
   const parts = pathname.split('/').filter(Boolean);

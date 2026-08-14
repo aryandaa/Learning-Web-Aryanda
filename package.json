@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "parse": "tsx scripts/parse-docs.ts",
     "check": "tsc --noEmit",
-    "cysec:check": "tsx scripts/cysec-selfcheck.ts"
+    "cysec:check": "tsx scripts/cysec-selfcheck.ts",
+    "osint:check": "tsx scripts/osint-selfcheck.ts"
   },
   "dependencies": {
     "d3-force": "^3.0.0",
