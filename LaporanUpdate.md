@@ -144,6 +144,9 @@ src/features/cysec-tools/
 | `src/App.tsx` | +3 route: `/cysec-tools`, `/cysec-tools/category/:categoryId`, `/cysec-tools/:toolId` |
 | `src/app/Layout.tsx` | +1 nav item "CySec Tools" (ikon Shield) di navbar desktop, drawer mobile, dan footer |
 | `package.json` | +script `cysec:check` |
+| `index.html` | +`cysec-tools` pada daftar route segment di skrip injeksi `<base>` (fix white screen saat refresh/direct-load di `/cysec-tools/*`) |
+| `src/lib/base.ts` | +`cysec-tools` pada `ROUTE_SEGMENTS` (konsistensi `appRoot()`) |
+| `src/features/cysec-tools/pages/CySecToolsPage.tsx` | hapus paragraf tagline di header dashboard |
 
 Tidak menyentuh: Obsidian-Vault, scripts/parse-docs, GitHub Actions, vercel.json,
 vite.config, tsconfig, index.css (seluruh sistem tema/UI), halaman/pages lain,

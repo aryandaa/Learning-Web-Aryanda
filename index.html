@@ -25,16 +25,17 @@
     <script>
       // Deteksi root aplikasi sebelum asset dimuat, agar situs aman di root
       // maupun subpath (GitHub Pages). Route: /, /docs, /docs/*, /search,
-      // /graph, /roadmap, /editor.
+      // /graph, /roadmap, /editor, /cysec-tools, /cysec-tools/*.
       (function () {
         var parts = window.location.pathname.split('/').filter(Boolean);
         var root = '/';
+        var known = function (p) { return p === 'docs' || p === 'search' || p === 'graph' || p === 'roadmap' || p === 'editor' || p === 'cysec-tools'; };
         if (parts.length === 0) {
           root = '/';
-        } else if (parts[0] === 'docs' || parts[0] === 'search' || parts[0] === 'graph' || parts[0] === 'roadmap' || parts[0] === 'editor') {
+        } else if (known(parts[0])) {
           root = '/';
         } else {
-          var i = parts.findIndex(function (p) { return p === 'docs' || p === 'search' || p === 'graph' || p === 'roadmap' || p === 'editor'; });
+          var i = parts.findIndex(known);
           root = i === -1
             ? window.location.pathname.replace(/\/?$/, '/')
             : '/' + parts.slice(0, i).join('/') + '/';
