@@ -16,7 +16,6 @@ import {
 import { useSiteData } from '../app/SiteProvider';
 import { countFiles } from '../services/docs';
 import { Spinner } from '../components/ui/spinner';
-import RecentlyUpdated from '../components/dashboard/RecentlyUpdated';
 
 export default function HomePage() {
   const { tree, metadata, loading, error } = useSiteData();
@@ -129,9 +128,6 @@ export default function HomePage() {
           </a>
         </div>
       </header>
-
-      {/* Recently Updated, fitur utama dashboard */}
-      <RecentlyUpdated />
 
       {/* Statistik */}
       <section className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">

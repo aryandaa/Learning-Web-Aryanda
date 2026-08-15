@@ -722,3 +722,45 @@ em dash di source         # ✅ 0
 Catatan: kata "vault" di bundle hanya tersisa dari fitur lama (pesan error parser
 "npm run parse -- --vault=..." di halaman error Docs dan label roadmap) yang bukan
 bagian dari Recently Updated dan tidak diubah sesuai aturan "jangan mengubah fitur lain".
+
+---
+
+# REVISI DASHBOARD: HAPUS RECENTLY UPDATED (DASHBOARD BERSIH)
+
+## Latar belakang
+- Sumber data `docs/updated-index.json` **tidak tersedia**: parser tidak pernah
+  menghasilkan index tersebut (0 dari 424 dokumen punya metadata `updated`).
+- Karena sumber data tidak reliable, fitur **Recently Updated** dihapus sepenuhnya.
+  Tidak ada fitur pengganti dan tidak ada tracking baru.
+
+## Perubahan
+- `src/components/dashboard/RecentlyUpdated.tsx` dihapus (seluruh component,
+  fetch `updated-index.json`, sort, label waktu, empty state).
+- `src/pages/HomePage.tsx`:
+  - Import `RecentlyUpdated` dihapus.
+  - Section "Recently Updated" (heading, subtitle "Materi terbaru yang baru
+    diperbarui.", item card, link "Semua materi") dihapus.
+- Tidak ada service/helper/state/selector lain yang hanya digunakan oleh
+  Recently Updated; import lain di HomePage tetap terpakai (hero, statistik,
+  topik utama, open source).
+- Tidak ada perubahan ke Docs, Navbar, Roadmap, Graph, Code Editor, CySec Tools,
+  OSINT, parser, GitHub Actions, generated/ -> public/, atau deployment Vercel.
+
+## Kondisi dashboard saat ini
+- Hero (branding + CTA Docs/Search/Profile).
+- Statistik konten dari metadata (Catatan, Folder, Estimasi baca, Skill, Bidang).
+- Topik Utama (folder top-level, link ke Docs).
+- Section Open Source.
+- Tanpa: Continue Learning, Learning Stats, Recently Read, Recently Updated,
+  progress tracking, last activity, Notes Read, Categories, Sessions, Completed.
+
+## Verifikasi
+```bash
+tsc --noEmit              # ✅
+npm run build             # ✅
+npm run cysec:check       # ✅ (regresi aman)
+npm run osint:check       # ✅ (regresi aman)
+npm run validate          # ✅ 0 error
+route /                   # ✅ 200, tanpa fetch updated-index.json
+em dash di source         # ✅ 0
+```
