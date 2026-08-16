@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "parserVersion": "1.0.0",
   "generatorVersion": "1.0.0",
-  "generatedAt": "2026-08-16T10:05:13.104Z",
-  "vaultCommit": "b294168f4ee638d0fe10cb42f530fa4378bd39f0",
+  "generatedAt": "2026-08-16T13:26:07.965Z",
+  "vaultCommit": "1b58823dd03425c8447a3de94ae5b9bdc9fae431",
   "vaultBranch": "main",
-  "totalNotes": 435,
-  "totalFolders": 57,
+  "totalNotes": 441,
+  "totalFolders": 58,
   "subskillCount": 11,
   "myskillCount": 4,
-  "warningsCount": 57,
-  "brokenLinksCount": 39
+  "warningsCount": 58,
+  "brokenLinksCount": 40
 }
