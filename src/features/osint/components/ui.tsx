@@ -1,5 +1,5 @@
 /**
- * Komponen UI bersama OSINT. konsisten dengan visual Learning-Web/CySec Tools.
+ * Komponen UI bersama OSINT. konsisten dengan visual CodeLearn/CySec Tools.
  */
 
 import { ExternalLink, Lock } from 'lucide-react';

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import {
-  BookOpen,
   ChevronsRight,
   Code2,
   Map,
@@ -16,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useSiteData } from './SiteProvider';
 import { useTheme } from './ThemeProvider';
+import { joinWithRoot } from '../lib/base';
 import { TreeExplorer } from '../components/explorer/TreeExplorer';
 import { cn } from '../lib/utils';
 
@@ -166,11 +166,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </button>
 
           <Link to="/" className="flex min-w-0 items-center gap-2.5 text-slate-100">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30">
-              <BookOpen className="h-[18px] w-[18px] text-white" />
-            </span>
+            <img
+              src={joinWithRoot('assets/asset/logo%20web.png')}
+              alt="Logo CodeLearn"
+              className="h-8 w-8 shrink-0 object-contain"
+            />
             <span className="hidden truncate text-sm font-semibold tracking-tight sm:block">
-              Learning Web Aryanda
+              CodeLearn
             </span>
           </Link>
 
@@ -304,10 +306,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="mx-auto max-w-[1500px] px-4 py-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2.5 text-sm">
-              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-indigo-500 to-violet-600">
-                <BookOpen className="h-3.5 w-3.5 text-white" />
-              </span>
-              <span className="font-medium text-slate-300">Learning Web Aryanda</span>
+              <img
+                src={joinWithRoot('assets/asset/logo%20web.png')}
+                alt=""
+                className="h-6 w-6 object-contain"
+              />
+              <span className="font-medium text-slate-300">CodeLearn</span>
             </div>
             <nav className="flex items-center gap-5 text-xs text-slate-500">
               <Link to="/docs" className="transition-colors hover:text-slate-300">

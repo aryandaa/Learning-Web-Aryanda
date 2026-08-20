@@ -1,6 +1,6 @@
 /**
  * Komponen UI bersama untuk seluruh tool CySec Tools. konsisten dengan
- * design system Learning-Web (slate + indigo, tema dark/light via CSS vars).
+ * design system CodeLearn (slate + indigo, tema dark/light via CSS vars).
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';

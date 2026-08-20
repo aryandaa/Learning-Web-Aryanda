@@ -1,4 +1,4 @@
-# Learning Web Aryanda
+# CodeLearn
 
 **Platform belajar pribadi berbasis web**: tulis materi di **Obsidian**, dan website ini otomatis mengubah seluruh Markdown vault menjadi website pembelajaran statis yang lengkap: dokumentasi, pencarian fuzzy, graph antar-catatan, roadmap bercabang, hingga **code editor interaktif yang berjalan 100% di browser**.
 

@@ -1,7 +1,7 @@
 /**
  * Tipe data inti modul CySec Tools.
  *
- * Modul ini terisolasi dari fitur lain Learning-Web: semua metadata tool
+ * Modul ini terisolasi dari fitur lain CodeLearn: semua metadata tool
  * dideklarasikan secara data-driven di `registry.ts`, dan implementasi tiap
  * tool di-lazy-load per kategori sehingga bundle utama tetap ringan.
  */

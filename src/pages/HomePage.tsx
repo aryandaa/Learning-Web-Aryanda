@@ -3,6 +3,7 @@ import {
   ArrowRight,
   BookOpen,
   Clock,
+  ExternalLink,
   FileText,
   Folder,
   FolderTree,
@@ -14,6 +15,7 @@ import {
   UserRound,
 } from 'lucide-react';
 import { useSiteData } from '../app/SiteProvider';
+import { joinWithRoot } from '../lib/base';
 import { countFiles } from '../services/docs';
 import { Spinner } from '../components/ui/spinner';
 
@@ -86,7 +88,12 @@ export default function HomePage() {
     <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
       {/* Hero */}
       <header className="text-center">
-        <span className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-medium text-indigo-300">
+        <img
+          src={joinWithRoot('assets/asset/logo%20web.png')}
+          alt="Logo CodeLearn"
+          className="mx-auto h-16 w-16 object-contain drop-shadow-lg sm:h-20 sm:w-20"
+        />
+        <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-medium text-indigo-300">
           <Sparkles className="h-3.5 w-3.5" />
           Personal learning platform
         </span>
@@ -187,6 +194,72 @@ export default function HomePage() {
               <ArrowRight className="h-4 w-4 text-slate-600 transition-transform group-hover:translate-x-1 group-hover:text-indigo-400" />
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Part Of */}
+      <section className="mt-16">
+        <h2 className="flex items-center gap-2.5 text-lg font-semibold text-slate-100">
+          <span className="h-5 w-1 rounded-full bg-gradient-to-b from-indigo-400 to-violet-500" />
+          Part Of
+        </h2>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Politeknik Negeri Banjarmasin */}
+          <a
+            href="https://poliban.ac.id/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group card card-hover flex items-center gap-4 p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
+          >
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-1 ring-1 ring-slate-800/50 transition-transform duration-200 group-hover:scale-105">
+              <img
+                src={joinWithRoot('assets/asset/Logo%20Poliban.jpeg')}
+                alt=""
+                className="h-full w-full object-contain"
+              />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold leading-snug text-slate-200 transition-colors group-hover:text-slate-100">
+                Politeknik Negeri Banjarmasin
+              </h3>
+            </div>
+            <ExternalLink className="h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-indigo-400" />
+          </a>
+
+          {/* Itech Poliban */}
+          <a
+            href="https://www.itechpoliban.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group card card-hover flex items-center gap-4 p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
+          >
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-1 ring-1 ring-slate-800/50 transition-transform duration-200 group-hover:scale-105">
+              <img
+                src={joinWithRoot('assets/asset/logo%20itech%20poliban.png')}
+                alt=""
+                className="h-full w-full object-contain"
+              />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold text-slate-200 transition-colors group-hover:text-slate-100">
+                Itech Poliban
+              </h3>
+            </div>
+            <ExternalLink className="h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-indigo-400" />
+          </a>
+
+          {/* Makat-Xploit — placeholder, belum ada URL */}
+          <div className="card flex items-center gap-4 p-5">
+            <img
+              src={joinWithRoot('assets/asset/logo%20makat-xploit.jpeg')}
+              alt=""
+              className="h-12 w-12 shrink-0 rounded-lg object-contain"
+            />
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold text-slate-200">Makat-Xploit</h3>
+            </div>
+          </div>
         </div>
       </section>
 
