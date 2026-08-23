@@ -151,7 +151,7 @@ function CaseTool() {
           {cases.length === 0 && <p className="text-sm text-slate-500">Belum ada case.</p>}
           <div className="space-y-1.5">
             {cases.map((c) => (
-              <div key={c.id} className={cn('rounded-lg border px-3 py-2 transition-colors', c.id === activeId ? 'border-indigo-500/50 bg-indigo-500/10' : 'border-slate-800 bg-slate-900/40')}>
+              <div key={c.id} className={cn('rounded-lg border px-3 py-2 transition-colors', c.id === activeId ? 'border-accent-500/50 bg-accent-500/10' : 'border-slate-800 bg-slate-900/40')}>
                 <button onClick={() => setActiveId(c.id)} className="w-full text-left">
                   <p className="truncate text-sm font-medium text-slate-200">{c.title}</p>
                   <p className="text-[10px] text-slate-600">
@@ -177,7 +177,7 @@ function CaseTool() {
                     id="case-title"
                     value={active.title}
                     onChange={(e) => update({ title: e.target.value })}
-                    className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+                    className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -187,7 +187,7 @@ function CaseTool() {
                     value={active.description}
                     onChange={(e) => update({ description: e.target.value })}
                     rows={3}
-                    className="w-full resize-y rounded-lg border border-slate-700 bg-slate-950/70 p-3 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+                    className="w-full resize-y rounded-lg border border-slate-700 bg-slate-950/70 p-3 text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
                   />
                 </div>
                 <p className="text-xs text-slate-600">
@@ -203,7 +203,7 @@ function CaseTool() {
                   onChange={(e) => setNewIoc(e.target.value)}
                   placeholder="contoh: evil.example.com"
                   aria-label="Tambah IOC"
-                  className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+                  className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
                 />
                 <Button
                   variant="secondary"
@@ -240,7 +240,7 @@ function CaseTool() {
                   onChange={(e) => setNewNote(e.target.value)}
                   placeholder="Catatan investigasi…"
                   aria-label="Tambah note"
-                  className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+                  className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
                 />
                 <Button
                   variant="secondary"
@@ -273,7 +273,7 @@ function CaseTool() {
                   onChange={(e) => setNewSource(e.target.value)}
                   placeholder="URL sumber…"
                   aria-label="Tambah sumber"
-                  className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+                  className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
                 />
                 <Button
                   variant="secondary"
@@ -290,7 +290,7 @@ function CaseTool() {
               <ul className="mt-2 space-y-1">
                 {active.sources.map((s, i) => (
                   <li key={i} className="flex items-center justify-between gap-2 rounded border border-slate-800 bg-slate-900/40 px-3 py-1.5">
-                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="min-w-0 flex-1 truncate text-xs text-indigo-400 hover:text-indigo-300">
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="min-w-0 flex-1 truncate text-xs text-accent-400 hover:text-accent-300">
                       {s.title}. {s.url} ↗
                     </a>
                     <button onClick={() => update({ sources: active.sources.filter((_, j) => j !== i) })} className="text-xs text-slate-600 hover:text-red-300" aria-label="Hapus sumber">
@@ -308,7 +308,7 @@ function CaseTool() {
                   onChange={(e) => setNewEvent(e.target.value)}
                   placeholder="Event (timestamp opsional diawal: 2026-08-13 10:20:00 …)"
                   aria-label="Tambah event timeline"
-                  className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+                  className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
                 />
                 <Button
                   variant="secondary"

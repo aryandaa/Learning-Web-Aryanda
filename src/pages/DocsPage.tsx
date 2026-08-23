@@ -117,7 +117,7 @@ export default function DocsPage() {
                 key={sub.id}
                 to={`/roadmap?sub=${encodeURIComponent(`sub:${sub.id}`)}`}
                 title={`${sub.folder.split('/')[0]} · ${sub.title}`}
-                className="group flex shrink-0 items-center gap-2 rounded-full border border-slate-700 bg-slate-900/60 py-1.5 pl-3 pr-4 text-sm text-slate-300 transition-colors hover:border-indigo-500/50 hover:bg-indigo-500/10 hover:text-indigo-200"
+                className="group flex shrink-0 items-center gap-2 rounded-full border border-slate-700 bg-slate-900/60 py-1.5 pl-3 pr-4 text-sm text-slate-300 transition-colors hover:border-accent-500/50 hover:bg-accent-500/10 hover:text-accent-200"
               >
                 <span
                   className="h-2 w-2 shrink-0 rounded-full"
@@ -135,7 +135,7 @@ export default function DocsPage() {
       </div>
 
       <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-slate-600">
-        <Map className="h-3.5 w-3.5 text-indigo-400" />
+        <Map className="h-3.5 w-3.5 text-accent-400" />
         = file roadmap · mulai dari sini untuk mengikuti urutan belajar folder
       </p>
 

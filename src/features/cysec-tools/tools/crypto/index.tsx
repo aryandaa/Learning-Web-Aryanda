@@ -348,7 +348,7 @@ function XorCalcTool() {
       <Panel title="Input A">
         <div className="space-y-2">
           <label className="flex items-center gap-2 text-xs text-slate-400">
-            <input type="checkbox" checked={aHex} onChange={(e) => setAHex(e.target.checked)} className="accent-indigo-500" />
+            <input type="checkbox" checked={aHex} onChange={(e) => setAHex(e.target.checked)} className="accent-accent-500" />
             Input A berupa hex
           </label>
           <LabeledTextarea id="xor-a" label="Data A" value={a} onChange={setA} rows={4} placeholder={aHex ? 'e.g. 1a2b3c' : 'e.g. hello'} />
@@ -357,7 +357,7 @@ function XorCalcTool() {
       <Panel title="Input B">
         <div className="space-y-2">
           <label className="flex items-center gap-2 text-xs text-slate-400">
-            <input type="checkbox" checked={bHex} onChange={(e) => setBHex(e.target.checked)} className="accent-indigo-500" />
+            <input type="checkbox" checked={bHex} onChange={(e) => setBHex(e.target.checked)} className="accent-accent-500" />
             Input B berupa hex
           </label>
           <LabeledTextarea id="xor-b" label="Data B (diulang bila lebih pendek)" value={b} onChange={setB} rows={4} placeholder={bHex ? 'e.g. ff00' : 'e.g. key'} />
@@ -467,25 +467,25 @@ function AesTool() {
         <div className="grid gap-3 sm:grid-cols-3">
           <div>
             <label htmlFor="aes-mode" className="mb-1 block text-xs text-slate-400">Mode</label>
-            <select id="aes-mode" value={mode} onChange={(e) => setMode(e.target.value as 'GCM' | 'CBC')} className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none">
+            <select id="aes-mode" value={mode} onChange={(e) => setMode(e.target.value as 'GCM' | 'CBC')} className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-accent-500 focus:outline-none">
               <option value="GCM">AES-GCM (autentikasi)</option>
               <option value="CBC">AES-CBC (padding PKCS7)</option>
             </select>
           </div>
           <div>
             <label htmlFor="aes-bits" className="mb-1 block text-xs text-slate-400">Key size</label>
-            <select id="aes-bits" value={bits} onChange={(e) => setBits(Number(e.target.value) as 128 | 256)} className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none">
+            <select id="aes-bits" value={bits} onChange={(e) => setBits(Number(e.target.value) as 128 | 256)} className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-accent-500 focus:outline-none">
               <option value={128}>128-bit</option>
               <option value={256}>256-bit</option>
             </select>
           </div>
           <div>
             <label htmlFor="aes-iter" className="mb-1 block text-xs text-slate-400">PBKDF2 iterasi</label>
-            <input id="aes-iter" type="number" value={iterations} min={1000} max={2000000} onChange={(e) => setIterations(Number(e.target.value) || 100000)} className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input id="aes-iter" type="number" value={iterations} min={1000} max={2000000} onChange={(e) => setIterations(Number(e.target.value) || 100000)} className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-accent-500 focus:outline-none" />
           </div>
         </div>
         <label htmlFor="aes-pass" className="mt-3 mb-1 block text-xs text-slate-400">Passphrase</label>
-        <input id="aes-pass" type="password" value={passphrase} onChange={(e) => setPassphrase(e.target.value)} placeholder="••••••••" className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none" />
+        <input id="aes-pass" type="password" value={passphrase} onChange={(e) => setPassphrase(e.target.value)} placeholder="••••••••" className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 placeholder:text-slate-600 focus:border-accent-500 focus:outline-none" />
       </Panel>
       <Panel title="Input">
         <LabeledTextarea
@@ -557,11 +557,11 @@ function Chacha20Tool() {
         <div className="space-y-3">
           <div>
             <label htmlFor="chacha-key" className="mb-1 block text-xs text-slate-400">Key (32 byte hex)</label>
-            <input id="chacha-key" value={keyHex} onChange={(e) => setKeyHex(e.target.value)} placeholder="64 karakter hex" className="h-9 w-full max-w-lg rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input id="chacha-key" value={keyHex} onChange={(e) => setKeyHex(e.target.value)} placeholder="64 karakter hex" className="h-9 w-full max-w-lg rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none" />
           </div>
           <div>
             <label htmlFor="chacha-nonce" className="mb-1 block text-xs text-slate-400">Nonce (12 byte hex)</label>
-            <input id="chacha-nonce" value={nonceHex} onChange={(e) => setNonceHex(e.target.value)} placeholder="24 karakter hex" className="h-9 w-full max-w-lg rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input id="chacha-nonce" value={nonceHex} onChange={(e) => setNonceHex(e.target.value)} placeholder="24 karakter hex" className="h-9 w-full max-w-lg rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none" />
           </div>
         </div>
       </Panel>
@@ -773,7 +773,7 @@ function HashTool() {
               <div className="flex gap-2" role="radiogroup" aria-label="Mode input">
                 {(['text', 'hex', 'base64'] as const).map((m) => (
                   <label key={m} className="flex cursor-pointer items-center gap-1.5 text-xs text-slate-400">
-                    <input type="radio" name="hash-mode" checked={inputMode === m} onChange={() => setInputMode(m)} className="accent-indigo-500" />
+                    <input type="radio" name="hash-mode" checked={inputMode === m} onChange={() => setInputMode(m)} className="accent-accent-500" />
                     {m}
                   </label>
                 ))}
@@ -781,7 +781,7 @@ function HashTool() {
               <LabeledTextarea id="hash-input" label="Data" value={input} onChange={setInput} rows={5} placeholder={inputMode === 'text' ? 'Ketik teks…' : inputMode === 'hex' ? 'Tempel hex…' : 'Tempel base64…'} />
               <div>
                 <label htmlFor="hash-target" className="mb-1 block text-xs text-slate-400">Bandingkan dengan hash target (opsional)</label>
-                <input id="hash-target" value={targetHash} onChange={(e) => setTargetHash(e.target.value)} placeholder="Hash yang ingin dicocokkan…" className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none" />
+                <input id="hash-target" value={targetHash} onChange={(e) => setTargetHash(e.target.value)} placeholder="Hash yang ingin dicocokkan…" className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 placeholder:text-slate-600 focus:border-accent-500 focus:outline-none" />
               </div>
             </>
           )}
@@ -855,11 +855,11 @@ function HmacTool() {
           <LabeledTextarea id="hmac-msg" label="Pesan" value={message} onChange={setMessage} rows={4} placeholder="Pesan yang akan ditandatangani…" />
           <div>
             <label htmlFor="hmac-secret" className="mb-1 block text-xs text-slate-400">Secret key</label>
-            <input id="hmac-secret" type="password" value={secret} onChange={(e) => setSecret(e.target.value)} placeholder="kunci bersama" className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input id="hmac-secret" type="password" value={secret} onChange={(e) => setSecret(e.target.value)} placeholder="kunci bersama" className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-accent-500 focus:outline-none" />
           </div>
           <div>
             <label htmlFor="hmac-alg" className="mb-1 block text-xs text-slate-400">Algoritma</label>
-            <select id="hmac-alg" value={alg} onChange={(e) => setAlg(e.target.value as typeof alg)} className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none">
+            <select id="hmac-alg" value={alg} onChange={(e) => setAlg(e.target.value as typeof alg)} className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-accent-500 focus:outline-none">
               <option>SHA-1</option><option>SHA-256</option><option>SHA-384</option><option>SHA-512</option>
             </select>
           </div>
@@ -919,11 +919,11 @@ function Pbkdf2Tool() {
         <div className="space-y-3">
           <div>
             <label htmlFor="pbkdf2-pass" className="mb-1 block text-xs text-slate-400">Password</label>
-            <input id="pbkdf2-pass" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input id="pbkdf2-pass" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-accent-500 focus:outline-none" />
           </div>
           <div>
             <label htmlFor="pbkdf2-salt" className="mb-1 block text-xs text-slate-400">Salt (teks atau hex. kosongkan untuk acak)</label>
-            <input id="pbkdf2-salt" value={salt} onChange={(e) => setSalt(e.target.value)} placeholder="kosong = salt acak" className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input id="pbkdf2-salt" value={salt} onChange={(e) => setSalt(e.target.value)} placeholder="kosong = salt acak" className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none" />
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             <div>
@@ -1062,7 +1062,7 @@ function Sha3Tool() {
           <div className="flex gap-2">
             {(['text', 'hex'] as const).map((m) => (
               <label key={m} className="flex cursor-pointer items-center gap-1.5 text-xs text-slate-400">
-                <input type="radio" checked={mode === m} onChange={() => setMode(m)} className="accent-indigo-500" /> {m}
+                <input type="radio" checked={mode === m} onChange={() => setMode(m)} className="accent-accent-500" /> {m}
               </label>
             ))}
             <select value={bits} onChange={(e) => setBits(Number(e.target.value) as typeof bits)} className="h-8 rounded-lg border border-slate-700 bg-slate-900 px-2 text-xs text-slate-200">
@@ -1212,7 +1212,7 @@ function EncodingPipelineTool() {
                   value={step.opId}
                   onChange={(e) => updateStep(step.key, { opId: e.target.value })}
                   aria-label={`Operasi ${i + 1}`}
-                  className="h-8 w-44 rounded-lg border border-slate-700 bg-slate-900 px-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none"
+                  className="h-8 w-44 rounded-lg border border-slate-700 bg-slate-900 px-2 text-xs text-slate-200 focus:border-accent-500 focus:outline-none"
                 >
                   <optgroup label="Encode">
                     {PIPELINE_OPS.filter((o) => o.group === 'encode').map((o) => (
@@ -1236,7 +1236,7 @@ function EncodingPipelineTool() {
                     onChange={(e) => updateStep(step.key, { opKey: e.target.value })}
                     placeholder="key / shift"
                     aria-label={`Kunci operasi ${i + 1}`}
-                    className="h-8 w-24 rounded-lg border border-slate-700 bg-slate-950/70 px-2 font-mono text-xs text-slate-200 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+                    className="h-8 w-24 rounded-lg border border-slate-700 bg-slate-950/70 px-2 font-mono text-xs text-slate-200 placeholder:text-slate-600 focus:border-accent-500 focus:outline-none"
                   />
                 )}
                 {op && <span className="hidden text-[10px] text-slate-600 lg:inline" title={op.description}>{op.group}</span>}
@@ -1279,7 +1279,7 @@ function EncodingPipelineTool() {
           <div className="flex gap-2">
             {(['text', 'hex', 'base64'] as const).map((m) => (
               <label key={m} className="flex items-center gap-1.5 text-xs text-slate-400">
-                <input type="radio" checked={convMode === m} onChange={() => setConvMode(m)} className="accent-indigo-500" /> {m}
+                <input type="radio" checked={convMode === m} onChange={() => setConvMode(m)} className="accent-accent-500" /> {m}
               </label>
             ))}
           </div>

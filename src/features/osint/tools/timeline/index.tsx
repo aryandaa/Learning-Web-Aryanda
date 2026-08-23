@@ -47,7 +47,7 @@ function TimelineAnalyzerTool() {
       <div className="flex flex-wrap items-center gap-2">
         <Button onClick={run}>Deteksi timeline</Button>
         <label className="flex items-center gap-1.5 text-xs text-slate-400">
-          <input type="checkbox" checked={dayFirst} onChange={(e) => setDayFirst(e.target.checked)} className="accent-indigo-500" />
+          <input type="checkbox" checked={dayFirst} onChange={(e) => setDayFirst(e.target.checked)} className="accent-accent-500" />
           DD/MM/YYYY (jika tidak dicentang: MM/DD/YYYY)
         </label>
       </div>
@@ -81,7 +81,7 @@ function TimelineAnalyzerTool() {
             }
           >
             <div className="mb-4 grid gap-2 sm:grid-cols-5">
-              <input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Cari event…" aria-label="Cari event" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+              <input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Cari event…" aria-label="Cari event" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 text-xs text-slate-200 focus:border-accent-500 focus:outline-none" />
               <input type="datetime-local" value={from} onChange={(e) => setFrom(e.target.value)} aria-label="Dari tanggal" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-xs text-slate-200" />
               <input type="datetime-local" value={to} onChange={(e) => setTo(e.target.value)} aria-label="Sampai tanggal" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-xs text-slate-200" />
               <select value={source} onChange={(e) => setSource(e.target.value)} aria-label="Filter sumber" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-xs text-slate-200">

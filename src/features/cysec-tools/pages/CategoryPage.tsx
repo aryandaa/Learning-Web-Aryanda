@@ -18,7 +18,7 @@ function ToolCard({ entry }: { entry: CatalogEntry }) {
           {entry.icon}
         </span>
         <div className="min-w-0">
-          <h3 className="text-sm font-semibold text-slate-100 transition-colors group-hover:text-indigo-300">{entry.title}</h3>
+          <h3 className="text-sm font-semibold text-slate-100 transition-colors group-hover:text-accent-300">{entry.title}</h3>
           <p className="mt-1 line-clamp-2 text-xs text-slate-500">{entry.description}</p>
         </div>
       </div>
@@ -74,7 +74,7 @@ export default function CategoryPage() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
         <p className="text-slate-400">Kategori tidak ditemukan.</p>
-        <Link to="/cysec-tools" className="mt-3 inline-block text-sm text-indigo-400 hover:underline">
+        <Link to="/cysec-tools" className="mt-3 inline-block text-sm text-accent-400 hover:underline">
           ← Kembali ke CySec Tools
         </Link>
       </div>
@@ -85,7 +85,7 @@ export default function CategoryPage() {
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-8">
       {/* Breadcrumb */}
       <nav className="mb-4 flex flex-wrap items-center gap-1.5 text-xs text-slate-500" aria-label="Breadcrumb">
-        <Link to="/cysec-tools" className="inline-flex items-center gap-1 transition-colors hover:text-indigo-300">
+        <Link to="/cysec-tools" className="inline-flex items-center gap-1 transition-colors hover:text-accent-300">
           <ArrowLeft className="h-3 w-3" /> CySec Tools
         </Link>
         <span>/</span>
@@ -111,7 +111,7 @@ export default function CategoryPage() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder={`Cari tool di ${category.name}…`}
           aria-label={`Cari tool di ${category.name}`}
-          className="h-10 w-full rounded-lg border border-slate-700 bg-slate-900 pl-9 pr-3 text-sm text-slate-200 placeholder:text-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+          className="h-10 w-full rounded-lg border border-slate-800 bg-slate-900 pl-9 pr-3 text-sm text-slate-200 placeholder:text-slate-500 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30"
         />
       </div>
 
@@ -124,7 +124,7 @@ export default function CategoryPage() {
             className={cn(
               'shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
               c.id === category.id
-                ? 'border-indigo-500 bg-indigo-500/15 text-indigo-300'
+                ? 'border-accent-500 bg-accent-500/15 text-accent-300'
                 : 'border-slate-700 bg-slate-900/50 text-slate-400 hover:border-slate-500 hover:text-slate-200'
             )}
           >
@@ -140,7 +140,7 @@ export default function CategoryPage() {
       {visible.length === 0 ? (
         <p className="py-10 text-center text-sm text-slate-500">
           Tidak ada tool yang cocok di kategori ini.{' '}
-          <Link to={`/cysec-tools?q=${encodeURIComponent(query.trim())}`} className="text-indigo-400 hover:underline">
+          <Link to={`/cysec-tools?q=${encodeURIComponent(query.trim())}`} className="text-accent-400 hover:underline">
             Cari di semua kategori →
           </Link>
         </p>

@@ -25,25 +25,25 @@ interface GLink {
 }
 
 const FOLDER_COLORS: Record<string, string> = {
-  CyberSecurity: '#fb7185',
-  DevOps: '#a78bfa',
-  Jaringan: '#38bdf8',
-  Pemrograman: '#34d399',
+  CyberSecurity: '#B86B68',
+  DevOps: '#6F9B78',
+  Jaringan: '#6E9CB8',
+  Pemrograman: '#C49A5A',
 };
-const FALLBACK_COLOR = '#94a3b8';
+const FALLBACK_COLOR = '#8A938A';
 // Warna edge/label mengikuti tema (dark vs light).
-const EDGE_COLOR_DARK = 'rgba(148, 163, 184, 0.22)';
-const EDGE_DIM_DARK = 'rgba(148, 163, 184, 0.04)';
-const EDGE_HOT_DARK = 'rgba(129, 140, 248, 0.7)';
-const EDGE_COLOR_LIGHT = 'rgba(71, 85, 105, 0.35)';
-const EDGE_DIM_LIGHT = 'rgba(71, 85, 105, 0.08)';
-const EDGE_HOT_LIGHT = 'rgba(79, 70, 229, 0.75)';
-const LABEL_COLOR_DARK = '#e2e8f0';
-const LABEL_OUTLINE_DARK = 'rgba(2, 6, 23, 0.9)';
-const LABEL_DIM_DARK = 'rgba(148, 163, 184, 0.85)';
+const EDGE_COLOR_DARK = 'rgba(150, 157, 150, 0.22)';
+const EDGE_DIM_DARK = 'rgba(150, 157, 150, 0.04)';
+const EDGE_HOT_DARK = 'rgba(130, 171, 141, 0.7)';
+const EDGE_COLOR_LIGHT = 'rgba(104, 112, 104, 0.35)';
+const EDGE_DIM_LIGHT = 'rgba(104, 112, 104, 0.08)';
+const EDGE_HOT_LIGHT = 'rgba(66, 102, 73, 0.75)';
+const LABEL_COLOR_DARK = '#E7EAE6';
+const LABEL_OUTLINE_DARK = 'rgba(16, 19, 16, 0.9)';
+const LABEL_DIM_DARK = 'rgba(150, 157, 150, 0.85)';
 const LABEL_COLOR_LIGHT = '#334155';
-const LABEL_OUTLINE_LIGHT = 'rgba(248, 250, 252, 0.92)';
-const LABEL_DIM_LIGHT = 'rgba(71, 85, 105, 0.8)';
+const LABEL_OUTLINE_LIGHT = 'rgba(255, 255, 255, 0.95)';
+const LABEL_DIM_LIGHT = 'rgba(71, 85, 105, 0.85)';
 
 function folderColor(folder: string): string {
   const top = folder.split('/')[0];

@@ -96,7 +96,7 @@ function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant, onNav
           className={cn(
             'flex items-center gap-2 rounded-md py-1.5 pr-2 text-sm transition-colors',
             active
-              ? 'bg-indigo-500/15 text-indigo-300 font-medium'
+              ? 'bg-accent-500/15 text-accent-300 font-medium'
               : node.isRoadmap
                 ? 'font-medium text-slate-200 hover:bg-slate-800/70 hover:text-slate-100'
                 : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
@@ -104,13 +104,13 @@ function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant, onNav
           style={{ paddingLeft: padding }}
         >
           {node.isRoadmap ? (
-            <Map className="h-3.5 w-3.5 shrink-0 text-indigo-400" />
+            <Map className="h-3.5 w-3.5 shrink-0 text-accent-400" />
           ) : (
             <FileText className="h-3.5 w-3.5 shrink-0 opacity-60" />
           )}
           <span className="truncate">{node.title}</span>
           {node.isRoadmap && (
-            <span className="ml-auto shrink-0 rounded bg-indigo-500/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-indigo-300">
+            <span className="ml-auto shrink-0 rounded bg-accent-500/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-300">
               roadmap
             </span>
           )}

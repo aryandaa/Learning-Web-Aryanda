@@ -7,19 +7,19 @@ import type { OsintCategory, OsintCategoryId, OsintCategoryMeta, OsintToolMeta }
  */
 
 export const CATEGORIES: OsintCategoryMeta[] = [
-  { id: 'domain', name: 'Domain Intelligence', shortName: 'Domain', icon: '🌐', description: 'Analisis domain: registrable, subdomain, TLD, IDN/punycode.', color: 'from-sky-500/20 to-blue-500/10 border-sky-500/30' },
-  { id: 'dns', name: 'DNS Intelligence', shortName: 'DNS', icon: '🧭', description: 'DNS records via DNS-over-HTTPS publik (A, AAAA, MX, TXT, …).', color: 'from-cyan-500/20 to-teal-500/10 border-cyan-500/30' },
-  { id: 'ip', name: 'IP Intelligence', shortName: 'IP', icon: '📡', description: 'Klasifikasi IPv4/IPv6 + ASN/negara dari sumber publik.', color: 'from-indigo-500/20 to-violet-500/10 border-indigo-500/30' },
-  { id: 'url', name: 'URL Intelligence', shortName: 'URL', icon: '🔗', description: 'Parse & analisis URL: param, encoding, pola mencurigakan.', color: 'from-emerald-500/20 to-green-500/10 border-emerald-500/30' },
-  { id: 'username', name: 'Username OSINT', shortName: 'Username', icon: '👤', description: 'Public presence username di platform publik (bukan data privat).', color: 'from-fuchsia-500/20 to-pink-500/10 border-fuchsia-500/30' },
-  { id: 'email', name: 'Email Intelligence', shortName: 'Email', icon: '✉️', description: 'Validasi, disposable-domain, role-based. tanpa bocorkan data.', color: 'from-rose-500/20 to-red-500/10 border-rose-500/30' },
-  { id: 'metadata', name: 'Metadata Analysis', shortName: 'Metadata', icon: '📄', description: 'Metadata file (EXIF, PDF, ZIP, Office). 100% lokal.', color: 'from-amber-500/20 to-orange-500/10 border-amber-500/30' },
-  { id: 'ioc', name: 'IOC Extraction', shortName: 'IOC', icon: '🩸', description: 'Ekstrak IP, domain, URL, hash, CVE, ATT&CK dari teks/log.', color: 'from-red-500/20 to-rose-500/10 border-red-500/30' },
-  { id: 'threat', name: 'Threat Intelligence', shortName: 'Threat Intel', icon: '☠️', description: 'Korelasi IOC ke sumber threat intel publik (link, bukan auto-send).', color: 'from-slate-500/20 to-zinc-500/10 border-slate-500/30' },
-  { id: 'hash', name: 'Hash Intelligence', shortName: 'Hash', icon: '#️⃣', description: 'Deteksi tipe hash + lookup link (VT, MalwareBazaar, dll).', color: 'from-purple-500/20 to-fuchsia-500/10 border-purple-500/30' },
-  { id: 'text', name: 'Text Intelligence', shortName: 'Text', icon: '📝', description: 'Statistik teks + ekstraksi IOC + regex + normalisasi.', color: 'from-teal-500/20 to-cyan-500/10 border-teal-500/30' },
-  { id: 'analysis', name: 'Analysis & Workspace', shortName: 'Analysis', icon: '🧠', description: 'Timeline, workspace IOC, dan case lokal untuk investigasi.', color: 'from-blue-500/20 to-indigo-500/10 border-blue-500/30' },
-  { id: 'search', name: 'Search & Dorking', shortName: 'Search', icon: '🔍', description: 'Bangun query pencarian Google Dork secara visual untuk OSINT.', color: 'from-lime-500/20 to-emerald-500/10 border-lime-500/30' },
+  { id: 'domain', name: 'Domain Intelligence', shortName: 'Domain', icon: '🌐', description: 'Analisis domain: registrable, subdomain, TLD, IDN/punycode.', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'dns', name: 'DNS Intelligence', shortName: 'DNS', icon: '🧭', description: 'DNS records via DNS-over-HTTPS publik (A, AAAA, MX, TXT, …).', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'ip', name: 'IP Intelligence', shortName: 'IP', icon: '📡', description: 'Klasifikasi IPv4/IPv6 + ASN/negara dari sumber publik.', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'url', name: 'URL Intelligence', shortName: 'URL', icon: '🔗', description: 'Parse & analisis URL: param, encoding, pola mencurigakan.', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'username', name: 'Username OSINT', shortName: 'Username', icon: '👤', description: 'Public presence username di platform publik (bukan data privat).', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'email', name: 'Email Intelligence', shortName: 'Email', icon: '✉️', description: 'Validasi, disposable-domain, role-based. tanpa bocorkan data.', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'metadata', name: 'Metadata Analysis', shortName: 'Metadata', icon: '📄', description: 'Metadata file (EXIF, PDF, ZIP, Office). 100% lokal.', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'ioc', name: 'IOC Extraction', shortName: 'IOC', icon: '🩸', description: 'Ekstrak IP, domain, URL, hash, CVE, ATT&CK dari teks/log.', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'threat', name: 'Threat Intelligence', shortName: 'Threat Intel', icon: '☠️', description: 'Korelasi IOC ke sumber threat intel publik (link, bukan auto-send).', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'hash', name: 'Hash Intelligence', shortName: 'Hash', icon: '#️⃣', description: 'Deteksi tipe hash + lookup link (VT, MalwareBazaar, dll).', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'text', name: 'Text Intelligence', shortName: 'Text', icon: '📝', description: 'Statistik teks + ekstraksi IOC + regex + normalisasi.', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'analysis', name: 'Analysis & Workspace', shortName: 'Analysis', icon: '🧠', description: 'Timeline, workspace IOC, dan case lokal untuk investigasi.', color: 'border-slate-800 bg-slate-900/40' },
+  { id: 'search', name: 'Search & Dorking', shortName: 'Search', icon: '🔍', description: 'Bangun query pencarian Google Dork secara visual untuk OSINT.', color: 'border-slate-800 bg-slate-900/40' },
 ];
 
 const OSINT_DISCLAIMER =

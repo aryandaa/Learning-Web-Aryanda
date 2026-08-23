@@ -226,7 +226,7 @@ function JwtTool() {
           <LabeledTextarea id="jwt-input" label="JWT token" value={token} onChange={setToken} rows={4} placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjMifQ.sig" />
           <div>
             <label htmlFor="jwt-secret" className="mb-1 block text-xs text-slate-400">Secret (untuk verifikasi signature, opsional)</label>
-            <input id="jwt-secret" type="password" value={secret} onChange={(e) => setSecret(e.target.value)} className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input id="jwt-secret" type="password" value={secret} onChange={(e) => setSecret(e.target.value)} className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-accent-500 focus:outline-none" />
           </div>
         </div>
       </Panel>
@@ -482,7 +482,7 @@ function CspTool() {
               {result.directives.map((d) => (
                 <div key={d.name} className="rounded-lg border border-slate-800 bg-slate-900/50 px-3 py-2">
                   <p className="font-mono text-sm text-slate-200">
-                    <span className="text-indigo-300">{d.name}</span> {d.value}
+                    <span className="text-accent-300">{d.name}</span> {d.value}
                   </p>
                   {d.issues.length > 0 && (
                     <ul className="mt-1 list-inside list-disc space-y-0.5 text-xs text-amber-200">
@@ -981,14 +981,14 @@ function RegexTesterTool() {
             onChange={(e) => setPattern(e.target.value)}
             placeholder="/pattern/"
             aria-label="Pola regex"
-            className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+            className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
           />
           <input
             value={flags}
             onChange={(e) => setFlags(e.target.value)}
             placeholder="flags (gim)"
             aria-label="Flag regex"
-            className="h-9 w-24 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+            className="h-9 w-24 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
           />
         </div>
       </Panel>

@@ -22,7 +22,9 @@ import { cn } from '../lib/utils';
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   cn(
     'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
-    isActive ? 'nav-active' : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100'
+    isActive
+      ? 'nav-active'
+      : 'text-slate-300 hover:bg-accent-500/10 hover:text-accent-700'
   );
 
 const SIDEBAR_STORAGE_KEY = 'lw-sidebar-collapsed';
@@ -154,7 +156,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-300">
       {/* ============ NAVBAR ============ */}
-      <header className="sticky top-0 z-40 border-b border-slate-800/60 bg-slate-950/85 backdrop-blur supports-[backdrop-filter]:bg-slate-950/70">
+      <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/85 backdrop-blur supports-[backdrop-filter]:bg-slate-950/75">
         <div className="mx-auto flex h-14 max-w-[1500px] items-center gap-2 px-3 sm:gap-3 sm:px-4">
           {/* Hamburger. mobile/tablet (< lg) */}
           <button

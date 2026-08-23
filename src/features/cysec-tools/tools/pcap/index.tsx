@@ -169,7 +169,7 @@ function IocsTab({ analysis, onSendToIoc }: { analysis: PcapAnalysis; onSendToIo
       <div className="grid gap-4 lg:grid-cols-3">
         {renderGroup('IP addresses', iocs.ips, 'text-sky-300')}
         {renderGroup('Domains (DNS/HTTP/TLS SNI)', iocs.domains, 'text-emerald-300')}
-        {renderGroup('URLs (HTTP)', iocs.urls, 'text-violet-300')}
+        {renderGroup('URLs (HTTP)', iocs.urls, 'text-accent-300')}
       </div>
       <p className="text-xs text-slate-500">
         IOC diekstrak dari metadata paket yang sudah diparsing (tanpa decrypt). Hash payload tidak tersedia tanpa
@@ -281,11 +281,11 @@ function PacketsTab({ analysis, filter }: { analysis: PcapAnalysis; filter: { ip
                   <span className={cn(
                     'rounded px-1.5 py-0.5 text-[10px] font-medium',
                     p.proto === 'TCP' && 'bg-sky-500/10 text-sky-300',
-                    p.proto === 'UDP' && 'bg-violet-500/10 text-violet-300',
+                    p.proto === 'UDP' && 'bg-accent-500/10 text-accent-300',
                     p.proto === 'DNS' && 'bg-amber-500/10 text-amber-300',
                     p.proto === 'HTTP' && 'bg-emerald-500/10 text-emerald-300',
-                    p.proto === 'TLS' && 'bg-indigo-500/10 text-indigo-300',
-                    p.proto === 'ARP' && 'bg-rose-500/10 text-rose-300',
+                    p.proto === 'TLS' && 'bg-accent-500/10 text-accent-300',
+                    p.proto === 'ARP' && 'bg-red-500/10 text-red-300',
                     p.proto === 'ICMP' && 'bg-cyan-500/10 text-cyan-300',
                     !['TCP', 'UDP', 'DNS', 'HTTP', 'TLS', 'ARP', 'ICMP'].includes(p.proto) && 'bg-slate-700/50 text-slate-400'
                   )}>
@@ -375,7 +375,7 @@ function PcapTool() {
                   className={cn(
                     'shrink-0 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors',
                     tab === t.id
-                      ? 'border-indigo-500 bg-indigo-500/15 text-indigo-300'
+                      ? 'border-accent-500 bg-accent-500/15 text-accent-300'
                       : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
                   )}
                 >
@@ -397,7 +397,7 @@ function PcapTool() {
                   onChange={(e) => setFilter((f) => ({ ...f, ip: e.target.value }))}
                   placeholder="Filter IP (src/dst)…"
                   aria-label="Filter IP"
-                  className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-indigo-500 focus:outline-none"
+                  className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-accent-500 focus:outline-none"
                 />
                 <select
                   value={filter.proto}
@@ -415,7 +415,7 @@ function PcapTool() {
                   onChange={(e) => setFilter((f) => ({ ...f, text: e.target.value }))}
                   placeholder="Search (host, query, SNI)…"
                   aria-label="Search paket"
-                  className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none"
+                  className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 text-xs text-slate-200 focus:border-accent-500 focus:outline-none"
                 />
                 <select
                   value={filter.limit}

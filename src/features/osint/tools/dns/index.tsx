@@ -108,7 +108,7 @@ function DnsAnalyzerTool() {
                 id="osint-dns-resolver"
                 value={resolverId}
                 onChange={(e) => setResolverId(e.target.value)}
-                className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+                className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
               >
                 {DOH_RESOLVERS.map((r) => (
                   <option key={r.id} value={r.id}>{r.label}</option>
@@ -126,7 +126,7 @@ function DnsAnalyzerTool() {
                     aria-pressed={types.includes(t)}
                     className={`rounded-md border px-2 py-1 font-mono text-xs transition-colors ${
                       types.includes(t)
-                        ? 'border-indigo-500 bg-indigo-500/15 text-indigo-300'
+                        ? 'border-accent-500 bg-accent-500/15 text-accent-300'
                         : 'border-slate-700 text-slate-500 hover:border-slate-500'
                     }`}
                   >
@@ -170,7 +170,7 @@ function DnsAnalyzerTool() {
                 {pasteRecords.map((r, i) => (
                   <tr key={i} className="border-t border-slate-800/50">
                     <td className="px-2 py-1 font-mono text-slate-400">{r.record}</td>
-                    <td className="px-2 py-1 font-mono text-indigo-300">{r.type}</td>
+                    <td className="px-2 py-1 font-mono text-accent-300">{r.type}</td>
                     <td className="break-all px-2 py-1 font-mono text-slate-200">{r.value}</td>
                     <td className="px-2 py-1 font-mono text-slate-500">{r.ttl || '-'}</td>
                   </tr>
@@ -207,7 +207,7 @@ function DnsAnalyzerTool() {
                 {rows.map((r, i) => (
                   <tr key={i} className="border-t border-slate-800/60">
                     <td className="px-2 py-1 font-mono text-xs text-slate-400">{r.record}</td>
-                    <td className="px-2 py-1 font-mono text-xs text-indigo-300">{r.type}</td>
+                    <td className="px-2 py-1 font-mono text-xs text-accent-300">{r.type}</td>
                     <td className="break-all px-2 py-1 font-mono text-xs text-slate-200">{r.value}</td>
                     <td className="px-2 py-1 font-mono text-xs text-slate-500">{r.ttl || '-'}</td>
                   </tr>

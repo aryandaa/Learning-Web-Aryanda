@@ -335,7 +335,7 @@ function EntropyTool() {
                         0x{t.hex} {t.byte >= 32 && t.byte < 127 ? `'${String.fromCharCode(t.byte)}'` : ''}
                       </span>
                       <div className="h-3 flex-1 overflow-hidden rounded bg-slate-800">
-                        <div className="h-full bg-indigo-500/70" style={{ width: `${(t.count / maxCount) * 100}%` }} />
+                        <div className="h-full bg-accent-500/70" style={{ width: `${(t.count / maxCount) * 100}%` }} />
                       </div>
                       <span className="w-28 shrink-0 text-right font-mono text-xs text-slate-500">{t.count.toLocaleString()}</span>
                     </div>

@@ -71,7 +71,7 @@ function EmailAnalyzerTool() {
               href={hibpLink(result.domain ?? '')}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-2 text-sm text-slate-300 transition-colors hover:border-indigo-500/50 hover:text-indigo-300"
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-2 text-sm text-slate-300 transition-colors hover:border-accent-500/50 hover:text-accent-300"
             >
               Have I Been Pwned. domain search ↗
             </a>

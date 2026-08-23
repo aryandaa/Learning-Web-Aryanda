@@ -51,49 +51,40 @@ export default function HomePage() {
       icon: FileText,
       value: metadata?.totalNotes ?? 0,
       label: 'Catatan',
-      tile: 'from-indigo-500 to-violet-600',
-      shadow: 'shadow-indigo-500/30',
     },
     {
       icon: FolderTree,
       value: metadata?.totalFolders ?? 0,
       label: 'Folder',
-      tile: 'from-amber-500 to-orange-600',
-      shadow: 'shadow-amber-500/30',
     },
     {
       icon: Clock,
       value: `${Math.round((metadata?.totalNotes ?? 0) / 200)} jam`,
       label: 'Estimasi baca',
-      tile: 'from-teal-500 to-emerald-600',
-      shadow: 'shadow-teal-500/30',
     },
     {
       icon: Layers,
       value: metadata?.subskillCount ?? 0,
       label: 'Skill',
-      tile: 'from-violet-500 to-purple-600',
-      shadow: 'shadow-violet-500/30',
     },
     {
       icon: Star,
       value: metadata?.myskillCount ?? 0,
       label: 'Bidang',
-      tile: 'from-rose-500 to-pink-600',
-      shadow: 'shadow-rose-500/30',
     },
   ];
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
-      {/* Hero */}
-      <header className="text-center">
+    <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
+      {/* ===================== HERO ===================== */}
+      <header className="hero-bg relative overflow-hidden rounded-3xl px-6 py-14 text-center sm:px-10 sm:py-20">
         <img
           src={joinWithRoot('assets/asset/logo%20web.png')}
           alt="Logo CodeLearn"
-          className="mx-auto h-16 w-16 object-contain drop-shadow-lg sm:h-20 sm:w-20"
+          className="mx-auto h-16 w-16 object-contain sm:h-20 sm:w-20"
         />
-        <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-medium text-indigo-300">
+
+        <span className="mt-7 inline-flex items-center gap-2 rounded-full border border-accent-100 bg-accent-50 px-4 py-1.5 text-xs font-semibold text-accent-700">
           <Sparkles className="h-3.5 w-3.5" />
           Personal learning platform
         </span>
@@ -105,21 +96,21 @@ export default function HomePage() {
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
           Dokumentasi dengan navigasi, pencarian, graph antar-catatan, dan roadmap belajar.
           Materi disusun oleh{' '}
-          <span className="font-medium text-slate-200">M. Aryanda Sanggadiennata</span>, penyedia
+          <span className="font-semibold text-slate-200">M. Aryanda Sanggadiennata</span>, penyedia
           materi sekaligus developer web.
         </p>
 
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Link
             to="/docs"
-            className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:bg-indigo-400 hover:shadow-indigo-500/50"
+            className="inline-flex items-center gap-2 rounded-lg bg-accent-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-accent-600"
           >
             <BookOpen className="h-4 w-4" />
             Jelajahi Docs
           </Link>
           <Link
             to="/search"
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/60 px-6 py-3 text-sm font-medium text-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900 px-6 py-3 text-sm font-medium text-slate-300 transition-colors hover:border-accent-300 hover:bg-accent-500/10"
           >
             <Search className="h-4 w-4" />
             Cari Materi
@@ -128,7 +119,7 @@ export default function HomePage() {
             href="https://portofolioaryanda.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-indigo-500/40 bg-indigo-500/10 px-6 py-3 text-sm font-medium text-indigo-300 transition-colors hover:bg-indigo-500/20 hover:text-indigo-200"
+            className="inline-flex items-center gap-2 rounded-lg border border-accent-500/40 bg-accent-500/10 px-6 py-3 text-sm font-medium text-accent-300 transition-colors hover:bg-accent-500/20 hover:text-accent-200"
           >
             <UserRound className="h-4 w-4" />
             Profile Pembuat
@@ -136,36 +127,31 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Statistik */}
-      <section className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      {/* ===================== STATISTIK ===================== */}
+      <section className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="card card-hover flex items-center gap-4 p-5"
-          >
-            <span
-              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${stat.tile} shadow-lg ${stat.shadow}`}
-            >
-              <stat.icon className="h-5 w-5 text-white" />
+          <div key={stat.label} className="card card-hover flex items-center gap-4 p-5">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-100 text-accent-600">
+              <stat.icon className="h-5 w-5" />
             </span>
             <div>
               <p className="text-2xl font-bold tabular-nums text-slate-50">{stat.value}</p>
-              <p className="mt-0.5 text-xs text-slate-500">{stat.label}</p>
+              <p className="mt-0.5 text-xs font-medium text-slate-500">{stat.label}</p>
             </div>
           </div>
         ))}
       </section>
 
-      {/* Topik Utama */}
+      {/* ===================== TOPIK UTAMA ===================== */}
       <section className="mt-16">
         <div className="flex items-center justify-between">
-          <h2 className="flex items-center gap-2.5 text-lg font-semibold text-slate-100">
-            <span className="h-5 w-1 rounded-full bg-gradient-to-b from-indigo-400 to-violet-500" />
+          <h2 className="flex items-center gap-2.5 text-lg font-bold text-slate-50">
+            <span className="h-5 w-1 rounded-full bg-accent-500" />
             Topik Utama
           </h2>
           <Link
             to="/docs"
-            className="inline-flex items-center gap-1 text-sm text-indigo-400 transition-colors hover:text-indigo-300"
+            className="inline-flex items-center gap-1 text-sm font-medium text-accent-600 transition-colors hover:text-accent-700"
           >
             Semua docs <ArrowRight className="h-3.5 w-3.5" />
           </Link>
@@ -179,28 +165,28 @@ export default function HomePage() {
               className="group card card-hover flex items-center justify-between p-5"
             >
               <div className="flex items-center gap-3.5">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800/80 text-indigo-400 transition-colors group-hover:bg-indigo-500/15 group-hover:text-indigo-300">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-100 text-accent-600 transition-colors group-hover:bg-accent-200/60">
                   <Folder className="h-5 w-5" />
                 </span>
                 <div>
-                  <h3 className="font-semibold text-slate-200 transition-colors group-hover:text-slate-100">
+                  <h3 className="font-semibold text-slate-200 transition-colors group-hover:text-slate-50">
                     {folder.name}
                   </h3>
-                  <p className="mt-0.5 text-xs text-slate-500">
+                  <p className="mt-0.5 text-xs text-slate-400">
                     {countFiles(folder.children)} catatan
                   </p>
                 </div>
               </div>
-              <ArrowRight className="h-4 w-4 text-slate-600 transition-transform group-hover:translate-x-1 group-hover:text-indigo-400" />
+              <ArrowRight className="h-4 w-4 text-slate-600 transition-transform group-hover:translate-x-1 group-hover:text-accent-500" />
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Part Of */}
+      {/* ===================== PART OF ===================== */}
       <section className="mt-16">
-        <h2 className="flex items-center gap-2.5 text-lg font-semibold text-slate-100">
-          <span className="h-5 w-1 rounded-full bg-gradient-to-b from-indigo-400 to-violet-500" />
+        <h2 className="flex items-center gap-2.5 text-lg font-bold text-slate-50">
+          <span className="h-5 w-1 rounded-full bg-accent-500" />
           Part Of
         </h2>
 
@@ -210,9 +196,9 @@ export default function HomePage() {
             href="https://poliban.ac.id/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group card card-hover flex items-center gap-4 p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
+            className="group card card-hover flex items-center gap-4 p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500/50"
           >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-1 ring-1 ring-slate-800/50 transition-transform duration-200 group-hover:scale-105">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1 ring-1 ring-slate-800 transition-transform duration-200 group-hover:scale-105">
               <img
                 src={joinWithRoot('assets/asset/Logo%20Poliban.jpeg')}
                 alt=""
@@ -220,11 +206,11 @@ export default function HomePage() {
               />
             </span>
             <div className="min-w-0 flex-1">
-              <h3 className="font-semibold leading-snug text-slate-200 transition-colors group-hover:text-slate-100">
+              <h3 className="font-semibold leading-snug text-slate-200 transition-colors group-hover:text-slate-50">
                 Politeknik Negeri Banjarmasin
               </h3>
             </div>
-            <ExternalLink className="h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-indigo-400" />
+            <ExternalLink className="h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-accent-500" />
           </a>
 
           {/* Itech Poliban */}
@@ -232,9 +218,9 @@ export default function HomePage() {
             href="https://www.itechpoliban.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group card card-hover flex items-center gap-4 p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
+            className="group card card-hover flex items-center gap-4 p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500/50"
           >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-1 ring-1 ring-slate-800/50 transition-transform duration-200 group-hover:scale-105">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1 ring-1 ring-slate-800 transition-transform duration-200 group-hover:scale-105">
               <img
                 src={joinWithRoot('assets/asset/logo%20itech%20poliban.png')}
                 alt=""
@@ -242,11 +228,11 @@ export default function HomePage() {
               />
             </span>
             <div className="min-w-0 flex-1">
-              <h3 className="font-semibold text-slate-200 transition-colors group-hover:text-slate-100">
+              <h3 className="font-semibold text-slate-200 transition-colors group-hover:text-slate-50">
                 Itech Poliban
               </h3>
             </div>
-            <ExternalLink className="h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-indigo-400" />
+            <ExternalLink className="h-4 w-4 shrink-0 text-slate-600 transition-colors group-hover:text-accent-500" />
           </a>
 
           {/* Makat-Xploit — placeholder, belum ada URL */}
@@ -254,7 +240,7 @@ export default function HomePage() {
             <img
               src={joinWithRoot('assets/asset/logo%20makat-xploit.jpeg')}
               alt=""
-              className="h-12 w-12 shrink-0 rounded-lg object-contain"
+              className="h-12 w-12 shrink-0 rounded-xl object-contain"
             />
             <div className="min-w-0 flex-1">
               <h3 className="font-semibold text-slate-200">Makat-Xploit</h3>
@@ -263,15 +249,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Open Source */}
-      <section className="mt-16 rounded-2xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8">
+      {/* ===================== OPEN SOURCE ===================== */}
+      <section className="panel-soft-green mt-16 rounded-2xl border border-accent-100 p-6 sm:p-8">
         <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-950 shadow-lg">
-              <Github className="h-6 w-6 text-slate-100" />
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-slate-800 bg-slate-900 shadow-sm">
+              <Github className="h-6 w-6 text-slate-200" />
             </span>
             <div>
-              <h2 className="flex items-center gap-2.5 text-lg font-semibold text-slate-100">
+              <h2 className="flex items-center gap-2.5 text-lg font-bold text-slate-50">
                 Project Open Source
                 <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
                   Open Source
@@ -288,7 +274,7 @@ export default function HomePage() {
             href="https://github.com/aryandaa/Learning-Web-Aryanda"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-slate-100 px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-lg transition-all hover:bg-white hover:shadow-slate-500/25"
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-accent-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-accent-600"
           >
             <Github className="h-4 w-4" />
             Jadilah Contributor

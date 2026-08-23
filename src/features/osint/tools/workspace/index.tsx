@@ -24,9 +24,9 @@ const WS_KEY = 'osint-workspace';
 
 const TYPE_COLORS: Record<string, string> = {
   ipv4: 'text-sky-300', ipv6: 'text-sky-300', domain: 'text-emerald-300',
-  url: 'text-emerald-300', email: 'text-violet-300', 'hash-md5': 'text-amber-300',
+  url: 'text-emerald-300', email: 'text-accent-300', 'hash-md5': 'text-amber-300',
   'hash-sha1': 'text-amber-300', 'hash-sha256': 'text-amber-300', cve: 'text-red-300',
-  attack: 'text-rose-300', username: 'text-fuchsia-300', other: 'text-slate-400',
+  attack: 'text-red-300', username: 'text-amber-300', other: 'text-slate-400',
 };
 
 function readWs(): WorkspaceItem[] {
@@ -148,7 +148,7 @@ function WorkspaceTool() {
                         onChange={(e) => setTag(x.id, e.target.value)}
                         placeholder="tag…"
                         aria-label={`Tag ${x.value}`}
-                        className="h-7 w-24 rounded border border-slate-700 bg-slate-950/70 px-2 text-[11px] text-slate-300 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+                        className="h-7 w-24 rounded border border-slate-700 bg-slate-950/70 px-2 text-[11px] text-slate-300 placeholder:text-slate-600 focus:border-accent-500 focus:outline-none"
                       />
                       <CopyButton text={x.value} label="" className="h-7 w-7" />
                       <button

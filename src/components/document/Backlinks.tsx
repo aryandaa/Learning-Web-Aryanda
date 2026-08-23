@@ -20,7 +20,7 @@ export function Backlinks({ doc }: { doc: DocumentData }) {
           <li key={backlink.id}>
             <Link
               to={`/docs/${backlink.id}`}
-              className="inline-block rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-sm text-slate-300 transition-colors hover:border-indigo-500/50 hover:text-indigo-300"
+              className="inline-block rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-sm text-slate-300 transition-colors hover:border-accent-500/50 hover:text-accent-300"
             >
               {backlink.title}
             </Link>

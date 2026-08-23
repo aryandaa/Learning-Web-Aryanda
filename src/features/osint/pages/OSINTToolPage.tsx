@@ -76,7 +76,7 @@ export default function OSINTToolPage() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
         <p className="text-slate-400">Tool tidak ditemukan.</p>
-        <Link to="/cysec-tools/category/osint" className="mt-3 inline-block text-sm text-indigo-400 hover:underline">
+        <Link to="/cysec-tools/category/osint" className="mt-3 inline-block text-sm text-accent-400 hover:underline">
           ← Kembali ke OSINT
         </Link>
       </div>
@@ -100,7 +100,7 @@ export default function OSINTToolPage() {
                 to={t.path}
                 className={cn(
                   'flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors',
-                  t.id === meta.id ? 'bg-indigo-500/10 font-medium text-indigo-300' : 'text-slate-500 hover:bg-slate-800/60 hover:text-slate-200'
+                  t.id === meta.id ? 'bg-accent-500/10 font-medium text-accent-300' : 'text-slate-500 hover:bg-slate-800/60 hover:text-slate-200'
                 )}
               >
                 <span aria-hidden>{t.icon}</span>
@@ -113,9 +113,9 @@ export default function OSINTToolPage() {
         {/* Workspace utama */}
         <div className="min-w-0 flex-1">
           <div className="mb-4 flex items-center gap-1.5 text-xs text-slate-500" aria-label="Breadcrumb">
-            <Link to="/cysec-tools" className="transition-colors hover:text-indigo-300">CySec Tools</Link>
+            <Link to="/cysec-tools" className="transition-colors hover:text-accent-300">CySec Tools</Link>
             <span>/</span>
-            <Link to="/cysec-tools/category/osint" className="inline-flex items-center gap-1 transition-colors hover:text-indigo-300">
+            <Link to="/cysec-tools/category/osint" className="inline-flex items-center gap-1 transition-colors hover:text-accent-300">
               <ArrowLeft className="h-3 w-3" /> OSINT
             </Link>
             <span>/</span>
@@ -156,7 +156,7 @@ export default function OSINTToolPage() {
                 className={cn(
                   'shrink-0 rounded-full border px-3 py-1.5 text-xs transition-colors',
                   t.id === meta.id
-                    ? 'border-indigo-500 bg-indigo-500/15 text-indigo-300'
+                    ? 'border-accent-500 bg-accent-500/15 text-accent-300'
                     : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
                 )}
               >

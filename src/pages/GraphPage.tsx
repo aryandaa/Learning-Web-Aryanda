@@ -7,10 +7,10 @@ import { Spinner } from '../components/ui/spinner';
 import type { GraphData, GraphNode } from '../domain/types';
 
 const FOLDER_LABELS: Record<string, { label: string; color: string }> = {
-  CyberSecurity: { label: 'CyberSecurity', color: '#fb7185' },
-  DevOps: { label: 'DevOps', color: '#a78bfa' },
-  Jaringan: { label: 'Jaringan', color: '#38bdf8' },
-  Pemrograman: { label: 'Pemrograman', color: '#34d399' },
+  CyberSecurity: { label: 'CyberSecurity', color: '#B86B68' },
+  DevOps: { label: 'DevOps', color: '#6F9B78' },
+  Jaringan: { label: 'Jaringan', color: '#6E9CB8' },
+  Pemrograman: { label: 'Pemrograman', color: '#C49A5A' },
 };
 
 /**
@@ -62,7 +62,7 @@ export default function GraphPage() {
       {/* header */}
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-slate-800/80 px-5 py-3">
         <h1 className="flex items-center gap-2 text-lg font-bold text-slate-100">
-          <Network className="h-5 w-5 text-indigo-400" />
+          <Network className="h-5 w-5 text-accent-400" />
           Graph Materi
         </h1>
         <p className="hidden text-xs text-slate-500 sm:block">
@@ -74,7 +74,7 @@ export default function GraphPage() {
             onClick={() => setShowIsolated((v) => !v)}
             className={
               showIsolated
-                ? 'rounded-lg bg-indigo-500/15 px-3 py-1.5 text-xs font-medium text-indigo-300 ring-1 ring-indigo-500/40'
+                ? 'rounded-lg bg-accent-500/15 px-3 py-1.5 text-xs font-medium text-accent-300 ring-1 ring-accent-500/40'
                 : 'rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-400 hover:text-slate-200'
             }
           >
@@ -126,13 +126,13 @@ export default function GraphPage() {
         {/* panel info node */}
         {hovered && (
           <div className="absolute bottom-4 left-4 max-w-xs rounded-xl border border-slate-800 bg-slate-900/90 p-4 shadow-2xl backdrop-blur">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-400">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-accent-400">
               {hovered.folder || 'Root'}
             </p>
             <h2 className="mt-1 text-sm font-semibold text-slate-100">{hovered.title}</h2>
             <button
               onClick={() => navigate(`/docs/${hovered.id}`)}
-              className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-400"
+              className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-accent-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-accent-600"
             >
               Buka catatan
               <ExternalLink className="h-3 w-3" />

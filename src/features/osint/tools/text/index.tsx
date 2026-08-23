@@ -128,7 +128,7 @@ function TextAnalyzerTool() {
                 onChange={(e) => setRegexPattern(e.target.value)}
                 placeholder="Pola regex (opsional)…"
                 aria-label="Pola regex"
-                className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+                className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
               />
               <Button variant="secondary" onClick={() => setRegexResult(regexExtract(input, regexPattern.trim()))} disabled={!regexPattern.trim()}>Ekstrak</Button>
             </div>

@@ -79,12 +79,12 @@ export function FileDrop({
         className={cn(
           'flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-8 text-center transition-colors',
           dragOver
-            ? 'border-indigo-500 bg-indigo-500/10'
-            : 'border-slate-700 bg-slate-950/40 hover:border-indigo-500/50 hover:bg-slate-900/60'
+            ? 'border-accent-500 bg-accent-500/10'
+            : 'border-slate-700 bg-slate-950/40 hover:border-accent-500/50 hover:bg-slate-900/60'
         )}
       >
         {loading ? (
-          <span className="h-8 w-8 animate-spin rounded-full border-2 border-slate-700 border-t-indigo-400" role="status" aria-label="Memproses" />
+          <span className="h-8 w-8 animate-spin rounded-full border-2 border-slate-700 border-t-accent-400" role="status" aria-label="Memproses" />
         ) : (
           <FileUp className="h-8 w-8 text-slate-500" />
         )}

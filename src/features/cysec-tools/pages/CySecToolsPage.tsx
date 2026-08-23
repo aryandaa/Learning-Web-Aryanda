@@ -21,11 +21,11 @@ function CategoryCardView({ card }: { card: CategoryCard }) {
       <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-800 bg-slate-900 text-2xl transition-transform group-hover:scale-105" aria-hidden>
         {card.icon}
       </span>
-      <h2 className="mt-3 text-base font-semibold text-slate-100 transition-colors group-hover:text-indigo-300">
+      <h2 className="mt-3 text-base font-semibold text-slate-100 transition-colors group-hover:text-accent-300">
         {card.title}
       </h2>
       <p className="mt-1 flex-1 text-xs leading-5 text-slate-500">{card.description}</p>
-      <p className="mt-3 text-xs font-medium text-indigo-400/80">{card.count} Tools</p>
+      <p className="mt-3 text-xs font-medium text-accent-400/80">{card.count} Tools</p>
     </Link>
   );
 }
@@ -38,7 +38,7 @@ function ToolCardView({ entry }: { entry: CatalogEntry }) {
           {entry.icon}
         </span>
         <div className="min-w-0">
-          <h3 className="text-sm font-semibold text-slate-100 transition-colors group-hover:text-indigo-300">{entry.title}</h3>
+          <h3 className="text-sm font-semibold text-slate-100 transition-colors group-hover:text-accent-300">{entry.title}</h3>
           <p className="mt-1 line-clamp-2 text-xs text-slate-500">{entry.description}</p>
         </div>
       </div>
@@ -114,7 +114,7 @@ export default function CySecToolsPage() {
           onChange={(e) => onChangeQuery(e.target.value)}
           placeholder="Search tools & kategori… (contoh: hash, dns, osint, pcap)"
           aria-label="Cari tools dan kategori"
-          className="h-11 w-full rounded-lg border border-slate-700 bg-slate-900 pl-9 pr-3 text-sm text-slate-200 placeholder:text-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+          className="h-11 w-full rounded-lg border border-slate-800 bg-slate-900 pl-9 pr-3 text-sm text-slate-200 placeholder:text-slate-500 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30"
         />
       </div>
 
@@ -129,9 +129,9 @@ export default function CySecToolsPage() {
                   <Link
                     key={r.path}
                     to={r.path}
-                    className="group rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-1.5 text-xs transition-colors hover:border-indigo-500/50"
+                    className="group rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-1.5 text-xs transition-colors hover:border-accent-500/50"
                   >
-                    <span className="text-slate-300 group-hover:text-indigo-300">{r.icon} {r.title}</span>
+                    <span className="text-slate-300 group-hover:text-accent-300">{r.icon} {r.title}</span>
                     <span className="ml-2 text-[10px] text-slate-600">{r.categoryName}</span>
                   </Link>
                 ))}

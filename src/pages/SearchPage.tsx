@@ -93,7 +93,7 @@ export default function SearchPage() {
                 className="card card-hover group block p-5"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <h2 className="font-semibold text-slate-100 transition-colors group-hover:text-indigo-300">
+                  <h2 className="font-semibold text-slate-100 transition-colors group-hover:text-accent-300">
                     {result.title}
                   </h2>
                 </div>

@@ -156,7 +156,7 @@ export function TransformTool(config: TransformConfig) {
                 value={keys[kf.id] ?? ''}
                 onChange={(e) => setKeys((prev) => ({ ...prev, [kf.id]: e.target.value }))}
                 placeholder={kf.placeholder}
-                className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 placeholder:text-slate-600 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30"
               />
               {kf.hint && <p className="mt-1 text-xs text-slate-600">{kf.hint}</p>}
             </div>

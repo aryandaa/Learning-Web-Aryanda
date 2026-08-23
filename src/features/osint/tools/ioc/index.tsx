@@ -15,10 +15,10 @@ import type { ComponentType } from 'react';
 const TYPE_TONE: Record<string, string> = {
   ipv4: 'bg-sky-500/10 text-sky-300', ipv6: 'bg-sky-500/10 text-sky-300',
   domain: 'bg-emerald-500/10 text-emerald-300', url: 'bg-emerald-500/10 text-emerald-300',
-  email: 'bg-violet-500/10 text-violet-300', 'hash-md5': 'bg-amber-500/10 text-amber-300',
+  email: 'bg-accent-500/10 text-accent-300', 'hash-md5': 'bg-amber-500/10 text-amber-300',
   'hash-sha1': 'bg-amber-500/10 text-amber-300', 'hash-sha256': 'bg-amber-500/10 text-amber-300',
   'hash-sha512': 'bg-amber-500/10 text-amber-300', cve: 'bg-red-500/10 text-red-300',
-  attack: 'bg-rose-500/10 text-rose-300', filepath: 'bg-slate-700/50 text-slate-400',
+  attack: 'bg-red-500/10 text-red-300', filepath: 'bg-slate-700/50 text-slate-400',
 };
 
 function IocExtractorTool() {

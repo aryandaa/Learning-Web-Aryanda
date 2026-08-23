@@ -118,7 +118,7 @@ function LogAnalyzerToolInner() {
           onBlur={(e) => {
             if (e.target.value.trim()) run(e.target.value);
           }}
-          className="w-full resize-y rounded-lg border border-slate-700 bg-slate-950/70 p-3 font-mono text-[12px] leading-5 text-slate-200 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+          className="w-full resize-y rounded-lg border border-slate-700 bg-slate-950/70 p-3 font-mono text-[12px] leading-5 text-slate-200 placeholder:text-slate-600 focus:border-accent-500 focus:outline-none"
         />
         <p className="mt-1 text-xs text-slate-600">Tempel lalu klik di luar textarea (blur) untuk menganalisis.</p>
       </Panel>
@@ -138,7 +138,7 @@ function LogAnalyzerToolInner() {
                   className={cn(
                     'shrink-0 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors',
                     tab === t.id
-                      ? 'border-indigo-500 bg-indigo-500/15 text-indigo-300'
+                      ? 'border-accent-500 bg-accent-500/15 text-accent-300'
                       : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
                   )}
                 >
@@ -191,10 +191,10 @@ function LogAnalyzerToolInner() {
           {tab === 'events' && (
             <div className="space-y-3">
               <div className="grid gap-2 sm:grid-cols-5">
-                <input value={filter.ip} onChange={(e) => setFilter((f) => ({ ...f, ip: e.target.value }))} placeholder="Filter IP…" aria-label="Filter IP" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
-                <input value={filter.status} onChange={(e) => setFilter((f) => ({ ...f, status: e.target.value }))} placeholder="Status (mis. 404)…" aria-label="Filter status" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
-                <input value={filter.method} onChange={(e) => setFilter((f) => ({ ...f, method: e.target.value }))} placeholder="Method (GET)…" aria-label="Filter method" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
-                <input value={filter.keyword} onChange={(e) => setFilter((f) => ({ ...f, keyword: e.target.value }))} placeholder="Keyword…" aria-label="Filter keyword" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+                <input value={filter.ip} onChange={(e) => setFilter((f) => ({ ...f, ip: e.target.value }))} placeholder="Filter IP…" aria-label="Filter IP" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-accent-500 focus:outline-none" />
+                <input value={filter.status} onChange={(e) => setFilter((f) => ({ ...f, status: e.target.value }))} placeholder="Status (mis. 404)…" aria-label="Filter status" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-accent-500 focus:outline-none" />
+                <input value={filter.method} onChange={(e) => setFilter((f) => ({ ...f, method: e.target.value }))} placeholder="Method (GET)…" aria-label="Filter method" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-accent-500 focus:outline-none" />
+                <input value={filter.keyword} onChange={(e) => setFilter((f) => ({ ...f, keyword: e.target.value }))} placeholder="Keyword…" aria-label="Filter keyword" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-accent-500 focus:outline-none" />
                 <select value={filter.limit} onChange={(e) => setFilter((f) => ({ ...f, limit: Number(e.target.value) }))} aria-label="Batas baris" className="h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-xs text-slate-200">
                   {[100, 500, 1000, 5000].map((n) => (
                     <option key={n} value={n}>{n} baris</option>

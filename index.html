@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="CodeLearn · personal learning platform · materi dari Obsidian Vault Aryanda" />
-    <meta name="theme-color" content="#020617" />
+    <meta name="theme-color" content="#FFFFFF" />
     <title>CodeLearn</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,12 +14,18 @@
     />
     <script>
       // Terapkan tema tersimpan sebelum paint agar tidak ada flash tema salah.
+      // Light adalah tema utama; dark hanya alternative. Key div-version kan
+      // agar semua pengunjung mendapat light default setelah visual refresh.
       (function () {
         try {
-          if (window.localStorage.getItem('lw-theme') === 'light') {
+          if (window.localStorage.getItem('lw-theme-v2') === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
             document.documentElement.classList.add('light');
           }
-        } catch (e) {}
+        } catch (e) {
+          document.documentElement.classList.add('light');
+        }
       })();
     </script>
     <script>

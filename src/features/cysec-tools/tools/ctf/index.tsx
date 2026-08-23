@@ -49,7 +49,7 @@ function CtfCaesarTool() {
         <Panel title="Kandidat (diurutkan skor bahasa Inggris)">
           <div className="space-y-1.5">
             {result.map((c, i) => (
-              <div key={c.shift} className={`flex items-start gap-3 rounded-lg border px-3 py-1.5 ${i === 0 ? 'border-indigo-500/40 bg-indigo-500/10' : 'border-slate-800 bg-slate-900/50'}`}>
+              <div key={c.shift} className={`flex items-start gap-3 rounded-lg border px-3 py-1.5 ${i === 0 ? 'border-accent-500/40 bg-accent-500/10' : 'border-slate-800 bg-slate-900/50'}`}>
                 <span className="w-14 shrink-0 font-mono text-xs text-slate-500">shift {c.shift}</span>
                 <pre className="min-w-0 flex-1 whitespace-pre-wrap break-all font-mono text-[13px] text-slate-200">{c.text}</pre>
                 <span className="w-16 shrink-0 text-right font-mono text-xs text-slate-600">{c.score.toFixed(1)}</span>
@@ -179,7 +179,7 @@ function CtfXorTool() {
         <Panel title="Kandidat">
           <div className="space-y-2">
             {result.map((r, i) => (
-              <div key={i} className={`rounded-lg border px-3 py-2 ${i === 0 ? 'border-indigo-500/40 bg-indigo-500/10' : 'border-slate-800 bg-slate-900/50'}`}>
+              <div key={i} className={`rounded-lg border px-3 py-2 ${i === 0 ? 'border-accent-500/40 bg-accent-500/10' : 'border-slate-800 bg-slate-900/50'}`}>
                 <p className="text-xs text-slate-500">Key: <code className="text-amber-300">{r.key}</code> · score {r.score.toFixed(1)}</p>
                 <pre className="mt-1 max-h-24 overflow-auto whitespace-pre-wrap break-all font-mono text-[13px] text-slate-200">{r.text}</pre>
               </div>
@@ -381,7 +381,7 @@ function FrequencyTool() {
               <div key={f.char} className="flex items-center gap-2">
                 <span className="w-6 shrink-0 text-center font-mono text-xs text-slate-400">{f.char}</span>
                 <div className="h-3 flex-1 overflow-hidden rounded bg-slate-800">
-                  <div className="h-full bg-fuchsia-500/70" style={{ width: `${(f.count / (result[0]?.count ?? 1)) * 100}%` }} />
+                  <div className="h-full bg-amber-500/70" style={{ width: `${(f.count / (result[0]?.count ?? 1)) * 100}%` }} />
                 </div>
                 <span className="w-24 shrink-0 text-right font-mono text-xs text-slate-500">{f.count} ({f.pct.toFixed(1)}%)</span>
               </div>
@@ -445,7 +445,7 @@ function SubstitutionTool() {
           <LabeledTextarea id="subst-input" label="Ciphertext" value={input} onChange={setInput} rows={4} />
           <div>
             <label htmlFor="subst-map" className="mb-1 block text-xs text-slate-400">Mapping (A=X,B=Y atau 26 huruf)</label>
-            <input id="subst-map" value={mapping} onChange={(e) => setMapping(e.target.value)} placeholder="E=Q,T=W,…" className="h-9 w-full max-w-xl rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input id="subst-map" value={mapping} onChange={(e) => setMapping(e.target.value)} placeholder="E=Q,T=W,…" className="h-9 w-full max-w-xl rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none" />
           </div>
         </div>
       </Panel>
@@ -953,7 +953,7 @@ function PortReferenceTool() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Cari port/nama… (mis. ssh, 3306)"
           aria-label="Cari port"
-          className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+          className="h-9 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
         />
       </Panel>
       <Panel title={`Port umum (${filtered.length})`} action={<CopyButton text={filtered.map((p) => `${p.port}/${p.proto}\t${p.name}\t${p.desc}`).join('\n')} />}>
@@ -1233,7 +1233,7 @@ function CveReferenceTool() {
                     <td className="px-2 py-1">
                       <div className="flex flex-wrap gap-1">
                         {cveLinks(r.cve).map((l) => (
-                          <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300">
+                          <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer" className="text-accent-400 hover:text-accent-300">
                             {l.name.split(' ')[0]} ↗
                           </a>
                         ))}
@@ -1254,14 +1254,14 @@ function CveReferenceTool() {
             onChange={(e) => setSingle(e.target.value)}
             placeholder="CVE-2023-1234"
             aria-label="CVE ID"
-            className="h-9 w-56 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+            className="h-9 w-56 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
           />
           {single && !singleValid && <span className="text-xs text-amber-300">Format CVE ID tidak valid.</span>}
         </div>
         {singleValid && (
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {singleLinks.map((l) => (
-              <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2 text-sm text-slate-300 transition-colors hover:border-indigo-500/50 hover:text-indigo-300">
+              <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2 text-sm text-slate-300 transition-colors hover:border-accent-500/50 hover:text-accent-300">
                 {l.name} ↗
               </a>
             ))}

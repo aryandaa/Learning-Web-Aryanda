@@ -1,17 +1,20 @@
 /**
  * Warna badge tag yang konsisten: tag populer dipetakan manual,
  * sisanya di-hash ke palet. Warna yang sama selalu untuk tag yang sama.
+ *
+ * Palet di luar warna banned (tidak ada indigo/violet/purple/fuchsia/pink)
+ * agar konsisten dengan identitas CodeLearn: neutral + muted green.
  */
 const CURATED: Record<string, string> = {
-  programming: 'indigo',
-  cybersecurity: 'rose',
-  devops: 'violet',
+  programming: 'teal',
+  cybersecurity: 'red',
+  devops: 'cyan',
   jaringan: 'sky',
   webdev: 'teal',
   output: 'emerald',
   python: 'emerald',
   javascript: 'amber',
-  php: 'violet',
+  php: 'sky',
   html: 'orange',
   css: 'sky',
   react: 'cyan',
@@ -23,17 +26,14 @@ const CURATED: Record<string, string> = {
 };
 
 const PALETTE = [
-  'indigo',
   'sky',
+  'teal',
   'emerald',
   'amber',
-  'rose',
-  'violet',
-  'teal',
-  'orange',
+  'red',
   'cyan',
-  'fuchsia',
   'lime',
+  'orange',
   'slate',
 ];
 
@@ -53,17 +53,14 @@ export function tagColorName(tag: string): TagColorName {
 
 /** Kelas Tailwind statis (aman untuk purge) per warna. */
 export const TAG_COLOR_CLASSES: Record<TagColorName, string> = {
-  indigo: 'bg-indigo-400/20 text-indigo-200 border-indigo-400/40',
   sky: 'bg-sky-400/20 text-sky-200 border-sky-400/40',
+  teal: 'bg-teal-400/20 text-teal-200 border-teal-400/40',
   emerald: 'bg-emerald-400/20 text-emerald-200 border-emerald-400/40',
   amber: 'bg-amber-400/20 text-amber-200 border-amber-400/40',
-  rose: 'bg-rose-400/20 text-rose-200 border-rose-400/40',
-  violet: 'bg-violet-400/20 text-violet-200 border-violet-400/40',
-  teal: 'bg-teal-400/20 text-teal-200 border-teal-400/40',
-  orange: 'bg-orange-400/20 text-orange-200 border-orange-400/40',
+  red: 'bg-red-400/20 text-red-200 border-red-400/40',
   cyan: 'bg-cyan-400/20 text-cyan-200 border-cyan-400/40',
-  fuchsia: 'bg-fuchsia-400/20 text-fuchsia-200 border-fuchsia-400/40',
   lime: 'bg-lime-400/20 text-lime-200 border-lime-400/40',
+  orange: 'bg-orange-400/20 text-orange-200 border-orange-400/40',
   slate: 'bg-slate-400/20 text-slate-200 border-slate-400/40',
 };
 
@@ -77,7 +74,7 @@ export type SpecialTag = (typeof SPECIAL_TAGS)[number];
 
 export const SPECIAL_TAG_CLASSES: Record<SpecialTag, string> = {
   roadmap: 'bg-amber-400/25 text-amber-200 border-amber-400/60',
-  subskill: 'bg-violet-400/25 text-violet-200 border-violet-400/60',
+  subskill: 'bg-sky-400/25 text-sky-200 border-sky-400/60',
   myskill: 'bg-emerald-400/25 text-emerald-200 border-emerald-400/60',
   latihan: 'bg-orange-400/25 text-orange-200 border-orange-400/60',
 };

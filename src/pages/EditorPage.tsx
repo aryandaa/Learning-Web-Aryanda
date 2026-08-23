@@ -87,7 +87,7 @@ console.log(perkenalan(user));
 <head>
   <style>
     body { font-family: sans-serif; padding: 1.5rem; background: #f8fafc; }
-    h1 { color: #4f46e5; }
+    h1 { color: #527a5b; }
     button { padding: .5rem 1rem; font-size: 1rem; cursor: pointer; }
   </style>
 </head>
@@ -112,18 +112,18 @@ console.log(perkenalan(user));
 
 body {
   font-family: sans-serif;
-  background: #f0f4ff;
+  background: #f6f6f2;
   padding: 1.5rem;
 }
 
 h1 {
-  color: #4f46e5;
-  border-bottom: 3px solid #4f46e5;
+  color: #527a5b;
+  border-bottom: 3px solid #527a5b;
   padding-bottom: .5rem;
 }
 
 button {
-  background: #4f46e5;
+  background: #527a5b;
   color: white;
   border: none;
   padding: .6rem 1.2rem;
@@ -170,8 +170,8 @@ $hobi = ["coding", "ngoding", "debugging"];
 <html>
 <head>
   <style>
-    body { font-family: sans-serif; padding: 1.5rem; background: #faf5ff; }
-    h1 { color: #7c3aed; }
+    body { font-family: sans-serif; padding: 1.5rem; background: #f6f6f2; }
+    h1 { color: #527a5b; }
     ul li { margin-bottom: .25rem; }
   </style>
 </head>
@@ -693,7 +693,7 @@ export default function EditorPage() {
     <div className="flex h-[calc(100vh-3.5rem)] flex-col">
       {/* Header halaman */}
       <div className="flex flex-wrap items-center gap-3 border-b border-slate-800 px-4 py-2.5">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-600 shadow-sm">
           <Code2 className="h-4 w-4 text-white" />
         </span>
         <h1 className="text-base font-bold text-slate-50">Code Editor</h1>
@@ -710,7 +710,7 @@ export default function EditorPage() {
             <select
               value={lang}
               onChange={(e) => changeLang(e.target.value as LangId)}
-              className="h-8 rounded-lg border border-slate-700 bg-slate-900 px-2.5 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+              className="h-8 rounded-lg border border-slate-700 bg-slate-900 px-2.5 text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
               aria-label="Pilih bahasa pemrograman"
             >
               {LANGUAGES.map((l) => (
@@ -746,7 +746,7 @@ export default function EditorPage() {
               <button
                 onClick={() => void run()}
                 disabled={running}
-                className="flex h-8 items-center gap-1.5 rounded-lg bg-indigo-500 px-3.5 text-xs font-semibold text-white shadow-lg shadow-indigo-500/25 transition-colors hover:bg-indigo-400 disabled:pointer-events-none disabled:opacity-50"
+                className="flex h-8 items-center gap-1.5 rounded-lg bg-accent-500 px-3.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-accent-600 disabled:pointer-events-none disabled:opacity-50"
                 title="Jalankan (Ctrl+Enter)"
               >
                 {running ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
@@ -798,7 +798,7 @@ export default function EditorPage() {
                 }}
                 spellCheck={false}
                 wrap="soft"
-                className="absolute inset-0 h-full w-full resize-none overflow-auto bg-transparent px-3 py-3 text-transparent caret-indigo-400 outline-none placeholder:text-slate-600"
+                className="absolute inset-0 h-full w-full resize-none overflow-auto bg-transparent px-3 py-3 text-transparent caret-accent-400 outline-none placeholder:text-slate-600"
                 placeholder="Tulis kode di sini…"
                 aria-label="Editor kode"
               />

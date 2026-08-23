@@ -44,7 +44,7 @@ export function SourceList({ sources }: { sources: OsintSource[] }) {
         {sources.map((s, i) => (
           <li key={i} className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs">
             <span className="font-medium text-slate-300">{s.source}</span>
-            <a href={s.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 break-all text-indigo-400 hover:text-indigo-300">
+            <a href={s.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 break-all text-accent-400 hover:text-accent-300">
               {s.url} <ExternalLink className="h-3 w-3 shrink-0" />
             </a>
             <span className="text-slate-600">retrieved {s.retrievedAt}</span>

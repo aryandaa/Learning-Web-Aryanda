@@ -54,13 +54,13 @@ function UsernameAnalyzerTool() {
                 href={l.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2 transition-colors hover:border-indigo-500/50"
+                className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2 transition-colors hover:border-accent-500/50"
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-sm font-medium text-slate-200">{l.name}</span>
                   <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-500">{l.category}</span>
                 </div>
-                <p className="mt-0.5 break-all font-mono text-[11px] text-indigo-400">{l.url}</p>
+                <p className="mt-0.5 break-all font-mono text-[11px] text-accent-400">{l.url}</p>
                 {l.note && <p className="mt-0.5 text-[11px] text-slate-500">{l.note}</p>}
                 <p className="mt-1 text-[10px] text-slate-600">Status: requires manual verification</p>
               </a>

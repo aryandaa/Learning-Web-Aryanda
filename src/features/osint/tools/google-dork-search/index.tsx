@@ -41,7 +41,7 @@ function Field({
         placeholder={placeholder}
         spellCheck={false}
         className={cn(
-          'h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30',
+          'h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 text-sm text-slate-200 placeholder:text-slate-600 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30',
           mono && 'font-mono text-[13px]'
         )}
       />
@@ -61,7 +61,7 @@ function SelectField({
         id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+        className="h-9 w-full rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>{o.label}</option>
@@ -192,7 +192,7 @@ function GoogleDorkSearchTool() {
                       value={op.operator}
                       onChange={(e) => updateCustomOp(i, { operator: e.target.value as DorkOperatorId })}
                       aria-label={`Operator ${i + 1}`}
-                      className="h-9 w-32 rounded-lg border border-slate-700 bg-slate-900 px-2 font-mono text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
+                      className="h-9 w-32 rounded-lg border border-slate-700 bg-slate-900 px-2 font-mono text-sm text-slate-200 focus:border-accent-500 focus:outline-none"
                     >
                       {CUSTOM_OPERATOR_IDS.map((oid) => (
                         <option key={oid} value={oid}>{operatorLabel(oid)}</option>
@@ -203,7 +203,7 @@ function GoogleDorkSearchTool() {
                       onChange={(e) => updateCustomOp(i, { value: e.target.value })}
                       placeholder="value…"
                       aria-label={`Nilai operator ${i + 1}`}
-                      className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+                      className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-sm text-slate-200 placeholder:text-slate-600 focus:border-accent-500 focus:outline-none"
                     />
                     <button
                       onClick={() => removeCustomOp(i)}
@@ -229,7 +229,7 @@ function GoogleDorkSearchTool() {
                   type="button"
                   onClick={() => applyPreset(p.id)}
                   title={p.description}
-                  className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-1.5 text-xs text-slate-300 transition-colors hover:border-indigo-500/50 hover:text-indigo-300"
+                  className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-1.5 text-xs text-slate-300 transition-colors hover:border-accent-500/50 hover:text-accent-300"
                 >
                   {p.name}
                 </button>
@@ -269,7 +269,7 @@ function GoogleDorkSearchTool() {
           <div className="space-y-2">
             {result.segments.map((s, i) => (
               <div key={i} className="flex flex-col gap-0.5 rounded-lg border border-slate-800 bg-slate-900/50 px-3 py-2 sm:flex-row sm:items-baseline sm:gap-3">
-                <code className="shrink-0 font-mono text-xs text-indigo-300">{s.query}</code>
+                <code className="shrink-0 font-mono text-xs text-accent-300">{s.query}</code>
                 <span className="text-xs text-slate-400">→ {s.explanation}</span>
               </div>
             ))}
@@ -307,7 +307,7 @@ function GoogleDorkSearchTool() {
           </div>
           <p>
             <strong className="text-slate-200">Menggabungkan operator:</strong> tulis operator berurutan dipisah spasi,
-            contoh: <code className="font-mono text-xs text-indigo-300">site:example.com inurl:admin filetype:pdf</code>.
+            contoh: <code className="font-mono text-xs text-accent-300">site:example.com inurl:admin filetype:pdf</code>.
             Pencarian biasa hanya mencocokkan kata; advanced search dengan operator menyaring lebih presisi.
           </p>
           <p className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-xs text-amber-200">

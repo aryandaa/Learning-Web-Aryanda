@@ -1,6 +1,6 @@
 /**
  * Komponen UI bersama untuk seluruh tool CySec Tools. konsisten dengan
- * design system CodeLearn (slate + indigo, tema dark/light via CSS vars).
+ * design system CodeLearn (slate + muted green accent, tema dark/light via CSS vars).
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -30,7 +30,7 @@ export function ToolHeader({
       <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">
         {backTo && (
           <>
-            <Link to={backTo} className="flex items-center gap-1 transition-colors hover:text-indigo-300">
+            <Link to={backTo} className="flex items-center gap-1 transition-colors hover:text-accent-300">
               <ArrowLeft className="h-3 w-3" /> CySec Tools
             </Link>
             <span>/</span>
@@ -131,7 +131,7 @@ export function LabeledTextarea({
         spellCheck={false}
         className={cn(
           'w-full resize-y rounded-lg border border-slate-700 bg-slate-950/70 p-3 text-sm text-slate-200 placeholder:text-slate-600',
-          'focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30',
+          'focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30',
           mono && 'font-mono text-[13px] leading-5'
         )}
       />

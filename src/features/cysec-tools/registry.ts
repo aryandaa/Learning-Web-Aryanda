@@ -17,7 +17,7 @@ export const CATEGORIES: CategoryMeta[] = [
     shortName: 'Crypto',
     icon: '🔐',
     description: 'Enkripsi, hash, dan encoding. bedakan encoding ≠ encryption ≠ hashing.',
-    color: 'from-indigo-500/20 to-violet-500/10 border-indigo-500/30',
+    color: 'border-slate-800 bg-slate-900/40',
   },
   {
     id: 'forensics',
@@ -25,7 +25,7 @@ export const CATEGORIES: CategoryMeta[] = [
     shortName: 'Forensics',
     icon: '🧪',
     description: 'Analisis file: metadata, magic bytes, hash, strings, entropy, EXIF.',
-    color: 'from-emerald-500/20 to-teal-500/10 border-emerald-500/30',
+    color: 'border-slate-800 bg-slate-900/40',
   },
   {
     id: 'pcap',
@@ -33,7 +33,7 @@ export const CATEGORIES: CategoryMeta[] = [
     shortName: 'PCAP',
     icon: '🌐',
     description: 'Analisis traffic .pcap / .pcapng sepenuhnya di browser.',
-    color: 'from-cyan-500/20 to-sky-500/10 border-cyan-500/30',
+    color: 'border-slate-800 bg-slate-900/40',
   },
   {
     id: 're',
@@ -41,7 +41,7 @@ export const CATEGORIES: CategoryMeta[] = [
     shortName: 'Reverse Eng',
     icon: '⚙️',
     description: 'Hex, binary, strings, entropy, dan viewer header PE/ELF/Mach-O.',
-    color: 'from-amber-500/20 to-orange-500/10 border-amber-500/30',
+    color: 'border-slate-800 bg-slate-900/40',
   },
   {
     id: 'web',
@@ -49,7 +49,7 @@ export const CATEGORIES: CategoryMeta[] = [
     shortName: 'Web',
     icon: '🛡️',
     description: 'Analisis URL, JWT, header, cookie, CSP/CORS. semua berbasis input manual.',
-    color: 'from-rose-500/20 to-pink-500/10 border-rose-500/30',
+    color: 'border-slate-800 bg-slate-900/40',
   },
   {
     id: 'ctf',
@@ -57,7 +57,7 @@ export const CATEGORIES: CategoryMeta[] = [
     shortName: 'CTF',
     icon: '🚩',
     description: 'Decoder, brute-force cipher, frequency analysis, kalkulator jaringan.',
-    color: 'from-fuchsia-500/20 to-purple-500/10 border-fuchsia-500/30',
+    color: 'border-slate-800 bg-slate-900/40',
   },
   {
     id: 'log',
@@ -65,7 +65,7 @@ export const CATEGORIES: CategoryMeta[] = [
     shortName: 'Log',
     icon: '📋',
     description: 'Analisis access log, auth.log, dan log aplikasi. lokal di browser.',
-    color: 'from-sky-500/20 to-blue-500/10 border-sky-500/30',
+    color: 'border-slate-800 bg-slate-900/40',
   },
   {
     id: 'osint',
@@ -73,7 +73,7 @@ export const CATEGORIES: CategoryMeta[] = [
     shortName: 'OSINT',
     icon: '🔎',
     description: 'Open Source Intelligence untuk pengumpulan, normalisasi, dan korelasi informasi publik.',
-    color: 'from-amber-500/20 to-yellow-500/10 border-amber-500/30',
+    color: 'border-slate-800 bg-slate-900/40',
   },
 ];
 

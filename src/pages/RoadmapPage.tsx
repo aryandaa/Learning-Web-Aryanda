@@ -245,7 +245,7 @@ export default function RoadmapPage() {
 
   /* ============================ DETAIL VIEW (roadmap bercabang) ============================ */
   const totalSteps = selectedRoadmaps.reduce((sum, rm) => sum + rm.stepIds.length, 0);
-  const color = selectedGroup?.color ?? '#94a3b8';
+  const color = selectedGroup?.color ?? '#8A938A';
   const isSub = selected.id.startsWith('sub:');
 
   return (

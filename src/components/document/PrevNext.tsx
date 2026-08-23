@@ -23,10 +23,10 @@ export function PrevNext({ doc }: { doc: DocumentData }) {
           to={`/docs/${doc.previous}`}
           className="group flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4 transition-colors hover:border-slate-700 hover:bg-slate-900"
         >
-          <ArrowLeft className="mt-0.5 h-4 w-4 shrink-0 text-slate-500 group-hover:text-indigo-400" />
+          <ArrowLeft className="mt-0.5 h-4 w-4 shrink-0 text-slate-500 group-hover:text-accent-400" />
           <span className="min-w-0">
             <span className="block text-xs text-slate-500">Sebelumnya</span>
-            <span className="block truncate text-sm font-medium text-slate-200 group-hover:text-indigo-300">
+            <span className="block truncate text-sm font-medium text-slate-200 group-hover:text-accent-300">
               {prev.title}
             </span>
           </span>
@@ -41,11 +41,11 @@ export function PrevNext({ doc }: { doc: DocumentData }) {
         >
           <span className="min-w-0">
             <span className="block text-xs text-slate-500">Selanjutnya</span>
-            <span className="block truncate text-sm font-medium text-slate-200 group-hover:text-indigo-300">
+            <span className="block truncate text-sm font-medium text-slate-200 group-hover:text-accent-300">
               {next.title}
             </span>
           </span>
-          <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-slate-500 group-hover:text-indigo-400" />
+          <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-slate-500 group-hover:text-accent-400" />
         </Link>
       ) : (
         <span />

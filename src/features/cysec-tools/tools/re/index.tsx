@@ -107,7 +107,7 @@ function HexViewerTool() {
             onChange={(e) => setSearchHex(e.target.value)}
             placeholder="Search bytes (hex atau teks)…"
             aria-label="Cari bytes"
-            className="h-8 w-64 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-indigo-500 focus:outline-none"
+            className="h-8 w-64 rounded-lg border border-slate-700 bg-slate-900 px-3 font-mono text-xs text-slate-200 focus:border-accent-500 focus:outline-none"
           />
           <Button variant="secondary" size="sm" onClick={() => run()}>Search</Button>
         </div>
@@ -320,7 +320,7 @@ function ByteFrequencyTool() {
                       0x{t.hex} {t.byte >= 32 && t.byte < 127 ? `'${String.fromCharCode(t.byte)}'` : ''}
                     </span>
                     <div className="h-3 flex-1 overflow-hidden rounded bg-slate-800">
-                      <div className="h-full bg-violet-500/70" style={{ width: `${(t.count / maxCount) * 100}%` }} />
+                      <div className="h-full bg-accent-500/70" style={{ width: `${(t.count / maxCount) * 100}%` }} />
                     </div>
                     <span className="w-28 shrink-0 text-right font-mono text-xs text-slate-500">{t.count.toLocaleString()} ({t.pct.toFixed(2)}%)</span>
                   </div>
@@ -371,7 +371,7 @@ function AsciiViewerTool() {
         <div className="mt-2 flex gap-3">
           {(['text', 'hex'] as const).map((m) => (
             <label key={m} className="flex items-center gap-1.5 text-xs text-slate-400">
-              <input type="radio" checked={mode === m} onChange={() => setMode(m)} className="accent-indigo-500" /> {m}
+              <input type="radio" checked={mode === m} onChange={() => setMode(m)} className="accent-accent-500" /> {m}
             </label>
           ))}
         </div>

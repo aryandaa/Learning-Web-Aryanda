@@ -231,7 +231,7 @@ export function DocumentViewer({ doc }: { doc: DocumentData }) {
     6: 'pl-14 text-slate-500',
   };
   const tocItemClass = (depth: number) =>
-    `block py-0.5 transition-colors hover:text-indigo-300 ${TOC_DEPTH_CLASSES[depth] ?? TOC_DEPTH_CLASSES[6]}`;
+    `block py-0.5 transition-colors hover:text-accent-300 ${TOC_DEPTH_CLASSES[depth] ?? TOC_DEPTH_CLASSES[6]}`;
 
   const tocList = (mobile: boolean) => (
     <ul className={mobile ? 'mt-2 space-y-0.5 text-sm' : 'mt-3 space-y-0.5 text-sm'}>
@@ -258,12 +258,12 @@ export function DocumentViewer({ doc }: { doc: DocumentData }) {
 
         <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-slate-500">
           <span className="flex items-center gap-1.5 rounded-full border border-slate-800 bg-slate-900/60 px-2.5 py-1">
-            <Clock className="h-3.5 w-3.5 text-indigo-400" />
+            <Clock className="h-3.5 w-3.5 text-accent-400" />
             {doc.readingTime} menit baca
           </span>
           {doc.updated && (
             <span className="flex items-center gap-1.5 rounded-full border border-slate-800 bg-slate-900/60 px-2.5 py-1">
-              <Calendar className="h-3.5 w-3.5 text-indigo-400" />
+              <Calendar className="h-3.5 w-3.5 text-accent-400" />
               {doc.updated}
             </span>
           )}
@@ -285,7 +285,7 @@ export function DocumentViewer({ doc }: { doc: DocumentData }) {
                 aria-expanded={tocOpen}
               >
                 <span className="flex items-center gap-1.5">
-                  <Hash className="h-3.5 w-3.5 text-indigo-400" />
+                  <Hash className="h-3.5 w-3.5 text-accent-400" />
                   Daftar Isi
                 </span>
                 {tocOpen ? (
