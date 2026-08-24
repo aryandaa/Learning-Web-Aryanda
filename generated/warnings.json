@@ -3,8 +3,6 @@
   "warnings": {
     "duplicatePaths": [],
     "brokenWikiLinks": [
-      "CyberSecurity/Cryptography/Cryptography Modern/Cryptography Modern.md -> []( 4.%20Symmetric%20key.md )",
-      "CyberSecurity/Cryptography/Cryptography Modern/Cryptography Modern.md -> []( 5.%20Asymmetric%20key.md )",
       "CyberSecurity/Cryptography/Cryptography.md -> []( 1.%20Pengenalan.md )",
       "CyberSecurity/Cryptography/Cryptography.md -> []( 2.%20Modular%20Aritmathic.md )",
       "CyberSecurity/Cryptography/Pengenalan/1. Pengenalan.md -> []( tes.md )",
