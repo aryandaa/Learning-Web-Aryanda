@@ -5,12 +5,12 @@
 import { useState } from 'react';
 import { Button } from '../../../../components/ui/button';
 import {
-  CopyButton, ErrorAlert, KeyValueTable, LabeledTextarea, Notice, Panel, ToolNotes,
+  CopyButton, ErrorAlert, KeyValueTable, LabeledTextarea, Panel, ToolNotes,
 } from '../../../cysec-tools/components/ui';
 import { SourceList, IndicatorBadge } from '../../components/ui';
 import { analyzeIp, lookupIpWhoIs, type IpWhoIsResult } from '../../utils/ip';
 import { queryDns, reverseName } from '../../utils/dns';
-import { exportJson, nowIso } from '../../utils/shared';
+import { nowIso } from '../../utils/shared';
 import type { ComponentType } from 'react';
 import type { OsintSource } from '../../types';
 

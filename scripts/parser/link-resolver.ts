@@ -1,7 +1,6 @@
 import type { ParserContext } from './context';
 import type { NoteRecord } from './types';
 import { buildTree, treeFileOrder } from './tree';
-import { toDocumentId } from './validator';
 
 const IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.bmp', '.avif', '.ico']);
 
@@ -146,7 +145,7 @@ export class LinkLookup {
 
   /** Resolves `![[embed]]`. image, note, or unsupported asset. */
   resolveEmbed(raw: string, from?: NoteRecord): LinkTarget {
-    const [pathPart = '', section = ''] = raw.split('#');
+    const [pathPart = ''] = raw.split('#');
     const target = pathPart.trim();
     if (!target) return { kind: 'broken', raw };
 

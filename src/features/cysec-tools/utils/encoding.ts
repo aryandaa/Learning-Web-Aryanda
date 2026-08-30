@@ -356,49 +356,6 @@ export function englishScore(s: string): number {
   return score / letters; // rata-rata bobot frekuensi (max ~12.7)
 }
 
-// ---------------- Integer / konversi ----------------
-
-export function decimalToBase(n: bigint | number, base: number): string {
-  let v = typeof n === 'bigint' ? n : BigInt(n);
-  const neg = v < 0n;
-  if (neg) v = -v;
-  const digits = '0123456789abcdefghijklmnopqrstuvwxyz';
-  let out = '';
-  do {
-    out = digits[Number(v % BigInt(base))] + out;
-    v = v / BigInt(base);
-  } while (v > 0n);
-  return (neg ? '-' : '') + out;
-}
-
-export function parseInteger(s: string): bigint {
-  const clean = s.trim().replace(/_/g, '');
-  let neg = false;
-  let body = clean;
-  if (body.startsWith('-')) {
-    neg = true;
-    body = body.slice(1);
-  } else if (body.startsWith('+')) {
-    body = body.slice(1);
-  }
-  let radix = 10;
-  if (/^0x/i.test(body)) {
-    radix = 16;
-    body = body.slice(2);
-  } else if (/^0b/i.test(body)) {
-    radix = 2;
-    body = body.slice(2);
-  } else if (/^0o/i.test(body)) {
-    radix = 8;
-    body = body.slice(2);
-  } else if (/^0[0-7]+$/.test(body)) {
-    radix = 8;
-    body = body.slice(1);
-  }
-  if (!body) throw new Error('Input bukan integer yang valid.');
-  const v = BigInt('0x' + BigInt(parseInt(body, radix)).toString(16));
-  return neg ? -v : v;
-}
 
 /** Frekuensi karakter (hanya letters) → array [char, count] diurutkan. */
 export function letterFrequency(s: string): { char: string; count: number; pct: number }[] {

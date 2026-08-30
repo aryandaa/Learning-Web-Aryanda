@@ -3,20 +3,19 @@
  * Tidak ada request jaringan ke target; tidak ada bypass CORS.
  */
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../../../../components/ui/button';
 import { TransformTool, type TransformConfig } from '../../components/TransformTool';
 import {
-  CopyButton, DownloadButton, ErrorAlert, KeyValueTable, LabeledTextarea, Notice, Panel, ToolNotes,
+  CopyButton, ErrorAlert, KeyValueTable, LabeledTextarea, Panel, ToolNotes,
 } from '../../components/ui';
 import {
   analyzeCors, analyzeCsp, analyzeOpenRedirect, analyzePathTraversal, analyzeSqliPayload,
   analyzeUrl, analyzeXssPayload, checkSecurityHeaders, httpSecurityObservations, normalizeUrl, parseCookies,
   parseHeaderLines, parseJwt, parseUserAgent, verifyJwtHs, type HttpSecurityObservation,
 } from '../../utils/web';
-import { htmlDecode, htmlEncode, urlDecode } from '../../utils/encoding';
+import { htmlDecode, htmlEncode } from '../../utils/encoding';
 import { analyzeRegex } from '../../utils/regexAnalyze';
-import { base64UrlToBytes, bytesToUtf8 } from '../../utils/bytes';
 import type { ComponentType } from 'react';
 
 const webNotes = (what: string, how: string, extra?: string) => [

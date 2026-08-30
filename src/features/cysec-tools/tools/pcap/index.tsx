@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react';
 import { FileDrop, largeFileHint, type LoadedFile } from '../../components/FileDrop';
 import { Button } from '../../../../components/ui/button';
 import { CopyButton, DownloadButton, ErrorAlert, KeyValueTable, Notice, Panel, ToolNotes } from '../../components/ui';
-import { analyzePcap, type PcapAnalysis, type PacketInfo } from '../../utils/pcap';
+import { analyzePcap, type PcapAnalysis } from '../../utils/pcap';
 import { formatDate } from '../../utils/files';
 import { toArrayBuffer } from '../../utils/bytes';
 import { cn } from '../../../../lib/utils';

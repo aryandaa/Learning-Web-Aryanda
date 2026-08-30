@@ -3,8 +3,7 @@
  * magic number, pencarian byte, dan representasi biner/desimal.
  */
 
-import { bytesToHex, hexDump, hexToBytes } from './bytes';
-import { detectSignature } from './analysis';
+import { bytesToHex } from './bytes';
 
 export interface IntInterpretation {
   u8: number;
@@ -79,23 +78,4 @@ export function searchBytes(haystack: Uint8Array, needle: Uint8Array, limit = 10
   return out;
 }
 
-export interface HexInspectResult {
-  total: number;
-  dump: string;
-  signature: ReturnType<typeof detectSignature>;
-}
 
-export function inspectHex(input: string, opts: { offset?: number; rows?: number; bytesPerRow?: number } = {}): HexInspectResult {
-  const bytes = hexToBytes(input);
-  const offset = opts.offset ?? 0;
-  if (offset < 0 || offset >= bytes.length) throw new Error('Offset di luar jangkauan data.');
-  const rows = opts.rows ?? 64;
-  const slice = bytes.subarray(offset, Math.min(offset + rows * (opts.bytesPerRow ?? 16), bytes.length));
-  return {
-    total: bytes.length,
-    dump: hexDump(slice, { bytesPerRow: opts.bytesPerRow ?? 16, offsetBase: offset }),
-    signature: detectSignature(bytes),
-  };
-}
-
-export { hexDump, hexToBytes, detectSignature };

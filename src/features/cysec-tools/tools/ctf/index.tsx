@@ -7,11 +7,11 @@ import { useState } from 'react';
 import { Button } from '../../../../components/ui/button';
 import { TransformTool, type TransformConfig } from '../../components/TransformTool';
 import {
-  CopyButton, ErrorAlert, KeyValueTable, LabeledTextarea, Notice, Panel, ToolNotes,
+  CopyButton, ErrorAlert, KeyValueTable, LabeledTextarea, Panel, ToolNotes,
 } from '../../components/ui';
 import { caesar, rot, rot13, rot47, atbash, morseEncode, morseDecode, baconEncode, baconDecode, railFenceEncode, railFenceDecode, vigenere, substitutionApply, englishScore, letterFrequency } from '../../utils/encoding';
 import { ipv4Subnet, ipv6Subnet, ipv4ToInt, intToIpv4, ipv6Groups, splitSubnet4, type Subnet4Result, type Subnet6Result } from '../../utils/network';
-import { bytesToBase64, bytesToUtf8, hexToBytes, utf8ToBytes, binaryToBytes } from '../../utils/bytes';
+import { bytesToUtf8, hexToBytes, utf8ToBytes } from '../../utils/bytes';
 import { analyzeUnicode } from '../../utils/analysis';
 import { parseTimestamp } from '../../utils/files';
 import type { ComponentType } from 'react';

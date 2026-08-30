@@ -10,7 +10,6 @@ import { Search, Star } from 'lucide-react';
 import { categoryCards, searchCatalog, labelForToolId, type CategoryCard, type CatalogEntry } from '../catalog';
 import { useToolHistory } from '../hooks/useToolHistory';
 import { useOsintHistory } from '../../osint/hooks/useOsintHistory';
-import { cn } from '../../../lib/utils';
 
 function CategoryCardView({ card }: { card: CategoryCard }) {
   return (

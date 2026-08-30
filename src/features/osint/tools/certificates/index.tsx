@@ -7,7 +7,7 @@ import { Button } from '../../../../components/ui/button';
 import {
   CopyButton, ErrorAlert, LabeledTextarea, Notice, Panel, ToolNotes,
 } from '../../../cysec-tools/components/ui';
-import { SourceList, IndicatorBadge } from '../../components/ui';
+import { SourceList } from '../../components/ui';
 import { analyzeDomain } from '../../utils/domain';
 import { exportCsv, exportJson, nowIso } from '../../utils/shared';
 import type { ComponentType } from 'react';

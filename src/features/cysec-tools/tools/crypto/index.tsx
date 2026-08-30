@@ -8,18 +8,18 @@ import { Button } from '../../../../components/ui/button';
 import { TransformTool, type TransformConfig } from '../../components/TransformTool';
 import { FileDrop, type LoadedFile } from '../../components/FileDrop';
 import {
-  CopyButton, DownloadButton, ErrorAlert, KeyValueTable, LabeledTextarea, Notice,
+  CopyButton, DownloadButton, ErrorAlert, KeyValueTable, LabeledTextarea,
   Panel, SwapButton, ToolNotes,
 } from '../../components/ui';
 import {
-  base32ToBytes, base64ToBytes, base64UrlToBytes, binaryToBytes, bytesToBase32, bytesToBase64,
+  base32ToBytes, base64ToBytes, binaryToBytes, bytesToBase32, bytesToBase64,
   bytesToBase64Url, bytesToBinary, bytesToHex, bytesToUtf8, hexToBytes, utf8ToBytes,
 } from '../../utils/bytes';
 import {
-  atbash, caesar, htmlDecode, htmlEncode, rot, rot13, rot47, urlDecode, urlEncode,
+  caesar, htmlDecode, htmlEncode, rot13, rot47, urlDecode, urlEncode,
 } from '../../utils/encoding';
 import {
-  aesDecrypt, aesEncrypt, chacha20, getRandomBytes, hmacSign, md5, pbkdf2, randomHex, rsaDecryptText,
+  aesDecrypt, aesEncrypt, chacha20, getRandomBytes, hmacSign, md5, pbkdf2, rsaDecryptText,
   rsaEncryptText, rsaGenerateKeyPair, sha3, shaDigest, uuidV4,
 } from '../../utils/crypto';
 import { PIPELINE_OPS, runPipeline } from '../../utils/pipeline';

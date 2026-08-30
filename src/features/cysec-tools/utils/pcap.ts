@@ -220,7 +220,6 @@ function parseTlsSni(b: Uint8Array, off: number, len: number): string | null {
           const extType = u16(b, q, false);
           const extDataLen = u16(b, q + 2, false);
           if (extType === 0 && extDataLen > 5) {
-            const nameListLen = u16(b, q + 4, false);
             const nameType = b[q + 6];
             const nameLen = u16(b, q + 7, false);
             if (nameType === 0 && q + 9 + nameLen <= extEnd) {
@@ -258,7 +257,7 @@ function parseHttp(b: Uint8Array, off: number, len: number): { method?: string; 
 // Main parser
 // ---------------------------------------------------------------------------
 
-export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis {
+export function analyzePcap(buffer: ArrayBuffer, _fileName: string): PcapAnalysis {
   const bytes = new Uint8Array(buffer);
   const analysis: PcapAnalysis = {
     format: null,
@@ -532,7 +531,6 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
     } else if (linkType === 101 || linkType === 228) {
       // raw IP
       if (data.length >= 20 && (data[0] >> 4) === 4) {
-        const ihl = (data[0] & 0x0f) * 4;
         src = ipv4(data, 12);
         dst = ipv4(data, 16);
         summary = `Raw IPv4 ${src} → ${dst}`;
@@ -641,7 +639,6 @@ export function analyzePcap(buffer: ArrayBuffer, fileName: string): PcapAnalysis
     // ---------------- PCAP klasik ----------------
     analysis.format = 'pcap';
     const be = magic === 0xa1b2c3d4;
-    const rdU16 = (o: number) => u16(bytes, o, !be);
     const rdU32 = (o: number) => u32(bytes, o, !be);
     analysis.linkType = rdU32(20);
     analysis.snaplen = rdU32(16);

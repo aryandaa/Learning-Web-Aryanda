@@ -10,7 +10,6 @@ import { exportJson, fmtBytes } from '../../utils/shared';
 import type { ComponentType } from 'react';
 
 function MetadataAnalyzerTool() {
-  const [file, setFile] = useState<LoadedFile | null>(null);
   const [result, setResult] = useState<OsintMetadataResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -24,7 +23,6 @@ function MetadataAnalyzerTool() {
     try {
       await new Promise((r) => setTimeout(r, 30));
       const res = await analyzeOsintMetadata(f);
-      setFile(f);
       setResult(res);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Gagal menganalisis metadata.');

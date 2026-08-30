@@ -69,14 +69,6 @@ export function analyzeDomain(input: string): DomainAnalysis {
   const labels = normalized.split('.');
   const tld = labels[labels.length - 1];
   const isPunycode = /^xn--/.test(labels[labels.length - 1]) || labels.some((l) => /^xn--/.test(l));
-  let unicodeForm: string;
-  try {
-    unicodeForm = new URL(`http://${normalized}`).hostname; // URL meng-encode punycode
-    // decode: gunakan URL dengan punycode → ambil .href lalu hostname? URL selalu punycode. Pakai TextDecoder tidak ada. Best-effort: tampilkan input unicode bila ada.
-    unicodeForm = isIdn ? hostPart : normalized;
-  } catch {
-    unicodeForm = normalized;
-  }
 
   const suffix = labels.slice(-2).join('.');
   const registrable = MULTI_PART_SUFFIXES.has(suffix) ? labels.slice(-3).join('.') : labels.slice(-2).join('.');

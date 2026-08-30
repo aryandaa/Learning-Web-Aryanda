@@ -1,4 +1,4 @@
-import type { OsintCategory, OsintCategoryId, OsintCategoryMeta, OsintToolMeta } from './types';
+import type { OsintCategoryId, OsintCategoryMeta, OsintToolMeta } from './types';
 
 /**
  * Registry tool OSINT. data-driven. Tambah tool baru cukup dengan menambah
@@ -74,8 +74,4 @@ export function getOsintCategory(id: string): OsintCategoryMeta {
   const c = CATEGORIES.find((c) => c.id === (id as OsintCategoryId));
   if (!c) throw new Error(`Kategori tidak dikenal: ${id}`);
   return c;
-}
-
-export function allOsintCategories(): OsintCategory[] {
-  return CATEGORIES.map((meta) => ({ meta, tools: osintToolsInCategory(meta.id) }));
 }

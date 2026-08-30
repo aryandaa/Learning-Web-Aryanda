@@ -5,7 +5,7 @@
 
 import { collectFileInfo, parseExif, parsePdfMetadata, parseZipListing, formatDate } from '../../cysec-tools/utils/files';
 import { shaDigest, md5 } from '../../cysec-tools/utils/crypto';
-import { bytesToHex, readAscii, u16 } from '../../cysec-tools/utils/bytes';
+import { bytesToHex, readAscii } from '../../cysec-tools/utils/bytes';
 import { detectSignature, mimeFromMagic } from '../../cysec-tools/utils/analysis';
 import type { LoadedFile } from '../../cysec-tools/components/FileDrop';
 

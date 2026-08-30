@@ -1,4 +1,4 @@
-import type { Root, Text, Link, Image } from 'mdast';
+import type { Root, Link, Image } from 'mdast';
 import type { LinkLookup, ResolvedAssetTarget } from '../link-resolver';
 import type { NoteRecord, OutgoingLink } from '../types';
 

@@ -56,8 +56,3 @@ export interface ToolMeta {
   /** Disclaimer edukasi. */
   disclaimer?: string;
 }
-
-export interface ToolCategory {
-  meta: CategoryMeta;
-  tools: ToolMeta[];
-}

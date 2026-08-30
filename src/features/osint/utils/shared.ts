@@ -46,15 +46,6 @@ export function exportTxt(text: string, filename: string) {
 // Sanitasi sebelum render (jangan pernah pakai dangerouslySetInnerHTML tanpa ini)
 // ---------------------------------------------------------------------------
 
-export function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
 /** Validasi URL eksternal sebelum dijadikan link (hanya http/https). */
 export function safeExternalUrl(raw: string): string | null {
   try {
@@ -90,10 +81,3 @@ export function fmtBytes(n: number): string {
 // Status state (Idle / Processing / Success / Warning / Error)
 // ---------------------------------------------------------------------------
 
-export type OsintState = 'idle' | 'processing' | 'success' | 'warning' | 'error';
-
-/** Bungkus error teknis jadi pesan manusiawi + detail teknis. */
-export function friendlyError(message: string, technical?: unknown): { message: string; technical: string } {
-  const tech = technical instanceof Error ? technical.message : typeof technical === 'string' ? technical : technical ? JSON.stringify(technical) : '';
-  return { message, technical: tech };
-}

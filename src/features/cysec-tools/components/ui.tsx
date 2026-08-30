@@ -18,12 +18,10 @@ export function ToolHeader({
   meta,
   categoryName,
   backTo,
-  onBack,
 }: {
   meta: ToolMeta;
   categoryName: string;
   backTo?: string;
-  onBack?: () => void;
 }) {
   return (
     <header className="mb-5">

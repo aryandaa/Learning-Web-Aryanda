@@ -29,10 +29,6 @@ export function getRandomBytes(n: number): Uint8Array {
   return out;
 }
 
-export function randomHex(n: number): string {
-  return bytesToHex(getRandomBytes(n));
-}
-
 export function uuidV4(): string {
   const b = getRandomBytes(16);
   b[6] = (b[6] & 0x0f) | 0x40; // version 4
@@ -281,10 +277,6 @@ function keccakLoadLane(b: Uint8Array, off: number): bigint {
   return v;
 }
 
-function keccakStoreLane(b: Uint8Array, off: number, v: bigint): void {
-  for (let i = 0; i < 8; i++) b[off + i] = Number((v >> BigInt(8 * i)) & 0xffn);
-}
-
 /** SHA-3 (FIPS 202). bits: 224 | 256 | 384 | 512. Domain byte 0x06. */
 export function sha3(data: Uint8Array, bits: 224 | 256 | 384 | 512): Uint8Array {
   const rate = (1600 - 2 * bits) / 8;
@@ -506,10 +498,3 @@ export function rsaDecryptText(hexBlocks: string, n: bigint, d: bigint, blockByt
   return new TextDecoder().decode(Uint8Array.from(bytes.slice(start)));
 }
 
-export function rsaSignText(text: string, n: bigint, d: bigint, blockBytes: number): string {
-  return rsaEncryptText(text, n, d, blockBytes);
-}
-
-export function rsaVerifyText(sigHex: string, n: bigint, e: bigint, blockBytes: number): string {
-  return rsaDecryptText(sigHex, n, e, blockBytes);
-}

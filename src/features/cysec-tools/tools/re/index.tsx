@@ -9,13 +9,13 @@ import { TransformTool, type TransformConfig } from '../../components/TransformT
 import { FileAnalyzer, ResultPanel } from '../../components/FileAnalyzer';
 import { FileDrop, type LoadedFile } from '../../components/FileDrop';
 import {
-  CopyButton, DownloadButton, ErrorAlert, KeyValueTable, LabeledTextarea, Notice, Panel, ToolNotes,
+  CopyButton, ErrorAlert, KeyValueTable, LabeledTextarea, Notice, Panel, ToolNotes,
 } from '../../components/ui';
 import {
   base64ToBytes, binaryToBytes, bytesToBinary, bytesToHex, bytesToUtf8, hexDump, hexToBytes,
-  readAscii, toArrayBuffer, utf8ToBytes,
+  toArrayBuffer, utf8ToBytes,
 } from '../../utils/bytes';
-import { englishScore, letterFrequency } from '../../utils/encoding';
+import { englishScore } from '../../utils/encoding';
 import { extractAsciiStrings, entropyOf } from '../../utils/analysis';
 import { interpretBytes, searchBytes } from '../../utils/binaryInspector';
 import { detectSignature } from '../../utils/analysis';
@@ -745,7 +745,7 @@ function PeViewerTool() {
         title: 'PE Viewer',
         description: 'Parse header PE (read-only)',
         accept: '.exe,.dll,.sys,.scr,.ocx,application/x-msdownload',
-        analyze: ({ file, bytes }) => {
+        analyze: ({ bytes }) => {
           const pe = parsePe(bytes);
           if (!pe.valid) {
             return (
@@ -864,7 +864,7 @@ function ElfViewerTool() {
         title: 'ELF Viewer',
         description: 'Parse header ELF (read-only)',
         accept: '.elf,application/x-executable,application/x-elf',
-        analyze: ({ file, bytes }) => {
+        analyze: ({ bytes }) => {
           const elf = parseElf(bytes);
           if (!elf.valid) {
             return (
@@ -993,7 +993,7 @@ function MachoViewerTool() {
       config={{
         title: 'Mach-O Viewer',
         description: 'Header dasar Mach-O (read-only)',
-        analyze: ({ file, bytes }) => {
+        analyze: ({ bytes }) => {
           const macho = parseMacho(bytes);
           if (!macho.valid) {
             return (

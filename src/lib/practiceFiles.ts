@@ -1,5 +1,5 @@
 import type { TreeFolderNode, TreeNode } from '../domain/types';
-import { normalizeId } from '../services/docs';
+import { findFolderNode, normalizeId, parentPathOf } from '../services/docs';
 
 /**
  * Koleksi file praktik/source code untuk Roadmap.
@@ -34,7 +34,7 @@ export interface PracticeFile {
 }
 
 /** SATU collection folder "Praktek" (identitas = `path`, bukan `name`). */
-export interface PracticeGroup {
+interface PracticeGroup {
   /** Jenis collection (selalu "code-folder"). */
   type: 'code-folder';
   /** Id route folder (normalized FULL PATH), mis. "pemrograman/python/python-dasar/praktek". */
@@ -73,10 +73,6 @@ function codeFilesUnder(node: TreeFolderNode): PracticeFile[] {
   };
   collectFrom(node.children);
   return out;
-}
-
-function parentPathOf(relativePath: string): string {
-  return relativePath.includes('/') ? relativePath.split('/').slice(0, -1).join('/') : '';
 }
 
 /**
@@ -131,20 +127,4 @@ export function collectPracticeGroups(nodes: TreeNode[], scope: string): Practic
  */
 export function collectPracticeFiles(nodes: TreeNode[], scope: string): PracticeFile[] {
   return collectPracticeGroups(nodes, scope).flatMap((group) => group.files);
-}
-
-/** Ada atau tidaknya collection praktik di scope (untuk indikator cepat). */
-export function hasPracticeFiles(nodes: TreeNode[], scope: string): boolean {
-  return collectPracticeGroups(nodes, scope).length > 0;
-}
-
-function findFolderNode(nodes: TreeNode[], relativePath: string): TreeNode | null {
-  for (const node of nodes) {
-    if (node.type === 'folder') {
-      if (node.relativePath === relativePath) return node;
-      const found = findFolderNode(node.children, relativePath);
-      if (found) return found;
-    }
-  }
-  return null;
 }

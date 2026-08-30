@@ -48,7 +48,6 @@ function cleanContext(line: string, value: string, radius = 40): string {
 
 /** Ekstrak & dedup IOC. `lineSource=true` menganggap tiap baris terpisah (konteks). */
 export function extractIocs(text: string): IocHit[] {
-  const lines = text.replace(/\r\n/g, '\n').split('\n');
   const full = text;
   const counts = new Map<string, IocHit>();
 
@@ -130,18 +129,3 @@ export function iocTypeLabel(t: IocType): string {
   return map[t];
 }
 
-/** Ringkas teks menjadi baris untuk konteks (tiap baris sumber). */
-export function linesWithIoc(text: string): { line: string; hits: string[] }[] {
-  return text
-    .replace(/\r\n/g, '\n')
-    .split('\n')
-    .map((line) => {
-      const hits: string[] = [];
-      for (const re of [RE_IPV4, RE_URL, RE_EMAIL, RE_HASH_MD5, RE_HASH_SHA1, RE_HASH_SHA256, RE_CVE, RE_DOMAIN]) {
-        const m = line.match(re);
-        if (m) hits.push(...m);
-      }
-      return { line, hits: Array.from(new Set(hits)) };
-    })
-    .filter((x) => x.hits.length > 0);
-}

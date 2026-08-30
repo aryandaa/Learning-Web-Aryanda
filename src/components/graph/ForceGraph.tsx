@@ -9,6 +9,7 @@ import {
 } from 'd3-force';
 import type { GraphData, GraphNode } from '../../domain/types';
 import { useTheme } from '../../app/ThemeProvider';
+import { folderColor } from '../../lib/colors';
 
 interface GNode extends SimulationNodeDatum {
   id: string;
@@ -24,13 +25,6 @@ interface GLink {
   target: string;
 }
 
-const FOLDER_COLORS: Record<string, string> = {
-  CyberSecurity: '#B86B68',
-  DevOps: '#6F9B78',
-  Jaringan: '#6E9CB8',
-  Pemrograman: '#C49A5A',
-};
-const FALLBACK_COLOR = '#8A938A';
 // Warna edge/label mengikuti tema (dark vs light).
 const EDGE_COLOR_DARK = 'rgba(150, 157, 150, 0.22)';
 const EDGE_DIM_DARK = 'rgba(150, 157, 150, 0.04)';
@@ -44,11 +38,6 @@ const LABEL_DIM_DARK = 'rgba(150, 157, 150, 0.85)';
 const LABEL_COLOR_LIGHT = '#334155';
 const LABEL_OUTLINE_LIGHT = 'rgba(255, 255, 255, 0.95)';
 const LABEL_DIM_LIGHT = 'rgba(71, 85, 105, 0.85)';
-
-function folderColor(folder: string): string {
-  const top = folder.split('/')[0];
-  return FOLDER_COLORS[top] ?? FALLBACK_COLOR;
-}
 
 interface ForceGraphProps {
   data: GraphData;
@@ -77,7 +66,6 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
   const sizeRef = useRef(size);
   sizeRef.current = size;
 
-  const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
   const { theme } = useTheme();
   const themeRef = useRef(theme);
   themeRef.current = theme;
@@ -293,7 +281,6 @@ export function ForceGraph({ data, showIsolated, onNodeClick, onHoverChange, fit
       const id = node?.id ?? null;
       hoveredRef.current = id;
       const info = node ? { id: node.id, title: node.title, folder: node.folder } : null;
-      setHoveredNode(info);
       onHoverChange(info);
       draw();
     },

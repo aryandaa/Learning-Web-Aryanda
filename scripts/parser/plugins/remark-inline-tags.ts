@@ -25,7 +25,7 @@ function transform(children: unknown[], options: InlineTagsOptions): void {
     if (node.type === 'text' && typeof node.value === 'string') {
       const original = node.value;
       const found: string[] = [];
-      const cleaned = original.replace(TAG_RE, (match, space: string, tag: string) => {
+      const cleaned = original.replace(TAG_RE, (_match, space: string, tag: string) => {
         found.push(tag);
         return space;
       });

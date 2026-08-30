@@ -86,14 +86,6 @@ body {
 
 /* ---------- utilities desain ---------- */
 @layer utilities {
-  /* pola titik halus ala roadmap.sh / dev docs */
-  .bg-dots {
-    background-image: radial-gradient(rgba(100, 116, 139, 0.16) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-  html.dark .bg-dots {
-    background-image: radial-gradient(rgba(150, 157, 150, 0.09) 1px, transparent 1px);
-  }
   /* teks aksen solid (fresh green), bukan gradient */
   .text-gradient {
     @apply text-accent-400;

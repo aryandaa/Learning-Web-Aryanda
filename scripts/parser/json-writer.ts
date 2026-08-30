@@ -5,7 +5,6 @@ import { buildTree } from './tree';
 import { codeFileId, countCodeFiles, groupCodeFiles } from './code-files';
 import type {
   AssetManifestEntry,
-  CodeFolderData,
   GraphData,
   MetadataFile,
   NoteRecord,
@@ -13,7 +12,6 @@ import type {
   RoadmapsData,
   RoadmapSubskill,
   SearchIndexEntry,
-  TreeFolderNode,
   WarningsFile,
 } from './types';
 

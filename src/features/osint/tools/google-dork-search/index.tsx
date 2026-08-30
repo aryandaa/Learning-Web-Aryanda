@@ -7,7 +7,7 @@
 import { useMemo, useState } from 'react';
 import { Button } from '../../../../components/ui/button';
 import {
-  CopyButton, ErrorAlert, LabeledTextarea, Notice, Panel, ToolNotes,
+  ErrorAlert, Notice, Panel, ToolNotes,
 } from '../../../cysec-tools/components/ui';
 import {
   buildDork, googleSearchUrl, EMPTY_DORK_FORM, FILE_TYPES, CUSTOM_OPERATOR_IDS,

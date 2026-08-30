@@ -1,13 +1,10 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
-import { useSiteData } from '../../app/SiteProvider';
 
 /**
  * Breadcrumb dibangun dari relativePath dokumen (spec §36).
  */
 export function Breadcrumb({ folder, current }: { folder: string; current: string }) {
-  const { fileMap } = useSiteData();
-
   const parts = folder ? folder.split('/') : [];
 
   return (
@@ -37,5 +34,3 @@ export function Breadcrumb({ folder, current }: { folder: string; current: strin
     </nav>
   );
 }
-
-export { useSiteData };

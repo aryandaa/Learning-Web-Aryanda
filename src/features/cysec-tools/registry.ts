@@ -1,4 +1,4 @@
-import type { CategoryMeta, ToolCategory, ToolCategoryId, ToolMeta } from './types';
+import type { CategoryMeta, ToolCategoryId, ToolMeta } from './types';
 
 /**
  * Registry tool CySec Tools. sumber kebenaran (data-driven).
@@ -76,9 +76,6 @@ export const CATEGORIES: CategoryMeta[] = [
     color: 'border-slate-800 bg-slate-900/40',
   },
 ];
-
-const MD5_DISCLAIMER =
-  'MD5 is cryptographically broken and should not be used for password storage. This tool is provided for compatibility, forensic analysis, and educational purposes.';
 
 const RSA_DISCLAIMER =
   'Implementasi RSA ini bersifat edukasional (kunci kecil) dan TIDAK aman untuk produksi. Gunakan Web Crypto API / library audited untuk kebutuhan nyata.';
@@ -220,10 +217,6 @@ export function resolveToolId(id: string): string {
   if (TOOL_INDEX[id]) return id;
   const match = TOOLS.find((t) => (t.aliases ?? []).includes(id));
   return match ? match.id : id;
-}
-
-export function allCategories(): ToolCategory[] {
-  return CATEGORIES.map((meta) => ({ meta, tools: toolsInCategory(meta.id) }));
 }
 
 export function allTools(): ToolMeta[] {

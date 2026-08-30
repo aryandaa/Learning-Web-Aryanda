@@ -4,7 +4,7 @@ import { useSiteData } from '../app/SiteProvider';
 import type { CodeFolderEntry } from '../services/docs';
 import { findFolderNode, normalizeId } from '../services/docs';
 import { formatBytes, languageInfo } from '../lib/codeLanguages';
-import type { TreeFileNode, TreeFolderNode, TreeNode } from '../domain/types';
+import type { TreeFileNode, TreeFolderNode } from '../domain/types';
 import { cn } from '../lib/utils';
 
 /** Apakah folder node memiliki file code di dalamnya (langsung atau di subfolder). */

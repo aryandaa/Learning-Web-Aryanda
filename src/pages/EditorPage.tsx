@@ -241,21 +241,6 @@ const HLJS_LANG: Record<LangId, string> = {
   sql: 'sql',
 };
 
-/** Memformat argumen console.log ke teks yang dapat dibaca. */
-function formatArgs(args: unknown[]): string {
-  return args
-    .map((a) => {
-      if (typeof a === 'string') return a;
-      if (a instanceof Error) return String(a.message || a);
-      try {
-        return JSON.stringify(a, null, 2);
-      } catch {
-        return String(a);
-      }
-    })
-    .join(' ');
-}
-
 /**
  * Menjalankan JavaScript di iframe sandbox (tidak bisa akses halaman induk,
  * tidak bisa pakai cookie/localStorage). Output dikirim balik via postMessage.
@@ -557,8 +542,6 @@ export default function EditorPage() {
   const [copied, setCopied] = useState(false);
   const outputRef = useRef<HTMLDivElement>(null);
   const highlightRef = useRef<HTMLPreElement>(null);
-
-  const current = LANGUAGES.find((l) => l.id === lang) ?? LANGUAGES[0];
 
   const run = useCallback(async () => {
     setRunning(true);

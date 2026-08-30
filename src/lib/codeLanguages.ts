@@ -51,19 +51,9 @@ export function languageInfo(language: string): LanguageInfo {
   return { label: info.label, hljs: info.hljs, color: info.color };
 }
 
-/** Label bahasa (fallback "Text"). */
-export function languageLabel(language: string): string {
-  return languageInfo(language).label;
-}
-
 /** Id highlight.js untuk bahasa tertentu. */
 export function highlightLanguage(language: string): string {
   return languageInfo(language).hljs;
-}
-
-/** Normalisasi path folder/file code untuk routing (lowercase, spasi -> hyphen). */
-export function normalizeCodePath(p: string): string {
-  return p.replace(/\\/g, '/').toLowerCase().replace(/ /g, '-');
 }
 
 /** Ukuran byte → teks terbaca (B / KB / MB). */

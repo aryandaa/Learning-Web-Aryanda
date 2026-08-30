@@ -229,7 +229,6 @@ export function parseExif(bytes: Uint8Array): ExifResult {
       found = true;
       const tiffBase = i + 10;
       // TIFF header
-      const bo = bytes[tiffBase] === 0x49 ? 'II' : 'MM';
       if (bytes[tiffBase] === 0x49 && bytes[tiffBase + 1] === 0x49) {
         const magic = u16(bytes, tiffBase + 2, true);
         if (magic === 42) {

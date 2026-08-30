@@ -40,12 +40,6 @@ function ok(condition: unknown, label: string): void {
   }
 }
 
-/** Baca file fixture dengan encoding asli (byte-exact). */
-async function readExact(abs: string): Promise<string> {
-  const buf = await fs.readFile(abs);
-  return new TextDecoder('utf-8', { fatal: false }).decode(buf);
-}
-
 async function main(): Promise<void> {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'codelearn-test-'));
   const vault = path.join(root, 'vault');

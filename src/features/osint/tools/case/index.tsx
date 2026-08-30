@@ -5,7 +5,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '../../../../components/ui/button';
 import {
-  CopyButton, ErrorAlert, LabeledTextarea, Notice, Panel, ToolNotes,
+  ErrorAlert, Notice, Panel, ToolNotes,
 } from '../../../cysec-tools/components/ui';
 import { exportJson, nowIso } from '../../utils/shared';
 import { cn } from '../../../../lib/utils';

@@ -9,7 +9,6 @@ import {
 } from '../../../cysec-tools/components/ui';
 import { IndicatorBadge } from '../../components/ui';
 import { analyzeUrlIntel, urlEncodeAll } from '../../utils/url';
-import { exportJson } from '../../utils/shared';
 import type { ComponentType } from 'react';
 
 function UrlAnalyzerTool() {

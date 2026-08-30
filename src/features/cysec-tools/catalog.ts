@@ -107,10 +107,6 @@ export function searchCatalog(query: string): { categories: CategoryCard[]; tool
   return { categories, tools };
 }
 
-export function categoryCardById(id: string): CategoryCard | undefined {
-  return categoryCards().find((c) => c.id === id);
-}
-
 /** Label kategori untuk item recently-used. */
 export function labelForToolId(id: string): { icon: string; title: string; path: string; categoryName: string } | null {
   const cy = getTool(id);

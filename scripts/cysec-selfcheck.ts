@@ -1,13 +1,13 @@
 /** Verifikasi cepat implementasi kriptografi terhadap test vector standar. */
-import { md5, sha3, chacha20, pbkdf2, rsaGenerateKeyPair, rsaEncryptText, rsaDecryptText } from '../src/features/cysec-tools/utils/crypto';
+import { md5, sha3, chacha20 } from '../src/features/cysec-tools/utils/crypto';
 import { bytesToHex, utf8ToBytes, hexToBytes, bytesToBase32, base32ToBytes, bytesToUtf8 } from '../src/features/cysec-tools/utils/bytes';
-import { urlEncode, urlDecode, htmlEncode, htmlDecode, rot13, rot47, atbash, morseEncode, morseDecode, baconEncode, baconDecode, railFenceEncode, railFenceDecode, vigenere, englishScore } from '../src/features/cysec-tools/utils/encoding';
+import { urlEncode, urlDecode, htmlEncode, rot13, rot47, atbash, morseEncode, morseDecode, baconEncode, baconDecode, railFenceEncode, railFenceDecode, vigenere, englishScore } from '../src/features/cysec-tools/utils/encoding';
 import { entropyOf, extractAsciiStrings, detectSignature } from '../src/features/cysec-tools/utils/analysis';
 import { analyzePcap } from '../src/features/cysec-tools/utils/pcap';
 import { parseElf, parseMacho, parsePe } from '../src/features/cysec-tools/utils/binaryFormats';
 import { parseTimestamp, parseExif } from '../src/features/cysec-tools/utils/files';
 import { analyzeLog } from '../src/features/cysec-tools/utils/logparse';
-import { parseJwt, verifyJwtHs } from '../src/features/cysec-tools/utils/web';
+import { parseJwt } from '../src/features/cysec-tools/utils/web';
 
 let pass = 0;
 let fail = 0;
@@ -312,7 +312,7 @@ if (fail > 0) process.exit(1);
 }
 
 {
-  const { blockEntropy, entropyOf } = await import('../src/features/cysec-tools/utils/analysis');
+  const { blockEntropy } = await import('../src/features/cysec-tools/utils/analysis');
   const zeros = blockEntropy(new Uint8Array(1024), 256);
   checkTrue('entropy blok nol rendah', zeros.every((b) => b.entropy < 0.01));
   const rand = blockEntropy(crypto.getRandomValues(new Uint8Array(1024)), 256);

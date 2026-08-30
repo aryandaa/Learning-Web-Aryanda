@@ -155,11 +155,6 @@ export function hexDump(bytes: Uint8Array, opts: HexDumpOptions = {}): string {
   return lines.join('\n');
 }
 
-/** Uint8Array → hex string dengan pemisah byte. */
-export function bytesToHexSpaced(bytes: Uint8Array): string {
-  return bytesToHex(bytes, ' ');
-}
-
 /** Deteksi endianness dari magic (untuk dukungan endianness converter). */
 export function u16(bytes: Uint8Array, off: number, little = true): number {
   return little
@@ -180,11 +175,6 @@ export function readAscii(bytes: Uint8Array, off: number, len: number): string {
     s += b >= 32 && b < 127 ? String.fromCharCode(b) : '.';
   }
   return s;
-}
-
-/** Konversi number → hex 2 digit. */
-export function toHexByte(b: number): string {
-  return (b & 0xff).toString(16).padStart(2, '0');
 }
 
 /**

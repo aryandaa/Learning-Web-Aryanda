@@ -58,8 +58,3 @@ export interface OsintSource {
   retrievedAt: string;
   note?: string;
 }
-
-export interface OsintCategory {
-  meta: OsintCategoryMeta;
-  tools: OsintToolMeta[];
-}

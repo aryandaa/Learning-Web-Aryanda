@@ -1,5 +1,5 @@
 import type { ParserContext } from './context';
-import type { ParseResult, ParserOptions, VaultSnapshot } from './types';
+import type { ParseResult, VaultSnapshot } from './types';
 
 /**
  * Lightweight plugin lifecycle (spec §32).

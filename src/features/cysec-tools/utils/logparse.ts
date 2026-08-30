@@ -80,7 +80,6 @@ export function analyzeLog(text: string): LogAnalysis {
       if (am) {
         authCount++;
         const msg = am[4];
-        const lower = msg.toLowerCase();
         let authResult: LogEvent['authResult'] = null;
         let authUser: string | null = null;
         if (/failed password/i.test(msg)) {

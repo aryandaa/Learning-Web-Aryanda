@@ -12,7 +12,7 @@ import type { ParseResult } from './types';
  * - other public/ files (favicon, 404.html, ...) are never touched
  * - fails loudly if any markdown file would end up in the output
  */
-export async function publishToPublic(_context: unknown, result: ParseResult): Promise<void> {
+export async function publishToPublic(_context: unknown, _result: ParseResult): Promise<void> {
   const cwd = process.cwd();
   const generatedRoot = path.join(cwd, 'generated');
   const publicDocs = path.join(cwd, 'public', 'docs');

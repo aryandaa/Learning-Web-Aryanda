@@ -7,7 +7,7 @@ import { Button } from '../../../../components/ui/button';
 import {
   CopyButton, ErrorAlert, LabeledTextarea, Notice, Panel, ToolNotes,
 } from '../../../cysec-tools/components/ui';
-import { extractIocs, iocTypeLabel } from '../../utils/ioc';
+import { extractIocs } from '../../utils/ioc';
 import { exportJson, exportTxt } from '../../utils/shared';
 import { cn } from '../../../../lib/utils';
 import type { ComponentType } from 'react';

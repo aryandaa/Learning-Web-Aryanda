@@ -56,7 +56,6 @@ export function entropyOf(bytes: Uint8Array, hexDumpLen = 256): EntropyResult {
     .filter((t) => t.count > 0)
     .sort((a, b) => b.count - a.count)
     .slice(0, 16);
-  const printableRatio = (counts.reduce((acc, c, i) => acc + (i >= 32 && i < 127 ? c : 0), 0) / n) * 100;
   return {
     entropyBitsPerByte: entropy,
     totalBytes: n,
@@ -71,19 +70,6 @@ export interface FrequencyResult {
   chars: { char: string; count: number; pct: number }[];
   total: number;
   unique: number;
-}
-
-export function charFrequency(s: string): FrequencyResult {
-  const counts = new Map<string, number>();
-  let total = 0;
-  for (const ch of s) {
-    counts.set(ch, (counts.get(ch) ?? 0) + 1);
-    total++;
-  }
-  const chars = Array.from(counts.entries())
-    .map(([char, count]) => ({ char, count, pct: total ? (count / total) * 100 : 0 }))
-    .sort((a, b) => b.count - a.count);
-  return { chars, total, unique: chars.length };
 }
 
 // ---------------------------------------------------------------------------
@@ -214,18 +200,6 @@ export function detectSignature(bytes: Uint8Array): SignatureMatch[] {
     }
   }
   return matches;
-}
-
-/** Deteksi MIME via File API + fallback magic. */
-export function detectMime(file: File, bytes: Uint8Array): string {
-  if (file.type) return file.type;
-  const sig = detectSignature(bytes);
-  if (sig.length > 0) return sig[0].mime;
-  // heuristik teks
-  const sample = bytes.subarray(0, Math.min(512, bytes.length));
-  const printable = Array.from(sample).filter((b) => b >= 9 || (b >= 32 && b < 127)).length;
-  if (printable / sample.length > 0.9) return 'text/plain';
-  return 'application/octet-stream';
 }
 
 /** Heuristik MIME dari magic (tanpa File API). */

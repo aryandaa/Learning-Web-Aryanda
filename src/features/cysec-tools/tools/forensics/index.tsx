@@ -7,12 +7,12 @@ import { Button } from '../../../../components/ui/button';
 import { FileAnalyzer, ResultPanel } from '../../components/FileAnalyzer';
 import { FileDrop, type LoadedFile } from '../../components/FileDrop';
 import {
-  CopyButton, ErrorAlert, KeyValueTable, LabeledTextarea, Notice, Panel, ToolNotes,
+  CopyButton, ErrorAlert, KeyValueTable, LabeledTextarea, Panel, ToolNotes,
 } from '../../components/ui';
-import { bytesToHex, bytesToUtf8, hexDump } from '../../utils/bytes';
+import { bytesToHex, hexDump } from '../../utils/bytes';
 import { detectSignature, entropyOf, blockEntropy, extractAsciiStrings, extractUtf16Strings } from '../../utils/analysis';
 import {
-  collectFileInfo, formatDate, parseExif, parsePdfMetadata, parseTimestamp,
+  collectFileInfo, parseExif, parsePdfMetadata, parseTimestamp,
   parseZipListing, pdfDateToISO,
 } from '../../utils/files';
 import { md5, shaDigest } from '../../utils/crypto';
@@ -222,13 +222,13 @@ function MimeTool() {
 // ---------------------------------------------------------------------------
 
 function FileHexTool() {
-  const [limitKb, setLimitKb] = useState(256);
+  const [limitKb] = useState(256);
   return (
     <FileAnalyzer
       config={{
         title: 'File Hex Viewer',
         description: 'Hex dump + ASCII',
-        analyze: ({ file, bytes }) => {
+        analyze: ({ bytes }) => {
           const limit = limitKb * 1024;
           const slice = bytes.subarray(0, Math.min(limit, bytes.length));
           const dump = hexDump(slice);
@@ -303,7 +303,7 @@ function StringsTool() {
 // ---------------------------------------------------------------------------
 
 function EntropyTool() {
-  const [blockSize, setBlockSize] = useState(256);
+  const [blockSize] = useState(256);
   return (
     <FileAnalyzer
       config={{
@@ -316,7 +316,6 @@ function EntropyTool() {
           const min = blocks.length ? Math.min(...blocks.map((b) => b.entropy)) : 0;
           const max = blocks.length ? Math.max(...blocks.map((b) => b.entropy)) : 0;
           const maxCount = Math.max(...e.topBytes.map((t) => t.count), 1);
-          const maxBlock = Math.max(...blocks.map((b) => b.entropy), 1);
           return (
             <>
               <ResultPanel title="Entropy analysis" textToCopy={JSON.stringify(e, null, 2)}>
@@ -505,7 +504,7 @@ function PdfMetadataTool() {
         title: 'PDF Metadata',
         description: 'Metadata dokumen PDF',
         accept: '.pdf,application/pdf',
-        analyze: ({ file, bytes }) => {
+        analyze: ({ bytes }) => {
           const meta = parsePdfMetadata(bytes);
           if (!bytes.length || bytes[0] !== 0x25 || bytes[1] !== 0x50) {
             return (
@@ -554,7 +553,7 @@ function ZipMetadataTool() {
         title: 'ZIP Metadata',
         description: 'Daftar entri arsip ZIP',
         accept: '.zip,application/zip,.jar,.docx,.xlsx,.pptx,.epub',
-        analyze: ({ file, bytes }) => {
+        analyze: ({ bytes }) => {
           const entries = parseZipListing(bytes);
           const totalComp = entries.reduce((a, e) => a + e.compressedSize, 0);
           const totalUncomp = entries.reduce((a, e) => a + e.uncompressedSize, 0);
