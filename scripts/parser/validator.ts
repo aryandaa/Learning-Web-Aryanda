@@ -1,4 +1,5 @@
 import type { ParserContext } from './context';
+import { codeFileId, codeFolderId } from './code-files';
 
 /**
  * Returns the normalized document id for a vault-relative markdown path.
@@ -26,9 +27,10 @@ export function titleFromPath(relativePath: string): string {
  * - malformed/invalid source paths
  * - duplicate document ids (FATAL. two different files normalizing to one id)
  * - duplicate asset output paths (FATAL. data would be overwritten)
+ * - code files: duplicate code ids (FATAL) & tabrakan id folder-code vs dokumen (WARN)
  */
 export function validateSnapshot(context: ParserContext): void {
-  const { files, assets } = context.snapshot!;
+  const { files, assets, codeFiles } = context.snapshot!;
 
   for (const file of files) {
     if (!file.relativePath || file.relativePath.startsWith('/') || file.relativePath.includes('..')) {
@@ -57,5 +59,34 @@ export function validateSnapshot(context: ParserContext): void {
       throw new Error(`FATAL: ${message}`);
     }
     assetMap.set(asset.relativePath, asset.absolutePath);
+  }
+
+  // Code files: id unik (folder + nama file). tabrakan = data akan tertimpa.
+  const codeIdMap = new Map<string, string>();
+  for (const file of codeFiles) {
+    const parts = file.relativePath.split('/');
+    const folder = parts.length > 1 ? parts.slice(0, -1).join('/') : '';
+    const id = codeFileId(folder, file.name);
+    const existing = codeIdMap.get(id);
+    if (existing) {
+      const message = `duplicate code file id "${id}" from "${existing}" and "${file.relativePath}"`;
+      context.warn('duplicatePaths', message);
+      throw new Error(`FATAL: ${message}`);
+    }
+    codeIdMap.set(id, file.relativePath);
+  }
+
+  // Tabrakan id folder-code vs id dokumen markdown (mis. folder "Praktek" vs
+  // "Praktek.md"). Non-fatal: frontend memprioritaskan folder code, dokumen
+  // tetap bisa diakses via id lain — tapi lebih baik vault menghindarinya.
+  const folderIds = new Set<string>();
+  for (const file of codeFiles) {
+    const parts = file.relativePath.split('/');
+    if (parts.length > 1) folderIds.add(codeFolderId(parts.slice(0, -1).join('/')));
+  }
+  for (const [docId, rel] of idMap) {
+    if (folderIds.has(docId)) {
+      context.warn('codeFolderIdCollision', `folder code "${docId}" bertabrakan dengan dokumen "${rel}"`);
+    }
   }
 }

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FolderOpen, Search as SearchIcon, X } from 'lucide-react';
+import { Code2, FolderOpen, Search as SearchIcon, X } from 'lucide-react';
 import { useFuseSearch } from '../services/search';
 import { fetchSearchIndex } from '../services/docs';
+import { useSiteData } from '../app/SiteProvider';
 import { Input } from '../components/ui/input';
 import { Spinner } from '../components/ui/spinner';
 import type { SearchIndexEntry } from '../domain/types';
@@ -15,6 +16,7 @@ export default function SearchPage() {
   const [index, setIndex] = useState<SearchIndexEntry[] | null>(null);
   const [indexError, setIndexError] = useState<string | null>(null);
   const { query, setQuery, results } = useFuseSearch(index);
+  const { codeFileById } = useSiteData();
 
   useEffect(() => {
     let cancelled = false;
@@ -93,14 +95,19 @@ export default function SearchPage() {
                 className="card card-hover group block p-5"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <h2 className="font-semibold text-slate-100 transition-colors group-hover:text-accent-300">
-                    {result.title}
+                  <h2 className="flex min-w-0 items-center gap-2 font-semibold text-slate-100 transition-colors group-hover:text-accent-300">
+                    {codeFileById.has(result.id) && (
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded border border-accent-500/30 bg-accent-500/10" title="File source code">
+                        <Code2 className="h-3 w-3 text-accent-400" />
+                      </span>
+                    )}
+                    <span className="truncate">{result.title}</span>
                   </h2>
                 </div>
                 {result.folder && (
                   <p className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
                     <FolderOpen className="h-3 w-3" />
-                    {result.folder}
+                    <span className="truncate">{result.folder}</span>
                   </p>
                 )}
                 {result.excerpt && (

@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "parse": "tsx scripts/parse-docs.ts",
     "check": "tsc --noEmit",
+    "test:parser": "tsx scripts/test-code-parser.ts",
     "cysec:check": "tsx scripts/cysec-selfcheck.ts",
     "osint:check": "tsx scripts/osint-selfcheck.ts",
     "validate": "tsx scripts/validate-registry.ts"

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Check, Code2, Copy, Loader2, Play, Terminal, Trash2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { appRoot } from '../lib/base';
+import { copyToClipboard } from '../lib/clipboard';
 import hljs from 'highlight.js/lib/core';
 import hljsJavascript from 'highlight.js/lib/languages/javascript';
 import hljsTypescript from 'highlight.js/lib/languages/typescript';
@@ -239,25 +240,6 @@ const HLJS_LANG: Record<LangId, string> = {
   python: 'python',
   sql: 'sql',
 };
-
-/** Menyalin teks ke clipboard dengan fallback. */
-async function copyToClipboard(text: string): Promise<void> {
-  if (navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(text);
-    return;
-  }
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
-  document.body.appendChild(textarea);
-  textarea.select();
-  try {
-    document.execCommand('copy');
-  } finally {
-    document.body.removeChild(textarea);
-  }
-}
 
 /** Memformat argumen console.log ke teks yang dapat dibaca. */
 function formatArgs(args: unknown[]): string {

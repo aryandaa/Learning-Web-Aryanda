@@ -405,6 +405,17 @@ html.light .doc-content pre {
   @apply bg-transparent;
 }
 
+/* ---------- code file viewer (source code dari vault) ---------- */
+.code-file-viewer pre {
+  @apply my-0 overflow-x-auto rounded-xl border border-slate-800 bg-slate-900 p-4 shadow-lg shadow-black/20;
+}
+html.light .code-file-viewer pre {
+  @apply shadow-md shadow-slate-500/15;
+}
+.code-file-viewer .hljs {
+  @apply bg-transparent;
+}
+
 /* ---------- latar grid ala roadmap.sh ---------- */
 .roadmap-grid {
   background-image: radial-gradient(rgba(100, 116, 139, 0.16) 1px, transparent 1px);
@@ -420,16 +431,18 @@ html.dark .roadmap-grid {
    adalah warna aksen (amber/dll) yang terlalu terang di
    atas latar putih, plus syntax highlighting versi GitHub light.
    ============================================================ */
-/* aksen teks → versi lebih gelap agar kontras di latar terang */
-html.light .text-accent-300,
-html.light .text-accent-200 {
-  color: #15803d;
+/* aksen teks → versi lebih gelap agar kontras di latar terang.
+   Berlaku untuk kelas polos DAN semua variant Tailwind (group-hover:,
+   hover:, focus:, active:, dst.) — variant punya nama kelas sendiri, jadi
+   pakai selektor atribut + !important agar override menang atas rule variant. */
+html.light [class*='text-accent-100'],
+html.light [class*='text-accent-200'],
+html.light [class*='text-accent-300'] {
+  color: #15803d !important;
 }
-html.light .text-accent-400 {
-  color: #16a34a;
-}
-html.light .text-accent-100 {
-  color: #15803d;
+html.light [class*='text-accent-400'],
+html.light [class*='text-accent-500'] {
+  color: #16a34a !important;
 }
 html.light .text-emerald-400,
 html.light .text-emerald-300,

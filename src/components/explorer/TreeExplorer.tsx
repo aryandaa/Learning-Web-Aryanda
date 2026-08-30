@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronRight, FileText, Folder, Map } from 'lucide-react';
+import { ChevronDown, ChevronRight, Code2, FileText, Folder, Map } from 'lucide-react';
 import type { TreeNode } from '../../domain/types';
-import { countFiles } from '../../services/docs';
+import { countFiles, normalizeId } from '../../services/docs';
+import { languageInfo } from '../../lib/codeLanguages';
 import { cn } from '../../lib/utils';
 
 interface TreeExplorerProps {
@@ -20,7 +21,12 @@ function ancestorsOf(nodes: TreeNode[], id: string, trail: string[] = []): strin
     if (node.type === 'file') {
       if (node.id === id) return trail;
     } else {
-      const found = ancestorsOf(node.children, id, [...trail, node.relativePath]);
+      const pathTrail = [...trail, node.relativePath];
+      // activeId bisa berupa folder code (mis. /docs/.../praktek).
+      if (node.relativePath && normalizeId(node.relativePath) === id) {
+        return pathTrail;
+      }
+      const found = ancestorsOf(node.children, id, pathTrail);
       if (found.length > 0) return found;
     }
   }
@@ -88,6 +94,7 @@ function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant, onNav
   if (node.type === 'file') {
     const active = activeId === node.id;
     const padding = variant === 'sidebar' ? 8 + depth * 14 : 8 + depth * 18;
+    const codeLang = node.isCode ? languageInfo(node.language ?? 'plaintext') : null;
     return (
       <li>
         <Link
@@ -95,6 +102,7 @@ function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant, onNav
           onClick={onNavigate}
           className={cn(
             'flex items-center gap-2 rounded-md py-1.5 pr-2 text-sm transition-colors',
+            node.isCode && 'font-mono',
             active
               ? 'bg-accent-500/15 text-accent-300 font-medium'
               : node.isRoadmap
@@ -102,9 +110,12 @@ function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant, onNav
                 : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-200'
           )}
           style={{ paddingLeft: padding }}
+          title={node.isCode ? `${node.title} · ${codeLang?.label}` : node.title}
         >
           {node.isRoadmap ? (
             <Map className="h-3.5 w-3.5 shrink-0 text-accent-400" />
+          ) : node.isCode ? (
+            <Code2 className="h-3.5 w-3.5 shrink-0" style={{ color: codeLang?.color }} />
           ) : (
             <FileText className="h-3.5 w-3.5 shrink-0 opacity-60" />
           )}
@@ -138,7 +149,15 @@ function TreeNodeRow({ node, depth, activeId, expanded, onToggle, variant, onNav
         )}
         <Folder className="h-3.5 w-3.5 shrink-0 text-amber-400/70" />
         <span className="truncate font-medium">{node.name}</span>
-        <span className="ml-auto pr-1 text-xs tabular-nums text-slate-600">{count}</span>
+        {node.isCodeFolder && (
+          <span className="ml-auto flex shrink-0 items-center gap-1 text-[10px] text-slate-600">
+            <Code2 className="h-3 w-3 text-accent-500/60" />
+            <span className="tabular-nums">{count}</span>
+          </span>
+        )}
+        {!node.isCodeFolder && (
+          <span className="ml-auto pr-1 text-xs tabular-nums text-slate-600">{count}</span>
+        )}
       </button>
       {isOpen && (
         <ul className="space-y-px">

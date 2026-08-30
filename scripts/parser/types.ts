@@ -29,11 +29,33 @@ export interface VaultAsset {
   hash: string;
 }
 
+/** Source code file (text) yang di-scan dari vault, isi dipertahankan 100% asli. */
+export interface VaultCodeFile {
+  /** Path relatif vault, POSIX separators, casing asli. */
+  relativePath: string;
+  /** Absolute path on disk while parsing. */
+  absolutePath: string;
+  /** Nama file lengkap, mis. "praktek1.py". */
+  name: string;
+  /** Extension lowercase dengan titik, mis. ".py" ("" jika tidak ada). */
+  extension: string;
+  /** Id bahasa (lowercase, kompatibel highlight.js). */
+  language: string;
+  /** Ukuran file dalam byte (isi asli, sebelum decoding). */
+  size: number;
+  /** Isi file ASLI (utf-8). TIDAK boleh diubah/format ulang. */
+  content: string;
+  /** sha256:... dari raw content. */
+  contentHash: string;
+}
+
 /** Canonical snapshot produced by the Scanner. */
 export interface VaultSnapshot {
   files: VaultFile[];
   folders: VaultFolder[];
   assets: VaultAsset[];
+  /** Source code file (text), diproses pipeline code-file. */
+  codeFiles: VaultCodeFile[];
 }
 
 export interface Heading {
@@ -99,6 +121,14 @@ export type TreeFileNode = {
   outputPath: string;
   /** File bertag #roadmap. rujukan urutan belajar folder ini. */
   isRoadmap?: boolean;
+  /** Source code file (non-Markdown). frontend menampilkan code viewer. */
+  isCode?: boolean;
+  /** Extension lowercase ("" jika tidak ada). */
+  extension?: string;
+  /** Id bahasa (lowercase). */
+  language?: string;
+  /** Ukuran file dalam byte. */
+  size?: number;
 };
 
 export type TreeNode = TreeFolderNode | TreeFileNode;
@@ -108,6 +138,8 @@ export interface TreeFolderNode {
   name: string;
   relativePath: string;
   children: TreeNode[];
+  /** Folder yang langsung berisi code file (browser kode). */
+  isCodeFolder?: boolean;
 }
 
 export interface SearchIndexEntry {
@@ -179,6 +211,10 @@ export interface Warnings {
   missingImages: string[];
   malformedFrontmatter: string[];
   unsupportedEmbeds: string[];
+  /** File code yang gagal di-decode sebagai UTF-8 (disimpan sebagai asset binary). */
+  invalidEncoding: string[];
+  /** Folder code yang id-nya bertabrakan dengan id dokumen markdown. */
+  codeFolderIdCollision: string[];
 }
 
 export interface WarningsFile {
@@ -201,6 +237,52 @@ export interface MetadataFile {
   myskillCount: number;
   warningsCount: number;
   brokenLinksCount: number;
+  /** Jumlah source code file yang diproses pipeline code-file. */
+  totalCodeFiles: number;
+  /** Jumlah folder yang langsung berisi code file. */
+  totalCodeFolders: number;
+}
+
+/* ============================================================
+   Code file artifacts. Satu JSON per folder (grouping by folder).
+   ============================================================ */
+
+/** Satu file di dalam folder code. isi content = ASLI, tanpa perubahan. */
+export interface CodeFileData {
+  /** Nama file lengkap, mis. "praktek1.py". */
+  name: string;
+  /** Path relatif vault, mis. "Praktek/praktek1.py". */
+  path: string;
+  /** Extension lowercase ("" jika tidak ada). */
+  extension: string;
+  /** Id bahasa (lowercase). */
+  language: string;
+  /** Ukuran file dalam byte. */
+  size: number;
+  /** Isi file ASLI (utf-8). */
+  content: string;
+  /** sha256:... dari raw content. */
+  contentHash: string;
+}
+
+/** Data JSON satu folder code (grouped). disimpan di docs/code/<folder>.json. */
+export interface CodeFolderData {
+  schemaVersion: number;
+  /** Jenis artifact (selalu "code-folder"). */
+  type: 'code-folder';
+  /** Nama folder terakhir, mis. "Praktek". */
+  folder: string;
+  /** Path relatif folder, mis. "Pemrograman/Python/Python Dasar/Praktek". */
+  path: string;
+  /**
+   * Path relatif folder INDUK, mis. "Pemrograman/Python/Python Dasar".
+   * Identitas collection = `path` (full path), BUKAN `folder` (nama saja) —
+   * dua folder "Praktek" di parent berbeda tetap dua collection terpisah.
+   */
+  parentPath: string;
+  /** Path JSON output relatif public/docs (tanpa .json). */
+  outputPath: string;
+  files: CodeFileData[];
 }
 
 /** Everything produced by the pipeline and handed to the writer. */
@@ -213,6 +295,8 @@ export interface ParseResult {
   metadata: MetadataFile;
   warnings: Warnings;
   assets: AssetManifestEntry[];
+  /** Code folder data (satu per folder berisi code file). */
+  codeFolders: CodeFolderData[];
 }
 
 /** Summary printed by the CLI entrypoint. */
@@ -223,6 +307,10 @@ export interface ParseSummary {
   warnings: number;
   brokenLinks: number;
   outputDir: string;
+  /** Jumlah source code file. */
+  codeFiles: number;
+  /** Jumlah folder code. */
+  codeFolders: number;
 }
 
 export interface ParserOptions {

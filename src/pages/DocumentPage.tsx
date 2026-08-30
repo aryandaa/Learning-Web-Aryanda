@@ -5,17 +5,36 @@ import { useSiteData } from '../app/SiteProvider';
 import { DocumentViewer } from '../components/document/DocumentViewer';
 import { Spinner } from '../components/ui/spinner';
 import { fetchDocument } from '../services/docs';
+import { CodeFolderPage } from './CodeFolderPage';
+import { CodeFileViewer } from './CodeFileViewer';
 import type { DocumentData } from '../domain/types';
 
 /**
  * Halaman dokumen. URL /docs/:id* membawa stable id (path normalized).
- * Dokumen dimuat on-demand (spec §35 & §38).
+ * Dispatcher tanpa hooks — resolusi route:
+ *   1. id = code FILE → CodeFileViewer (source code dari vault)
+ *   2. id = code FOLDER → CodeFolderPage (code directory browser)
+ *   3. selainnya → <DocumentDoc> (dokumen markdown biasa, spec §35 & §38).
  */
 export default function DocumentPage() {
   const { '*': idParam } = useParams();
   const id = idParam ? decodeURIComponent(idParam) : '';
-  const { fileMap, loading: siteLoading } = useSiteData();
+  const { codeFileById, codeFolderById } = useSiteData();
 
+  const codeFile = codeFileById.get(id);
+  if (codeFile) {
+    return <CodeFileViewer file={codeFile} />;
+  }
+  const codeFolder = codeFolderById.get(id);
+  if (codeFolder) {
+    return <CodeFolderPage folder={codeFolder} />;
+  }
+  return <DocumentDoc id={id} />;
+}
+
+/** Muat dokumen markdown on-demand (hooks hanya di komponen ini). */
+function DocumentDoc({ id }: { id: string }) {
+  const { fileMap, loading: siteLoading } = useSiteData();
   const [doc, setDoc] = useState<DocumentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);

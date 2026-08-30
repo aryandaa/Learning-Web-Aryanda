@@ -9,27 +9,7 @@ import { Breadcrumb } from './Breadcrumb';
 import { PrevNext } from './PrevNext';
 import { Backlinks } from './Backlinks';
 import { cn } from '../../lib/utils';
-
-/**
- * Menyalin teks ke clipboard dengan fallback (desktop & mobile).
- */
-async function copyToClipboard(text: string): Promise<void> {
-  if (navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(text);
-    return;
-  }
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
-  document.body.appendChild(textarea);
-  textarea.select();
-  try {
-    document.execCommand('copy');
-  } finally {
-    document.body.removeChild(textarea);
-  }
-}
+import { copyToClipboard } from '../../lib/clipboard';
 
 /** Label tampilan bahasa untuk code block. */
 const LANG_LABELS: Record<string, string> = {

@@ -55,6 +55,7 @@
 | 🌗 **Dark / Light Theme** | Theme switcher di navbar, pilihan tersimpan di `localStorage`. |
 | 📑 **Daftar Isi Hierarkis** | Otomatis dari heading `#` sampai `######`, indent sesuai level, scroll smooth. |
 | 🧱 **Code Block Pintar** | Syntax highlighting (highlight.js), label bahasa, tombol **Copy**. |
+| 🗂 **Code File Viewer** | Source code dari vault (`.py`, `.js`, `.html`, `.php`, dll.) dikelompokkan per folder → satu JSON per folder → code directory browser + viewer dengan syntax highlighting & tombol Copy. Isi 100% asli. Di halaman Roadmap, subskill yang punya folder `/Praktek/` otomatis menampilkan section **Code / Praktik** collapsible. |
 | 🔗 **Wiki Links / Backlinks** | `[[Note]]`, `[[Folder/Note|alias]]`, `[[Note#Section]]`, embed `![[gambar.png]]`, panel "Dirujuk oleh". |
 | 📱 **Fully Responsive** | Mobile drawer navigation, sidebar desktop collapsible, tanpa horizontal overflow. |
 | ⏱ **Reading Time & Breadcrumb** | Estimasi waktu baca + breadcrumb path dari relativePath. |
@@ -198,7 +199,7 @@ npm run parse -- --vault=/path/ke/vault \
 
 Variabel lingkungan fallback: `VAULT_PATH`, `VAULT_COMMIT`, `VAULT_BRANCH`, `GENERATED_DIR`.
 
-Folder `Note Personal` dan `Praktek` sudah dikecualikan secara default (`scripts/parser/parser.config.ts`).
+Folder `Note Personal` dikecualikan secara default (`scripts/parser/parser.config.ts`). Folder latihan seperti `Praktek` **tidak** dikecualikan lagi — file source code di dalamnya kini ditampilkan lewat pipeline code-file (lihat [Parser Pipeline](#-parser-pipeline)).
 
 ---
 
@@ -433,7 +434,7 @@ Obsidian (menulis materi)
 
 Parser memproses vault dalam 8 tahap:
 
-1. **Scan**: snapshot vault (markdown, folder, aset) sekali saja, deterministik.
+1. **Scan**: snapshot vault (markdown, folder, aset, **source code**) sekali saja, deterministik.
 2. **Validasi**: duplicate document id / output path = **fatal** (berhenti).
 3. **Index**: frontmatter, judul, tag, alias, heading, reading time, excerpt.
 4. **Resolve**: lookup wiki link (`[[Note]]`, `[[Note#Section]]`, embed) + urutan prev/next (DFS).
@@ -441,6 +442,15 @@ Parser memproses vault dalam 8 tahap:
 6. **Copy assets**: hanya menyalin aset yang **benar-benar direferensikan** dokumen ke `generated/assets/` (hemat ukuran).
 7. **Write**: tulis `generated/docs/<struktur vault>/*.json`, `tree.json`, `search-index.json`, `graph.json`, `roadmaps.json`, `metadata.json`, `assets/manifest.json`, `warnings.json`.
 8. **Publish**: salin ke `public/docs/` dan `public/assets/vault/` (hanya dua direktori itu yang disentuh).
+
+**Pipeline code-file (tambahan, tidak mengubah parser Markdown):**
+
+- File non-Markdown dengan ekstensi source code (`.py`, `.js`, `.ts`, `.jsx`, `.tsx`, `.php`, `.html`, `.css`, `.scss`, `.java`, `.c`, `.cpp`, `.cs`, `.go`, `.rs`, `.rb`, `.sh`, `.sql`, `.json`, `.yaml`, `.yml`, `.xml`, `.toml`, `.ini`, `.conf`, `.env`, `.txt`, `Dockerfile`, `Makefile`, dll.) dibaca sebagai **text UTF-8**.
+- Ekstensi tidak dikenal yang ternyata **text valid** tetap ditampilkan sebagai `plaintext`; file **binary** (gambar, pcap, arsip, dll.) tetap menjadi asset.
+- File dikelompokkan **per folder**: satu JSON `docs/code/<folder>.json` berisi seluruh file folder itu dengan **isi 100% asli** (tanpa formatting, line-ending, atau transformasi apa pun).
+- Isi code **tidak pernah** masuk bundle JS / search index — search hanya memuat metadata ringan (filename, path, extension, language, folder); content dimuat lazy saat file dibuka.
+- File dengan encoding non-UTF-8 tidak menggagalkan build: diberi warning `invalidEncoding` dan disimpan sebagai asset binary.
+- Mapping extension → bahasa terpusat di `scripts/parser/code-languages.ts` (mirror tampilan di `src/lib/codeLanguages.ts`, di-assert sinkron oleh `npm run test:parser`).
 
 Identitas dokumen = **path vault-relative yang dinormalisasi** (lowercase, tanpa ekstensi, spasi → `-`):
 
@@ -459,6 +469,8 @@ Dua file dengan nama sama di folder berbeda tetap dianggap dokumen berbeda (`PHP
 | `/` | Beranda: hero, statistik (Catatan, Folder, Estimasi baca, Skill, Bidang), topik utama |
 | `/docs` | Explorer seluruh struktur vault + strip subskill |
 | `/docs/:id` | Dokumen: breadcrumb, tag, TOC hierarkis, konten, backlinks, prev/next |
+| `/docs/:code-folder-id` | **Code directory browser**: daftar file source code + subfolder satu folder (mis. `/docs/pemrograman/python/python-dasar/praktek`) |
+| `/docs/:code-folder-id/:file` | **Code file viewer**: nama file, extension, bahasa, path, ukuran, syntax highlighting, tombol **Copy** (isi 100% asli) |
 | `/search` | Pencarian fuzzy (Fuse.js, index lazy) |
 | `/graph` | Graph view antar-catatan (d3-force, canvas) |
 | `/roadmap` | Landing grid semua `#Subskill` per bidang → detail roadmap bercabang |
@@ -488,6 +500,7 @@ generated/
 │   ├── graph.json              # nodes + edges untuk graph view
 │   ├── roadmaps.json           # file #roadmap + langkah belajarnya
 │   ├── metadata.json           # total notes, folders, subskill/myskill, dll.
+│   ├── code/<folder>.json      # SATU JSON per folder code (isi source code asli)
 │   └── <struktur folder vault>/*.json   # satu JSON per dokumen
 ├── assets/
 │   ├── manifest.json           # sourcePath → publicPath, size, hash

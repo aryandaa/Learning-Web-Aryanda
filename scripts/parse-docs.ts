@@ -80,6 +80,8 @@ async function main(): Promise<void> {
     assets: result.assets.length,
     warnings: result.metadata.warningsCount,
     brokenLinks: result.metadata.brokenLinksCount,
+    codeFiles: result.metadata.totalCodeFiles,
+    codeFolders: result.metadata.totalCodeFolders,
     outputDir: out ?? path.join(process.cwd(), 'generated'),
   };
 
@@ -87,6 +89,8 @@ async function main(): Promise<void> {
   console.log(`Notes:      ${summary.notes}`);
   console.log(`Folders:    ${summary.folders}`);
   console.log(`Assets:     ${summary.assets}`);
+  console.log(`Code files: ${summary.codeFiles}`);
+  console.log(`Code folders: ${summary.codeFolders}`);
   console.log(`Warnings:   ${summary.warnings}`);
   console.log(`Broken links: ${summary.brokenLinks}`);
   console.log(`Output:     ${summary.outputDir}`);

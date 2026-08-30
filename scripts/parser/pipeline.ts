@@ -75,7 +75,7 @@ export async function runParser(options: RunParserOptions): Promise<ParseResult>
   let assets: AssetManifestEntry[] = [];
   if (!options.skipAssets) {
     await runPlugins(context, 'beforeCopyAssets');
-    assets = await copyAssets(context);
+    assets = await copyAssets(context, options.generatedDir);
     await runPlugins(context, 'afterCopyAssets');
   }
 

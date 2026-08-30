@@ -1,16 +1,19 @@
-import type { NoteRecord, TreeFolderNode, TreeNode } from './types';
+import type { NoteRecord, TreeFolderNode, TreeNode, VaultCodeFile } from './types';
+import { codeFileId, folderName, groupCodeFiles } from './code-files';
 
 function isRoadmapRecord(record: NoteRecord): boolean {
   return record.tags.some((tag) => tag.toLowerCase() === 'roadmap');
 }
 
 /**
- * Builds the unified recursive tree from records (spec §19).
+ * Builds the unified recursive tree from records + code files (spec §19).
  * Top-level vault folders become root nodes. In every folder, the
  * #roadmap file (rujukan urutan belajar) is sorted first; the rest
- * alphabetically (case-insensitive, deterministic).
+ * alphabetically (case-insensitive, deterministic). Source code files
+ * ditambahkan sebagai node file (isCode) di folder tempatnya berada,
+ * sehingga struktur folder asli tetap terjaga.
  */
-export function buildTree(records: NoteRecord[]): TreeFolderNode[] {
+export function buildTree(records: NoteRecord[], codeFiles: VaultCodeFile[] = []): TreeFolderNode[] {
   const roots: TreeFolderNode[] = [];
   const folders = new Map<string, TreeFolderNode>();
 
@@ -49,6 +52,31 @@ export function buildTree(records: NoteRecord[]): TreeFolderNode[] {
     filesByFolder.set(folder, list);
   }
 
+  // Source code files: group per folder, jadikan node file di folder tsb.
+  const codeGroups = groupCodeFiles(codeFiles);
+  for (const group of codeGroups) {
+    const folderNode = group.path ? ensureFolder(group.path) : null;
+    const children: TreeNode[] = group.files.map((file) => ({
+      type: 'file',
+      title: file.name,
+      slug: file.name.toLowerCase(),
+      id: codeFileId(group.path, file.name),
+      relativePath: file.path,
+      outputPath: group.outputPath,
+      isCode: true,
+      extension: file.extension,
+      language: file.language,
+      size: file.size,
+    }));
+    if (folderNode) {
+      folderNode.isCodeFolder = true;
+      folderNode.children.push(...children);
+    } else {
+      // Code file di root vault (jarang): tidak punya folder.
+      roots.push({ type: 'folder', name: 'Root', relativePath: '', isCodeFolder: true, children });
+    }
+  }
+
   // Ensure folders exist for every record's folder (including "" -> root).
   for (const folder of filesByFolder.keys()) {
     if (folder) ensureFolder(folder);
@@ -71,6 +99,8 @@ export function buildTree(records: NoteRecord[]): TreeFolderNode[] {
       if (a.type === 'file' && b.type === 'file') {
         // Roadmap file selalu di atas (rujukan urutan belajar).
         if (a.isRoadmap !== b.isRoadmap) return a.isRoadmap ? -1 : 1;
+        // Dokumen markdown tampil sebelum file source code (tidak tercampur acak).
+        if (a.isCode !== b.isCode) return a.isCode ? 1 : -1;
         return a.title.localeCompare(b.title, undefined, { sensitivity: 'base' });
       }
       const an = a.type === 'folder' ? a.name : a.title;
@@ -88,15 +118,19 @@ export function buildTree(records: NoteRecord[]): TreeFolderNode[] {
 
 /**
  * Depth-first order of file ids used for Previous/Next navigation.
+ * Hanya dokumen markdown (file code tidak ikut Prev/Next).
  */
 export function treeFileOrder(tree: TreeFolderNode[]): string[] {
   const ids: string[] = [];
   const walk = (nodes: TreeNode[]): void => {
     for (const node of nodes) {
-      if (node.type === 'file') ids.push(node.id);
-      else walk(node.children);
+      if (node.type === 'file') {
+        if (!node.isCode) ids.push(node.id);
+      } else walk(node.children);
     }
   };
   walk(tree);
   return ids;
 }
+
+export { folderName };

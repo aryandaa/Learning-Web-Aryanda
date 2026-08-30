@@ -1,4 +1,5 @@
 import type { PluginLifecycle } from './plugins';
+import { CODE_FILE_EXTENSIONS } from './code-languages';
 
 export interface ParserConfig {
   /** Files/dirs that are never scanned. */
@@ -6,13 +7,20 @@ export interface ParserConfig {
   /**
    * Folders (by name, any depth, case-insensitive) excluded entirely from the
    * website. notes, subfolders, and assets inside them are skipped.
-   * Example: "Note Personal" (catatan pribadi), "Praktek" (folder latihan).
+   * Example: "Note Personal" (catatan pribadi).
+   * Catatan: folder "Praktek" TIDAK lagi dikecualikan — file source code di
+   * dalamnya kini diproses pipeline code-file.
    */
   excludeFolders: string[];
   /** Extensions treated as documents. */
   markdownExtensions: string[];
   /** Extensions treated as copyable assets. */
   assetExtensions: string[];
+  /**
+   * Extensions yang diproses sebagai source code text (grouped JSON per folder).
+   * Sumber kebenaran ada di code-languages.ts.
+   */
+  codeFileExtensions: string[];
   /** Max chars of note content stored in the search index. */
   searchIndexContentLimit: number;
   /** Words per minute used for reading-time estimation. */
@@ -26,8 +34,9 @@ export interface ParserConfig {
 
 export const defaultConfig: ParserConfig = {
   ignored: ['.git', '.obsidian', '.github', '.trash', 'node_modules', 'vendor', '.DS_Store', '.gitignore'],
-  // Catatan pribadi dan folder latihan (praktek) tidak ditampilkan di website.
-  excludeFolders: ['Note Personal', 'Praktek'],
+  // Catatan pribadi tidak ditampilkan. Folder latihan (Praktek) kini ditampilkan
+  // sebagai code folder agar file source code di dalamnya bisa dibuka di website.
+  excludeFolders: ['Note Personal'],
   markdownExtensions: ['.md', '.markdown'],
   assetExtensions: [
     '.png',
@@ -35,7 +44,6 @@ export const defaultConfig: ParserConfig = {
     '.jpeg',
     '.gif',
     '.webp',
-    '.svg',
     '.bmp',
     '.ico',
     '.avif',
@@ -47,28 +55,25 @@ export const defaultConfig: ParserConfig = {
     '.wav',
     '.zip',
     '.gz',
-    '.txt',
-    '.csv',
-    '.json',
-    '.yaml',
-    '.yml',
-    '.py',
-    '.go',
-    '.js',
-    '.ts',
-    '.sh',
-    '.css',
-    '.html',
-    '.md', // excluded later: markdown files are never copied as assets
-    '.dockerfile',
-    '.yml',
-    '.lock',
-    '.toml',
-    '.env',
+    '.tar',
+    '.pcap',
+    '.pcapng',
+    '.exe',
+    '.dll',
+    '.so',
+    '.dylib',
+    '.woff',
+    '.woff2',
+    '.ttf',
+    '.otf',
+    '.db',
+    '.sqlite',
+    // file code TIDAK lagi disalin sebagai asset (diproses pipeline code-file)
   ],
+  codeFileExtensions: CODE_FILE_EXTENSIONS,
   searchIndexContentLimit: 5000,
   wordsPerMinute: 200,
-  parserVersion: '1.0.0',
+  parserVersion: '1.1.0',
   assetPublicPrefix: '/assets/vault',
   plugins: [],
 };

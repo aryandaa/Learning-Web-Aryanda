@@ -23,6 +23,8 @@ export class ParserContext {
     missingImages: [],
     malformedFrontmatter: [],
     unsupportedEmbeds: [],
+    invalidEncoding: [],
+    codeFolderIdCollision: [],
   };
 
   constructor(vaultPath: string, config: ParserConfig) {

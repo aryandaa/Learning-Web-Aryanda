@@ -1,11 +1,23 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import type { MetadataFile, TreeFolderNode } from '../domain/types';
-import { buildFileMap, fetchMetadata, fetchTree, type FileMapEntry } from '../services/docs';
+import {
+  buildCodeIndex,
+  buildFileMap,
+  fetchMetadata,
+  fetchTree,
+  type CodeFileEntry,
+  type CodeFolderEntry,
+  type FileMapEntry,
+} from '../services/docs';
 
 interface SiteData {
   tree: TreeFolderNode[] | null;
   metadata: MetadataFile | null;
   fileMap: Map<string, FileMapEntry>;
+  /** Index code file (metadata ringan dari tree, tanpa content). */
+  codeFileById: Map<string, CodeFileEntry>;
+  /** Index code folder (folder yang langsung berisi file code). */
+  codeFolderById: Map<string, CodeFolderEntry>;
   loading: boolean;
   error: string | null;
 }
@@ -14,6 +26,8 @@ const SiteContext = createContext<SiteData>({
   tree: null,
   metadata: null,
   fileMap: new Map(),
+  codeFileById: new Map(),
+  codeFolderById: new Map(),
   loading: true,
   error: null,
 });
@@ -52,9 +66,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const fileMap = tree ? buildFileMap(tree) : new Map<string, FileMapEntry>();
+  const { codeFileById, codeFolderById } = tree ? buildCodeIndex(tree) : { codeFileById: new Map<string, CodeFileEntry>(), codeFolderById: new Map<string, CodeFolderEntry>() };
 
   return (
-    <SiteContext.Provider value={{ tree, metadata, fileMap, loading, error }}>
+    <SiteContext.Provider value={{ tree, metadata, fileMap, codeFileById, codeFolderById, loading, error }}>
       {children}
     </SiteContext.Provider>
   );

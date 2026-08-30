@@ -8,8 +8,8 @@ import type { AssetManifestEntry } from './types';
  * generated/assets/<relative path> (spec §30-31, optimized): unreferenced
  * assets are never displayed anywhere, so they are not published.
  */
-export async function copyAssets(context: ParserContext): Promise<AssetManifestEntry[]> {
-  const generatedRoot = path.join(process.cwd(), 'generated');
+export async function copyAssets(context: ParserContext, generatedDir?: string): Promise<AssetManifestEntry[]> {
+  const generatedRoot = generatedDir ? path.resolve(generatedDir) : path.join(process.cwd(), 'generated');
   const assetsDir = path.join(generatedRoot, 'assets');
   await fs.rm(assetsDir, { recursive: true, force: true });
   await fs.mkdir(assetsDir, { recursive: true });

@@ -12,8 +12,10 @@ import {
 } from 'lucide-react';
 import { useSiteData } from '../app/SiteProvider';
 import { BranchTree } from '../components/roadmap/BranchTree';
+import { PracticeFilesSection } from '../components/roadmap/PracticeFilesSection';
 import { Spinner } from '../components/ui/spinner';
 import { folderColor } from '../lib/colors';
+import { collectPracticeGroups, type PracticeFile } from '../lib/practiceFiles';
 import { fetchGraph, fetchRoadmaps } from '../services/docs';
 import type { GraphData, RoadmapInfo, RoadmapsData } from '../domain/types';
 import { cn } from '../lib/utils';
@@ -106,7 +108,7 @@ function buildSidebarGroups(roadmaps: RoadmapsData): SidebarGroup[] {
  *    (BranchTree) seperti sebelumnya, plus tombol kembali ke grid.
  */
 export default function RoadmapPage() {
-  const { metadata, loading: siteLoading } = useSiteData();
+  const { metadata, tree, loading: siteLoading } = useSiteData();
   const [roadmaps, setRoadmaps] = useState<RoadmapsData | null>(null);
   const [graph, setGraph] = useState<GraphData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -158,6 +160,36 @@ export default function RoadmapPage() {
         return an !== bn ? an - bn : at.localeCompare(bt);
       });
   }, [roadmaps, selected]);
+
+  // Semua collection "Praktek" di dalam scope subskill, dikelompokkan per
+  // FULL PATH folder (identitas unik — bukan nama folder saja).
+  const practiceGroups = useMemo(
+    () => (tree && selected ? collectPracticeGroups(tree, selected.path) : []),
+    [tree, selected]
+  );
+
+  // Asosiasi collection -> roadmap: tiap group "Praktek" menjadi milik roadmap
+  // yang foldernya merupakan ancestor TERDALAM dari path folder tersebut.
+  // Contoh: .../Framework/React/praktek milik roadmap "React JS" (bukan "Framework"),
+  // sehingga file tidak pernah berpindah parent / tercampur antar subkategori.
+  // Roadmap tanpa folder Praktek → tidak mendapat section (tidak ada section kosong).
+  const filesByRoadmap = useMemo(() => {
+    const map = new Map<string, PracticeFile[]>();
+    if (selectedRoadmaps.length === 0) return map;
+    for (const group of practiceGroups) {
+      let owner: RoadmapInfo | null = null;
+      for (const rm of selectedRoadmaps) {
+        if (group.path.startsWith(`${rm.folder}/`)) {
+          if (!owner || rm.folder.length > owner.folder.length) owner = rm;
+        }
+      }
+      if (!owner) continue; // Praktek di luar roadmap mana pun → tidak dirender sendiri
+      const list = map.get(owner.id) ?? [];
+      list.push(...group.files);
+      map.set(owner.id, list);
+    }
+    return map;
+  }, [practiceGroups, selectedRoadmaps]);
 
   if (error) {
     return (
@@ -345,31 +377,44 @@ export default function RoadmapPage() {
             </div>
           ) : (
             <div className="space-y-8">
-              {selectedRoadmaps.map((rm, index) => (
-                <section key={rm.id}>
-                  <div className="mb-3 flex items-center gap-2">
-                    <span
-                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white"
-                      style={{ backgroundColor: color }}
-                    >
-                      {index + 1}
-                    </span>
-                    <h2 className="min-w-0 flex-1 truncate text-base font-semibold text-slate-200">
-                      {rm.title}
-                    </h2>
-                    <Link
-                      to={`/docs/${rm.id}`}
-                      className="shrink-0 rounded-md p-1.5 text-slate-500 transition-colors hover:bg-slate-800 hover:text-slate-100"
-                      title={`Buka dokumen ${rm.title}`}
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </Link>
-                  </div>
-                  <BranchTree roadmap={rm} graph={graph} />
-                </section>
-              ))}
+              {selectedRoadmaps.map((rm, index) => {
+                const rmFiles = filesByRoadmap.get(rm.id);
+                return (
+                  <section key={rm.id}>
+                    <div className="mb-3 flex items-center gap-2">
+                      <span
+                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white"
+                        style={{ backgroundColor: color }}
+                      >
+                        {index + 1}
+                      </span>
+                      <h2 className="min-w-0 flex-1 truncate text-base font-semibold text-slate-200">
+                        {rm.title}
+                      </h2>
+                      <Link
+                        to={`/docs/${rm.id}`}
+                        className="shrink-0 rounded-md p-1.5 text-slate-500 transition-colors hover:bg-slate-800 hover:text-slate-100"
+                        title={`Buka dokumen ${rm.title}`}
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </Link>
+                    </div>
+                    <BranchTree roadmap={rm} graph={graph} />
+                    {/* Code / Praktik milik roadmap INI SAJA (folder Praktek lokal,
+                        identity = full path, bukan nama folder). */}
+                    {rmFiles && rmFiles.length > 0 && (
+                      <div className="mt-4">
+                        <PracticeFilesSection files={rmFiles} basePath={rm.folder} />
+                      </div>
+                    )}
+                  </section>
+                );
+              })}
             </div>
           )}
+
+          {/* Source code kini dirender per-roadmap (section "Code / Praktik"
+              di dalam tiap roadmap yang memiliki folder Praktek). */}
         </div>
       </div>
 
@@ -434,7 +479,7 @@ function SubskillCard({
         <ArrowRight className="h-4 w-4 text-slate-600 opacity-0 transition-opacity group-hover:opacity-100" />
       </div>
 
-      <h3 className="mt-4 text-lg font-bold leading-snug text-slate-100 transition-colors group-hover:text-white">
+      <h3 className="mt-4 text-lg font-bold leading-snug text-slate-100 transition-colors group-hover:text-slate-50">
         {item.label}
       </h3>
       <p className="mt-1 truncate text-xs text-slate-500" title={item.path}>

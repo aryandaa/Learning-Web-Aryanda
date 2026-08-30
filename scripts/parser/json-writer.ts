@@ -2,8 +2,10 @@ import fs from 'fs/promises';
 import path from 'path';
 import type { ParserContext } from './context';
 import { buildTree } from './tree';
+import { codeFileId, countCodeFiles, groupCodeFiles } from './code-files';
 import type {
   AssetManifestEntry,
+  CodeFolderData,
   GraphData,
   MetadataFile,
   NoteRecord,
@@ -47,7 +49,16 @@ export async function writeGenerated(
     await fs.writeFile(docPath, JSON.stringify(record), 'utf-8');
   }
 
-  const tree = buildTree(options.records);
+  // Code files: SATU JSON per folder (grouping by folder). Isi dipertahankan asli.
+  const codeFiles = context.snapshot?.codeFiles ?? [];
+  const codeFolders = groupCodeFiles(codeFiles);
+  for (const folder of codeFolders) {
+    const folderPath = path.join(docsDir, `${folder.outputPath}.json`);
+    await fs.mkdir(path.dirname(folderPath), { recursive: true });
+    await fs.writeFile(folderPath, JSON.stringify(folder), 'utf-8');
+  }
+
+  const tree = buildTree(options.records, codeFiles);
 
   const searchIndex: SearchIndexEntry[] = options.records.map((record) => ({
     id: record.id,
@@ -61,6 +72,25 @@ export async function writeGenerated(
     content: record.content.slice(0, context.config.searchIndexContentLimit),
     excerpt: record.excerpt,
   }));
+
+  // Metadata ringan untuk code file di search index (tanpa content).
+  // Full content tetap di JSON folder, dimuat hanya saat file dibuka.
+  for (const folder of codeFolders) {
+    for (const file of folder.files) {
+      searchIndex.push({
+        id: codeFileId(folder.path, file.name),
+        title: file.name,
+        slug: file.name.toLowerCase(),
+        relativePath: file.path,
+        folder: folder.path,
+        tags: [file.language],
+        aliases: [],
+        headings: [],
+        content: '',
+        excerpt: '',
+      });
+    }
+  }
 
   const folderSet = new Set(options.records.map((r) => r.folder).filter(Boolean));
 
@@ -83,6 +113,8 @@ export async function writeGenerated(
     myskillCount: options.records.filter((r) => r.tags.some((t) => t.toLowerCase() === 'myskill')).length,
     warningsCount: context.warningsCount,
     brokenLinksCount: context.warnings.brokenWikiLinks.length,
+    totalCodeFiles: countCodeFiles(codeFolders),
+    totalCodeFolders: codeFolders.length,
   };
 
   const warningsFile: WarningsFile = {
@@ -119,6 +151,7 @@ export async function writeGenerated(
     metadata,
     warnings: context.warnings,
     assets: options.assets,
+    codeFolders,
   };
 }
 
