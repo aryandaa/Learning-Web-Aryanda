@@ -3,6 +3,7 @@
   "warnings": {
     "duplicatePaths": [],
     "brokenWikiLinks": [
+      "CyberSecurity/Cryptography/Cryptography Classic/Atbash dan Affine Cipher.md -> []( Modular%20Inverting.md )",
       "CyberSecurity/Cryptography/Cryptography.md -> []( 1.%20Pengenalan.md )",
       "CyberSecurity/Cryptography/Cryptography.md -> []( 2.%20Modular%20Aritmathic.md )",
       "CyberSecurity/Cryptography/Pengenalan/1. Pengenalan.md -> []( tes.md )",
